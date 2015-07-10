@@ -1,0 +1,59 @@
+import "MessageFriend.proto";
+
+package Message;
+
+
+// P2G_REQUEST_FRIENDS_ADD	
+message FriendsAddRequest{
+	optional int64	src_pid 	= 1;
+	optional int64	dst_pid 	= 2;
+	optional string dst_name	= 3;
+};
+
+// G2P_RESPONSE_FRIENDS_ADD
+message FriendsAddResponse {
+	optional int32	result 		= 1;
+	optional Friend friend		= 2;
+	optional int32	state		= 3;
+};
+
+// P2G_REQUEST_FRIENDS_DEL
+message FriendsDelRequest{
+	optional int64	src_pid 	= 1;
+	optional int64	dst_pid 	= 2;
+};
+
+// G2P_RESPONSE_FRIENDS_DEL
+message FriendsDelResponse {
+	optional int32	result 		= 1;
+	optional int64	dst_pid 	= 2;
+};
+
+// G2P_NOTIFY_FRIENDS_ADD
+message FriendsAddNotify {
+	optional Friend	friend		= 1;
+	optional int32	state		= 2;
+}
+
+// G2P_NOTIFY_FRIENDS_STATE
+message FriendsStateNotify	{
+	optional int64 pid			= 1;
+	optional int32	state		= 2;
+}
+
+// G2P_NOTIFY_FRIENDS_ADD_REQUEST 
+message FriendsRequestNotify
+{
+	optional int64 pid			= 1;
+	optional int32 level			= 2;
+	optional int32 fighter		= 3;
+	optional string name		= 4;
+}
+//P2G_REQUEST_FRIENDS_DEL_REQUEST 
+message FriendsDelRequestRequest
+{
+	optional int64 pid			= 1;
+}
+
+
+

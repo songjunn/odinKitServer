@@ -1,0 +1,78 @@
+import "MessageArenaPlayerData.proto";
+package Message;
+
+/*G2P_NOTIFY_ARENA_DATA            = 1515, // arena data*/
+message ArenaValue
+{
+	optional int32 index = 1;
+	optional int64 value = 2;
+};
+
+message ArenaSaveData
+{
+	optional int32 index = 1;
+	optional int64 value = 2;
+};
+
+/* D2G_NOTIFY_ARENA_SYNC_DATA */
+message ArenaSyncData
+{
+	repeated ArenaValue values 		= 1;
+	repeated ArenaPlayer waiting	= 2;
+	repeated ArenaPlayer current 	= 3;
+};
+
+/*G2D_REQUEST_ARENA_WAITING_ADD	= 1508, // add waiting player*/
+message ArenaWaitingAdd
+{
+	repeated ArenaPlayer players = 1;
+	optional int32 stage = 2;
+};
+/*G2D_REQUEST_ARENA_WAITING_DEL	= 1509, // del waiting player*/
+message ArenaWaitingDel
+{
+	optional int64 pid = 1;
+	optional int32 stage = 2;
+};
+/*G2D_REQUEST_ARENA_WAITING_DEL_ALL	= 1510, // del all waiting player*/
+message ArenaWaitingDelAll
+{
+};
+/*G2D_REQUEST_ARENA_CURRENT_ADD	= 1511, // add current player*/
+message ArenaCurrentAdd
+{
+	repeated ArenaPlayer players = 1;
+	optional int32		stage	= 2;
+};
+/*G2D_REQUEST_ARENA_CURRENT_DEL	= 1512, // del current player*/
+message ArenaCurrentDel
+{
+	optional int64 pid = 1;
+	optional int32 stage = 2;
+};
+/*G2D_REQUEST_ARENA_CURRENT_UPDATE	= 1513, // update current player*/
+message ArenaCurrentUpdate
+{
+	optional int32 stage = 1;
+	optional int64 pid = 2;
+	optional ArenaPlayer player = 3;
+};
+/*G2D_REQUEST_ARENA_CURRENT_DEL_ALL= 1514, // del all curent*/
+message ArenaCurrentDelAll
+{
+
+};
+
+
+/*G2D_NOTIFY_ARENA_MODULE_REFRESH_CURRENT 	= 1517, // arena module notify refresh*/
+message ArenaModuleRefresh
+{
+	optional int32 type	= 1;
+};
+
+/*D2G_NOTIFY_ARENA_MODULE_SYNC_DATA			= 1518,	// arena module sync data*/
+message ArenaModuleSyncData
+{
+	optional ArenaPlayer player = 1;
+};
+

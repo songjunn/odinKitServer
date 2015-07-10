@@ -1,0 +1,6 @@
+package Message; 
+message TrainDoRequest						//请求训练
+{
+   optional int64		role 		= 1;	//主角或英雄ID
+   optional int32		type		= 2;	//训练方式
+} 

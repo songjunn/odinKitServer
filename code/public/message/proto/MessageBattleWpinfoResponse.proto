@@ -1,0 +1,14 @@
+package Message; 
+message BattleWpinfoResponse				//同步国战路点信息
+{ 
+	message Waypoint
+	{
+   	optional int32		wpid		= 1;	//路点编号
+   	optional int32		wpcamp	= 2;	//阵营归属
+   	optional int32		armora	= 3;	//当前耐久
+   	optional int32		armorb	= 4;	//当前耐久
+   	optional int32		armormax= 5;	//最大耐久
+  }
+  
+  repeated	Waypoint	wp			= 1;	//路点信息
+} 

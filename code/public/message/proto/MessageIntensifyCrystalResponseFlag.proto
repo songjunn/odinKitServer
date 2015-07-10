@@ -1,0 +1,5 @@
+package Message; 
+message IntensifyCrystalResponseFlag				//魂晶强化响应响应标识
+{
+	optional int32		flag 				= 1;	//成功与否 标识
+} 

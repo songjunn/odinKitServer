@@ -1,0 +1,46 @@
+package Message; 
+message CityHelperNotify					//同步助阵信息
+{
+   message Helper
+   {
+      optional int64	playerid  = 1;		//助阵玩家ID
+      optional string	name		  = 2;		//助阵玩家名
+      optional int32	level			= 3;		//助阵角色等级
+      optional int32	vocation	= 4;		//助阵角色职业
+      optional int32	fighting	= 5;		//助阵角色战力
+      optional int32	templateid= 6;		//助阵角色模板
+      
+      optional int32	basestrength = 7;	
+			optional int32	baseintellect = 8;
+			optional int32	basetechnique = 9;
+			optional int32	baseagility = 10;	
+			optional int32	strength = 11;	
+			optional int32	intellect = 12;
+			optional int32	technique = 13;
+			optional int32	agility = 14;	
+			
+			optional int32	hpmax = 15;
+			optional int32	physidamage = 16;
+			optional int32	physidefense = 17;
+			optional int32	magicdamage = 18;
+			optional int32	magicdefense = 19;
+			optional int32	stuntdamage = 20;
+			optional int32	stuntdefense = 21;
+			
+			optional int32	hit = 22;
+			optional int32	jouk = 23;
+			optional int32	crit = 24;
+			optional int32	tenacity = 25;
+			optional int32	parry = 26;
+			optional int32	treat = 27;
+			optional int32	counter = 28;
+      optional int32	floatprob = 29;
+      
+      optional int32	sex = 30;
+      optional int32	body = 31;
+      optional int32	stunt = 32;
+
+   }
+   
+   repeated Helper	helper	= 1;	//助阵信息
+} 

@@ -1,0 +1,8 @@
+package Message; 
+message UserCheck 								  //账号密码验证
+{ 
+   optional int32	  server	= 1;  //选择的区服号
+   optional string    userid 	= 2;  //用户ID
+   optional string    ticket 	= 3;  //票据
+   optional int32	  client	= 4;  //1:IOS	2:Android
+} 

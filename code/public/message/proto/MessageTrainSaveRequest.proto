@@ -1,0 +1,5 @@
+package Message; 
+message TrainSaveRequest					//请求保存训练
+{
+   optional int64		role 		= 1;	//主角或英雄ID
+} 

@@ -1,0 +1,9 @@
+package Message; 
+message UserLogin 								//账号登录
+{ 
+   optional int64     uid 		= 1;  //账号ID
+   optional int32			world		= 2;	//区服号
+   optional int32	    server	= 3;  //登陆的GameServer
+   optional string		type		= 4;	//obj类型
+   optional string		key			= 5;	//索引
+} 

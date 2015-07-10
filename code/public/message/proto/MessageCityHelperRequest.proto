@@ -1,0 +1,5 @@
+package Message; 
+message CityHelperRequest						//请求助阵信息
+{
+   optional int64			playerid	= 1;	//主角ID
+} 

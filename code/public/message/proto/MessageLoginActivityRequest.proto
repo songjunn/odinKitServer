@@ -1,0 +1,5 @@
+package Message; 
+message LoginActivityRequest						//连续登录活动请求
+{
+	optional int32		reqtype			= 1;		//请求类型 1:打开界面	2:领取奖励
+} 

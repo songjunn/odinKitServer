@@ -1,0 +1,6 @@
+package Message; 
+message ResetChallengeCount						//重置挑战次数
+{ 
+   optional int32	cityid		= 1;				//副本编号
+   optional int32	type 		= 2;				//1.普通副本绝杀  2.精英副本进击  3.精英副本绝杀
+} 

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="message">
+      <UniqueIdentifier>{9eeed5ef-bd69-4dd0-9988-1f4962954004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager">
+      <UniqueIdentifier>{89d20c6f-6774-4ace-9157-cc38e05ff30a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DataServer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCheckNameRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCheckNameResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCreatePlayer.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageDeletePlayer.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerCount.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerDataResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerLogin.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerLogout.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageReqPlayerData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSyncObjField.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserLogin.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageWorldDataRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageWorldDataResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataModule.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LoadModule.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\public\message\source\MessageCheckNameRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCheckNameResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCreatePlayer.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageDeletePlayer.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerCount.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerDataResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerLogin.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerLogout.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageReqPlayerData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSyncObjField.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserLogin.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageWorldDataRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageWorldDataResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DataModule.h">
+      <Filter>manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LoadModule.h">
+      <Filter>manager</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

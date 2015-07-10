@@ -1,0 +1,5 @@
+package Message; 
+message ReqPlayerData								//向数据中心请求角色数据
+{ 
+   optional int64     pid 		= 1;  //角色ID
+} 

@@ -1,0 +1,5 @@
+package Message; 
+message UserKickout	 								//ÕËºÅ±»¶¥³ö
+{ 
+   optional int64     uid 		= 1;  //ÕËºÅID
+} 

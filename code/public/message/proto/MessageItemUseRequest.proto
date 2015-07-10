@@ -1,0 +1,5 @@
+package Message; 
+message ItemUseRequest								//请求使用道具
+{
+   optional int64		itemid 				= 1;	//道具实体ID
+} 

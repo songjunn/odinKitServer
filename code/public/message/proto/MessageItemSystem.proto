@@ -1,0 +1,12 @@
+package Message; 
+message ItemSystem								//装备系统	
+{
+   optional int32			command 			= 1;	//指令
+   optional int64			roleid				= 2;	//英雄ID
+   optional int64			equipid				= 3;	//装备id
+   optional int32			holeindex			= 4;	//孔位
+   optional int32			equipposition			= 5;	//装备位置
+   optional int64			hunshiid			= 6;	//镶嵌的魂石的id
+   optional int32			hunshitemplateid		= 7;	//镶嵌的魂石的模板Id
+   optional int32			flag				= 8;	//0失败， 1成功
+} 

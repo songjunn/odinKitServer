@@ -1,0 +1,6 @@
+package Message;
+message QueenTeaseSync				 // 女王调教
+{
+	optional int32		synctype	= 1;	//0-打开界面	1-免费调教	2-金币调教
+	optional int32		syncnum		= 2;	//P2G-总伤害	G2P-本次调教获得的银币
+}

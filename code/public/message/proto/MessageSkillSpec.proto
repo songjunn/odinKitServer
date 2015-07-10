@@ -1,0 +1,6 @@
+package Message; 
+message SkillSpec									//同步特性技能
+{
+   optional int64		role 		= 1;	//主角或英雄ID
+   repeated int32		skill		= 2;	//技能ID
+} 

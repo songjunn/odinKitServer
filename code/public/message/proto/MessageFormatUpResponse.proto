@@ -1,0 +1,5 @@
+package Message; 
+message FormatUpResponse						//升级阵型反馈
+{
+   optional int32		format 		= 1;	//阵型模板ID
+} 

@@ -1,0 +1,6 @@
+package Message; 
+message StoreSystemLoadRequest					//加载商店/商城/彩贝/战功 商品请求
+{
+   optional int32		type			= 1;	//商店/商城/彩贝/战功   1商店，2商城，3彩贝，4战功
+   optional int32		group			= 2;	//组
+} 

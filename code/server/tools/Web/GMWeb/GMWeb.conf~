@@ -1,0 +1,11 @@
+[serverInfo0]
+serverName = 服务器0
+db_IP = localhost
+db_port = 27017
+db_name = odin_gamedb_025
+
+[serverInfo1]
+serverName = 服务器1
+db_IP = localhost
+db_port = 27017
+db_name = odin_gamedb_024

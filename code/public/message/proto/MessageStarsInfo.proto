@@ -1,0 +1,14 @@
+package Message; 
+message StarsInfo									//同步星盘信息
+{
+	message Star
+	{
+		optional int32	idx			= 1;	//序号
+		optional int32	active	= 2;	//激活
+		optional int32	level		= 3;	//等级
+		optional int32	item		= 4;	//镶嵌魂玉
+	}
+	 
+   optional int64		role 		= 1;	//主角或英雄ID
+   repeated Star		star		= 2;	//星点信息
+} 

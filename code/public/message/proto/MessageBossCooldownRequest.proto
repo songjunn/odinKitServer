@@ -1,0 +1,5 @@
+package Message; 
+message BossCooldownRequest					//请求清除战斗冷却时间
+{ 
+   optional int64     pid 		= 1;  //角色ID
+} 

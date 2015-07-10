@@ -1,0 +1,8 @@
+package Message; 
+message StoreSystemBuyRequest					//购买 商品请求
+{
+   optional int32		type			= 1;	//商店/商城/彩贝/战功   1商店，2商城，3彩贝，4战功
+   optional int32		group			= 2;	//组
+   optional int32		index			= 3;	//在组中的索引(从0开始)
+   optional int32		nums			= 4;	//数量
+} 

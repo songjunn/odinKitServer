@@ -1,0 +1,14 @@
+package Message; 
+message NotifyExpeditionHero				//同步远征英雄数据
+{ 
+	message HeroData
+	{
+		optional int64	heroid		= 1;
+		optional int32	curhp		= 2;
+		optional int32	curmorale	= 3;
+		optional int32	curpos		= 4;
+	}
+	
+	optional bool		bclear		= 1;
+	repeated HeroData	heros		= 2;
+} 

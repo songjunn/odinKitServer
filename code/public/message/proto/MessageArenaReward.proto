@@ -1,0 +1,10 @@
+
+package Message;
+
+/*G2P_NOTIFY_ARENA_STAGE_REWARD = 1516, // arena stage reward silver */
+message ArenaStageReward
+{
+	optional	int32		score 	= 1;	
+	optional	int32		sliver	= 2;
+};
+

@@ -1,0 +1,5 @@
+package Message; 
+message UserLogout	 								//ук╨е╣гЁЖ
+{ 
+   optional int64     uid 		= 1;  //ук╨еID
+} 

@@ -1,0 +1,9 @@
+package Message; 
+message ExpeditionAward				//Ô¶Õ÷»î¶¯½±Àø
+{ 	
+	optional int32 gainexp		= 1;
+	optional int32 gaingold		= 2;
+	optional int32 gainsilver	= 3;
+	repeated int32 itemid		= 4;
+	repeated int32 itemstack	= 5;
+} 

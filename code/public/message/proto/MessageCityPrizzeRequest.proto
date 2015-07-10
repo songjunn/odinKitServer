@@ -1,0 +1,5 @@
+package Message; 
+message CityPrizzeRequest					//请求获得抽奖道具
+{
+   optional int32			idx	= 1;		//选择的道具序号
+} 

@@ -1,0 +1,23 @@
+package Message; 
+message CombatAward
+{
+   optional int32			record	= 2;		//战斗评分
+   optional int32			attackrecord = 3;	//攻击评分
+   optional int32			defendrecord = 4;	//防御评分
+   optional int32			combatrecord = 5;	//战绩评分
+   
+   message Item
+   {
+       optional int32	itemid	= 1;	//物品模板ID
+       optional int32	stack		= 2;	//堆叠数量
+   }
+   
+   repeated Item			dropitem	= 6;	//掉落物品
+   repeated	Item			prizeitem	= 7;	//抽奖物品
+   
+   optional int32			price2		= 8;	//第二次抽奖价格
+   optional int32			price3		= 9;	//第三次抽奖价格
+
+   optional int32			gainexp		= 10;	//获得的经验
+   optional int32			gainsilver	= 11;	//获得的银币
+}

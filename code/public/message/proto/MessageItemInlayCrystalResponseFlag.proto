@@ -1,0 +1,5 @@
+package Message; 
+message ItemInlayCrystalResponseFlag								//装备 镶嵌魂晶 响应标识
+{
+	optional int32		flag 				= 1;	//成功与否 标识
+} 

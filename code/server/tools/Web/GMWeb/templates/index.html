@@ -1,0 +1,58 @@
+$def with()
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            ul{list-style-type:none; margin:0; padding:0; overflow:hidden;}
+            li{float:left}
+            a:link,a:visited
+            {display:block; width:120px; font-weight:bold; color:#FFFFFF; background-color:#bebebe; text-align:center;
+            padding:4px; text-decoration:none; text-transform:uppercase;}
+            a:hover,a:active
+            {background-color:#cc0000;}
+        </style>
+    </head>
+    
+    $def serverInfoList():
+        $for i in range(len(secs)):
+             $ href = '%s%s'%("/playerInfos/", secs[i])
+             <tr>
+                 <td bgcolor = "LightSkyBlue"><a href = $href>$(confDic[secs[i]][0][1])</a></td>
+                 <td bgcolor = "LightSkyBlue">$(serverInfoDic[secs[i]]['playerCount'])</td>
+                 <td bgcolor = "LightSkyBlue">$(serverInfoDic[secs[i]]['registerCount'])</td>
+                 <td bgcolor = "LightSkyBlue">$(serverInfoDic[secs[i]]['rechargeCount'])</td>     
+             </tr>
+    $:render.base()
+    <body>
+        <table border = "2" cellpadding = "30">
+        <tr>
+            <th bgcolor = "LightSkyBlue">服务器名称</th>
+            <th bgcolor = "LightSkyBlue">当前在线人数</th>
+            <th bgcolor = "LightSkyBlue">注册人数</th>
+            <th bgcolor = "LightSkyBlue">充值总额</th>
+        </tr>
+        $:serverInfoList()
+<!--
+        <tr>
+            <td bgcolor = "LightGrey">服务器1</td>
+            <td bgcolor = "LightGrey">0</td>
+            <td bgcolor = "LightGrey">0</td>
+        </tr>
+        <tr>
+            <td bgcolor = "LightSkyBlue">服务器2</td>
+            <td bgcolor = "LightSkyBlue">0</td>
+            <td bgcolor = "LightSkyBlue">0</td>
+        </tr>
+        <tr>
+            <td bgcolor = "LightGrey">服务器3</td>
+            <td bgcolor = "LightGrey">0</td>
+            <td bgcolor = "LightGrey">0</td>
+        </tr>
+-->
+        </table>
+        
+    </body>
+
+</html>
+
+

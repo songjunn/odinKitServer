@@ -1,0 +1,7 @@
+package Message;
+
+//G2P_NOTIFY_TASK_DEL
+message TaskDelNotify
+{
+	optional int32	taskid = 1;
+};

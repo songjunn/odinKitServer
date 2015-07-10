@@ -1,0 +1,5 @@
+package Message; 
+message BattleRankingRewardGetRequest		//请求领取排名奖励
+{ 
+	optional	int64  	playerid	 		= 1;  //角色ID
+} 

@@ -1,0 +1,6 @@
+package Message; 
+message PlayerDataResponse							//离线角色数据响应
+{
+   optional int64     pid 				= 1;  //角色ID
+   optional int32			templateid	= 2;	//角色模板
+} 

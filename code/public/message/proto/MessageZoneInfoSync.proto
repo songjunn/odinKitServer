@@ -1,0 +1,6 @@
+package Message; 
+message ZoneInfoSync			//同步区域信息
+{
+	repeated int32 zoneid = 1;	//区域ID
+	repeated int32 record = 2;	//区域信息
+}

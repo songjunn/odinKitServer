@@ -1,0 +1,6 @@
+package Message; 
+message ExpeditionRequest				//远征活动请求
+{ 	
+	optional int32 chlgmode		= 1;	//挑战模式 1:绝地讨伐 2:全员突击 3:自动战斗
+	optional bool  bresult		= 2;    //挑战结果
+} 

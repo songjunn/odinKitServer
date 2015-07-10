@@ -1,0 +1,12 @@
+package Message; 
+message LoginActivityRespond						//连续登录活动反馈
+{
+	optional int32	restype				= 1;		//反馈类型 1:打开界面	2:领取奖励
+	optional int32	acttype				= 2;	    //活动类型
+	optional bool	bshow				= 3;		//是否显示
+	optional int64	starttime			= 4;		//开始时间
+	optional int64	endtime				= 5;		//结束时间
+	optional int32	recycle				= 6;		//活动周期
+	optional int32	conlogindays		= 7;		//连续登录天数(包括当天首次登录)
+	optional bool	bgetaward			= 8;		//当天是否领取了奖励
+} 

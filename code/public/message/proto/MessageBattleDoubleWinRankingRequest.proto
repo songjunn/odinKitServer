@@ -1,0 +1,5 @@
+package Message; 
+message BattleDoubleWinRankingRequest			//请求连胜排行
+{ 
+	optional int64	pid = 1;	//角色ID
+} 

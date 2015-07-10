@@ -1,0 +1,9 @@
+import "MessageFriend.proto";
+
+package Message;
+
+message FriendsSync
+{
+	repeated Friend friend =1;
+	repeated Friend request = 2;
+};

@@ -1,0 +1,5 @@
+package Message; 
+message DeletePlayer 								//É¾³ý½ÇÉ«
+{ 
+   optional int64     pid 		= 1;  //½ÇÉ«ID
+} 

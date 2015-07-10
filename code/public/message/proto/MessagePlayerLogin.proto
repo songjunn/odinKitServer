@@ -1,0 +1,7 @@
+package Message; 
+message PlayerLogin 										//½ÇÉ«µÇÂ¼
+{
+   optional int64			uid					= 1;	//ÕËºÅID
+   optional int64     pid 				= 2;  //½ÇÉ«ID
+   optional int32			templateid	= 3;	//½ÇÉ«Ä£°å
+} 

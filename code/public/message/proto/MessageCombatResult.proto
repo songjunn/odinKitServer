@@ -1,0 +1,5 @@
+package Message; 
+message CombatResult								//通知战斗结果
+{
+   optional bool			result 	= 1;	//挑战者是否获胜
+} 

@@ -1,0 +1,8 @@
+package Message;
+import "MessageTaskSync.proto";
+
+//G2P_NOTIFY_TASK_ADDK
+message TaskAddNotify
+{
+	repeated Task tasks = 1;
+};

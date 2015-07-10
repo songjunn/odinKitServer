@@ -1,0 +1,5 @@
+package Message; 
+message NetControl
+{
+	required int32 sock = 1;
+}

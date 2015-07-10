@@ -1,0 +1,13 @@
+package Message; 
+message RewardNotify							//推送奖励信息
+{
+	optional	int32		reward	= 1;	//奖励类型
+	optional	int32		item		= 2;	//道具模板ID
+	optional	int32		exp			= 3;	//经验
+	optional	int32		sliver	= 4;	//银币
+	optional	int32		gold		= 5;	//金币
+	optional	int32		credit	= 6;	//声望
+	optional	int32		ap			= 7;	//体力
+	optional	int32		merit		= 8;	//战功
+	optional	int32		knight	= 9;	//位阶经验
+} 

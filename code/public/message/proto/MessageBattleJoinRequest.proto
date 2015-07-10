@@ -1,0 +1,5 @@
+package Message; 
+message BattleJoinRequest						//请求参加国战
+{ 
+   optional int64     pid 		= 1;  //角色ID
+} 

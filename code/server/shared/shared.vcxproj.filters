@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="conf">
+      <UniqueIdentifier>{14c9fdc4-26d2-4128-b948-320e765b47f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{385fc33a-a716-40cc-872d-f1f3dc3a96fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network">
+      <UniqueIdentifier>{bbb22350-dd56-4271-9b3e-378b38521455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thread">
+      <UniqueIdentifier>{bd679420-fe04-4f76-862e-933aa28932f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="container">
+      <UniqueIdentifier>{2531e267-3712-4c04-8a88-eedc382e3d3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="encrypt">
+      <UniqueIdentifier>{bbb595cf-1a92-4728-8b22-7baae1552dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="compression">
+      <UniqueIdentifier>{b24b9395-e577-44ca-9a59-4913d3978f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="compression\zip">
+      <UniqueIdentifier>{11a718a7-22cb-4d78-a6cc-ce44c87f2821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="log">
+      <UniqueIdentifier>{cb2f90fb-ff47-4f0b-a95b-01bd8c411e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="monitor">
+      <UniqueIdentifier>{14355480-3227-4b8f-b144-cbe69c095a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{01631c11-7fc3-4d61-85c9-166ac2d832bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exception">
+      <UniqueIdentifier>{6724e41e-ba13-41c2-b272-fb4638d44667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory">
+      <UniqueIdentifier>{6b49e17b-d7f5-4c6b-ab1d-59f3954e8a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory\nedmalloc">
+      <UniqueIdentifier>{3dd3ca9d-2f73-4d9e-b165-8e495076fc9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dbinterface">
+      <UniqueIdentifier>{84dfe679-a064-421c-81e2-8a1ed0f90598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utl">
+      <UniqueIdentifier>{6b3349a1-7512-4d63-85c9-fa60c46c5b30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{27e1e153-fc63-4732-a323-b3738eec6dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{59dc0392-bf38-41d8-86c6-b28ca4d33c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="console">
+      <UniqueIdentifier>{c541945d-eec3-428d-b479-a3349ce430e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\CSVParser.cpp">
+      <Filter>conf</Filter>
+    </ClCompile>
+    <ClCompile Include="source\IOCP.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\IOSelect.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Net.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Packet.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RingBuffer.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Socker.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SocketOpsLinux.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SocketOpsWin.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadLibFunctions.cpp">
+      <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="source\base64.cpp">
+      <Filter>encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="source\crc.cpp">
+      <Filter>encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="source\md5.cpp">
+      <Filter>encrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Compression.cpp">
+      <Filter>compression</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Log.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="source\vprof.cpp">
+      <Filter>monitor</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LuaEngine.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="source\exception.cpp">
+      <Filter>exception</Filter>
+    </ClCompile>
+    <ClCompile Include="source\extendedtrace.cpp">
+      <Filter>exception</Filter>
+    </ClCompile>
+    <ClCompile Include="include\nedmalloc.c">
+      <Filter>memory\nedmalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MysqlCore.cpp">
+      <Filter>dbinterface</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utlbuffer.cpp">
+      <Filter>utl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utlMD5.cpp">
+      <Filter>utl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\utlsymbol.cpp">
+      <Filter>utl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\cpu.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\fasttimer.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\memory.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PathFunc.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\gtime.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="source\random.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="source\strtools.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="source\console.cpp">
+      <Filter>console</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\CSVParser.h">
+      <Filter>conf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimpleIni.h">
+      <Filter>conf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Singleton.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOCP.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOSelect.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Net.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NetHeader.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Packet.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RingBuffer.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Socker.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketNet.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketOps.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Atomic.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lock.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadException.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadLib.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadLibFunctions.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ClxHash.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ClxHlist.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OrderedList.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stllist.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stlmap.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\base64.h">
+      <Filter>encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\crc.h">
+      <Filter>encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\md5.h">
+      <Filter>encrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Compression.h">
+      <Filter>compression</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\zlib\zconf.h">
+      <Filter>compression\zip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\zlib\zlib.h">
+      <Filter>compression\zip</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Log.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vprof.h">
+      <Filter>monitor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LuaEngine.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="include\exception.h">
+      <Filter>exception</Filter>
+    </ClInclude>
+    <ClInclude Include="include\extendedtrace.h">
+      <Filter>exception</Filter>
+    </ClInclude>
+    <ClInclude Include="include\memorypool.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\malloc.c.h">
+      <Filter>memory\nedmalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\nedmalloc.h">
+      <Filter>memory\nedmalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MysqlCore.h">
+      <Filter>dbinterface</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MysqlDefine.h">
+      <Filter>dbinterface</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlbidirectionalset.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlbuffer.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utldict.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utldoublequeue.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utldoublestack.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlfixedlinkedlist.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlfixedmemory.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlhash.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlhashbucket.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utllinkedlist.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlmap.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlMD5.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlmemory.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlmultilist.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlpriorityqueue.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlrbtree.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UtlSortVector.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlstack.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlsymbol.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utlvector.h">
+      <Filter>utl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\cpu.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fasttimer.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\memory.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PathFunc.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gtime.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\random.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\strtools.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="include\console.h">
+      <Filter>console</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedInc.h" />
+  </ItemGroup>
+</Project>

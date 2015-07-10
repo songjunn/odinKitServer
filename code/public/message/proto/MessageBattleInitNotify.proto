@@ -1,0 +1,5 @@
+package Message; 
+message BattleInitNotify						//初始化国战数据
+{ 
+	optional	int32  	world 		= 1;  //区服ID
+} 

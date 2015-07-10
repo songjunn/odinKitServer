@@ -1,0 +1,47 @@
+package Message;
+
+message DataTask
+{
+	required int32	id 		= 1;
+	repeated int32	args 	= 2;
+};
+
+// D2G_NOTIFY_TASK_SYNC
+// G2P_NOTIFY_TASK_SYNC
+message DataTaskSync
+{
+	repeated DataTask task	= 1;
+	repeated int32 unreceive= 2;
+	required int64 pid		= 3;
+};
+
+// G2D_NOTIFY_TASK_UPDATE
+message DataTaskUpdate
+{
+	optional DataTask task = 1;
+};
+
+//G2D_NOTIFY_TASK_ADD,			// add task 
+message DataTaskAdd
+{
+	optional DataTask task = 1;
+};
+
+//G2D_NOTIFY_TASK_DEL,			// del task
+message DataTaskDel
+{
+	optional int32 task = 1;
+};
+
+//G2D_NOTIFY_UNRECEIVE_ADD,		// add unreceive
+message DataUnreceiveAdd
+{
+	optional int32 unreceive = 1;
+};
+
+//G2D_NOTIFY_UNRECEIVE_DEL,		// del unreceive
+message DataUnreceiveDel
+{
+	optional int32 unreceive = 1;
+};
+

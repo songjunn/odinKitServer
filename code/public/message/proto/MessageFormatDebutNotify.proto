@@ -1,0 +1,8 @@
+package Message; 
+message FormatDebutNotify						//出阵信息同步
+{
+	 optional int64		playerid	= 1;	//主角ID
+   optional int32		format 		= 2;	//当前阵型ID
+   repeated int64		fighter		= 3;	//出战英雄ID
+   optional int32		helperpos	= 4;	//助阵位置
+} 

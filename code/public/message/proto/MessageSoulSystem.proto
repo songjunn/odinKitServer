@@ -1,0 +1,10 @@
+package Message; 
+message SoulSystem								//装备系统	
+{
+   optional int32			command 			= 1;	//指令
+   optional int64			hunjingidone			= 2;	//魂晶ID 1
+   optional int64			hunjingidtwo			= 3;	//魂晶id 2
+   optional int64			newitemid			= 4;	//新生成的ItemId
+   optional int32			gradelevel			= 5;	//提升等级
+   optional int32			flag				= 6;	//0失败     1成功
+} 

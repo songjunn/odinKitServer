@@ -1,0 +1,13 @@
+package Message; 
+message ItemUpGradeRequest								//装备升级请求
+{
+	message Soul
+	{
+		optional int32		templateId			= 1;	//材料模板ID
+		optional int32		nums				= 2;	//材料个数
+	}
+
+	optional int64		roleid					= 1;	//英雄或主角ID
+	optional int64		itemId 					= 2;	//装备实体ID
+	repeated Soul		seconds					= 3; 
+} 

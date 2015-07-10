@@ -1,0 +1,6 @@
+package Message; 
+message LoginSession 								//Õ¨≤Ω’À∫≈µ«¬º√‹‘ø
+{ 
+   optional int64     uid 		= 1;  //’À∫≈ID
+   optional int64	    key 		= 2;  //√‹‘ø
+} 

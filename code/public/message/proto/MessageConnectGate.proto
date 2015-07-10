@@ -1,0 +1,9 @@
+package Message; 
+message ConnectGate 								//通知客户端连接网关
+{ 
+   optional int64     uid 		= 1;  //账号ID
+   optional int64	    key 		= 2;  //密钥
+   optional string    ip	 		= 3;  //ip
+   optional int32	    port 		= 4;  //端口
+   optional int32	    server	= 5;  //选择的区服号
+} 

@@ -1,0 +1,6 @@
+package Message; 
+message FormatInfoNotify						//阵型信息加载
+{
+   optional int32		format 		= 1;	//阵型模板ID
+   optional int32		level 		= 2;	//已升级的阵型等级
+} 

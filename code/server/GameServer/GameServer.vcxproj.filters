@@ -1,0 +1,1857 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="message">
+      <UniqueIdentifier>{901c533f-e1ff-4efe-b2e8-4976bccc79e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="template">
+      <UniqueIdentifier>{ae05b233-668c-49f9-9f1d-07d2e3600da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager">
+      <UniqueIdentifier>{3916a3b6-206f-4de7-baed-c80b977dfc28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj">
+      <UniqueIdentifier>{8d79f684-a842-4736-8e3d-d88882447a07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="module">
+      <UniqueIdentifier>{e462778e-6c6b-426f-8732-f6ef43b47a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{b362609b-c438-498e-b097-059a8de4d1f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unit">
+      <UniqueIdentifier>{06b6c083-6912-4e12-a244-6a8c5b8a3160}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Numerical.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MesagePlayerCitySync.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaChallenge.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaChallengeKnight.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaChangeOpp.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaKnightAppear.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaPlayerData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaPlayerDataRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaRefresh.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaReward.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageArenaSyncData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageAttackMonsterRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleAttackRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleBuyActionRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleBuyTimeRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleDefendRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleDialyRewardGetRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleDoubleWinRankingRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleDoubleWinRankingResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleInitNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleJoinerNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleJoinRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleMoveRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleRankingRewardGetRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleSingleRewardDoubleRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleSingleRewardGetRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleSingleRewardNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleWinnerNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleWinnerRewardGetRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleWpinfoRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBattleWpinfoResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossAttackRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossAttackResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossCooldownRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossCooldownResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossInfoNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossInspireRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossInspireResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossJoinRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageChargeActivityRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageChargeActivityRespond.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageChat.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCheckNameRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCheckNameResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCityHelperNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCityHelperRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCityHelperSelectRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCityParamsSync.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCityPrizzeRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageClientLogin.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCombatAward.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCombatReport.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCombatResult.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCombatStart.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageConnectGate.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageCreatePlayer.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageDebugRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageDeletePlayer.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageErrorNo.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageEventSync.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageExpandBagRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFightAward.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFormatDebutNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFormatDebutRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFormatInfoNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFormatUpRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFormatUpResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFriend.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFriends.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFriendsDataRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFriendsDataResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFriendsSync.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageFriendsSyncToData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageGuestCheck.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroAttrI64Notify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroAttrIntNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroGainNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroInheritRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroInheritResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroLeaveRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroProgressRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroQualityRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroRecallRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageHeroRecruitRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageIntensifyCrystalRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageIntensifyCrystalResponseFlag.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageIntensifyJadeRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageIntensifyJadeResponseFlag.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageIntensifyMithrilRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemDeleteResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemEquipRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemEquipResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemGainResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemInlayCrystalRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemInlayCrystalResponseFlag.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemInlayJadeRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemIntensifyRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemIntensifyResponseFlag.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemQuickIntense.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemSellRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemSlottingRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemSyncAttribI64.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemSyncAttribInt.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemSystem.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemUnequipRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemUnequipResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemUpGradeRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemUpgradeResponseFlag.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageItemUseRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageLoadWorldData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageLoginActivityNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageLoginActivityRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageLoginActivityRespond.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageLoginSession.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageNetControl.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageNetTestRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageNetTestResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageNotifySignInUnit.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageObservePlayerRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageOrderRank.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageOrderRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageOrderSyncData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerAttrib.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerAttribI64.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerAttribInt.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerAttribName.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerBuyActionRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerCount.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerDataResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerLoadOver.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerLogin.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePlayerLogout.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRecastCrystalRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRecastCrystalResponseFlag.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageReqPlayerData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageReSetChallengeCount.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRewardDirectNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRewardNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRewardRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSignCompRespond.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSignExchangeRespond.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSignInSys.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSkillReset.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSkillSelect.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSkillSpec.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSoulSystem.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStarsActive.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStarsInfo.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStarsInlay.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStarsUnlay.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStarsUplevel.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStoreSystemBuyRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStoreSystemLoadRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageStoreSystemLoadResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSyncBuffer.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSyncGateLoad.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskAddNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskDelNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskFinishRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskFinishResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskResetRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskResetResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskSync.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTaskSyncToData.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTrainDoRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTrainDoResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTrainSaveRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTrainSaveResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageTrainUnSaveRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUnloadSoulRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserCheck.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserDisplace.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserHeartRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserHeartResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserKickout.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserLogin.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUserLogout.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageWipeAward.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageWorshiping.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ActivityParamMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ArenaMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BattleMonsterTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BattleRewardTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BattlewpTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BossInspireTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BossLevelTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BuffTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ChatMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ExpTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FriendsTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HeroQuality.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemBoxTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemQuality.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KnightStateTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LevelUpMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LevelUpTaskTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LoginActivityMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MonsterTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NameText.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NumericalMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RechargeTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RecruitTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RoleTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SignInMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SkillMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SkillTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SoulsCrystal.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StarsTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StoreSystem.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TeamFormatMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VipTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WorshipMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HeroMgr.h">
+      <Filter>manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemMgr.h">
+      <Filter>manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PlayerMgr.h">
+      <Filter>manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UserMgr.h">
+      <Filter>manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ArenaData.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CombatReport.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fighter.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hero.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IBaseObj.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Monster.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OrderArena.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PKTeam.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Player.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Role.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\User.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ArenaModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BattleModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BossModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ChatModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CombatModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DebugModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LoginModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NoticeModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OrderModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RechargeModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TestModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TimerModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LuaFuncDefine.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ArenaUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CityUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EventUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FriendsUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HeroUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IntensifyItemUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LoginActivityUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RewardUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SignInUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SkillUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StoreItemUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TeamUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TrainUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WorshipUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ExpeditionActivityMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ExpeditionUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageNotifyExpeditionHero.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageNotifyExpeditionInfo.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageExpeditionRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageExpeditionAward.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageZoneAwardRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageZoneInfoSync.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ZoneTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ZoneBoxTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageExpeditionAutoAward.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSwitchPosRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RandHeroMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\error.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\gamedef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\commdata.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\eventdef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\ObjMgr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRandHeroRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageRandHeroResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageIntensifyItemAll.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageInlayAll.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageInlayAllResponse.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageUnloadAllSoul.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PaymentVerifyModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PaymentMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PaymentTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessagePayment.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\QueenTeaseUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageQueenTease.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FormatLevelMgr.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossRewardKill.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageBossRewardRanking.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CarnageUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSyncCarnage.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GiftBagTemplate.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DayChargeUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageDayChargeNotify.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageDayChargeRequest.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\message\source\MessageSWChargeChecker.pb.h">
+      <Filter>message</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\public\message\source\MesagePlayerCitySync.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaChallenge.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaChallengeKnight.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaChangeOpp.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaKnightAppear.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaPlayerData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaPlayerDataRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaRefresh.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaReward.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageArenaSyncData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageAttackMonsterRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleAttackRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleBuyActionRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleBuyTimeRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleDefendRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleDialyRewardGetRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleDoubleWinRankingRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleDoubleWinRankingResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleInitNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleJoinerNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleJoinRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleMoveRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleRankingRewardGetRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleSingleRewardDoubleRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleSingleRewardGetRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleSingleRewardNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleWinnerNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleWinnerRewardGetRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleWpinfoRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBattleWpinfoResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossAttackRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossAttackResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossCooldownRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossCooldownResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossInfoNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossInspireRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossInspireResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossJoinRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageChargeActivityRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageChargeActivityRespond.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageChat.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCheckNameRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCheckNameResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCityHelperNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCityHelperRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCityHelperSelectRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCityParamsSync.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCityPrizzeRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageClientLogin.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCombatAward.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCombatReport.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCombatResult.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCombatStart.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageConnectGate.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageCreatePlayer.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageDebugRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageDeletePlayer.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageErrorNo.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageEventSync.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageExpandBagRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFightAward.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFormatDebutNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFormatDebutRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFormatInfoNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFormatUpRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFormatUpResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFriend.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFriends.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFriendsDataRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFriendsDataResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFriendsSync.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageFriendsSyncToData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageGuestCheck.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroAttrI64Notify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroAttrIntNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroGainNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroInheritRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroInheritResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroLeaveRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroProgressRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroQualityRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroRecallRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageHeroRecruitRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageIntensifyCrystalRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageIntensifyCrystalResponseFlag.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageIntensifyJadeRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageIntensifyJadeResponseFlag.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageIntensifyMithrilRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemDeleteResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemEquipRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemEquipResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemGainResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemInlayCrystalRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemInlayCrystalResponseFlag.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemInlayJadeRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemIntensifyRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemIntensifyResponseFlag.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemQuickIntense.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemSellRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemSlottingRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemSyncAttribI64.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemSyncAttribInt.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemSystem.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemUnequipRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemUnequipResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemUpGradeRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemUpgradeResponseFlag.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageItemUseRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageLoadWorldData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageLoginActivityNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageLoginActivityRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageLoginActivityRespond.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageLoginSession.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageNetControl.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageNetTestRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageNetTestResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageNotifySignInUnit.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageObservePlayerRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageOrderRank.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageOrderRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageOrderSyncData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerAttrib.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerAttribI64.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerAttribInt.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerAttribName.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerBuyActionRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerCount.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerDataResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerLoadOver.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerLogin.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePlayerLogout.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRecastCrystalRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRecastCrystalResponseFlag.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRegistServer.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageReqPlayerData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageReSetChallengeCount.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRewardDirectNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRewardNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRewardRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSignCompRespond.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSignExchangeRespond.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSignInSys.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSkillReset.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSkillSelect.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSkillSpec.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSoulSystem.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStarsActive.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStarsInfo.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStarsInlay.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStarsUnlay.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStarsUplevel.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStoreSystemBuyRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStoreSystemLoadRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageStoreSystemLoadResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSyncBuffer.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSyncGateLoad.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskAddNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskDelNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskFinishRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskFinishResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskResetRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskResetResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskSync.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTaskSyncToData.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTrainDoRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTrainDoResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTrainSaveRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTrainSaveResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageTrainUnSaveRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUnloadSoulRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserCheck.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserDisplace.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserHeartRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserHeartResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserKickout.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserLogin.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUserLogout.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageWipeAward.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageWorshiping.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ActivityParamMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ArenaMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BattleMonsterTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BattleRewardTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BattlewpTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BossInspireTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BossLevelTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BuffTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChatMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ExpTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FriendsTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\HeroQuality.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ItemBoxTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ItemQuality.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ItemTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\KnightStateTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelUpMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LoginActivityMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MonsterTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NameText.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NumericalMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RechargeTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RecruitTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RoleTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SceneTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SignInMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SkillMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SoulsCrystal.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StarsTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StoreSystem.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TaskMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TeamFormatMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\VipTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WorshipMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PlayerMgr.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ArenaData.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CombatReport.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Fighter.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Hero.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\IBaseObj.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Item.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Monster.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\OrderArena.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PKTeam.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Player.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Role.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ArenaModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BattleModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BossModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChatModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CombatModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DebugModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LoginModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NoticeModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\OrderModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RechargeModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TaskModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TestModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TimerModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LuaCampaign.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LuaCombat.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LuaCommon.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LuaRole.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ArenaUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CityUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EventUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FriendsUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\HeroUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\IntensifyItemUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ItemUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LoginActivityUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RewardUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SignInUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SkillUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StoreItemUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TaskUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TeamUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TrainUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WorshipUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Event.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Numerical.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ExpeditionActivityMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ExpeditionUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageNotifyExpeditionHero.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageNotifyExpeditionInfo.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageExpeditionRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageExpeditionAward.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageZoneAwardRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageZoneInfoSync.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ZoneBoxTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ZoneTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageExpeditionAutoAward.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSwitchPosRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RandHeroMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRandHeroRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageRandHeroResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageIntensifyItemAll.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageInlayAll.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageInlayAllResponse.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageUnloadAllSoul.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PaymentVerifyModule.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PaymentMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessagePayment.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueenTeaseUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageQueenTease.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FormatLevelMgr.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossRewardKill.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageBossRewardRanking.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CarnageUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSyncCarnage.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GiftBagTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DayChargeUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageDayChargeNotify.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageDayChargeRequest.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\public\message\source\MessageSWChargeChecker.pb.cc">
+      <Filter>message</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

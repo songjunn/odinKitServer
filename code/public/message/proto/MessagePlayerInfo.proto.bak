@@ -1,0 +1,34 @@
+package Message; 
+message PlayerInfo
+{ 
+		optional int64  	playerid 		= 1;
+		optional int64		userid			= 2;
+		optional string		name				= 3;
+		optional int32		template		= 4;
+		optional int32		level				= 5;
+		optional int32		goldcoin		= 6;
+		optional int32		silvercoin	= 7;
+		optional int32		credit			= 8;
+		optional int64		exp					= 9;
+		optional int64		logintime		= 10;
+		optional int64		logouttime	= 11;
+		optional int32		stamina			= 12;
+		optional int32		trainstrength		= 13;
+		optional int32		trainintellect	= 14;
+		optional int32		traintechnique	= 15;
+		optional int32		trainagility		= 16;
+		optional int32		stuntskill			= 17;
+		optional int32		knightstate			= 18;
+		optional int32		knightstateexp	= 19;
+		optional int32		merit						= 20;
+		optional int32		worshipcount		= 21;
+		optional int32		freecount				= 22;
+		optional int32		stategreen			= 23;
+		optional int32		stateblue				= 24;
+		optional int32		statepurple			= 25;
+		optional int32		stateorange			= 26;
+		optional int32		bagmaxcapacity	= 27;
+		optional int32		quality					= 28;
+		optional int32		qualitypro			= 29;
+		repeated int64		debutinfo				= 30;
+} 

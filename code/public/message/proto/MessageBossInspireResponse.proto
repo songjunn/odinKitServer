@@ -1,0 +1,5 @@
+package Message; 
+message BossInspireResponse					//¹ÄÎèÏìÓ¦
+{ 
+   optional bool    result 		= 1;  //½á¹û
+} 

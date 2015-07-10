@@ -1,0 +1,5 @@
+package Message; 
+message BossAttackRequest						//ÇëÇó¹¥»÷boss
+{ 
+   optional int64     pid 		= 1;  //½ÇÉ«ID
+} 

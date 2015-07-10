@@ -1,0 +1,20 @@
+package Message; 
+message CombatStart									//通知战斗开始
+{
+   message Fighter
+   {
+   		optional int32	type		= 1;	//role类型
+      optional int32	id 			= 2;	//模板id
+      optional string	name		= 3;	//名字
+      optional int32	hp			= 4;	//当前血值
+      optional int32	level		= 5;	//等级
+      optional int32	pos			= 6;	//位置
+      optional int32	stunt		= 7;	//绝技
+      optional int32	hotohori	= 8;	//星宿属性：1-日 2-月 3-星
+      optional int32	hpmax   = 9;  //最大血值
+	  optional int32	quality = 10;
+   }
+   
+   repeated Fighter		fighter	= 1;	//参战成员
+   optional int32		ermyformatlevel = 2;//对手阵型等级
+} 

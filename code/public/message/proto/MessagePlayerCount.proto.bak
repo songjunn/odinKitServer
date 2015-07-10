@@ -1,0 +1,6 @@
+package Message; 
+message PlayerCount									//同步角色数量
+{ 
+   optional int64     uid 		= 1;  //账号ID 
+   repeated int64			player		= 2;	//角色数量
+} 

@@ -1,0 +1,7 @@
+package Message; 
+message SkillReset								//请求重置特性
+{
+   optional int64		role 		= 1;	//主角或英雄ID
+   optional int32		skill		= 2;	//技能ID
+   optional int32		type		= 3;	//重置方式
+} 

@@ -1,0 +1,6 @@
+package Message;
+
+message MessageInlayAllResponse
+{
+	optional int32 result		= 1;
+};

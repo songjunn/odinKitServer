@@ -1,0 +1,15 @@
+import "MessageArenaPlayerData.proto";
+package Message;
+
+/*G2P_RESPONSE_ARENA_STAGE_DATA = 1500,	// response arena stage data*/
+message ArenaPlayerResponse
+{
+	repeated ArenaPlayer player = 1;
+	optional int32 result		= 2;
+};
+
+/*P2G_REQUEST_ARENA_STAGE_DATA = 31300,	// request arena stage data*/
+message ArenaPlayerRequest
+{
+	optional int32 request = 1;
+};

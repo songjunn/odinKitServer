@@ -1,0 +1,6 @@
+package Message; 
+message SkillSelect								//请求选在绝技
+{
+   optional int64		role 		= 1;	//主角或英雄ID
+   optional int32		skill		= 2;	//技能ID
+} 

@@ -1,0 +1,9 @@
+package Message; 
+message SyncObjField									//Õ¨≤ΩGameObj Ù–‘
+{
+    optional int64			id				= 1;	//identify
+    optional string 		type			= 2;	//obj type
+    optional string			key				= 3;	//field key
+    optional string			mapkey		= 4;	//field map identify
+    optional string			jsonstr		= 5;	//field json string
+} 

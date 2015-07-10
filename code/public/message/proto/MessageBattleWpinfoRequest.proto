@@ -1,0 +1,5 @@
+package Message; 
+message BattleWpinfoRequest						//请求国战信息
+{ 
+   optional int64     pid 		= 1;  //角色ID
+} 

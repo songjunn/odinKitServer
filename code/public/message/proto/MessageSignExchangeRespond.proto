@@ -1,0 +1,16 @@
+package Message;
+message SignExchgRespond					// 签到物品兑换
+{
+     message ItemExchg
+     {
+	optional int32	tempid		= 1;			// 模板Id
+	optional int32	badage		= 2;			// 所需徽章数
+	optional int32	knistate	= 3;			// 骑士位阶要求
+	optional bool	bexchg		= 4;			// 今日是否被兑换过
+     }
+
+     optional int32	freecount	= 1;			// 免费刷新次数
+     optional int32	flushcount	= 2;			// 已刷新次数
+     repeated ItemExchg itemexchg	= 3;			// 道具
+     optional int32	flushcost	= 4;			// 刷新一次消耗金币
+}

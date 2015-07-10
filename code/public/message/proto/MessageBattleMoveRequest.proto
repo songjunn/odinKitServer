@@ -1,0 +1,5 @@
+package Message; 
+message BattleMoveRequest						//国战请求移动
+{ 
+   optional int32			wpid		= 1;	//路点编号
+} 

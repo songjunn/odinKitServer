@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 2.6)
+project(SERVERCORE)
+
+#MESSAGE
+message(STATUS "This is SOURCE dir " ${SERVERCORE_SOURCE_DIR})
+
+include(${SERVERCORE_SOURCE_DIR}/../../odin.cmake)
+
+ODIN_BUILD_OPTION()
+ODIN_BUILD()
+ODIN_COMMON_INCLUDE(${SERVERCORE_SOURCE_DIR})
+ODIN_INSTALL_PATH(${SERVERCORE_SOURCE_DIR})
+ODIN_LIBRARY_PATH(${SERVERCORE_SOURCE_DIR})
+
+#SOURCE
+aux_source_directory(${SERVERCORE_SOURCE_DIR}/../source SERVERCORE_SRC)
+
+#LIBRARY
+add_library(servercore STATIC ${SERVERCORE_SRC})
+
+#LINK LIBRARIES
+#target_link_libraries(servercore message)
+

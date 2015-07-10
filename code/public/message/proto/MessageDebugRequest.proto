@@ -1,0 +1,8 @@
+package Message;
+
+message DebugRequest
+{
+	repeated	string	strings = 1;
+	optional	int64	pid = 2;
+}
+

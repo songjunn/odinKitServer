@@ -1,0 +1,15 @@
+package Message;
+
+message ArenaPlayer
+{
+	optional int64	pid 	= 1;
+	optional string name 	= 2;
+	optional int32 fighter 	= 3;
+	optional int32 state 	= 4;
+	optional int32 stage 	= 5;
+	optional int32 tempid 	= 6;
+	optional int32 level 	= 7;
+	optional int32 rank 	= 8;
+	optional int32 score	= 9;
+	optional int32 isreward	= 10;
+}

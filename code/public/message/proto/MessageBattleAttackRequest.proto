@@ -1,0 +1,5 @@
+package Message; 
+message BattleAttackRequest					//国战请求攻击
+{ 
+   optional int32			wpid		= 1;	//路点编号
+} 

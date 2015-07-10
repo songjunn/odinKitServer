@@ -1,0 +1,6 @@
+package Message; 
+message ItemUnequipRequest							//请求卸装
+{
+   optional int32		position			= 1;	//装备位置
+   optional int64		roleid				= 2;	//英雄id
+} 

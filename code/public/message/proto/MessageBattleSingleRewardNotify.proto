@@ -1,0 +1,13 @@
+package Message; 
+message BattleSingleRewardNotify				//单场战斗奖励
+{ 
+	optional	int32  	rewardexp 		= 1;  //经验奖励
+	optional	int32  	rewardstateexp= 2;  //骑士经验奖励
+	optional	int32  	rewardsilver	= 3;  //游戏币奖励
+	optional	int32  	rewardmerit		= 4;  //战功奖励
+	optional	int32  	quatily				= 5;  //奖励品质
+	optional	int32  	times					= 6;  //剩余翻倍次数
+	optional	int32  	cost					= 7;  //消耗游戏币
+	optional	int32  	rate					= 8;  //翻倍成功率
+	optional	bool		success			= 9;	//是否翻倍成功
+} 

@@ -1,0 +1,5 @@
+package Message; 
+message BossCooldownResponse				//清除战斗冷却时间响应
+{ 
+   optional bool    result 		= 1;  //结果
+} 

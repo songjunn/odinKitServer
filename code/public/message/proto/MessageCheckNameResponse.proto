@@ -1,0 +1,7 @@
+package Message; 
+message CheckNameResponse						//验证重名
+{
+   optional int64     uid 		= 1;  //账号ID
+   optional int64     pid 		= 2;  //角色ID
+   optional bool	    result	= 3;  //验证结果
+} 

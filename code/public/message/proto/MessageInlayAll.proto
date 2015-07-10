@@ -1,0 +1,14 @@
+package Message;
+
+message MessageInlayEntity
+{
+	optional int64	itemId 	= 1;
+	optional int64  soulId 	= 2;
+	optional int32  holeIndex 	= 3;
+}
+
+message MessageInlayAllRequest
+{
+	optional int64 roleId = 1;
+	repeated MessageInlayEntity values 		= 2;
+};

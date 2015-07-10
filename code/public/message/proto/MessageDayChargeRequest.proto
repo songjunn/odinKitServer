@@ -1,0 +1,5 @@
+package Message; 
+message DayChargeRequest			  //每天充值请求
+{ 
+	optional int32	reqtype = 1;	  //1-领取奖励		2-重置礼包
+} 

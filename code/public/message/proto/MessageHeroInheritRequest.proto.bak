@@ -1,0 +1,6 @@
+package Message; 
+message HeroInheritRequest						//请求继承英雄
+{
+   optional int64		srchero 			= 1;	//英雄实体ID
+   optional int64		deshero 			= 2;	//英雄实体ID
+} 

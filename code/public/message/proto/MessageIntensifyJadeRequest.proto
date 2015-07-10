@@ -1,0 +1,12 @@
+package Message; 
+message IntensifyJadeRequest								//魂玉强化请求
+{
+	message Soul
+	{
+		optional int64		materialid		= 1;	//魂玉材料ID
+	}
+
+	optional int64		roleid					= 1;	//英雄或主角ID
+	optional int64		itemid					= 2;	//魂玉实体ID
+	repeated Soul		seconds					= 3; 
+} 

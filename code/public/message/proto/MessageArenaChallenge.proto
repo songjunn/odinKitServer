@@ -1,0 +1,28 @@
+package Message ;
+
+/*P2G_REQUEST_ARENA_CHALLENGE	 = 31302,	// request challenge */
+message ArenaChallengeRequest
+{
+	optional int64 pid = 1;
+};
+
+/* G2P_RESPONSE_ARENA_CHALLENGE_ = 1505, //  response challenge  */
+message ArenaChallengeResponse
+{
+	optional int64 pid = 1;
+	optional int32 state = 2;
+	optional int32 result = 3;
+};
+
+/*P2G_REQUEST_ARENA_ADD_CHALLENGE = 31304, // request add challenge times*/
+message ArenaAddChallengeRequest
+{
+	optional int32 num = 1;
+};
+
+/*G2P_RESPONSE_ARENA_ADD_CHALLENGE = 1503, // response add challenge times*/
+message ArenaAddChallengeResponse
+{
+	optional int32 cur_num = 1;
+	optional int32 result = 2;
+};

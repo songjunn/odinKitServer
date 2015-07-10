@@ -1,0 +1,6 @@
+package Message; 
+message WorldDataRequest 							//请求加载游戏世界初始数据
+{ 
+   optional int32     world			= 1;  //区号
+   optional int32     server		= 2;  //服号
+} 

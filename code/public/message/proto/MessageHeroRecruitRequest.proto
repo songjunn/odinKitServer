@@ -1,0 +1,5 @@
+package Message; 
+message HeroRecruitRequest						//ÇëÇóÕĞÄ¼Ó¢ĞÛ
+{
+   optional int32		hero 				= 1;	//Ó¢ĞÛÄ£°åID
+} 

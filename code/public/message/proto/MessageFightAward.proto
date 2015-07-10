@@ -1,0 +1,8 @@
+package Message; 
+message FightAward						//绝杀模式奖励
+{
+	optional int32 silver		= 1;	//获得的银币
+	optional int32 exp			= 2;	//获得的经验
+	optional int32 totalsilver  = 3;	//整场战斗银币和
+	optional int32 totalexp		= 4;	//整场战斗经验和
+}

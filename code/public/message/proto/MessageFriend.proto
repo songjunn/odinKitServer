@@ -1,0 +1,10 @@
+package Message;
+
+message Friend
+{
+	optional int64	pid			= 1;
+	optional string name		= 2;
+	optional int32	level		= 3;
+	optional int32	templateid	= 4;
+	optional int32 fighter		= 5;
+};

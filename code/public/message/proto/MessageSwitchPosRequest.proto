@@ -1,0 +1,6 @@
+package Message; 
+message SwitchPosRequest			//调整英雄出战顺序
+{ 	
+	repeated int64 heroid		= 1;
+	repeated int32 curpos		= 2;
+} 

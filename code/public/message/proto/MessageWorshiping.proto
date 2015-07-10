@@ -1,0 +1,6 @@
+package Message;
+message DoWorshiping		// ¼ÀÉñ
+{
+    optional int32 opttype = 1;	        // 0:init  1:do  2:get	3:light orange directly
+    optional int32 group = 2;		// if opttype == 1, 0:ÂÌ 1:À¶ 2:×Ï 3:³È
+}
