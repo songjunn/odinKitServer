@@ -57,6 +57,9 @@
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc">
       <Filter>message</Filter>
     </ClCompile>
+    <ClCompile Include="source\Plugin_HttpServe.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CommandMgr.h">
@@ -103,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h">
       <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PluginHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plugin_HttpServe.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

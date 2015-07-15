@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoginServer", "LoginServer\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BIServer", "BIServer\BIServer.vcxproj", "{B53681FF-B65A-4376-9647-1D42FB43E29C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PaymentServer", "PaymentServer\PaymentServer.vcxproj", "{9EA6C758-EEA2-4D0A-B7DA-04705C87EDE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -80,6 +82,12 @@ Global
 		{B53681FF-B65A-4376-9647-1D42FB43E29C}.Release|Win32.ActiveCfg = Release|Win32
 		{B53681FF-B65A-4376-9647-1D42FB43E29C}.Release|Win32.Build.0 = Release|Win32
 		{B53681FF-B65A-4376-9647-1D42FB43E29C}.Release|x64.ActiveCfg = Release|Win32
+		{9EA6C758-EEA2-4D0A-B7DA-04705C87EDE6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9EA6C758-EEA2-4D0A-B7DA-04705C87EDE6}.Debug|Win32.Build.0 = Debug|Win32
+		{9EA6C758-EEA2-4D0A-B7DA-04705C87EDE6}.Debug|x64.ActiveCfg = Debug|Win32
+		{9EA6C758-EEA2-4D0A-B7DA-04705C87EDE6}.Release|Win32.ActiveCfg = Release|Win32
+		{9EA6C758-EEA2-4D0A-B7DA-04705C87EDE6}.Release|Win32.Build.0 = Release|Win32
+		{9EA6C758-EEA2-4D0A-B7DA-04705C87EDE6}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
