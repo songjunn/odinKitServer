@@ -5,8 +5,8 @@ class CPluginHandler;
 class CPlugin
 {
 public:
-	CPlugin();
-	virtual ~CPlugin();
+	CPlugin() {}
+	virtual ~CPlugin() {}
 
 	virtual bool startup() { return false; }
 	virtual bool shutdown() { return false; }

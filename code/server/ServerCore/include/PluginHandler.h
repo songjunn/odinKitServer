@@ -11,8 +11,6 @@ public:
 
 	virtual void handle() {}
 
-	//plugin httpserve handler
-	virtual int httpserve_ev_handler(struct mg_connection *conn, enum mg_event ev) {}
 };
 
 #endif //_PLUGINHANDLER_H_

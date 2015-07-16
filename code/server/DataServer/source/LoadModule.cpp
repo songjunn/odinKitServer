@@ -73,12 +73,11 @@ bool CLoadModule::_handlePacket_LoadWorldData(PACKET_COMMAND* pack)
 
 	mongo::Query query;
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	MainServer.GetMongoDBClient()->Select(cursor, "player", query.sort(BSON("playerid" << -1)));
+	GETMONGODB->select(cursor, "player", query.sort(BSON("playerid" << -1)));
 
 	PersonID playerid = INVALID_VALUE;
-	if( cursor.get() && cursor->more() )
-	{
-		playerid = MainServer.GetMongoDBClient()->GetFieldI64(cursor->next(), "playerid");
+	if (cursor.get() && cursor->more()) {
+		GETMONGODB->getBsonFieldI64(cursor->next(), "playerid", playerid);
 	}
 
 	Message::WorldDataResponse msgData;
@@ -160,14 +159,18 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 
 	mongo::Query query = QUERY(msg.key()<<(int64)msg.uid());
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	MainServer.GetMongoDBClient()->Select(cursor, msg.type(), query);
+	GETMONGODB->select(cursor, msg.type(), query);
 
 	std::string idstr = msg.type() + "id";
 	std::vector<int64> objs;
-	while( cursor.get() && cursor->more() )
+	while (cursor.get() && cursor->more())
 	{
-	    mongo::BSONObj p = cursor->next();
-		objs.push_back(MainServer.GetMongoDBClient()->GetFieldI64(p, idstr));
+		mongo::BSONObj p = cursor->next();
+
+		PersonID playerid = INVALID_VALUE;
+		if (GETMONGODB->getBsonFieldI64(p, idstr, playerid)) {
+			objs.push_back(playerid);
+		}
 	}
 
 	Message::PlayerCount msgCnt;

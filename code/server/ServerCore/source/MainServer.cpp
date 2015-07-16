@@ -7,7 +7,6 @@
 #ifdef __linux__
 #include "udsvr.h"
 #include "SignalHandler.h"
-#include "mongo_interface.h"
 #endif
 
 void SignalThread(void *param)
@@ -53,8 +52,6 @@ CMainServer::CMainServer()
 {
 	m_pServerNet = NULL;
 	m_pClientNet = NULL;
-	m_mongoClient = NULL;
-	//m_mysqlClient = NULL;
 	m_ServerState = EStateRunning;
 }
 
@@ -62,8 +59,6 @@ CMainServer::~CMainServer()
 {
   SAFE_DELETE(m_pServerNet);
   SAFE_DELETE(m_pClientNet);
-  SAFE_DELETE(m_mongoClient);
-  //SAFE_DELETE(m_mysqlClient);
 }
 
 bool CMainServer::Startup(const char* title)
@@ -141,55 +136,22 @@ void CMainServer::MsgLogic()
 	}
 }
 
+CPlugin* CMainServer::createPlugin(int plugin)
+{
+	switch (plugin) {
+		case Plugin_NetUV:		m_plugins[Plugin_NetUV]; break;
+		case Plugin_Mongodb:	m_plugins[Plugin_Mongodb] = NEW CMongoDB; break;
+		case Plugin_HttpServe:	m_plugins[Plugin_HttpServe] = NEW CHttpServe; break;
+		default: return NULL;
+	}
+	return m_plugins[plugin];
+}
+
 PACKET_COMMAND*	 CMainServer::GetHeadPacket()
 {
 	VPROF("GetHeadPacket");
 
 	return m_PacketList.Pop();
-}
-
-/*bool CMainServer::StartupMysqlDBClient(const char* dbname, const char* dbip, const char* usr, const char* pwd, bool updataProcess, bool selectProcess, int objcnt)
-{
-	if( m_mysqlClient )
-		return false;
-  
-	m_mysqlClient = NEW CDBCache;
-	if( !m_mysqlClient )
-		return false;
-
-	return m_mysqlClient->ConnectDB(dbname, dbip, usr, pwd, updataProcess, selectProcess, objcnt);
-}
-
-void CMainServer::ShutdownMysqlDBClient()
-{
-
-}*/
-
-bool CMainServer::StartupMongoDBClient(std::string host, std::string port, std::string dbname)
-{
-#ifdef __linux__
-	if( m_mongoClient )
-		return false;
-  
-	m_mongoClient = NEW CMongoClient;
-	if( !m_mongoClient )
-		return false;
-
-	if( !m_mongoClient->Connect(host, port, dbname) )
-    {
-		SAFE_DELETE(m_mongoClient);
-		return false;
-	}
-#endif
-	return true;
-}
-
-void CMainServer::ShutdownMongoDBClient()
-{
-#ifdef __linux__
-	if( m_mongoClient )
-		m_mongoClient->Shutdown();
-#endif
 }
 
 bool CMainServer::StartupServerNet(/*int port,*/ int connectmax, int sendbuffsize, int recvbuffsize, int packsize)

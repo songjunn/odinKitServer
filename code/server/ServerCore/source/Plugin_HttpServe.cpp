@@ -1,4 +1,4 @@
-#include "Plugin_HttpServe.h"
+#include "plugin_HttpServe.h"
 #include <stdlib.h>
 #include <malloc.h>
 #include "ThreadLib.h"
@@ -11,13 +11,13 @@ CHttpServe::~CHttpServe()
 {
 }
 
-bool CHttpServe::startup(int port, int threadnum)
+bool CHttpServe::startup(int port, mg_handler_t handler, int threadnum)
 {
 	char cport[16] = { 0 };
 	sprintf(cport, "%d", port);
 
 	for (int i = 0; i < threadnum; ++i) {
-		struct mg_server *server = mg_create_server(NULL, m_handler->httpserve_ev_handler);
+		struct mg_server *server = mg_create_server(NULL, handler);
 		mg_set_option(server, "listening_port", cport);
 
 		ThreadLib::Create(_httpServeThread, server);

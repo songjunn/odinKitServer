@@ -7,6 +7,8 @@
 #include "NetServer.h"
 #include "DBCache.h"
 #include "utldoublequeue.h"
+#include "plugin_Mongodb.h"
+#include "plugin_HttpServe.h"
 
 
 enum EServerState
@@ -18,11 +20,22 @@ enum EServerState
 	EStateReloadData
 };
 
+#define GETMONGODB	((CMongoDB *)MainServer.getPlugin(CMainServer::Plugin_Mongodb))
+
 struct CServerObj;
-class CDBCache;
-class CMongoClient;
+class CPlugin;
 class CMainServer : public Singleton< CMainServer >
 {
+public:
+	//≤Âº˛÷÷¿‡
+	enum Plugin_Type {
+		Plugin_NetUV = 0,
+		Plugin_Mongodb,
+		Plugin_HttpServe,
+
+		Plugin_End,
+	};
+
 public:
 	CMainServer();
 	~CMainServer();
@@ -30,14 +43,11 @@ public:
 	bool	Startup(const char* title);
 	void	Init(int world, int type, int id, int port, const char* szip, int extport=0, const char* extip=NULL, const char* udPath = NULL);
 
+	CPlugin* createPlugin(int plugin);
+	CPlugin* getPlugin(int plugin) { return m_plugins[plugin]; }
+
 	bool	StartupServerNet(/*int port,*/ int connectmax, int sendbuffsize, int recvbuffsize, int packsize);
 	bool	StartupClientNet(int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize);
-
-	bool    StartupMongoDBClient(std::string host, std::string port, std::string dbname);
-	void	ShutdownMongoDBClient();
-
-	//bool	StartupMysqlDBClient(const char* dbname, const char* dbip, const char* usr, const char* pwd, bool updataProcess, bool selectProcess, int objcnt = 1024);
-	//void	ShutdownMysqlDBClient();
 
 	bool	StartupSigThread();
 
@@ -71,9 +81,6 @@ public:
 	inline	char* ExtIP()	{return m_extIP;}
 	inline	int	World()	{return m_worldID;}
 
-	inline CMongoClient* GetMongoDBClient() {return m_mongoClient;}
-	//inline CDBCache* GetMysqlDBClient()		{return m_mysqlClient;}
-
 	void setServerState(EServerState state) { m_ServerState = state;}
 	EServerState getServerState() { return m_ServerState; }
 	void sigHandle(int sig);
@@ -92,8 +99,7 @@ private:
 	CNet*	m_pServerNet;
 	CNet*	m_pClientNet;
 
-	CMongoClient*	m_mongoClient;
-	//CDBCache*		m_mysqlClient;
+	CPlugin* m_plugins[Plugin_End];
 
 	CDoubleQueue<PACKET_COMMAND> m_PacketList;
 };

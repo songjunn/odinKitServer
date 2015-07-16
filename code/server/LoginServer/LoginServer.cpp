@@ -9,7 +9,6 @@
 #include "exception.h"
 #include "LoginNet.h"
 #include "WorldConfig.h"
-#include "mongo_interface.h"
 #ifdef __linux__
 #include <unistd.h>
 #include "CommDef.h"
@@ -150,8 +149,10 @@ bool Begin()
 	if( !ServerMgr.CreateServer(Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID, true) )
 		return false;
 
-	if( !MainServer.StartupMongoDBClient(gamedbip, gamedbport, gamedbname) ) 
+	CMongoDB* db = (CMongoDB *)MainServer.createPlugin(CMainServer::Plugin_Mongodb);
+	if (!db->startup(gamedbip, gamedbport, gamedbname)) {
 		return false;
+	}
 
 	UserMgr.LoadFactId(worldID);
 	UserMgr.SetUserTimeout( hearttimeout);
@@ -251,7 +252,7 @@ void End()
 {
 	Log.Notice("End ..");
 
-	MainServer.ShutdownMongoDBClient();	//关闭数据库线程
+	//MainServer.ShutdownMongoDBClient();	//关闭数据库线程
 	MainServer.ShutdownNet();
 	Log.Shutdown();
 

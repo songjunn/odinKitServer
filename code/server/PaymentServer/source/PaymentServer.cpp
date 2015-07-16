@@ -15,6 +15,7 @@
 #endif
 //#include "HttpServer.h"
 #include "GameWorldMgr.h"
+#include "plugin_HttpServe.h"
 
 
 createFileSingleton(CLog);
@@ -28,7 +29,7 @@ createFileSingleton(CGameWorldMgr);
 
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 
-/*static int httpserver_ev_handler(struct mg_connection *conn, enum mg_event ev) {
+static int httpserver_ev_handler(struct mg_connection *conn, enum mg_event ev) {
 	if (ev == MG_REQUEST) {
 		//mg_send_header(conn, "Content-Type", "text/plain");
 		//mg_printf_data(conn, "This is a reply from server instance # %s", (char *)conn->server_param);
@@ -47,7 +48,7 @@ CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 	else {
 		return MG_FALSE;
 	}
-}*/
+}
 
 void StatusOutput(char* output)
 {
@@ -111,9 +112,8 @@ bool Begin()
 	if (!httpServer->startup(httpport, httpserver_ev_handler, 3)) {
 		return false;
 	}*/
-	CHttpServe* httpServe = NEW CHttpServe();
-	httpServe->sethandler(NEW CHttpServeHandler());
-	if (!httpServe->startup(httpport)) {
+	CHttpServe* httpServe = (CHttpServe *)MainServer.createPlugin(CMainServer::Plugin_HttpServe);
+	if (!httpServe->startup(httpport, httpserver_ev_handler)) {
 		return false;
 	}
 

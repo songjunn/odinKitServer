@@ -57,7 +57,10 @@
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc">
       <Filter>message</Filter>
     </ClCompile>
-    <ClCompile Include="source\Plugin_HttpServe.cpp">
+    <ClCompile Include="source\plugin_HttpServe.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\plugin_Mongodb.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,13 +110,16 @@
     <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h">
       <Filter>message</Filter>
     </ClInclude>
-    <ClInclude Include="include\Plugin.h">
+    <ClInclude Include="include\plugin.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\PluginHandler.h">
+    <ClInclude Include="include\plugin_HttpServe.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\Plugin_HttpServe.h">
+    <ClInclude Include="include\pluginHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\plugin_Mongodb.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

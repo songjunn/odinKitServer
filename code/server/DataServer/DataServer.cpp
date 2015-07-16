@@ -12,7 +12,6 @@
 #include "monitor.h"
 #endif
 #include "commdata.h"
-#include "mongo_interface.h"
 #include "ServerMgr.h"
 #include "DataModule.h"
 #include "LoadModule.h"
@@ -114,8 +113,10 @@ bool Begin()
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
 	MainServer.Init(worldID, Svr_Data, myid, myport, myip, 0, NULL, mpath);
 
-	if( !MainServer.StartupMongoDBClient(gamedbip, gamedbport, gamedbname) )
-	    return false;
+	CMongoDB* db = (CMongoDB *) MainServer.createPlugin(CMainServer::Plugin_Mongodb);
+	if (!db->startup(gamedbip, gamedbport, gamedbname)) {
+		return false;
+	}
 
 	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
 		return false;
@@ -200,7 +201,6 @@ void End()
 {
 	Log.Notice("End ..");
 	DataModule.onSave();
-	MainServer.ShutdownMongoDBClient();	//关闭数据库线程
 	MainServer.ShutdownNet();
 
 	Log.Shutdown();

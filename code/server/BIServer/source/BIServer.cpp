@@ -13,7 +13,6 @@
 #include "PathFunc.h"
 #include "exception.h"
 #include "Singleton.h"
-#include "mongo_interface.h"
 #include "AnalysisModule.h"
 #ifdef __linux__
 #include <unistd.h>
@@ -111,8 +110,10 @@ bool Begin()
 
 	MainServer.SetPacketSize(packsize);
 
-	if (!MainServer.StartupMongoDBClient(eventdbip, eventdbport, eventdbname))
+	CMongoDB* db = (CMongoDB *)MainServer.createPlugin(CMainServer::Plugin_Mongodb);
+	if (!db->startup(eventdbip, eventdbport, eventdbname)) {
 		return false;
+	}
 
 	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
 		return false;
@@ -177,7 +178,7 @@ void Output()
 void End()
 {
 	Log.Notice("End ..");
-	MainServer.ShutdownMongoDBClient();	//关闭数据库线程
+	//MainServer.ShutdownMongoDBClient();	//关闭数据库线程
 	MainServer.ShutdownNet();
 	Log.Shutdown();
 

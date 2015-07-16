@@ -178,7 +178,7 @@ void CGameJsonObj::_fieldBsonToJson(rapidjson::Value& json, std::string key, mon
 	switch(bson[key].type())
 	{
 		case mongo::NumberInt:
-			if (GetBsonFieldInt(bson, key, valInt)) {
+			if (CMongoDB::getBsonFieldInt(bson, key, valInt)) {
 				if (this->_hasMember(json, key)) {
 					rapidjson::Value& member = this->getFieldVal(json, key);
 					this->_setFieldInt(member, valInt);
@@ -190,7 +190,7 @@ void CGameJsonObj::_fieldBsonToJson(rapidjson::Value& json, std::string key, mon
 			}
 			break;
 		case mongo::NumberLong:
-			if (GetBsonFieldI64(bson, key, valInt64)) {
+			if (CMongoDB::getBsonFieldI64(bson, key, valInt64)) {
 				if (this->_hasMember(json, key)) {
 					rapidjson::Value& member = this->getFieldVal(json, key);
 					this->_setFieldI64(member, valInt64);
@@ -202,7 +202,7 @@ void CGameJsonObj::_fieldBsonToJson(rapidjson::Value& json, std::string key, mon
 			}
 			break;
 		case mongo::String:
-			if (GetBsonFieldString(bson, key, valString)) {
+			if (CMongoDB::getBsonFieldString(bson, key, valString)) {
 				if (this->_hasMember(json, key)) {
 					rapidjson::Value& member = this->getFieldVal(json, key);
 					this->_setFieldStr(member, valString);
@@ -214,7 +214,7 @@ void CGameJsonObj::_fieldBsonToJson(rapidjson::Value& json, std::string key, mon
 			}
 			break;
 		case mongo::Array:
-			if (GetBsonFieldArray(bson, key, valArray)) {
+			if (CMongoDB::getBsonFieldArray(bson, key, valArray)) {
 				rapidjson::Document val(&m_members.GetAllocator());
 				val.SetArray();
 				this->_vecBsonToJson(val, valArray);
@@ -227,7 +227,7 @@ void CGameJsonObj::_fieldBsonToJson(rapidjson::Value& json, std::string key, mon
 			}
 			break;
 		case mongo::Object:
-			if (GetBsonFieldObj(bson, key, valObj)) {
+			if (CMongoDB::getBsonFieldObj(bson, key, valObj)) {
 				rapidjson::Document val(&m_members.GetAllocator());
 				val.SetObject();
 				this->_objBsonToJson(val, valObj);

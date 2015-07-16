@@ -6,7 +6,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "bson/bson.h"
-#include "mongo_interface.h"
+#include "plugin_Mongodb.h"
 
 
 #define TRAVERSE_JSONOBJ_MAP(obj, key, jsonstr, id)					\

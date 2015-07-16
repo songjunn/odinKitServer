@@ -3,7 +3,6 @@
 #include "Log.h"
 #include "Packet.h"
 #include "eventdef.h"
-#include "mongo_interface.h"
 #include "PacketDefine.h"
 #include "MessageEventSync.pb.h"
 
@@ -19,13 +18,13 @@ void CAnalysisModule::_GetPlayerCountFromDB()
 {
 	mongo::Query query = QUERY("serverID" << 0);
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	MainServer.GetMongoDBClient()->Select(cursor, "serverInfo", query);
+	GETMONGODB->select(cursor, "serverInfo", query);
 
 	Log.Debug("++++++++LogIn playerCount is %d", m_OnlinePlayer);
 	while (cursor.get() && cursor->more())
 	{
 		mongo::BSONObj p = cursor->next();
-		m_OnlinePlayer = MainServer.GetMongoDBClient()->GetFieldInt(p, "playerCount");
+		GETMONGODB->getBsonFieldInt(p, "playerCount", m_OnlinePlayer);
 	}
 	Log.Debug("__________________LogIn playerCount is %d", m_OnlinePlayer);
 	return;
@@ -128,7 +127,7 @@ void CAnalysisModule::_SaveEvent(int nEventID, int64 parent, int64 PID, const ch
 	obj.append("param6", nParam6);
 	obj.append("param7", szParam1);
 
-	MainServer.GetMongoDBClient()->Execute(Opr_Insert, "event", query, obj.obj());
+	GETMONGODB->execute(CMongoDB::Mongo_Insert, "event", query, obj.obj());
 }
 
 void CAnalysisModule::_SaveServerInfoToDB()
@@ -141,7 +140,7 @@ void CAnalysisModule::_SaveServerInfoToDB()
 	obj.append("rechargeCount", m_GoldCount);
 	obj.append("serverID", 0);
 
-	MainServer.GetMongoDBClient()->Execute(Opr_Update, "serverInfo", query, obj.obj());
+	GETMONGODB->execute(CMongoDB::Mongo_Update, "serverInfo", query, obj.obj());
 	return;
 }
 

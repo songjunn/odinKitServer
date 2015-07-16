@@ -45,7 +45,7 @@ CDataObj* CDataModule::loadDb(std::string type, std::string key, int64 id)
 {
 	mongo::Query query = QUERY(key<<id);
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	MainServer.GetMongoDBClient()->Select(cursor, type, query);
+	GETMONGODB->select(cursor, type, query);
 
 	if (cursor.get() && cursor->more()) {
 	    mongo::BSONObj p = cursor->next();
@@ -68,13 +68,16 @@ bool CDataModule::loadDb(std::string type)
 {
 	mongo::Query query;
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	MainServer.GetMongoDBClient()->Select(cursor, type, query);
+	GETMONGODB->select(cursor, type, query);
 
 	while (cursor.get() && cursor->more()) {
 	    mongo::BSONObj p = cursor->next();
 
+		int64 id;
 		std::string idstr = type + "id";
-		int64 id = MainServer.GetMongoDBClient()->GetFieldI64(p, idstr);
+		if (!GETMONGODB->getBsonFieldI64(p, idstr, id)) {
+			return false;
+		}
 
 		CDataObj* obj = create(type, id);
 		if( !obj )
@@ -94,7 +97,7 @@ void CDataModule::saveDb(CDataObj* obj, std::string key)
 	mongo::BSONObj objbson;
 	obj->toBson(objbson);
 
-	MainServer.GetMongoDBClient()->Execute(Opr_Insert, obj->m_type, query, objbson);
+	GETMONGODB->execute(CMongoDB::Mongo_Insert, obj->m_type, query, objbson);
 
 	Log.Debug("[CDataModule] saveDb: (%s, "INT64_FMT"): %s", obj->m_type.c_str(), obj->getId(), objbson.toString().c_str());
 }
@@ -105,7 +108,7 @@ void CDataModule::updateDb(CDataObj* obj, std::string key)
 	mongo::BSONObj objbson;
 	obj->toBson(objbson);
 
-	MainServer.GetMongoDBClient()->Execute(Opr_Update, obj->m_type, query, objbson);
+	GETMONGODB->execute(CMongoDB::Mongo_Update, obj->m_type, query, objbson);
 
 	Log.Debug("[CDataModule] updateDb: (%s, "INT64_FMT"): %s", obj->m_type.c_str(), obj->getId(), objbson.toString().c_str());
 }
