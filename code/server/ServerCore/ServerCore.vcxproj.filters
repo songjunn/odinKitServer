@@ -50,13 +50,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CommDef.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\MainServer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerCoreInc.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h">

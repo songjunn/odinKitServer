@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="conf">
-      <UniqueIdentifier>{14c9fdc4-26d2-4128-b948-320e765b47f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="common">
-      <UniqueIdentifier>{385fc33a-a716-40cc-872d-f1f3dc3a96fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="network">
       <UniqueIdentifier>{bbb22350-dd56-4271-9b3e-378b38521455}</UniqueIdentifier>
     </Filter>
@@ -16,349 +10,412 @@
     <Filter Include="container">
       <UniqueIdentifier>{2531e267-3712-4c04-8a88-eedc382e3d3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="encrypt">
-      <UniqueIdentifier>{bbb595cf-1a92-4728-8b22-7baae1552dc0}</UniqueIdentifier>
+    <Filter Include="util">
+      <UniqueIdentifier>{385fc33a-a716-40cc-872d-f1f3dc3a96fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="compression">
-      <UniqueIdentifier>{b24b9395-e577-44ca-9a59-4913d3978f75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="compression\zip">
-      <UniqueIdentifier>{11a718a7-22cb-4d78-a6cc-ce44c87f2821}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="log">
-      <UniqueIdentifier>{cb2f90fb-ff47-4f0b-a95b-01bd8c411e07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="monitor">
-      <UniqueIdentifier>{14355480-3227-4b8f-b144-cbe69c095a5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lua">
-      <UniqueIdentifier>{01631c11-7fc3-4d61-85c9-166ac2d832bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="exception">
-      <UniqueIdentifier>{6724e41e-ba13-41c2-b272-fb4638d44667}</UniqueIdentifier>
+    <Filter Include="config">
+      <UniqueIdentifier>{14c9fdc4-26d2-4128-b948-320e765b47f0}</UniqueIdentifier>
     </Filter>
     <Filter Include="memory">
-      <UniqueIdentifier>{6b49e17b-d7f5-4c6b-ab1d-59f3954e8a83}</UniqueIdentifier>
+      <UniqueIdentifier>{14355480-3227-4b8f-b144-cbe69c095a5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="memory\nedmalloc">
-      <UniqueIdentifier>{3dd3ca9d-2f73-4d9e-b165-8e495076fc9b}</UniqueIdentifier>
+    <Filter Include="xml">
+      <UniqueIdentifier>{cfd611fd-6c1d-419e-9ee0-10f1db358245}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dbinterface">
-      <UniqueIdentifier>{84dfe679-a064-421c-81e2-8a1ed0f90598}</UniqueIdentifier>
+    <Filter Include="rapidjson">
+      <UniqueIdentifier>{8e76480c-79d9-4037-a875-7b6a666c51a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="utl">
-      <UniqueIdentifier>{6b3349a1-7512-4d63-85c9-fa60c46c5b30}</UniqueIdentifier>
+    <Filter Include="rapidjson\internal">
+      <UniqueIdentifier>{ebea81ba-2114-41e8-bc73-e63105e688c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="core">
-      <UniqueIdentifier>{27e1e153-fc63-4732-a323-b3738eec6dd5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="tools">
-      <UniqueIdentifier>{59dc0392-bf38-41d8-86c6-b28ca4d33c81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="console">
-      <UniqueIdentifier>{c541945d-eec3-428d-b479-a3349ce430e5}</UniqueIdentifier>
+    <Filter Include="mongoose">
+      <UniqueIdentifier>{8d85a9b3-824e-40ba-b04f-229312ddc40c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\CSVParser.cpp">
-      <Filter>conf</Filter>
+    <ClCompile Include="util\base64.cpp">
+      <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="source\IOCP.cpp">
+    <ClCompile Include="util\Compression.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\console.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\cpu.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\crc.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\exception.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\extendedtrace.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\fasttimer.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\gtime.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\linux_cpu.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\linux_time.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Log.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\LuaEngine.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\md5.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\monitor.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\PathFunc.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\random.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\strtools.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\udsvr.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\vprof.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="container\utlbuffer.cpp">
+      <Filter>container</Filter>
+    </ClCompile>
+    <ClCompile Include="container\utlsymbol.cpp">
+      <Filter>container</Filter>
+    </ClCompile>
+    <ClCompile Include="memory\memory.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="memory\nedmalloc.c">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="network\IOCP.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\IOSelect.cpp">
+    <ClCompile Include="network\IOSelect.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\Net.cpp">
+    <ClCompile Include="network\Net.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\Packet.cpp">
+    <ClCompile Include="network\NetMonitor.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\RingBuffer.cpp">
+    <ClCompile Include="network\Packet.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\Socker.cpp">
+    <ClCompile Include="network\RingBuffer.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\SocketOpsLinux.cpp">
+    <ClCompile Include="network\Socker.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\SocketOpsWin.cpp">
+    <ClCompile Include="network\SocketOpsWin.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadLibFunctions.cpp">
+    <ClCompile Include="config\CSVParser.cpp">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\ThreadLibFunctions.cpp">
       <Filter>thread</Filter>
     </ClCompile>
-    <ClCompile Include="source\base64.cpp">
-      <Filter>encrypt</Filter>
+    <ClCompile Include="thread\threadpool.c">
+      <Filter>thread</Filter>
     </ClCompile>
-    <ClCompile Include="source\crc.cpp">
-      <Filter>encrypt</Filter>
+    <ClCompile Include="xml\tinystr.cpp">
+      <Filter>xml</Filter>
     </ClCompile>
-    <ClCompile Include="source\md5.cpp">
-      <Filter>encrypt</Filter>
+    <ClCompile Include="xml\tinyxml.cpp">
+      <Filter>xml</Filter>
     </ClCompile>
-    <ClCompile Include="source\Compression.cpp">
-      <Filter>compression</Filter>
+    <ClCompile Include="xml\tinyxmlerror.cpp">
+      <Filter>xml</Filter>
     </ClCompile>
-    <ClCompile Include="source\Log.cpp">
-      <Filter>log</Filter>
+    <ClCompile Include="xml\tinyxmlparser.cpp">
+      <Filter>xml</Filter>
     </ClCompile>
-    <ClCompile Include="source\vprof.cpp">
-      <Filter>monitor</Filter>
-    </ClCompile>
-    <ClCompile Include="source\LuaEngine.cpp">
-      <Filter>lua</Filter>
-    </ClCompile>
-    <ClCompile Include="source\exception.cpp">
-      <Filter>exception</Filter>
-    </ClCompile>
-    <ClCompile Include="source\extendedtrace.cpp">
-      <Filter>exception</Filter>
-    </ClCompile>
-    <ClCompile Include="include\nedmalloc.c">
-      <Filter>memory\nedmalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MysqlCore.cpp">
-      <Filter>dbinterface</Filter>
-    </ClCompile>
-    <ClCompile Include="source\utlbuffer.cpp">
-      <Filter>utl</Filter>
-    </ClCompile>
-    <ClCompile Include="source\utlMD5.cpp">
-      <Filter>utl</Filter>
-    </ClCompile>
-    <ClCompile Include="source\utlsymbol.cpp">
-      <Filter>utl</Filter>
-    </ClCompile>
-    <ClCompile Include="source\cpu.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\fasttimer.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\memory.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PathFunc.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\gtime.cpp">
-      <Filter>tools</Filter>
-    </ClCompile>
-    <ClCompile Include="source\random.cpp">
-      <Filter>tools</Filter>
-    </ClCompile>
-    <ClCompile Include="source\strtools.cpp">
-      <Filter>tools</Filter>
-    </ClCompile>
-    <ClCompile Include="source\console.cpp">
-      <Filter>console</Filter>
+    <ClCompile Include="mongoose\mongoose.c">
+      <Filter>mongoose</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CSVParser.h">
-      <Filter>conf</Filter>
+    <ClInclude Include="util\base64.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\SimpleIni.h">
-      <Filter>conf</Filter>
+    <ClInclude Include="util\Compression.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\Singleton.h">
-      <Filter>common</Filter>
+    <ClInclude Include="util\console.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\IOCP.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\cpu.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\IOSelect.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\crc.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\Net.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\exception.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\NetHeader.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\extendedtrace.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\Packet.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\fasttimer.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\RingBuffer.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\file.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\Socker.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\gtime.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\SocketNet.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\ip_filter.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\SocketOps.h">
-      <Filter>network</Filter>
+    <ClInclude Include="util\linux_time.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\Atomic.h">
-      <Filter>thread</Filter>
+    <ClInclude Include="util\linux_type.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lock.h">
-      <Filter>thread</Filter>
+    <ClInclude Include="util\Log.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\ThreadException.h">
-      <Filter>thread</Filter>
+    <ClInclude Include="util\LuaEngine.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\ThreadLib.h">
-      <Filter>thread</Filter>
+    <ClInclude Include="util\md5.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\ThreadLibFunctions.h">
-      <Filter>thread</Filter>
+    <ClInclude Include="util\monitor.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="include\ClxHash.h">
+    <ClInclude Include="util\PathFunc.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\platform.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\random.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\SignalHandler.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Singleton.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\strtools.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\udsvr.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\vprof.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="container\ClxHash.h">
       <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\ClxHlist.h">
+    <ClInclude Include="container\ClxHlist.h">
       <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\OrderedList.h">
+    <ClInclude Include="container\OrderedList.h">
       <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\stllist.h">
+    <ClInclude Include="container\stllist.h">
       <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\stlmap.h">
+    <ClInclude Include="container\stlmap.h">
       <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\base64.h">
-      <Filter>encrypt</Filter>
+    <ClInclude Include="container\utlbidirectionalset.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\crc.h">
-      <Filter>encrypt</Filter>
+    <ClInclude Include="container\utlbuffer.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\md5.h">
-      <Filter>encrypt</Filter>
+    <ClInclude Include="container\utldict.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\Compression.h">
-      <Filter>compression</Filter>
+    <ClInclude Include="container\utldoublequeue.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="..\external\zlib\zconf.h">
-      <Filter>compression\zip</Filter>
+    <ClInclude Include="container\utldoublestack.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="..\external\zlib\zlib.h">
-      <Filter>compression\zip</Filter>
+    <ClInclude Include="container\utlfixedlinkedlist.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\Log.h">
-      <Filter>log</Filter>
+    <ClInclude Include="container\utlfixedmemory.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\vprof.h">
-      <Filter>monitor</Filter>
+    <ClInclude Include="container\utlhash.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\LuaEngine.h">
-      <Filter>lua</Filter>
+    <ClInclude Include="container\utlhashbucket.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\exception.h">
-      <Filter>exception</Filter>
+    <ClInclude Include="container\utllinkedlist.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\extendedtrace.h">
-      <Filter>exception</Filter>
+    <ClInclude Include="container\utlmap.h">
+      <Filter>container</Filter>
     </ClInclude>
-    <ClInclude Include="include\memorypool.h">
+    <ClInclude Include="container\utlmemory.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="container\utlmultilist.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="container\utlpriorityqueue.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="container\utlrbtree.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="container\UtlSortVector.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="container\utlstack.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="container\utlsymbol.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="container\utlvector.h">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="memory\malloc.c.h">
       <Filter>memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\malloc.c.h">
-      <Filter>memory\nedmalloc</Filter>
+    <ClInclude Include="memory\memory.h">
+      <Filter>memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\nedmalloc.h">
-      <Filter>memory\nedmalloc</Filter>
+    <ClInclude Include="memory\memorypool.h">
+      <Filter>memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\MysqlCore.h">
-      <Filter>dbinterface</Filter>
+    <ClInclude Include="memory\nedmalloc.h">
+      <Filter>memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\MysqlDefine.h">
-      <Filter>dbinterface</Filter>
+    <ClInclude Include="network\IOCP.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlbidirectionalset.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\IOSelect.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlbuffer.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\Net.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utldict.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\NetHeader.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utldoublequeue.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\NetMonitor.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utldoublestack.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\NetObservable.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlfixedlinkedlist.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\Packet.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlfixedmemory.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\RingBuffer.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlhash.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\Socker.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlhashbucket.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\SocketNet.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utllinkedlist.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="network\SocketOps.h">
+      <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlmap.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="config\CSVParser.h">
+      <Filter>config</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlMD5.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="config\SimpleIni.h">
+      <Filter>config</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlmemory.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="thread\Atomic.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlmultilist.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="thread\Lock.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlpriorityqueue.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="thread\thread.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlrbtree.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="thread\ThreadException.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="include\UtlSortVector.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="thread\ThreadLib.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlstack.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="thread\ThreadLibFunctions.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlsymbol.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="thread\threadpool.h">
+      <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="include\utlvector.h">
-      <Filter>utl</Filter>
+    <ClInclude Include="xml\tinystr.h">
+      <Filter>xml</Filter>
     </ClInclude>
-    <ClInclude Include="include\cpu.h">
-      <Filter>core</Filter>
+    <ClInclude Include="xml\tinyxml.h">
+      <Filter>xml</Filter>
     </ClInclude>
-    <ClInclude Include="include\fasttimer.h">
-      <Filter>core</Filter>
+    <ClInclude Include="rapidjson\document.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="include\memory.h">
-      <Filter>core</Filter>
+    <ClInclude Include="rapidjson\filestream.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="include\PathFunc.h">
-      <Filter>core</Filter>
+    <ClInclude Include="rapidjson\prettywriter.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="include\platform.h">
-      <Filter>core</Filter>
+    <ClInclude Include="rapidjson\rapidjson.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="include\gtime.h">
-      <Filter>tools</Filter>
+    <ClInclude Include="rapidjson\reader.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="include\random.h">
-      <Filter>tools</Filter>
+    <ClInclude Include="rapidjson\stringbuffer.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="include\strtools.h">
-      <Filter>tools</Filter>
+    <ClInclude Include="rapidjson\stringreference.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="include\console.h">
-      <Filter>console</Filter>
+    <ClInclude Include="rapidjson\writer.h">
+      <Filter>rapidjson</Filter>
     </ClInclude>
-    <ClInclude Include="SharedInc.h" />
+    <ClInclude Include="rapidjson\internal\pow10.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\stack.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\strfunc.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="mongoose\mongoose.h">
+      <Filter>mongoose</Filter>
+    </ClInclude>
+    <ClInclude Include="shared.h" />
   </ItemGroup>
 </Project>

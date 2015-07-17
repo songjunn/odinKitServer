@@ -66,6 +66,23 @@ private:
 
 };
 
+class Locking{
+private:
+	Mutex *mutex;
+	// No copying allowed
+	Locking(const Locking&);
+	void operator=(const Locking&);
+public:
+	Locking(Mutex *mutex){
+		this->mutex = mutex;
+		this->mutex->LOCK();
+	}
+	~Locking(){
+		this->mutex->UNLOCK();
+	}
+
+};
+
 /////////////////////////////////////////////////////////////////////
 //
 #ifdef _WIN

@@ -187,7 +187,6 @@
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CommDef.h" />
     <ClInclude Include="include\GameObj_Json.h" />
     <ClInclude Include="include\MainServer.h" />
     <ClInclude Include="include\plugin.h" />
@@ -195,7 +194,6 @@
     <ClInclude Include="include\plugin_HttpServe.h" />
     <ClInclude Include="include\plugin_Mongodb.h" />
     <ClInclude Include="include\plugin_Network.h" />
-    <ClInclude Include="ServerCoreInc.h" />
     <ClInclude Include="include\plugin_ServerMgr.h" />
     <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h" />
     <ClInclude Include="..\..\public\message\source\MessageSyncGateLoad.pb.h" />
