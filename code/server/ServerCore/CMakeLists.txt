@@ -4,7 +4,7 @@ project(SERVERCORE)
 #MESSAGE
 message(STATUS "This is SOURCE dir " ${SERVERCORE_SOURCE_DIR})
 
-include(${SERVERCORE_SOURCE_DIR}/../../odin.cmake)
+include(${SERVERCORE_SOURCE_DIR}/../odin.cmake)
 
 ODIN_BUILD_OPTION()
 ODIN_BUILD()
@@ -13,7 +13,7 @@ ODIN_INSTALL_PATH(${SERVERCORE_SOURCE_DIR})
 ODIN_LIBRARY_PATH(${SERVERCORE_SOURCE_DIR})
 
 #SOURCE
-aux_source_directory(${SERVERCORE_SOURCE_DIR}/../source SERVERCORE_SRC)
+aux_source_directory(${SERVERCORE_SOURCE_DIR}/source SERVERCORE_SRC)
 
 #LIBRARY
 add_library(servercore STATIC ${SERVERCORE_SRC})

@@ -359,9 +359,6 @@
     <ClInclude Include="thread\Lock.h">
       <Filter>thread</Filter>
     </ClInclude>
-    <ClInclude Include="thread\thread.h">
-      <Filter>thread</Filter>
-    </ClInclude>
     <ClInclude Include="thread\ThreadException.h">
       <Filter>thread</Filter>
     </ClInclude>
@@ -417,5 +414,8 @@
       <Filter>mongoose</Filter>
     </ClInclude>
     <ClInclude Include="shared.h" />
+    <ClInclude Include="container\selectablequeue.h">
+      <Filter>container</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

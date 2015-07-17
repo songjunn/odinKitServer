@@ -4,7 +4,7 @@ project(PAYMENTSERVER)
 #MESSAGE
 message(STATUS "This is SOURCE dir " ${PAYMENTSERVER_SOURCE_DIR})
 
-include(${PAYMENTSERVER_SOURCE_DIR}/../../odin.cmake)
+include(${PAYMENTSERVER_SOURCE_DIR}/../odin.cmake)
 
 ODIN_BUILD_OPTION()
 ODIN_BUILD()
@@ -13,11 +13,11 @@ ODIN_INSTALL_PATH(${PAYMENTSERVER_SOURCE_DIR})
 ODIN_LIBRARY_PATH(${PAYMENTSERVER_SOURCE_DIR})
 
 #INCLUDE
-include_directories(${PAYMENTSERVER_SOURCE_DIR}/../include)
+include_directories(${PAYMENTSERVER_SOURCE_DIR}/include)
 
 #SOURCE
-aux_source_directory(${PAYMENTSERVER_SOURCE_DIR}/../. MAIN_SRC)
-aux_source_directory(${PAYMENTSERVER_SOURCE_DIR}/../source SUB_SRC)
+aux_source_directory(${PAYMENTSERVER_SOURCE_DIR}/. MAIN_SRC)
+aux_source_directory(${PAYMENTSERVER_SOURCE_DIR}/source SUB_SRC)
 
 #GENERATE EXE
 add_executable(paymentserver ${MAIN_SRC} ${SUB_SRC})

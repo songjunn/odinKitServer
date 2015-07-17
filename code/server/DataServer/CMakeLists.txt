@@ -4,7 +4,7 @@ project(DATASERVER)
 #MESSAGE
 message(STATUS "This is SOURCE dir " ${DATASERVER_SOURCE_DIR})
 
-include(${DATASERVER_SOURCE_DIR}/../../odin.cmake)
+include(${DATASERVER_SOURCE_DIR}/../odin.cmake)
 
 ODIN_BUILD_OPTION()
 ODIN_BUILD()
@@ -13,12 +13,12 @@ ODIN_INSTALL_PATH(${DATASERVER_SOURCE_DIR})
 ODIN_LIBRARY_PATH(${DATASERVER_SOURCE_DIR})
 
 #INCLUDE
-include_directories(${DATASERVER_SOURCE_DIR}/../include)
-include_directories(${DATASERVER_SOURCE_DIR}/../../common/template)
+include_directories(${DATASERVER_SOURCE_DIR}/include)
+include_directories(${DATASERVER_SOURCE_DIR}/../common/template)
 
 #SOURCE
-aux_source_directory(${DATASERVER_SOURCE_DIR}/../. MAIN_SRC)
-aux_source_directory(${DATASERVER_SOURCE_DIR}/../source SUB_SRC)
+aux_source_directory(${DATASERVER_SOURCE_DIR}/. MAIN_SRC)
+aux_source_directory(${DATASERVER_SOURCE_DIR}/source SUB_SRC)
 
 #GENERATE EXE
 add_executable(dataserver ${MAIN_SRC} ${SUB_SRC})

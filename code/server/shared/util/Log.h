@@ -22,7 +22,7 @@
 #include "ThreadException.h"
 #include "ThreadLibFunctions.h"
 #else
-#include "SharedInc.h"
+#include "shared.h"
 #endif
 
 #define LOG_PATH_STRING		"log"		//存盘log文件的文件夹名

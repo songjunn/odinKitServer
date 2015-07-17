@@ -1,6 +1,6 @@
 #pragma once
 #include "commdata.h"
-#include "SharedInc.h"
+#include "shared.h"
 #include "eventdef.h"
 
 //////////////////////////////////////////////////////////////////////////

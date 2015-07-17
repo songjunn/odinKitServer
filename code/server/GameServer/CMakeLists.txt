@@ -4,7 +4,7 @@ project(GAMESERVER)
 #MESSAGE
 message(STATUS "This is SOURCE dir " ${GAMESERVER_SOURCE_DIR})
 
-include(${GAMESERVER_SOURCE_DIR}/../../odin.cmake)
+include(${GAMESERVER_SOURCE_DIR}/../odin.cmake)
 
 ODIN_BUILD_OPTION()
 ODIN_BUILD()
@@ -13,11 +13,11 @@ ODIN_INSTALL_PATH(${GAMESERVER_SOURCE_DIR})
 ODIN_LIBRARY_PATH(${GAMESERVER_SOURCE_DIR})
 
 #INCLUDE
-include_directories(${GAMESERVER_SOURCE_DIR}/../include)
+include_directories(${GAMESERVER_SOURCE_DIR}/include)
 
 #SOURCE
-aux_source_directory(${GAMESERVER_SOURCE_DIR}/../. MAIN_SRC)
-aux_source_directory(${GAMESERVER_SOURCE_DIR}/../source SUB_SRC)
+aux_source_directory(${GAMESERVER_SOURCE_DIR}/. MAIN_SRC)
+aux_source_directory(${GAMESERVER_SOURCE_DIR}/source SUB_SRC)
 
 #GENERATE EXE
 add_executable(gameserver ${MAIN_SRC} ${SUB_SRC})

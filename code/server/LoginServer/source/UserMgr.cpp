@@ -9,7 +9,7 @@
 #include "DBOperate.h"
 #include "gtime.h"
 #include "strtools.h"
-#include "utlMD5.h"
+#include "md5.h"
 #include "curl/curl.h"
 #include "MessageUserCheck.pb.h"
 #include "MessageGuestCheck.pb.h"
@@ -352,7 +352,7 @@ string CUserMgr::generatePostField(CUser *pUser)
 	
 	memset(tmpStr, 0, sizeof(tmpStr));
 	unsigned char digest[16];
-	CUtlMD5 md5Tool;
+	MD5 md5Tool;
 	md5Tool.MDString(signStr, digest);
 	for (int di = 0; di < 16; ++di) {
 		sprintf(tmpStr + di * 2, "%02x", digest[di]);

@@ -4,11 +4,11 @@ project(MESSAGE)
 ############################
 ####for proto buffer begin
 ############################
-SET(PROTO_DIR ${MESSAGE_SOURCE_DIR}/../../../public/message/proto)
+SET(PROTO_DIR ${MESSAGE_SOURCE_DIR}/../../public/message/proto)
 FILE(GLOB PROTO_INPUT ${PROTO_DIR}/*.proto)
-FIND_PROGRAM(PROTOC protoc PATHS ${MESSAGE_SOURCE_DIR}/../../../public/message)
+FIND_PROGRAM(PROTOC protoc PATHS ${MESSAGE_SOURCE_DIR}/../../public/message)
 SET(PROTOC_C_OUT_FLAG --cpp_out)
-set(PROTO_GEN_DIR ${MESSAGE_SOURCE_DIR}/../../../public/message/source)
+set(PROTO_GEN_DIR ${MESSAGE_SOURCE_DIR}/../../public/message/source)
 
 #message(status ${PROTO_GEN_DIR})
 
@@ -26,7 +26,7 @@ ADD_CUSTOM_COMMAND(
 OUTPUT ${CUR_PROTO_GEN}
 COMMAND ${PROTOC} ${PROTO_FILE} ${PROTOC_C_OUT_FLAG} ${PROTO_GEN_DIR} -I${PROTO_DIR}
 DEPENDS  ${PROTO_FILE}
-WORKING_DIRECTORY ${MESSAGE_SOURCE_DIR}/../
+WORKING_DIRECTORY ${MESSAGE_SOURCE_DIR}/
 )
 endforeach(PROTO_FILE ${PROTO_INPUT})
 
@@ -43,7 +43,7 @@ GENERATED TRUE)
 #MESSAGE
 message(STATUS "This is SOURCE dir " ${MESSAGE_SOURCE_DIR})
 
-include(${MESSAGE_SOURCE_DIR}/../../odin.cmake)
+include(${MESSAGE_SOURCE_DIR}/../odin.cmake)
 
 ODIN_BUILD_OPTION()
 ODIN_BUILD()
@@ -52,7 +52,7 @@ ODIN_INSTALL_PATH(${MESSAGE_SOURCE_DIR})
 ODIN_LIBRARY_PATH(${MESSAGE_SOURCE_DIR})
 
 #SOURCE
-aux_source_directory(${COMMON_SOURCE_DIR}/../. MESSAGE_SRC)
+aux_source_directory(${COMMON_SOURCE_DIR}/. MESSAGE_SRC)
 
 #ADD -l
 add_definitions(-lrt)

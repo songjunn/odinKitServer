@@ -1,5 +1,5 @@
 #pragma once
-#include "SharedInc.h"
+#include "shared.h"
 #include "Fighter.h"
 #include "MainServer.h"
 #include "EventUnit.h"

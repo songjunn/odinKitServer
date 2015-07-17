@@ -4,7 +4,7 @@ project(CENTRALSERVER)
 #MESSAGE
 message(STATUS "This is SOURCE dir " ${CENTRALSERVER_SOURCE_DIR})
 
-include(${CENTRALSERVER_SOURCE_DIR}/../../odin.cmake)
+include(${CENTRALSERVER_SOURCE_DIR}/../odin.cmake)
 
 ODIN_BUILD_OPTION()
 ODIN_BUILD()
@@ -13,10 +13,10 @@ ODIN_INSTALL_PATH(${CENTRALSERVER_SOURCE_DIR})
 ODIN_LIBRARY_PATH(${CENTRALSERVER_SOURCE_DIR})
 
 #INCLUDE
-include_directories(${CENTRALSERVER_SOURCE_DIR}/../include)
+include_directories(${CENTRALSERVER_SOURCE_DIR}/include)
 
 #SOURCE
-aux_source_directory(${CENTRALSERVER_SOURCE_DIR}/../ MAIN_SRC)
+aux_source_directory(${CENTRALSERVER_SOURCE_DIR}/ MAIN_SRC)
 
 #GENERATE EXE
 add_executable(centralserver ${MAIN_SRC} )

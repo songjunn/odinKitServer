@@ -8,7 +8,7 @@
 #ifndef SHARED_VPROF_H
 #define SHARED_VPROF_H
 
-#include "SharedInc.h"
+#include "shared.h"
 #include "fasttimer.h"
 
 #define VPROF_ENABLED

@@ -1,7 +1,7 @@
 #ifndef SHARED_ZIP_H
 #define SHARED_ZIP_H
 
-#include "SharedInc.h"
+#include "shared.h"
 #include "zlib.h"
 
 

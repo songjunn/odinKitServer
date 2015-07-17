@@ -8,7 +8,7 @@ extern   "C"
 #include   "lauxlib.h"
 #include   "lstate.h"
 }
-#include "SharedInc.h"
+#include "shared.h"
 
 class LuaParam
 {

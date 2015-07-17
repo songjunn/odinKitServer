@@ -212,6 +212,7 @@
     <ClInclude Include="container\ClxHash.h" />
     <ClInclude Include="container\ClxHlist.h" />
     <ClInclude Include="container\OrderedList.h" />
+    <ClInclude Include="container\selectablequeue.h" />
     <ClInclude Include="container\stllist.h" />
     <ClInclude Include="container\stlmap.h" />
     <ClInclude Include="container\utlbidirectionalset.h" />
@@ -263,7 +264,6 @@
     <ClInclude Include="shared.h" />
     <ClInclude Include="thread\Atomic.h" />
     <ClInclude Include="thread\Lock.h" />
-    <ClInclude Include="thread\thread.h" />
     <ClInclude Include="thread\ThreadException.h" />
     <ClInclude Include="thread\ThreadLib.h" />
     <ClInclude Include="thread\ThreadLibFunctions.h" />
