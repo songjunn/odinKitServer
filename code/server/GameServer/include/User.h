@@ -30,7 +30,7 @@ public:
 		Log.Debug("[CUser] RelatePlayer, user:"INT64_FMT" player:"INT64_FMT, m_ID, m_PlayerID);
 	}
 
-	inline  void	SendGateMsg(PACKET_COMMAND* pack)	{ if(pack) MainServer.SendMsgToServer(m_GateSocket, pack); }
+	inline  void	SendGateMsg(PACKET_COMMAND* pack)	{ if(pack) GETSERVERNET->sendMsg(m_GateSocket, pack); }
 
 public:
 	UserID	m_ID;

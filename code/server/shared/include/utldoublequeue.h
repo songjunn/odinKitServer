@@ -1,4 +1,6 @@
 #pragma once
+#include "memory.h"
+#include "Lock.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable:4251)

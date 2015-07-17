@@ -5,7 +5,6 @@
 #include "PlayerMgr.h"
 #include "NameText.h"
 #include "PacketDefine.h"
-#include "ServerMgr.h"
 #include "MainServer.h"
 #include "NoticeModule.h"
 #include "LuaEngine.h"
@@ -117,7 +116,7 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 		pUser->m_GateSocket = pack->GetNetID();
 
 		//向data发送请求，加载角色数据
-		MainServer.SendMsgToServer(ServerMgr.getDataSock(), pack);
+		GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), pack);
 	}
 
 	Log.Notice( "[Login] User:"INT64_FMT, msg.uid() );

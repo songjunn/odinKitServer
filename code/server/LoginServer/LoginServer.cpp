@@ -1,22 +1,16 @@
 // GateServer.cpp : 定义控制台应用程序的入口点。
 //
 
-#include "stdafx.h"
 #include "MainServer.h"
 #include "UserMgr.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #include "exception.h"
-#include "LoginNet.h"
 #include "WorldConfig.h"
 #ifdef __linux__
 #include <unistd.h>
-#include "CommDef.h"
-#include "ServerMgr.h"
 #include "PacketDefine.h"
 #include "linux_time.h"
-#include "DBResult.h"
-#include "CommandMgr.h"
 #include "vprof.h"
 #include "monitor.h"
 #endif
@@ -26,10 +20,7 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CMainServer);
 createFileSingleton(CServerMgr);
-createFileSingleton(CDBResult);
-createFileSingleton(CCommandMgr);
 createFileSingleton(CUserMgr);
-createFileSingleton(CLoginNet);
 createFileSingleton(CWorldConfig);
 
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
@@ -46,7 +37,7 @@ void StatusOutput(char* output)
 	g_PacketPool.Output(szPackPool, 10240);
 	g_MongoOperPool.Output(szMongoPool, 10240);
 	UserMgr.m_pool.Output(szUserPool, 10240);
-	ServerMgr.Output(szServer);
+	GETSERVERMGR->Output(szServer);
 
 	sprintf(output, 
 	    " LoginServer monitor: User:%d\n"
@@ -119,7 +110,7 @@ bool Begin()
 	//初始化
 	char mpath[1024] = {0};
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-	MainServer.Init(0, Svr_Login, myid, myport, myip, 0, NULL, mpath);
+	MainServer.Init(0, CServerMgr::Svr_Login, myid, myport, myip, 0, NULL, mpath);
 
 	if( !UserMgr.Initialize("user", usercnt) )
 		return false;
@@ -130,13 +121,17 @@ bool Begin()
 	if( !g_MongoOperPool.Init("MongoOper", dboperator) )
 		return false;
 
-	MainServer.SetPacketSize(packsize);
-
-	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
+	CNetwork* servernet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Server);
+	if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Server failed");
 		return false;
+	}
 
-	if( !LoginNet.Startup(clientport, clientconnmax, clientsendsize, clientrecvsize, clientpacksize) )
+	CNetwork* clientnet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Client);
+	if (!clientnet->startup(CNet::NET_IO_EPOLL, clientport, clientconnmax, clientsendsize, clientrecvsize, clientpacksize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Client failed");
 		return false;
+	}
 
 	//取消单login对多服的架构，有需要再说
 	////加载区服信息
@@ -146,8 +141,11 @@ bool Begin()
 	//	return false;
 	//WorldConfig.ConnectAllWorld();
 
-	if( !ServerMgr.CreateServer(Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID, true) )
+	CServerMgr* servermgr = (CServerMgr *)MainServer.createPlugin(CMainServer::Plugin_ServerMgr);
+	if (!servermgr->startup(CServerMgr::Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID)) {
+		Log.Error("[CMainServer] create plugin CServerMgr failed");
 		return false;
+	}
 
 	CMongoDB* db = (CMongoDB *)MainServer.createPlugin(CMainServer::Plugin_Mongodb);
 	if (!db->startup(gamedbip, gamedbport, gamedbname)) {
@@ -182,14 +180,14 @@ void OnMsg(PACKET_COMMAND* pack)
 		return;
 	//服务端首次发来的消息
 	case S2C_REQUEST_REGISTER_SERVER:
-		ServerMgr.OnMsg( pack );
+		GETSERVERMGR->OnMsg(pack);
 		return;
 	default:
 		break;
 	}
 
 	//从服务端发来的消息
-	CServerObj* pServer = ServerMgr.GetServer( pack->GetNetID() );
+	CServerObj* pServer = GETSERVERMGR->GetServer(pack->GetNetID());
 	if( pServer )
 	{
 		if( SERVER_MESSAGE_BEGIN >= pack->Type() || SERVER_MESSAGE_END <= pack->Type() )
@@ -202,7 +200,8 @@ void OnMsg(PACKET_COMMAND* pack)
 		{
 		case A2L_NOTIFY_SYNC_GATELOAD:
 		case C2S_NOTIFY_SYNC_SERVER:
-			ServerMgr.OnMsg( pack );
+		case N2S_NOTIFY_CONTROL_CONNECTASYC:
+			GETSERVERMGR->OnMsg(pack);
 			break;
 		default:
 			break;
@@ -216,7 +215,7 @@ void OnMsg(PACKET_COMMAND* pack)
 void MsgLogic()
 {
 	PACKET_COMMAND* pack = NULL;
-	while( (pack = MainServer.GetHeadPacket()) )
+	while ((pack = GETSERVERNET->getHeadPacket()))
 	{
 		OnMsg(pack);
 
@@ -235,7 +234,7 @@ void Logic()
 
 	UserMgr.UserHeartLogic();
 
-	ServerMgr.OnLogic();
+	GETSERVERMGR->OnLogic();
 }
 
 void Output()
@@ -251,9 +250,6 @@ void Output()
 void End()
 {
 	Log.Notice("End ..");
-
-	//MainServer.ShutdownMongoDBClient();	//关闭数据库线程
-	MainServer.ShutdownNet();
 	Log.Shutdown();
 
 #ifdef __linux__

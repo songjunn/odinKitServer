@@ -7,12 +7,10 @@
 #include <tchar.h>
 #endif
 #include "MainServer.h"
-#include "CommandMgr.h"
 #include "exception.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #include "CentralServerMgr.h"
-#include "DBResult.h"
 #ifdef __linux__
 #include "linux_time.h"
 #include "monitor.h"
@@ -23,8 +21,6 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CMainServer);
 createFileSingleton(CServerMgr);
-createFileSingleton(CDBResult);
-createFileSingleton(CCommandMgr);
 createFileSingleton(CCentralServerMgr);
 
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
@@ -36,7 +32,7 @@ void StatusOutput(char* output)
 	char szServer[10240] = {0};
 
 	g_PacketPool.Output(szPackPool, 10240);
-	ServerMgr.Output(szServer);
+	GETSERVERMGR->Output(szServer);
 
 	sprintf(output, 
 		" CentralServer monitor: \n"
@@ -81,16 +77,16 @@ bool Begin()
 	//³õÊ¼»¯
 	char mpath[1024] = {0};
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-	MainServer.Init(worldID, Svr_Central, myid, myport, myip, 0, NULL, mpath);
+	MainServer.Init(worldID, CServerMgr::Svr_Central, myid, myport, myip, 0, NULL, mpath);
 
 	if( !g_PacketPool.Init("Packet", packsize) )
 		return false;
 
-	MainServer.SetPacketSize(packsize);
-
-	//Æô¶¯selectÍøÂç
-	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
+	CNetwork* servernet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Server);
+	if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Server failed");
 		return false;
+	}
 
 #ifdef __linux__
 	char spath[1024] = {0};
@@ -112,7 +108,7 @@ void OnMsg(PACKET_COMMAND* pack)
 void MsgLogic()
 {
 	PACKET_COMMAND* pack = NULL;
-	while( (pack = MainServer.GetHeadPacket()) )
+	while( (pack = GETSERVERNET->getHeadPacket()) )
 	{
 		OnMsg(pack);
 
@@ -130,8 +126,6 @@ void Logic()
 	MsgLogic();
 
 	CentralServerMgr.OnLogic();
-
-	CommandMgr.OnLogic();
 }
 
 void Output()
@@ -139,14 +133,13 @@ void Output()
 #ifdef _WIN32
 	system("cls");
 
-	ServerMgr.OnPrint();
+	GETSERVERMGR->OnPrint();
 #endif
 }
 
 void End()
 {
 	Log.Notice("End ..");
-	MainServer.ShutdownNet();
 	Log.Shutdown();
 
 #ifdef __linux__

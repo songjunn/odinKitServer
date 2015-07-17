@@ -132,7 +132,7 @@ void CDataModule::syncObj(CDataObj* obj, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObj(CDataObj* obj, std::string key, int sock)
@@ -148,7 +148,7 @@ void CDataModule::syncObj(CDataObj* obj, std::string key, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC_OBJFIELD);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObjFinish(int sock, std::string type, int64 id)
@@ -159,7 +159,7 @@ void CDataModule::syncObjFinish(int sock, std::string type, int64 id)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC_FINISH);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string key, int64 mapkey, int sock)
@@ -175,7 +175,7 @@ void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string 
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC_MAPFIELD);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObjSeparate(CDataObj* obj, int sock)

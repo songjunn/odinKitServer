@@ -1,5 +1,5 @@
 #include "GameWorldMgr.h"
-#include "ServerMgr.h"
+#include "MainServer.h"
 #include "CSVParser.h"
 #include "Log.h"
 
@@ -34,7 +34,7 @@ bool CGameWorldMgr::LoadCSVData(const char* csvfile)
 		file.GetAttribute(i, index++, ip, 32);
 		file.GetAttribute(i, index++, port);
 
-		CServerObj *pServer = ServerMgr.CreateServer(Svr_GateWay, id, port, ip, NULL, NULL, 0, true);
+		CServerObj *pServer = GETSERVERMGR->CreateServer(CServerMgr::Svr_GateWay, id, port, ip, NULL, NULL, 0, true);
 		if (!pServer) {
 			Log.Error("CGameWorldMgr CreateServer Failed.");
 			return false;

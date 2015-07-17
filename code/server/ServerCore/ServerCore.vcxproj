@@ -162,9 +162,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\CommandMgr.cpp" />
-    <ClCompile Include="source\DBCache.cpp" />
-    <ClCompile Include="source\DBResult.cpp" />
     <ClCompile Include="dllmain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -181,38 +178,25 @@
     </ClCompile>
     <ClCompile Include="source\GameObj_Json.cpp" />
     <ClCompile Include="source\MainServer.cpp" />
-    <ClCompile Include="source\NetClient.cpp" />
-    <ClCompile Include="source\NetServer.cpp" />
     <ClCompile Include="source\plugin_HttpServe.cpp" />
     <ClCompile Include="source\plugin_Mongodb.cpp" />
-    <ClCompile Include="source\ServerMgr.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="source\plugin_Network.cpp" />
+    <ClCompile Include="source\plugin_ServerMgr.cpp" />
     <ClCompile Include="..\..\public\message\source\MessageRegistServer.pb.cc" />
     <ClCompile Include="..\..\public\message\source\MessageSyncGateLoad.pb.cc" />
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CommandMgr.h" />
     <ClInclude Include="include\CommDef.h" />
-    <ClInclude Include="include\DBCache.h" />
-    <ClInclude Include="include\DBResult.h" />
     <ClInclude Include="include\GameObj_Json.h" />
     <ClInclude Include="include\MainServer.h" />
-    <ClInclude Include="include\NetClient.h" />
-    <ClInclude Include="include\NetServer.h" />
     <ClInclude Include="include\plugin.h" />
     <ClInclude Include="include\pluginHandler.h" />
     <ClInclude Include="include\plugin_HttpServe.h" />
     <ClInclude Include="include\plugin_Mongodb.h" />
+    <ClInclude Include="include\plugin_Network.h" />
     <ClInclude Include="ServerCoreInc.h" />
-    <ClInclude Include="include\ServerMgr.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
+    <ClInclude Include="include\plugin_ServerMgr.h" />
     <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h" />
     <ClInclude Include="..\..\public\message\source\MessageSyncGateLoad.pb.h" />
     <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h" />

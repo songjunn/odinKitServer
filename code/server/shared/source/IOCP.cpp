@@ -303,7 +303,7 @@ void CIOCP::CloseThread(void * param)
 		{
 			Log.Debug("[IOCP]Close socket %d", s->m_socket);
 
-			pThis->m_pNet->Break(s->m_socket);
+			pThis->m_pNet->close(s->m_socket);
 
 			pThis->_FreeSocker(s);
 		}
@@ -559,7 +559,7 @@ bool CIOCP::_HandleAcceptComplete(SOCKET sock, int len)
 
 	Log.Notice("[IOCP]Accept Socket %d, %s", s->m_socket, s->m_szIP);
 
-	if( !m_pNet->Accept(s->m_socket, s->m_szIP) )
+	if( !m_pNet->accept(s->m_socket, s->m_szIP) )
 	{
 		_FreeSocker(s);
 		return false;

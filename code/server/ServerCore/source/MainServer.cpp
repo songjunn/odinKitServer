@@ -2,8 +2,6 @@
 #include "random.h"
 #include "console.h"
 #include "LuaEngine.h"
-#include "ServerMgr.h"
-#include "NetClient.h"
 #ifdef __linux__
 #include "udsvr.h"
 #include "SignalHandler.h"
@@ -50,15 +48,11 @@ bool CMainServer::StartupSigThread()
 
 CMainServer::CMainServer()
 {
-	m_pServerNet = NULL;
-	m_pClientNet = NULL;
 	m_ServerState = EStateRunning;
 }
 
 CMainServer::~CMainServer()
 {
-  SAFE_DELETE(m_pServerNet);
-  SAFE_DELETE(m_pClientNet);
 }
 
 bool CMainServer::Startup(const char* title)
@@ -99,9 +93,8 @@ bool CMainServer::Startup(const char* title)
 #endif
 
 	//初始化lua引擎
-	if( !LuaEngine.Init() )
-	{
-		Log.Error("初始化lua引擎失败！");
+	if (!LuaEngine.Init()) {
+		Log.Error("[CMainServer] init lua engine failed");
 		return false;
 	}
 
@@ -115,8 +108,7 @@ void CMainServer::Init(int world, int type, int id, int port, const char* szip, 
 	m_nID = id;
 	m_nPort = port;
 	strncpy(m_szIP, szip, 32);
-	if( extip )
-	{
+	if( extip ) {
 		m_extPort = extport;
 		strncpy(m_extIP, extip, 32);
 	}
@@ -127,19 +119,12 @@ void CMainServer::Init(int world, int type, int id, int port, const char* szip, 
 #endif
 }
 
-void CMainServer::MsgLogic()
-{
-	PACKET_COMMAND* pack = NULL;
-	while( pack = GetHeadPacket() )
-	{
-		ServerMgr.OnMsg(pack);
-	}
-}
-
 CPlugin* CMainServer::createPlugin(int plugin)
 {
 	switch (plugin) {
-		case Plugin_NetUV:		m_plugins[Plugin_NetUV]; break;
+		case Plugin_ServerMgr:	m_plugins[Plugin_ServerMgr] = NEW CServerMgr; break;
+		case Plugin_Net4Server:	m_plugins[Plugin_Net4Server] = NEW CNetwork; break;
+		case Plugin_Net4Client:	m_plugins[Plugin_Net4Client] = NEW CNetwork; break;
 		case Plugin_Mongodb:	m_plugins[Plugin_Mongodb] = NEW CMongoDB; break;
 		case Plugin_HttpServe:	m_plugins[Plugin_HttpServe] = NEW CHttpServe; break;
 		default: return NULL;
@@ -147,131 +132,6 @@ CPlugin* CMainServer::createPlugin(int plugin)
 	return m_plugins[plugin];
 }
 
-PACKET_COMMAND*	 CMainServer::GetHeadPacket()
-{
-	VPROF("GetHeadPacket");
-
-	return m_PacketList.Pop();
-}
-
-bool CMainServer::StartupServerNet(/*int port,*/ int connectmax, int sendbuffsize, int recvbuffsize, int packsize)
-{
-	if( m_pServerNet )
-		return false;
-
-	m_pServerNet = NEW CServerNet;
-	if( !m_pServerNet )
-		return false;
-
-	if( !m_pServerNet->Startup(NET_IO_SELECT, m_nPort, connectmax, sendbuffsize, recvbuffsize, packsize) )
-	{
-		SAFE_DELETE(m_pServerNet);
-		return false;
-	}
-
-	return true;
-}
-
-bool CMainServer::StartupClientNet(int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize)
-{
-	if( m_pClientNet )
-		return false;
-
-	m_pClientNet = NEW CClientNet;
-	if( !m_pClientNet )
-		return false;
-
-#ifdef _WIN
-	if( !m_pClientNet->Startup(NET_IO_IOCP, port, connectmax, sendbuffsize, recvbuffsize, packsize) )
-#else
-	if( !m_pClientNet->Startup(NET_IO_EPOLL, port, connectmax, sendbuffsize, recvbuffsize, packsize) )
-#endif
-	{
-		SAFE_DELETE(m_pClientNet);
-		return false;
-	}
-
-	return true;
-}
-
-SOCKET CMainServer::Connect(const char * ip, int port)
-{
-	if( m_pServerNet )
-		return m_pServerNet->Connect(ip, port);
-	return INVALID_SOCKET;
-}
-
-SOCKET CMainServer::ConnectAsync(const char * ip, int port)
-{
-	if( m_pServerNet )
-		return m_pServerNet->ConnectAsync(ip, port);
-	return INVALID_SOCKET;
-}
-
-bool CMainServer::ShutdownServer(SOCKET sock)
-{
-	if( m_pServerNet )
-		return m_pServerNet->Shutdown(sock);
-	return false;
-}
-
-bool CMainServer::ShutdownClient(SOCKET sock)
-{
-	if( m_pClientNet )
-		return m_pClientNet->Shutdown(sock);
-	return false;
-}
-
-void CMainServer::ShutdownNet()
-{
-	if (m_pClientNet)
-		m_pClientNet->Terminate();
-	if (m_pServerNet)
-		m_pServerNet->Terminate();
-}
-
-int	CMainServer::SendMsgToServer(SOCKET s, PACKET_COMMAND* pack)
-{
-	if( m_pServerNet )
-		return m_pServerNet->Send(s, (char*)pack->Data(), pack->Size());
-	return 0;
-}
-
-int	CMainServer::SendMsgToServer(SOCKET s, char* buf, int size)
-{
-	if( m_pServerNet )
-		return m_pServerNet->Send(s, buf, size);
-	return 0;
-}
-
-int	CMainServer::SendMsgToClient(SOCKET s, PACKET_COMMAND* pack)
-{
-	if( m_pClientNet )
-		return m_pClientNet->Send(s, (char*)pack->Data(), pack->Size());
-	return 0;
-}
-
-int	CMainServer::SendMsgToClient(SOCKET s, char* buf, int size)
-{
-	if( m_pClientNet )
-		return m_pClientNet->Send(s, buf, size);
-	return 0;
-}
-
-void CMainServer::SetPacketSize(int size)
-{
-	m_PacketList.Init(size);
-}
-
-bool CMainServer::AddPacket(PACKET_COMMAND * pack)
-{
-	return m_PacketList.Push(pack);
-}
-
-void CMainServer::FreePacket(PACKET_COMMAND * pack)
-{
-	
-}
 void CMainServer::sigHandle(int sig)
 {
 #ifdef __linux__
@@ -287,4 +147,3 @@ void CMainServer::sigHandle(int sig)
 	}
 #endif
 }
-

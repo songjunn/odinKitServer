@@ -1,7 +1,8 @@
 #pragma once
-#include "ServerMgr.h"
+#include "Singleton.h"
+#include "MainServer.h"
 
-class CCentralServerMgr : public CServerMgr
+class CCentralServerMgr : public CServerMgr, public Singleton< CCentralServerMgr >
 {
 public:
 	bool	OnLogic();

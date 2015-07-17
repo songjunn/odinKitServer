@@ -71,15 +71,6 @@ enum Online_Flag
 	Online_Flag_Off,		//离线
 };
 
-//使用数据库的定义
-enum DBCache_Type
-{
-	DBCache_Gamedb	= 0,
-	DBCache_Eventdb,
-	DBCache_Numdb,
-
-};
-
 enum Attrib_Param
 {
 	Attrib_Value,
@@ -88,26 +79,6 @@ enum Attrib_Param
 
 	Attrib_Size,
 };
-
-enum EArenaPlayerAttr
-{
-	EARENA_ATTR_NAME,
-	EARENA_ATTR_PID,
-	EARENA_ATTR_TEMPID,
-	EARENA_ATTR_STATE,
-	EARENA_ATTR_STAGE,
-	EARENA_ATTR_FIGHTER,
-	EARENA_ATTR_SCORE,
-	EARENA_ATTR_RANK,
-	EARENA_ATTR_LEVEL,
-	EARENA_ATTR_ISREWARD,
-};
-
-
-// task
-#define TASK_CONDITION_MAX 			3
-#define TASK_MAX	50
-
 
 #define GET_FIGHTER( id, fighter )			\
 	{										\

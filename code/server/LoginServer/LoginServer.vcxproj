@@ -181,7 +181,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\DBOperate.cpp" />
-    <ClCompile Include="source\LoginNet.cpp" />
     <ClCompile Include="LoginServer.cpp" />
     <ClCompile Include="source\UserMgr.cpp" />
     <ClCompile Include="source\WorldConfig.cpp" />
@@ -193,7 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DBOperate.h" />
-    <ClInclude Include="include\LoginNet.h" />
     <ClInclude Include="include\UserMgr.h" />
     <ClInclude Include="include\WorldConfig.h" />
     <ClInclude Include="..\..\public\message\source\MessageConnectGate.pb.h" />

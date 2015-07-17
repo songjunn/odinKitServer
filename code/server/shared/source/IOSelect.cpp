@@ -210,7 +210,7 @@ int	CIOSelect::Send(SOCKET sock, char * data, int size)
 
 bool CIOSelect::Recv(SOCKET sock, char * data, int size)
 {
-	return m_pNet->Recv(sock, data, size);
+	return m_pNet->recv(sock, data, size);
 }
 
 bool CIOSelect::Shutdown(SOCKET sock)
@@ -309,7 +309,7 @@ void CIOSelect::_AcceptAllConnections()
 
 			_AddSocker(s);
 
-			if( !m_pNet->Accept(s->m_socket, s->m_szIP) )
+			if( !m_pNet->accept(s->m_socket, s->m_szIP) )
 			{
 				_FreeSocker(s->m_socket);
 				break;
@@ -336,7 +336,7 @@ void CIOSelect::_Shutdown(CSocker * s)
 
 bool CIOSelect::_CloseSocket(SOCKET sock)
 {
-	m_pNet->Break(sock);
+	m_pNet->close(sock);
 
 	_RemoveSocker(sock);
 
@@ -716,7 +716,7 @@ void CIOSelect::ConnThread(void * param)
 						pThis->_Shutdown(&pThis->m_Sockers[i]);
 					}
 
-					pThis->m_pNet->ConnectReturn(pThis->m_Sockers[i].m_socket, err);
+					pThis->m_pNet->connectReturn(pThis->m_Sockers[i].m_socket, err);
 				}
 			}
 		}
@@ -728,7 +728,7 @@ void CIOSelect::ConnThread(void * param)
 			{
 				if( pThis->m_Sockers[i].m_status == Key_Connect )
 				{
-					pThis->m_pNet->ConnectReturn( pThis->m_Sockers[i].m_socket, -1 );
+					pThis->m_pNet->connectReturn( pThis->m_Sockers[i].m_socket, -1 );
 					pThis->_Shutdown(&pThis->m_Sockers[i]);
 				}
 			}

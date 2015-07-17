@@ -2,17 +2,14 @@
 //
 
 #include "MainServer.h"
-#include "CommandMgr.h"
 #include "exception.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #ifdef __linux__
-#include "DBResult.h"
 #include "linux_time.h"
 #include "monitor.h"
 #endif
 #include "commdata.h"
-#include "ServerMgr.h"
 #include "DataModule.h"
 #include "LoadModule.h"
 #include "utlsymbol.h"
@@ -22,8 +19,6 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CMainServer);
 createFileSingleton(CServerMgr);
-//createFileSingleton(CDBResult);
-createFileSingleton(CCommandMgr);
 createFileSingleton(CDataModule);
 createFileSingleton(CLoadModule);
 
@@ -39,7 +34,7 @@ void StatusOutput(char* output)
 
 	g_PacketPool.Output(szPackPool, 10240);
 	g_MongoOperPool.Output(szMongoPool, 10240);
-	ServerMgr.Output(szServer);
+	GETSERVERMGR->Output(szServer);
 
 	sprintf(output, 
 		" DataServer monitor: \n"
@@ -106,23 +101,27 @@ bool Begin()
 	if( !g_MongoOperPool.Init("MongoOper", dboperator) )
 		return false;
 
-	MainServer.SetPacketSize(packsize);
-
 	//³õÊ¼»¯
 	char mpath[1024] = {0};
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-	MainServer.Init(worldID, Svr_Data, myid, myport, myip, 0, NULL, mpath);
+	MainServer.Init(worldID, CServerMgr::Svr_Data, myid, myport, myip, 0, NULL, mpath);
 
 	CMongoDB* db = (CMongoDB *) MainServer.createPlugin(CMainServer::Plugin_Mongodb);
 	if (!db->startup(gamedbip, gamedbport, gamedbname)) {
 		return false;
 	}
 
-	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
+	CNetwork* servernet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Server);
+	if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Server failed");
 		return false;
+	}
 
-	if( !ServerMgr.CreateServer(Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID, true) )
+	CServerMgr* servermgr = (CServerMgr *)MainServer.createPlugin(CMainServer::Plugin_ServerMgr);
+	if (!servermgr->startup(CServerMgr::Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID)) {
+		Log.Error("[CMainServer] create plugin CServerMgr failed");
 		return false;
+	}
 
 	//g_LoadAllName();
 
@@ -146,7 +145,7 @@ void OnMsg(PACKET_COMMAND* pack)
 	if( DataModule.onMessage(pack) )
 		return;
 
-	if( ServerMgr.OnMsg(pack) )
+	if (GETSERVERMGR->OnMsg(pack))
 		return;
 
 	Log.Debug("OnMsg no module %d", pack->Type());
@@ -157,7 +156,7 @@ void OnMsg(PACKET_COMMAND* pack)
 void MsgLogic()
 {
 	PACKET_COMMAND* pack = NULL;
-	while( (pack = MainServer.GetHeadPacket()) )
+	while ((pack = GETSERVERNET->getHeadPacket()))
 	{
 		OnMsg(pack);
 
@@ -180,9 +179,7 @@ void Logic()
 
 	DataModule.onSave();
 
-	ServerMgr.OnLogic();
-
-	CommandMgr.OnLogic();
+	GETSERVERMGR->OnLogic();
 }
 
 void Output()
@@ -201,7 +198,6 @@ void End()
 {
 	Log.Notice("End ..");
 	DataModule.onSave();
-	MainServer.ShutdownNet();
 
 	Log.Shutdown();
 

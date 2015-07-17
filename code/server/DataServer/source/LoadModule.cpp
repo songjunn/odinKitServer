@@ -85,7 +85,7 @@ bool CLoadModule::_handlePacket_LoadWorldData(PACKET_COMMAND* pack)
 
 	PACKET_COMMAND packData;
 	PROTOBUF_CMD_PACKAGE( packData, msgData, D2G_RESPONSE_WORLD_DATA );
-	MainServer.SendMsgToServer(pack->GetNetID(), &packData);
+	GETSERVERNET->sendMsg(pack->GetNetID(), &packData);
 
 	return true;
 }
@@ -144,7 +144,7 @@ bool CLoadModule::_handlePacket_CheckNameRepeat(PACKET_COMMAND* pack)
 
 	PACKET_COMMAND pack1;
 	PROTOBUF_CMD_PACKAGE( pack1, msg1, G2D_RESPONSE_CHECK_NAME );
-	MainServer.SendMsgToServer(pack->GetNetID(), &pack1);
+	GETSERVERNET->sendMsg(pack->GetNetID(), &pack1);
 
 	return true;
 }
@@ -180,7 +180,7 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 
 	PACKET_COMMAND packCnt;
 	PROTOBUF_CMD_PACKAGE(packCnt, msgCnt, D2P_NOTIFY_PLAYER_COUNT);
-	MainServer.SendMsgToServer(pack->GetNetID(), &packCnt);
+	GETSERVERNET->sendMsg(pack->GetNetID(), &packCnt);
 
 	return true;
 }

@@ -18,15 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\CommandMgr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DBCache.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DBResult.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -34,18 +25,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="source\MainServer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NetClient.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NetServer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ServerMgr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\public\message\source\MessageRegistServer.pb.cc">
@@ -63,42 +42,21 @@
     <ClCompile Include="source\plugin_Mongodb.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="source\plugin_ServerMgr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\plugin_Network.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CommandMgr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\CommDef.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DBCache.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DBResult.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GameObj_Json.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\MainServer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\NetClient.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\NetServer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ServerCoreInc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ServerMgr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h">
@@ -120,6 +78,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\plugin_Mongodb.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\plugin_ServerMgr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameObj_Json.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\plugin_Network.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

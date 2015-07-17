@@ -181,7 +181,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\public\message\source\MessageSWChargeChecker.pb.cc" />
-    <ClCompile Include="source\GateNet.cpp" />
     <ClCompile Include="GateServer.cpp" />
     <ClCompile Include="source\UserMgr.cpp" />
     <ClCompile Include="..\..\public\message\source\MessageClientLogin.pb.cc" />
@@ -201,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\public\message\source\MessageSWChargeChecker.pb.h" />
-    <ClInclude Include="include\GateNet.h" />
     <ClInclude Include="include\UserMgr.h" />
     <ClInclude Include="..\..\public\message\source\MessageClientLogin.pb.h" />
     <ClInclude Include="..\..\public\message\source\MessageCreatePlayer.pb.h" />

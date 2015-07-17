@@ -1,5 +1,4 @@
 ﻿#include "MainServer.h"
-#include "ServerMgr.h"
 #include "PathFunc.h"
 #include "exception.h"
 #include "Singleton.h"
@@ -7,22 +6,16 @@
 #include "PaymentVerifyModule.h"
 #ifdef __linux__
 #include <unistd.h>
-#include "CommDef.h"
 #include "PacketDefine.h"
-#include "DBCache.h"
 #include "monitor.h"
-#include "DBResult.h"
 #endif
-//#include "HttpServer.h"
 #include "GameWorldMgr.h"
-#include "plugin_HttpServe.h"
 
 
 createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CMainServer);
 createFileSingleton(CServerMgr);
-createFileSingleton(CDBResult);
 createFileSingleton(CPaymentVerifyModule);
 createFileSingleton(CGameWorldMgr);
 
@@ -90,28 +83,23 @@ bool Begin()
 	//初始化
 	char mpath[1024] = {0};
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-	MainServer.Init(0, Svr_Payment, myid, myport, myip, 0, NULL, mpath);
+	MainServer.Init(0, CServerMgr::Svr_Payment, myid, myport, myip, 0, NULL, mpath);
 
 	if( !g_PacketPool.Init("Packet", packsize) )
 		return false;
 
-	MainServer.SetPacketSize(packsize);
-
-	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
+	CNetwork* servernet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Server);
+	if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Server failed");
 		return false;
+	}
 
-	/*char worldfile[256] = { 0 };
-	sprintf(worldfile, "%s/data/world.csv", g_szExePath);
-	if (!GameWorldMgr.LoadCSVData(worldfile))
-		return false;*/
-
-	if (!ServerMgr.CreateServer(Svr_Central, centralid, centralport, centralip, NULL, NULL, 0, true))
+	CServerMgr* servermgr = (CServerMgr *)MainServer.createPlugin(CMainServer::Plugin_ServerMgr);
+	if (!servermgr->startup(CServerMgr::Svr_Central, centralid, centralport, centralip, NULL, NULL, 0)) {
+		Log.Error("[CMainServer] create plugin CServerMgr failed");
 		return false;
+	}
 
-	/*CHttpServer* httpServer = NEW CHttpServer();
-	if (!httpServer->startup(httpport, httpserver_ev_handler, 3)) {
-		return false;
-	}*/
 	CHttpServe* httpServe = (CHttpServe *)MainServer.createPlugin(CMainServer::Plugin_HttpServe);
 	if (!httpServe->startup(httpport, httpserver_ev_handler)) {
 		return false;
@@ -131,7 +119,7 @@ void OnMsg(PACKET_COMMAND* pack)
 	if( !pack )
 		return;
 
-	if( ServerMgr.OnMsg(pack) )
+	if (GETSERVERMGR->OnMsg(pack))
 		return;
 
 	if ( PaymentVerifyModule.OnMsg(pack)) {
@@ -143,7 +131,7 @@ void OnMsg(PACKET_COMMAND* pack)
 void MsgLogic()
 {
 	PACKET_COMMAND* pack = NULL;
-	while( (pack = MainServer.GetHeadPacket()) )
+	while ((pack = GETSERVERNET->getHeadPacket()))
 	{
 		OnMsg(pack);
 
@@ -160,7 +148,7 @@ void Logic()
 
 	MsgLogic();
 
-	ServerMgr.OnLogic();
+	GETSERVERMGR->OnLogic();
 }
 
 void Output()

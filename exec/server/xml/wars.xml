@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8">
+<wars>
+	<group name="point" type="map" default="">
+		<attr name="pointid" type="int64" default="0"></attr>
+		<attr name="camp" type="int32" default="0"></attr>
+		<attr name="armora" type="int32" default="0"></attr>
+		<attr name="armorb" type="int32" default="0"></attr>
+		<attr name="armormax" type="int32" default="0"></attr>
+	</group>
+	<group name="joiner" type="map" default="">
+		<attr name="joinerid" type="int64" default="0"></attr>
+		<attr name="name" type="string" default=""></attr>
+		<attr name="wpid" type="int32" default="0"></attr>
+		<attr name="camp" type="int32" default="0"></attr>
+		<attr name="merit" type="int32" default="0"></attr>
+		<attr name="ranking" type="int32" default="0"></attr>
+		<attr name="buyaction" type="int64" default="0"></attr>
+		<attr name="actcdtime" type="int32" default="0"></attr>
+		<attr name="rewarddialy" type="int32" default="0"></attr>
+		<attr name="doublewin" type="int32" default="0"></attr>
+		<attr name="currentwin" type="int32" default="0"></attr>
+	</group>
+	<group name="reward" type="map" default="">
+		<attr name="rewardid" type="int64" default="0"></attr>
+		<attr name="camp" type="int32" default="0"></attr>
+		<attr name="ranking" type="int32" default="0"></attr>
+		<attr name="rewardwinner" type="int32" default="0"></attr>
+		<attr name="rewardranking" type="int32" default="0"></attr>
+		<attr name="leadwps" type="int32" default="0"></attr>
+	</group>
+</wars>

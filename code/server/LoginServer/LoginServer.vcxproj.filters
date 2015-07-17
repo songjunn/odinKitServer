@@ -21,9 +21,6 @@
     <ClCompile Include="source\DBOperate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\LoginNet.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="LoginServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -51,9 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DBOperate.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\LoginNet.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\UserMgr.h">

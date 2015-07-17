@@ -224,6 +224,6 @@ void CEventUnit::OnEvent(CEvent* ev)
 
 		PACKET_COMMAND pack;
 		PROTOBUF_CMD_PACKAGE( pack, msg, G2B_NOTIFY_EVENT );
-		MainServer.SendMsgToServer(ServerMgr.getBISock(), &pack );
+		GETSERVERNET->sendMsg(GETSERVERMGR->getBISock(), &pack);
 	}
 }

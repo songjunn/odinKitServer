@@ -4,11 +4,10 @@
 #include "Singleton.h"
 #include "linux_type.h"
 #include "Packet.h"
-#include "NetServer.h"
-#include "DBCache.h"
-#include "utldoublequeue.h"
 #include "plugin_Mongodb.h"
 #include "plugin_HttpServe.h"
+#include "plugin_ServerMgr.h"
+#include "plugin_Network.h"
 
 
 enum EServerState
@@ -20,7 +19,10 @@ enum EServerState
 	EStateReloadData
 };
 
-#define GETMONGODB	((CMongoDB *)MainServer.getPlugin(CMainServer::Plugin_Mongodb))
+#define GETSERVERMGR	((CServerMgr *)MainServer.getPlugin(CMainServer::Plugin_ServerMgr))
+#define GETSERVERNET	((CNetwork *)MainServer.getPlugin(CMainServer::Plugin_Net4Server))
+#define GETCLIENTNET	((CNetwork *)MainServer.getPlugin(CMainServer::Plugin_Net4Client))
+#define GETMONGODB		((CMongoDB *)MainServer.getPlugin(CMainServer::Plugin_Mongodb))
 
 struct CServerObj;
 class CPlugin;
@@ -29,7 +31,9 @@ class CMainServer : public Singleton< CMainServer >
 public:
 	//插件种类
 	enum Plugin_Type {
-		Plugin_NetUV = 0,
+		Plugin_ServerMgr = 0,
+		Plugin_Net4Server,
+		Plugin_Net4Client,
 		Plugin_Mongodb,
 		Plugin_HttpServe,
 
@@ -46,32 +50,7 @@ public:
 	CPlugin* createPlugin(int plugin);
 	CPlugin* getPlugin(int plugin) { return m_plugins[plugin]; }
 
-	bool	StartupServerNet(/*int port,*/ int connectmax, int sendbuffsize, int recvbuffsize, int packsize);
-	bool	StartupClientNet(int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize);
-
 	bool	StartupSigThread();
-
-	void	MsgLogic();
-
-	SOCKET	Connect(const char * ip, int port);
-	SOCKET	ConnectAsync(const char * ip, int port);
-
-	bool	ShutdownServer(SOCKET sock);
-	bool	ShutdownClient(SOCKET sock);
-	void	ShutdownNet();
-
-	//通过select模型发送数据
-	int		SendMsgToServer(SOCKET s, PACKET_COMMAND* pack);
-	int		SendMsgToServer(SOCKET s, char* buf, int size);
-
-	////通过iocp网络模型发送数据
-	int		SendMsgToClient(SOCKET s, PACKET_COMMAND* pack);
-	int		SendMsgToClient(SOCKET s, char* buf, int size);
-
-	void	SetPacketSize(int size);
-	bool	AddPacket(PACKET_COMMAND * pack);
-	void	FreePacket(PACKET_COMMAND * pack);
-	PACKET_COMMAND*		GetHeadPacket();
 
 	inline	int	Type()	{return m_type;}
 	inline	int	ID()	{return m_nID;}
@@ -95,13 +74,8 @@ private:
 	int		m_worldID;
 
 	EServerState m_ServerState;
-
-	CNet*	m_pServerNet;
-	CNet*	m_pClientNet;
-
 	CPlugin* m_plugins[Plugin_End];
 
-	CDoubleQueue<PACKET_COMMAND> m_PacketList;
 };
 
 #define MainServer CMainServer::getSingleton()

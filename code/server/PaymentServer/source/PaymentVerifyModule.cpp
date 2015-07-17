@@ -4,8 +4,6 @@
 #include "Log.h"
 #include "Packet.h"
 #include "MessagePayment.pb.h"
-#include "HttpServer.h"
-#include "ServerMgr.h"
 #include "utlMD5.h"
 #include "strtools.h"
 #include "json/json.h"
@@ -76,7 +74,7 @@ bool CPaymentVerifyModule::OnChargeFromSWServer(struct mg_connection *conn)
 	mg_get_var(conn, "sign", sign, MG_CONN_VAR_LEN);
 
 	int gateSrvId = GET_PAY_GATEID(atoi(gateRegion));
-	if (!ServerMgr.GetServerById(gateSrvId)) {
+	if (!GETSERVERMGR->GetServerById(gateSrvId)) {
 	//if (!GameWorldMgr.IsConnGate(gateSrvId)) {
 		Log.Error("Wrong gate: %d. User: %s, orderNo: %s, money: %s, coins %s, time: %s", gateSrvId, swUserId, orderNo, money, coins, time);
 		return false;
@@ -142,7 +140,7 @@ void	CPaymentVerifyModule::_HandlePacket_PaymentVerify(PACKET_COMMAND *pack)
 
 	PACKET_COMMAND wpack;
 	PROTOBUF_CMD_PACKAGE( wpack, wmsg, T2G_RESPONSE_PAYMENT_VERIFY);
-	MainServer.SendMsgToServer( pack->GetNetID(), &wpack );
+	GETSERVERNET->sendMsg( pack->GetNetID(), &wpack );
 }
 
 int CPaymentVerifyModule::VerifyPayment(string receipt)
@@ -248,7 +246,7 @@ bool CPaymentVerifyModule::PayToGateServer(int gateId, int64 userId, int money)
 	}
 
 	//SOCKET gsocket = GameWorldMgr.GetGateSocket(gateId);
-	CServerObj* server = ServerMgr.GetServerById(gateId);
+	CServerObj* server = GETSERVERMGR->GetServerById(gateId);
 	if (!server || server->m_Socket == INVALID_SOCKET) {
 		Log.Error("PayToGateServer Invalid socket. user: %lld, gate: %d, money: %d", userId, gateId, money);
 		return false;
@@ -260,7 +258,7 @@ bool CPaymentVerifyModule::PayToGateServer(int gateId, int64 userId, int money)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, S2S_NOTIFY_SWCHARGE);
-	MainServer.SendMsgToServer(server->m_Socket, &pack);
+	GETSERVERNET->sendMsg(server->m_Socket, &pack);
 
 	Log.Notice("PayToGateServer Success. user: %lld, money: %d, gateId: %d", userId, money, gateId);
 

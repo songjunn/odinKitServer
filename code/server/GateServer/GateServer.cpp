@@ -11,17 +11,12 @@
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #ifdef __linux__
-#include "DBResult.h"
-#include "ServerMgr.h"
-#include "CommandMgr.h"
 #include "PacketDefine.h"
 #include "linux_time.h"
 #include "udsvr.h"
 #include "monitor.h"
 #endif
 #include "PacketDefine.h"
-#include "ServerMgr.h"
-#include "GateNet.h"
 #include "exception.h"
 #include "MessageSyncGateLoad.pb.h"
 
@@ -30,9 +25,6 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CMainServer);
 createFileSingleton(CServerMgr);
-createFileSingleton(CDBResult);
-createFileSingleton(CCommandMgr);
-createFileSingleton(CGateNet);
 createFileSingleton(CUserMgr);
 
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
@@ -47,7 +39,7 @@ void StatusOutput(char* output)
 
 	g_PacketPool.Output(szPackPool, 10240);
 	UserMgr.m_pool.Output(szUserPool, 10240);
-	ServerMgr.Output(szServer);
+	GETSERVERMGR->Output(szServer);
 
 	sprintf(output, 
 		" GateServer monitor: User:%d UKey:%d\n"
@@ -113,7 +105,7 @@ bool Begin(int param_id, int param_port, int param_extport)
 	extport = param_id > 0 ? param_extport : extport;
 	char mpath[1024] = {0};
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-	MainServer.Init(worldID, Svr_GateWay, myid, myport, myip, extport, extip, mpath);
+	MainServer.Init(worldID, CServerMgr::Svr_GateWay, myid, myport, myip, extport, extip, mpath);
 
 	if( !UserMgr.Initialize("user", usercnt) )
 		return false;
@@ -123,16 +115,23 @@ bool Begin(int param_id, int param_port, int param_extport)
 	if( !g_PacketPool.Init("Packet", packsize) )
 		return false;
 
-	MainServer.SetPacketSize(packsize);
-
-	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
+	CNetwork* servernet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Server);
+	if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Server failed");
 		return false;
-
-	if( !GateNet.Startup(extport, iocpconnmax, iocpsendsize, iocprecvsize, iocppacksize) )
+	}
+	
+	CNetwork* clientnet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Client);
+	if (!clientnet->startup(CNet::NET_IO_EPOLL, extport, iocpconnmax, iocpsendsize, iocprecvsize, iocppacksize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Client failed");
 		return false;
+	}
 
-	if( !ServerMgr.CreateServer(Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID, true) )
+	CServerMgr* servermgr = (CServerMgr *)MainServer.createPlugin(CMainServer::Plugin_ServerMgr);
+	if (!servermgr->startup(CServerMgr::Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID)) {
+		Log.Error("[CMainServer] create Plugin_ServerMgr failed");
 		return false;
+	}
 
 #ifdef __linux__
 	char spath[1024] = {0};
@@ -160,7 +159,7 @@ void OnMsg(PACKET_COMMAND* pack)
 			break;
 	}
 
-	CServerObj* pServer = ServerMgr.GetServer( pack->GetNetID() );
+	CServerObj* pServer = GETSERVERMGR->GetServer(pack->GetNetID());
 	if( pServer )
 	{
 		if( SERVER_MESSAGE_BEGIN >= pack->Type() || SERVER_MESSAGE_END <= pack->Type() )
@@ -180,11 +179,12 @@ void OnMsg(PACKET_COMMAND* pack)
 			UserMgr.OnMsg( pack );
 			break;
 		case C2S_NOTIFY_SYNC_SERVER:
-			ServerMgr.OnMsg( pack );
+		case N2S_NOTIFY_CONTROL_CONNECTASYC:
+			GETSERVERMGR->OnMsg(pack);
 			break;	
 		default:
 			SOCKET s = UserMgr.GetNetIDByPID(pack->GetTrans());
-			GateNet.SendMsg( s, pack );
+			GETCLIENTNET->sendMsg(s, pack);
 			Log.Debug("[GateServer] Transmit From:%d To Client pid:"INT64_FMT" sock:%d packet:%d size:%d", pack->GetNetID(), pack->GetTrans(), s, pack->Type(), pack->Size());
 			break;
 		}
@@ -218,7 +218,7 @@ void OnMsg(PACKET_COMMAND* pack)
 		switch( pack->Type() )
 		{
 		case P2G_REQUEST_NET_TEST:
-		    GateNet.SendMsg(pUser->m_ClientSock, pack);
+			GETCLIENTNET->sendMsg(pUser->m_ClientSock, pack);
 		    break;
 		case P2A_REQUEST_USER_HEART:
 		case P2A_REQUEST_USER_LOGIN:
@@ -229,12 +229,12 @@ void OnMsg(PACKET_COMMAND* pack)
 		//向DataServer转发的消息
 		/*case :
 			Log.Debug("[GateServer] Transmit To DataServer packet:%d size:%d", pack->Type(), pack->Size());
-			MainServer.SendMsgToServer( ServerMgr.getDataSock(), pack );
+			GETSERVERNET->sendMsg( GETSERVERMGR->getDataSock(), pack );
 			break;*/
 		//默认向GameServer转发
 		default:
 			Log.Debug("[GateServer] Transmit To GameServer packet:%d size:%d", pack->Type(), pack->Size());
-			MainServer.SendMsgToServer( pUser->m_GameSock, pack );
+			GETSERVERNET->sendMsg( pUser->m_GameSock, pack );
 			break;
 		}
 
@@ -245,7 +245,7 @@ void OnMsg(PACKET_COMMAND* pack)
 	switch( pack->Type() )
 	{
 	case S2C_REQUEST_REGISTER_SERVER:
-		ServerMgr.OnMsg( pack );
+		GETSERVERMGR->OnMsg(pack);
 		return;
 	default:
 		break;
@@ -257,7 +257,7 @@ void MsgLogic()
 	VPROF("MsgLogic");
 	PACKET_COMMAND* pack = NULL;
 	int count = 0;
-	while( (pack = MainServer.GetHeadPacket()) && count++ <= 10000)
+	while ((pack = GETSERVERNET->getHeadPacket()) && count++ <= 10000)
 	{
 		OnMsg(pack);
 		
@@ -273,7 +273,7 @@ void StatusLogic()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE( pack, msg, A2L_NOTIFY_SYNC_GATELOAD );
-	MainServer.SendMsgToServer(ServerMgr.getLoginSock(), &pack);
+	GETSERVERNET->sendMsg(GETSERVERMGR->getLoginSock(), &pack);
 }
 
 void Logic()
@@ -287,7 +287,7 @@ void Logic()
 
 	MsgLogic();
 	UserMgr.OnLogic();
-	ServerMgr.OnLogic();
+	GETSERVERMGR->OnLogic();
 
 	//30秒同步一次负载
 	if( nowtime - g_StatusLogicTime >= 30000 )
@@ -312,8 +312,7 @@ void Output()
 
 void End()
 {
-	Log.Notice("End ..");
-	MainServer.ShutdownNet();
+	Log.Notice("End ..");;
 	Log.Shutdown();
 
 #ifdef __linux__

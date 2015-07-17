@@ -213,6 +213,7 @@
     <ClInclude Include="..\common\commdata.h" />
     <ClInclude Include="..\common\eventdef.h" />
     <ClInclude Include="..\common\ObjMgr.h" />
+    <ClInclude Include="include\DataModule.h" />
     <ClInclude Include="include\Event.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -617,6 +618,7 @@
     <ClCompile Include="..\..\public\message\source\MessageWorshiping.pb.cc" />
     <ClCompile Include="..\..\public\message\source\MessageZoneAwardRequest.pb.cc" />
     <ClCompile Include="..\..\public\message\source\MessageZoneInfoSync.pb.cc" />
+    <ClCompile Include="source\DataModule.cpp" />
     <ClCompile Include="source\NameText.cpp" />
     <ClCompile Include="source\RoleTemplate.cpp" />
     <ClCompile Include="source\PlayerMgr.cpp" />

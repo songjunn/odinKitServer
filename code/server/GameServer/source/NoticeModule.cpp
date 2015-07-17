@@ -124,5 +124,5 @@ void CNoticeModule::SendErrorMsg(int sock, UserID uid, int errid, int int1, int 
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, S2P_NOTIFY_SYNC_ERROR);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }

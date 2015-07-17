@@ -2,12 +2,9 @@
 #include <cctype>
 #include <algorithm>
 #include "UserMgr.h"
-#include "ServerMgr.h"
 #include "PacketDefine.h"
 #include "random.h"
-#include "DBCache.h"
 #include "MainServer.h"
-#include "LoginNet.h"
 #include "error.h"
 #include "DBOperate.h"
 #include "gtime.h"
@@ -84,7 +81,7 @@ void CUserMgr::SendErrorMsg(CUser* user, int errid)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, S2P_NOTIFY_SYNC_ERROR);
-	LoginNet.SendMsg(user->m_sock, &pack);
+	GETCLIENTNET->sendMsg(user->m_sock, &pack);
 }
 
 bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
@@ -229,7 +226,7 @@ void CUserMgr::_Shutdown(CUser* pUser)
 		return;
 
 	//断开user
-	LoginNet.Shutdown(pUser->m_sock);
+	GETCLIENTNET->shutdown(pUser->m_sock);
 
 	UserMgr.Delete(pUser->m_sock);
 }
@@ -240,7 +237,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 		return false;
 
 	//取得该服负载最低的GateServer
-	CServerObj* pServer = ServerMgr.GetLowerGate(pUser->m_server);
+	CServerObj* pServer = GETSERVERMGR->GetLowerGate(pUser->m_server);
 	if (!pServer)
 	{
 		Log.Error("[Login] Get Lower GateServer Failed, World:%d User:"INT64_FMT, pUser->m_server, pUser->m_id);
@@ -259,7 +256,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 
 	PACKET_COMMAND pack1;
 	PROTOBUF_CMD_PACKAGE(pack1, msg1, L2A_REQUEST_USER_PRLOGIN);
-	MainServer.SendMsgToServer(pServer->m_Socket, &pack1);
+	GETSERVERNET->sendMsg(pServer->m_Socket, &pack1);
 
 	//通知Client
 	Message::ConnectGate msg2;
@@ -271,7 +268,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 
 	PACKET_COMMAND pack2;
 	PROTOBUF_CMD_PACKAGE(pack2, msg2, L2P_NOTIFY_CONNECT_GATESVR);
-	LoginNet.SendMsg(pUser->m_sock, &pack2);
+	GETCLIENTNET->sendMsg(pUser->m_sock, &pack2);
 
 	return true;
 }
@@ -314,7 +311,7 @@ void CUserMgr::httpCheckUserThread(void *pParam)
 		Log.Error("curl curl_easy_perform error: %s", curl_easy_strerror(res));
 	}
 
-	LoginNet.Shutdown(pUser->m_sock);
+	GETCLIENTNET->shutdown(pUser->m_sock);
 }
 
 string CUserMgr::generatePostField(CUser *pUser)
@@ -408,6 +405,6 @@ void CUserMgr::sendSWChecker(CUser *pUser)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, L2P_NOTIFY_SW_CHECKER);
-	LoginNet.SendMsg(pUser->m_sock, &pack);
+	GETCLIENTNET->sendMsg(pUser->m_sock, &pack);
 }
 

@@ -3,7 +3,7 @@
 #include "MessageSyncServer.pb.h"
 #include "MainServer.h"
 #include "PacketDefine.h"
-
+#include "Log.h"
 
 bool CCentralServerMgr::OnLogic()
 {
@@ -55,12 +55,12 @@ bool CCentralServerMgr::_OnAddServer(CServerObj* pServer)
 		}
 
 		bool flag = false;
-		if (pServer->m_type == Svr_Data && (pObj->m_type == Svr_Game)) flag = true;
-		else if (pServer->m_type == Svr_Game && (pObj->m_type == Svr_Data || pObj->m_type == Svr_GateWay || pObj->m_type == Svr_DataAnalysis)) flag = true;
-		else if (pServer->m_type == Svr_GateWay && (pObj->m_type == Svr_Game || pObj->m_type == Svr_Login || pObj->m_type == Svr_Payment)) flag = true;
-		else if (pServer->m_type == Svr_Login && (pObj->m_type == Svr_GateWay)) flag = true;
-		else if (pServer->m_type == Svr_Payment && (pObj->m_type == Svr_GateWay)) flag = true;
-		else if (pServer->m_type == Svr_DataAnalysis && (pObj->m_type == Svr_Game)) flag = true;
+		if (pServer->m_type == CServerMgr::Svr_Data && (pObj->m_type == CServerMgr::Svr_Game)) flag = true;
+		else if (pServer->m_type == CServerMgr::Svr_Game && (pObj->m_type == CServerMgr::Svr_Data || pObj->m_type == CServerMgr::Svr_GateWay || pObj->m_type == CServerMgr::Svr_DataAnalysis)) flag = true;
+		else if (pServer->m_type == CServerMgr::Svr_GateWay && (pObj->m_type == CServerMgr::Svr_Game || pObj->m_type == CServerMgr::Svr_Login || pObj->m_type == CServerMgr::Svr_Payment)) flag = true;
+		else if (pServer->m_type == CServerMgr::Svr_Login && (pObj->m_type == CServerMgr::Svr_GateWay)) flag = true;
+		else if (pServer->m_type == CServerMgr::Svr_Payment && (pObj->m_type == CServerMgr::Svr_GateWay)) flag = true;
+		else if (pServer->m_type == CServerMgr::Svr_DataAnalysis && (pObj->m_type == CServerMgr::Svr_Game)) flag = true;
 
 		if (flag)
 		{
@@ -75,7 +75,7 @@ bool CCentralServerMgr::_OnAddServer(CServerObj* pServer)
 
 			PACKET_COMMAND pack;
 			PROTOBUF_CMD_PACKAGE( pack, msg, C2S_NOTIFY_SYNC_SERVER );
-			MainServer.SendMsgToServer(pServer->m_Socket, &pack);
+			GETSERVERNET->sendMsg(pServer->m_Socket, &pack);
 		}
 	}
 

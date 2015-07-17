@@ -30,6 +30,7 @@ enum PakcetDefineType
 	D2G_NOTIFY_WORLD_DATA,			//同步道游戏世界初始数据
 	N2S_NOTIFY_CONTROL_ACCEPT,		// net -> server :create socket
 	N2S_NOTIFY_CONTROL_CLOSE,		// net -> server :close socket
+	N2S_NOTIFY_CONTROL_CONNECTASYC, // net -> server :connect sync return
 	P2A_RESPONSE_USER_HEART,		//心跳包响应
 	D2G_REQUEST_WORLD_DATA,			//请求道游戏世界初始数据
 	D2G_RESPONSE_WORLD_DATA,		//同步道游戏世界初始数据

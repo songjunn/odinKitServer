@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8">
+<item>
+	<attr name="itemid" type="int64" default="0"></attr>
+	<attr name="parent" type="int64" default="0"></attr>
+	<attr name="template" type="int32" default="0"></attr>
+	<attr name="stacksize" type="int32" default="0"></attr>
+	<attr name="position" type="int32" default="0"></attr>
+	<attr name="equip" type="int64" default="0"></attr>
+	<attr name="intensify" type="int32" default="0"></attr>
+  <attr name="hunjing" type="int32" default="0"></attr>
+  <attr name="hunyu1" type="int32" default="0"></attr>
+  <attr name="hunyu2" type="int32" default="0"></attr>
+  <attr name="hunyu3" type="int32" default="0"></attr>
+</item>

@@ -2,46 +2,47 @@
 #define SHARED_NET_H
 
 #include "NetHeader.h"
+#include "Packet.h"
 #include "stlmap.h"
 #include "Lock.h"
 #include "NetObservable.h"
 
-
-enum NET_IO_TYPE
-{
-	NET_IO_SELECT = 1,
-	NET_IO_IOCP,
-	NET_IO_KQUEUE,
-	NET_IO_EPOLL,
-};
 
 class PACKET_COMMAND;
 class CSocketNet;
 class CNet: public CNetObservable
 {
 public:
+	enum NET_IO_TYPE {
+		NET_IO_SELECT = 1,
+		NET_IO_IOCP,
+		NET_IO_KQUEUE,
+		NET_IO_EPOLL,
+	};
+
+public:
 	CNet();
 	~CNet();
 
-	virtual bool	Startup(int type, int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize);
-	virtual void	Terminate();
-	virtual bool	Accept(SOCKET sock, const char * ip);
-	virtual int		Send(SOCKET sock, char * data, int size);
-	virtual bool	Recv(SOCKET sock, char * data, int size);
-	virtual void	Break(SOCKET sock);
-	virtual bool	Shutdown(SOCKET sock);
-	virtual SOCKET	Connect(const char * ip, int port);
-	virtual SOCKET	ConnectAsync(const char * ip, int port);
-	virtual bool	ConnectReturn(SOCKET sock, int error=0);
+	virtual bool	startup(int type, int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize);
+	virtual void	terminate();
+	virtual bool	accept(SOCKET sock, const char * ip);
+	virtual int		send(SOCKET sock, char * data, int size);
+	virtual bool	recv(SOCKET sock, char * data, int size);
+	virtual void	close(SOCKET sock);
+	virtual bool	shutdown(SOCKET sock);
+	virtual SOCKET	connect(const char * ip, int port);
+	virtual SOCKET	connectAsync(const char * ip, int port);
+	virtual bool	connectReturn(SOCKET sock, int error=0);
 
-	virtual bool	HandlePacket(PACKET_COMMAND * pCmd)		{return true;}
-	virtual void	PrintLog();
+	virtual bool	handlePacket(PACKET_COMMAND * pCmd)		{return true;}
+	virtual void	printLog();
 	void _startMonitor(const char * path, int port);
 
 private:
-	PACKET_COMMAND * GetPacketBuff(SOCKET sock);
-	PACKET_COMMAND * RemovePacketBuff(SOCKET sock);
-	bool InsertPacketBuff(SOCKET sock, PACKET_COMMAND * pCmd);
+	PACKET_COMMAND * getPacketBuff(SOCKET sock);
+	PACKET_COMMAND * removePacketBuff(SOCKET sock);
+	bool insertPacketBuff(SOCKET sock, PACKET_COMMAND * pCmd);
 
 private:
 	Mutex								m_PacketLock;

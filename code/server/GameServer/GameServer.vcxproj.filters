@@ -711,6 +711,9 @@
     <ClInclude Include="..\..\public\message\source\MessageSWChargeChecker.pb.h">
       <Filter>message</Filter>
     </ClInclude>
+    <ClInclude Include="include\DataModule.h">
+      <Filter>module</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\public\message\source\MesagePlayerCitySync.pb.cc">
@@ -1366,6 +1369,9 @@
     </ClCompile>
     <ClCompile Include="..\..\public\message\source\MessageSWChargeChecker.pb.cc">
       <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataModule.cpp">
+      <Filter>module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

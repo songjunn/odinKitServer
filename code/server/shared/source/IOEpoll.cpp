@@ -281,7 +281,7 @@ int	CIOEpoll::Send(SOCKET sock, char * data, int size)
 
 bool CIOEpoll::Recv(SOCKET sock, char * data, int size)
 {
-	return m_pNet->Recv(sock, data, size);
+	return m_pNet->recv(sock, data, size);
 }
 
 bool CIOEpoll::Shutdown(SOCKET sock)
@@ -387,7 +387,7 @@ void CIOEpoll::_AcceptAllConnections()
 
 			m_pNet->updateConnectingNum(1);
 
-			if( !m_pNet->Accept(s->m_socket, s->m_szIP) )
+			if( !m_pNet->accept(s->m_socket, s->m_szIP) )
 			{
 				LERROR("m_pNet->Accept(%d) failed, ip:%s", s->m_socket, s->m_szIP);
 				_FreeSocker(s->m_socket);
@@ -420,7 +420,7 @@ bool CIOEpoll::_CloseSocket(SOCKET sock)
 	_epoll_ctl(write_fd, EPOLL_CTL_DEL, sock, 0);
 	_epoll_ctl(read_fd, EPOLL_CTL_DEL, sock, 0);
 
-	m_pNet->Break(sock);
+	m_pNet->close(sock);
 
 	// 从m_Sockets中删除
 	_RemoveSocker(sock);
@@ -739,7 +739,7 @@ void CIOEpoll::ConnThread(void * param)
 					pThis->_Shutdown(pSocker->m_socket);
 				}
 
-				pThis->m_pNet->ConnectReturn(pSocker->m_socket, err);
+				pThis->m_pNet->connectReturn(pSocker->m_socket, err);
 			} else {
 				LDEBUG("ConnThread error: socket=%d, event=%d", pSocker->m_socket, events[i].events); 
 				continue;

@@ -1,6 +1,6 @@
 ﻿#include "WorldConfig.h"
 #include "CSVParser.h"
-#include "ServerMgr.h"
+#include "MainServer.h"
 
 
 CWorldConfig::CWorldConfig()
@@ -51,6 +51,6 @@ void CWorldConfig::ConnectAllWorld()
 	{
 		worldID = m_list.Next(worldID);
 
-		ServerMgr.CreateServer(Svr_Central, world->serverID, world->port, world->ip, NULL, NULL, world->worldID, true);
+		GETSERVERMGR->CreateServer(CServerMgr::Svr_Central, world->serverID, world->port, world->ip, NULL, NULL, world->worldID, true);
 	}
 }

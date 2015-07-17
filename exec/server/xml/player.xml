@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8">
+<player>
+	<group name="playerid" type="int64" default="0"></group>
+	<group name="userid" type="int64" default="0"></group>
+	<group name="name" type="string" default=""></group>
+	<group name="template" type="int32" default="0"></group>
+	<group name="attr" type="obj" default="">
+		<attr name="level" type="int32" default="0"></attr>
+		<attr name="gold" type="int32" default="0"></attr>
+		<attr name="silver" type="int32" default="0"></attr>
+		<attr name="credit" type="int32" default="0"></attr>
+		<attr name="exp" type="int64" default="0"></attr>
+		<attr name="stamina" type="int32" default="0"></attr>
+		<attr name="stunt" type="int32" default="0"></attr>
+		<attr name="knight" type="int32" default="0"></attr>
+		<attr name="knightexp" type="int64" default="0"></attr>
+		<attr name="merit" type="int32" default="0"></attr>
+		<attr name="bagmax" type="int32" default="0"></attr>
+		<attr name="viplevel" type="int32" default="0"></attr>
+		<attr name="quality" type="int32" default="0"></attr>
+		<attr name="qualitypro" type="int32" default="0"></attr>
+	</group>
+	<group name="login" type="obj" default="">
+		<attr name="logintime" type="int64" default="0"></attr>
+		<attr name="logouttime" type="int64" default="0"></attr>
+	</group>
+	<group name="train" type="obj" default="">
+		<attr name="strength" type="int32" default="0"></attr>
+		<attr name="intellect" type="int32" default="0"></attr>
+		<attr name="technique" type="int32" default="0"></attr>
+		<attr name="agility" type="int32" default="0"></attr>
+	</group>
+	<group name="worship" type="obj" default="">
+		<attr name="count" type="int32" default="0"></attr>
+		<attr name="free" type="int32" default="0"></attr>
+		<attr name="green" type="int32" default="0"></attr>
+		<attr name="blue" type="int32" default="0"></attr>
+		<attr name="purple" type="int32" default="0"></attr>
+		<attr name="orange" type="int32" default="0"></attr>
+	</group>
+	<group name="skill" type="vector" default="0"></group>
+	<group name="stars" type="vector" default="0"></group>
+	<group name="items" type="map" default="0"></group>
+	<group name="heros" type="map" default="0"></group>
+</player>

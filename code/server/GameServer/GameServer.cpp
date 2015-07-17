@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "MainServer.h"
-#include "CommandMgr.h"
 #include "exception.h"
 #include "LoginModule.h"
 #include "DebugModule.h"
@@ -21,8 +20,6 @@
 #include "NoticeModule.h"
 #include "LuaFuncDefine.h"
 #ifdef __linux__
-#include "ServerMgr.h"
-#include "DBResult.h"
 #include "linux_type.h"
 #include "linux_time.h"
 #include "monitor.h"
@@ -33,8 +30,6 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CServerMgr);
 createFileSingleton(CMainServer);
-createFileSingleton(CDBResult);
-createFileSingleton(CCommandMgr);
 createFileSingleton(CLoginModule);
 createFileSingleton(CEventPool);
 createFileSingleton(CPlayerMgr);
@@ -61,7 +56,7 @@ void StatusOutput(char* output)
 	g_PacketPool.Output(szPackPool, 10240);
 	UserMgr.m_pool.Output(szUserPool, 10240);
 	PlayerMgr.m_pool.Output(szPlayerPool, 10240);
-	ServerMgr.Output(szServer);
+	GETSERVERMGR->Output(szServer);
 
 	sprintf(output, 
 		" GameServer monitor: User:%d Player:%d\n"
@@ -136,9 +131,9 @@ bool Begin()
 	const char* strOpenTime = LuaEngine.GetLuaVariableString("ServerOpenTime", "Key");
 	//g_firstServerTime = StringToDatetime(strOpenTime);
 
-	//加载lua脚本
+	/*//加载lua脚本
 	if (!onLoadScript())
-		return false;
+		return false;*/
 
 	if( !UserMgr.Initialize("user", playercnt) )
 		return false;
@@ -156,8 +151,6 @@ bool Begin()
 	if( !g_PacketPool.Init("Packet", packsize) )
 		return false;
 
-	MainServer.SetPacketSize(packsize);
-
 	//加载数据文件
 	char roleFile[256]= { 0 };
 	sprintf(roleFile,"%s/data/role.csv", g_szExePath);
@@ -171,17 +164,23 @@ bool Begin()
 	//初始化
 	char mpath[1024] = {0};
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-	MainServer.Init(worldID, Svr_Game, myid, myport, myip, 0, NULL, mpath);
+	MainServer.Init(worldID, CServerMgr::Svr_Game, myid, myport, myip, 0, NULL, mpath);
 
-	if( !MainServer.StartupServerNet(connmax, sendsize, recvsize, packsize) )
+	CNetwork* servernet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Server);
+	if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
+		Log.Error("[CMainServer] create Plugin_Net4Server failed");
 		return false;
+	}
 
-	if( !ServerMgr.CreateServer(Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID, true) )
+	CServerMgr* servermgr = (CServerMgr *)MainServer.createPlugin(CMainServer::Plugin_ServerMgr);
+	if (!servermgr->startup(CServerMgr::Svr_Central, centralid, centralport, centralip, NULL, NULL, worldID)) {
+		Log.Error("[CMainServer] create plugin CServerMgr failed");
 		return false;
+	}
 
-	//执行脚本
+	/*//执行脚本
 	if( !LuaEngine.RunLuaFunction("Startup", "Server") )
-		return false;
+		return false;*/
 
 #ifdef __linux__
 	char spath[1024] = {0};
@@ -208,7 +207,7 @@ void OnMsg(PACKET_COMMAND* pack)
 	if( DataModule.onMessage(pack) )
 		return;
 
-	if( ServerMgr.OnMsg(pack) )
+	if (GETSERVERMGR->OnMsg(pack))
 		return;
 
 	if (DebugModule.OnMsg(pack)) 
@@ -229,7 +228,7 @@ void MsgLogic()
 	//Log.Debug("MsgLogic begin ");
 	PACKET_COMMAND* pack = NULL;
 	int count = 0;
-	while( (pack = MainServer.GetHeadPacket()) && count++ <= 1000 )
+	while ((pack = GETSERVERNET->getHeadPacket()) && count++ <= 1000)
 	{
 		OnMsg(pack);
 
@@ -251,9 +250,7 @@ void Logic()
 
 	TimerModule.OnLogic();
 
-	ServerMgr.OnLogic();
-
-	CommandMgr.OnLogic();
+	GETSERVERMGR->OnLogic();
 }
 
 void Output()
@@ -271,7 +268,6 @@ void Output()
 void End()
 {
 	Log.Notice("End ..");
-	MainServer.ShutdownNet();
 	Log.Shutdown();
 
 #ifdef __linux__

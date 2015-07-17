@@ -266,7 +266,7 @@ void CPlayerMgr::_HandleLoadCache(PersonID reqID, PersonID tarID, int module)
 	
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_REQUEST_PLAYER_DATA);
-	MainServer.SendMsgToServer(ServerMgr.getDataSock(), &pack);
+	GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), &pack);
 }
 
 void CPlayerMgr::_HandleLoadRequest(CPlayer* reqPlayer, PersonID tarID, int module)

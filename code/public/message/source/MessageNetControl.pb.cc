@@ -34,8 +34,9 @@ void protobuf_AssignDesc_MessageNetControl_2eproto() {
       "MessageNetControl.proto");
   GOOGLE_CHECK(file != NULL);
   NetControl_descriptor_ = file->message_type(0);
-  static const int NetControl_offsets_[1] = {
+  static const int NetControl_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetControl, sock_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(NetControl, error_),
   };
   NetControl_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -78,8 +79,8 @@ void protobuf_AddDesc_MessageNetControl_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\027MessageNetControl.proto\022\007Message\"\032\n\nNe"
-    "tControl\022\014\n\004sock\030\001 \002(\005", 62);
+    "\n\027MessageNetControl.proto\022\007Message\")\n\nNe"
+    "tControl\022\014\n\004sock\030\001 \002(\005\022\r\n\005error\030\002 \001(\005", 77);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "MessageNetControl.proto", &protobuf_RegisterTypes);
   NetControl::default_instance_ = new NetControl();
@@ -98,6 +99,7 @@ struct StaticDescriptorInitializer_MessageNetControl_2eproto {
 
 #ifndef _MSC_VER
 const int NetControl::kSockFieldNumber;
+const int NetControl::kErrorFieldNumber;
 #endif  // !_MSC_VER
 
 NetControl::NetControl()
@@ -117,6 +119,7 @@ NetControl::NetControl(const NetControl& from)
 void NetControl::SharedCtor() {
   _cached_size_ = 0;
   sock_ = 0;
+  error_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -153,6 +156,7 @@ NetControl* NetControl::New() const {
 void NetControl::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     sock_ = 0;
+    error_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -172,6 +176,22 @@ bool NetControl::MergePartialFromCodedStream(
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &sock_)));
           set_has_sock();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_error;
+        break;
+      }
+
+      // optional int32 error = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_error:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &error_)));
+          set_has_error();
         } else {
           goto handle_uninterpreted;
         }
@@ -202,6 +222,11 @@ void NetControl::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->sock(), output);
   }
 
+  // optional int32 error = 2;
+  if (has_error()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->error(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -213,6 +238,11 @@ void NetControl::SerializeWithCachedSizes(
   // required int32 sock = 1;
   if (has_sock()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->sock(), target);
+  }
+
+  // optional int32 error = 2;
+  if (has_error()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->error(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -231,6 +261,13 @@ int NetControl::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->sock());
+    }
+
+    // optional int32 error = 2;
+    if (has_error()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->error());
     }
 
   }
@@ -263,6 +300,9 @@ void NetControl::MergeFrom(const NetControl& from) {
     if (from.has_sock()) {
       set_sock(from.sock());
     }
+    if (from.has_error()) {
+      set_error(from.error());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -288,6 +328,7 @@ bool NetControl::IsInitialized() const {
 void NetControl::Swap(NetControl* other) {
   if (other != this) {
     std::swap(sock_, other->sock_);
+    std::swap(error_, other->error_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

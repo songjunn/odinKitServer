@@ -1,5 +1,4 @@
 #include "Net.h"
-#include "Packet.h"
 #include "IOSelect.h"
 #include "memorypool.h"
 #ifdef _WIN
@@ -22,11 +21,8 @@ CNet::~CNet()
 {
 }
 
-bool CNet::Startup(int type, int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize)
+bool CNet::startup(int type, int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize)
 {
-	/*if( !g_PacketPool.Init("", packsize) )
-		return false;*/
-
 	switch(type)
 	{
 	case NET_IO_SELECT:
@@ -59,12 +55,12 @@ bool CNet::Startup(int type, int port, int connectmax, int sendbuffsize, int rec
 	return true;
 }
 
-void CNet::Terminate()
+void CNet::terminate()
 {
 	m_Net->Terminate();
 }
 
-int CNet::Send(SOCKET sock, char * data, int size)
+int CNet::send(SOCKET sock, char * data, int size)
 {
 	if( !m_Net )
 		return false;
@@ -72,7 +68,7 @@ int CNet::Send(SOCKET sock, char * data, int size)
 	return m_Net->Send( sock, data, size );
 }
 
-bool CNet::Recv(SOCKET sock, char * data, int size)
+bool CNet::recv(SOCKET sock, char * data, int size)
 {
 	if( size <= 0 || !data )
 	{
@@ -83,7 +79,7 @@ bool CNet::Recv(SOCKET sock, char * data, int size)
 	bool bOldPacket = false;
 	bool bFinish = false;
 
-	PACKET_COMMAND * pCmd = GetPacketBuff(sock);
+	PACKET_COMMAND * pCmd = getPacketBuff(sock);
 	if( pCmd )
 		bOldPacket = true;
 
@@ -134,13 +130,13 @@ bool CNet::Recv(SOCKET sock, char * data, int size)
 				pCmd->SetNetID(sock);
 
 				//存入链表
-				HandlePacket(pCmd);
+				handlePacket(pCmd);
 				updateRecvPacket(1);
 
 				//清空缓存
 				if( bOldPacket )
 				{
-					RemovePacketBuff(sock);
+					removePacketBuff(sock);
 					bOldPacket = false;
 				}
 
@@ -160,59 +156,59 @@ bool CNet::Recv(SOCKET sock, char * data, int size)
 	//当前数据包没有构建完整，缓存下来，等待下次网络数据
 	if( !bFinish )
 	{
-		InsertPacketBuff( sock, pCmd );
+		insertPacketBuff( sock, pCmd );
 	}
 	
 	return true;
 }
 
-void CNet::Break(SOCKET sock)
+void CNet::close(SOCKET sock)
 {
-	PACKET_COMMAND * pCmd = RemovePacketBuff(sock);
+	PACKET_COMMAND * pCmd = removePacketBuff(sock);
 	if( pCmd )
 		g_PacketPool.Free( pCmd );
 }
 
-bool CNet::Shutdown(SOCKET sock)
+bool CNet::shutdown(SOCKET sock)
 {
 	if( !m_Net )
 		return false;
 
-	Break(sock);
+	close(sock);
 
 	return m_Net->Shutdown(sock);
 }
 
-void CNet::PrintLog()
+void CNet::printLog()
 {
 	/*int del = timeGetTime() - time;
 	if( del )
 		Log.Notice("data:%d, time:%d, avg:%d bytes per second", size, del, size/del);*/
 }
 
-bool CNet::Accept(SOCKET sock, const char * ip)
+bool CNet::accept(SOCKET sock, const char * ip)
 {
 	return true;
 }
 
-SOCKET CNet::Connect(const char * ip, int port)
+SOCKET CNet::connect(const char * ip, int port)
 {
 	return m_Net->Connect(ip, port);
 }
 
-SOCKET CNet::ConnectAsync(const char * ip, int port)
+SOCKET CNet::connectAsync(const char * ip, int port)
 {
 	return m_Net->ConnectAsync(ip, port);
 }
 
-bool CNet::ConnectReturn(SOCKET sock, int error)
+bool CNet::connectReturn(SOCKET sock, int error)
 {
 	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
-PACKET_COMMAND * CNet::GetPacketBuff(SOCKET sock)
+PACKET_COMMAND * CNet::getPacketBuff(SOCKET sock)
 {
 	PACKET_COMMAND * pCmd = NULL;
 	m_PacketLock.LOCK();
@@ -221,7 +217,7 @@ PACKET_COMMAND * CNet::GetPacketBuff(SOCKET sock)
 	return pCmd;
 }
 
-bool CNet::InsertPacketBuff(SOCKET sock, PACKET_COMMAND * pCmd)
+bool CNet::insertPacketBuff(SOCKET sock, PACKET_COMMAND * pCmd)
 {
 	if( sock == INVALID_SOCKET || !pCmd )
 		return false;
@@ -234,7 +230,7 @@ bool CNet::InsertPacketBuff(SOCKET sock, PACKET_COMMAND * pCmd)
 	return true;
 }
 
-PACKET_COMMAND * CNet::RemovePacketBuff(SOCKET sock)
+PACKET_COMMAND * CNet::removePacketBuff(SOCKET sock)
 {
 	PACKET_COMMAND * pCmd = NULL;
 	m_PacketLock.LOCK();

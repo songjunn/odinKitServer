@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8">
+<hero>
+	<attr name="starsid" type="int64" default="0"></attr>
+	<attr name="parent" type="int64" default="0"></attr>
+	<attr name="template" type="int32" default="0"></attr>
+	<attr name="level" type="int32" default="0"></attr>
+	<attr name="exp" type="int64" default="0"></attr>
+	<attr name="position" type="int32" default="0"></attr>
+	<attr name="quality" type="int32" default="0"></attr>
+	<attr name="qualitypro" type="int32" default="0"></attr>
+	<attr name="trainstrength" type="int32" default="0"></attr>
+	<attr name="trainintellect" type="int32" default="0"></attr>
+	<attr name="traintechnique" type="int32" default="0"></attr>
+	<attr name="trainagility" type="int32" default="0"></attr>
+	<attr name="flag" type="int32" default="0"></attr>
+	<attr name="stuntskill" type="int32" default="0"></attr>
+	<attr name="skill" type="vector" default="0"></attr>
+	<attr name="stars" type="vector" default="0"></attr>
+</hero>

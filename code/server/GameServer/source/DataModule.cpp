@@ -115,7 +115,7 @@ void CDataModule::syncCreate(CGameJsonObj* obj, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_CREATE);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncRemove(CGameJsonObj* obj, int sock)
@@ -125,7 +125,7 @@ void CDataModule::syncRemove(CGameJsonObj* obj, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_REMOVE);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncField(CGameJsonObj* obj, int sock, const char* field)
@@ -140,7 +140,7 @@ void CDataModule::syncField(CGameJsonObj* obj, int sock, const char* field)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_OBJFIELD_SET);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncAddMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr)
@@ -153,7 +153,7 @@ void CDataModule::syncAddMap(int64 id, int sock, const char* field, int64 mapkey
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_MAPFIELD_ADD);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncSetMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr)
@@ -166,7 +166,7 @@ void CDataModule::syncSetMap(int64 id, int sock, const char* field, int64 mapkey
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_MAPFIELD_SET);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncDelMap(int64 id, int sock, const char* field, int64 mapkey)
@@ -178,7 +178,7 @@ void CDataModule::syncDelMap(int64 id, int sock, const char* field, int64 mapkey
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_MAPFIELD_DEL);
-	MainServer.SendMsgToServer(sock, &pack);
+	GETSERVERNET->sendMsg(sock, &pack);
 }
 
 bool CDataModule::onMessage(PACKET_COMMAND* pack)

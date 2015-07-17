@@ -98,17 +98,27 @@ class NetControl : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 sock() const;
   inline void set_sock(::google::protobuf::int32 value);
 
+  // optional int32 error = 2;
+  inline bool has_error() const;
+  inline void clear_error();
+  static const int kErrorFieldNumber = 2;
+  inline ::google::protobuf::int32 error() const;
+  inline void set_error(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Message.NetControl)
  private:
   inline void set_has_sock();
   inline void clear_has_sock();
+  inline void set_has_error();
+  inline void clear_has_error();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::int32 sock_;
+  ::google::protobuf::int32 error_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
 
   friend void  protobuf_AddDesc_MessageNetControl_2eproto();
   friend void protobuf_AssignDesc_MessageNetControl_2eproto();
@@ -144,6 +154,28 @@ inline ::google::protobuf::int32 NetControl::sock() const {
 inline void NetControl::set_sock(::google::protobuf::int32 value) {
   set_has_sock();
   sock_ = value;
+}
+
+// optional int32 error = 2;
+inline bool NetControl::has_error() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void NetControl::set_has_error() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void NetControl::clear_has_error() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void NetControl::clear_error() {
+  error_ = 0;
+  clear_has_error();
+}
+inline ::google::protobuf::int32 NetControl::error() const {
+  return error_;
+}
+inline void NetControl::set_error(::google::protobuf::int32 value) {
+  set_has_error();
+  error_ = value;
 }
 
 
