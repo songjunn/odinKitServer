@@ -19,7 +19,7 @@ aux_source_directory(${SHARED_SOURCE_DIR}/memory SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/mongoose SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/network SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/rapidjson SHARED_SRC)
-aux_source_directory(${SHARED_SOURCE_DIR}/trhead SHARED_SRC)
+aux_source_directory(${SHARED_SOURCE_DIR}/thread SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/util SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/xml SHARED_SRC)
 
