@@ -165,7 +165,7 @@ void CDataModule::syncObjFinish(int sock, std::string type, int64 id)
 void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string key, int64 mapkey, int sock)
 {
 	std::string jsonstr;
-	CGameJsonObj::toJsonstring(json, jsonstr);
+	CMetadata::toJsonstring(json, jsonstr);
 
 	Message::SyncObjField msg;
 	msg.set_id(obj->m_id);
@@ -187,19 +187,19 @@ void CDataModule::syncObjSeparate(CDataObj* obj, int sock)
 	for (rapidjson::Value::MemberIterator it = obj->m_members.MemberBegin(); it != obj->m_members.MemberEnd(); ++it) {
 		rapidjson::Value& member = obj->getFieldObj(it->name.GetString());
 		
-		if (CGameJsonObj::isFieldI64(member)) {
+		if (CMetadata::isFieldI64(member)) {
 			rapidjson::Value jsonValue;
-			jsonValue.SetInt64(CGameJsonObj::getFieldI64(member));
+			jsonValue.SetInt64(CMetadata::getFieldI64(member));
 			gameObj.m_members.AddMember(it->name.GetString(), jsonValue, gameObj.m_members.GetAllocator());
 		}
-		else if (CGameJsonObj::isFieldInt(member)) {
+		else if (CMetadata::isFieldInt(member)) {
 			rapidjson::Value jsonValue;
-			jsonValue.SetInt(CGameJsonObj::getFieldInt(member));
+			jsonValue.SetInt(CMetadata::getFieldInt(member));
 			gameObj.m_members.AddMember(it->name.GetString(), jsonValue, gameObj.m_members.GetAllocator());
 		}
-		else if (CGameJsonObj::isFieldStr(member)) {
+		else if (CMetadata::isFieldStr(member)) {
 			rapidjson::Value jsonValue;
-			jsonValue.SetString(CGameJsonObj::getFieldStr(member).c_str(), gameObj.m_members.GetAllocator());
+			jsonValue.SetString(CMetadata::getFieldStr(member).c_str(), gameObj.m_members.GetAllocator());
 			gameObj.m_members.AddMember(it->name.GetString(), jsonValue, gameObj.m_members.GetAllocator());
 		}
 	}
@@ -207,14 +207,14 @@ void CDataModule::syncObjSeparate(CDataObj* obj, int sock)
 
 	for (rapidjson::Value::MemberIterator it = obj->m_members.MemberBegin(); it != obj->m_members.MemberEnd(); ++it) {
 		rapidjson::Value& member = obj->getFieldObj(it->name.GetString());
-		if (CGameJsonObj::isFieldVec(member)) {
+		if (CMetadata::isFieldVec(member)) {
 			this->syncObj(obj, it->name.GetString(), sock);
 		}
-		else if (CGameJsonObj::isFieldObj(member)) {
+		else if (CMetadata::isFieldObj(member)) {
 			rapidjson::Value::MemberIterator child = member.MemberBegin();
-			if (child != member.MemberEnd() && CGameJsonObj::isFieldObj(CGameJsonObj::getFieldVal(member, child->name.GetString()))) {
+			if (child != member.MemberEnd() && CMetadata::isFieldObj(CMetadata::getFieldVal(member, child->name.GetString()))) {
 				do {
-					rapidjson::Value& childjson = CGameJsonObj::getFieldVal(member, child->name.GetString());
+					rapidjson::Value& childjson = CMetadata::getFieldVal(member, child->name.GetString());
 					this->syncObjMap(obj, childjson, it->name.GetString(), atoll(child->name.GetString()), sock);
 				} while (++child != member.MemberEnd());
 			} else {

@@ -176,7 +176,7 @@
       </PrecompiledHeader>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="source\GameObj_Json.cpp" />
+    <ClCompile Include="source\metadata.cpp" />
     <ClCompile Include="source\MainServer.cpp" />
     <ClCompile Include="source\plugin_HttpServe.cpp" />
     <ClCompile Include="source\plugin_Mongodb.cpp" />
@@ -187,7 +187,7 @@
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\GameObj_Json.h" />
+    <ClInclude Include="include\metadata.h" />
     <ClInclude Include="include\MainServer.h" />
     <ClInclude Include="include\plugin.h" />
     <ClInclude Include="include\pluginHandler.h" />

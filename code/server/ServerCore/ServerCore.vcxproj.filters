@@ -21,9 +21,6 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\GameObj_Json.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\MainServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -46,6 +43,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="source\plugin_Network.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\metadata.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,10 +77,10 @@
     <ClInclude Include="include\plugin_ServerMgr.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\GameObj_Json.h">
+    <ClInclude Include="include\plugin_Network.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\plugin_Network.h">
+    <ClInclude Include="include\metadata.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

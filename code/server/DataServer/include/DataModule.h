@@ -4,10 +4,10 @@
 #include "platform.h"
 #include "Singleton.h"
 #include "ObjMgr.h"
-#include "GameObj_Json.h"
+#include "metadata.h"
 
 
-class CDataObj : public CGameJsonObj
+class CDataObj : public CMetadata
 {
 public:
 	int m_save;

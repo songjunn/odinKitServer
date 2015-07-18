@@ -25,20 +25,20 @@
 #define GETINT_FROM_JSONSTR(json, key, value)						\
 	rapidjson::Document document;									\
 	document.Parse<0>(json.c_str());								\
-	int value = CGameJsonObj::getFieldInt(document[key]);			\
+	int value = CMetadata::getFieldInt(document[key]);			\
 
 #define GETI64_FROM_JSONSTR(json, key, value)						\
 	rapidjson::Document document;									\
 	document.Parse<0>(json.c_str());								\
-	int64 value = CGameJsonObj::getFieldI64(document[key]);			\
+	int64 value = CMetadata::getFieldI64(document[key]);			\
 
 
 
-class CGameJsonObj
+class CMetadata
 {
 public:
-	CGameJsonObj()	{m_members.SetObject();}
-	virtual ~CGameJsonObj()	{}
+	CMetadata()	{m_members.SetObject();}
+	virtual ~CMetadata()	{}
 
 	inline int64 getId() {return m_id;}
 	inline bool HaveMember(std::string key) {return _hasMember(m_members, key);}

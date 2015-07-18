@@ -255,7 +255,9 @@ void OnMsg(PACKET_COMMAND* pack)
 void MsgLogic()
 {
 	VPROF("MsgLogic");
+
 	PACKET_COMMAND* pack = NULL;
+
 	int count = 0;
 	while ((pack = GETSERVERNET->getHeadPacket()) && count++ <= 10000)
 	{
@@ -263,7 +265,14 @@ void MsgLogic()
 		
 		g_PacketPool.Free( pack );
 	}
-	//Log.Error("Handle Packet:%d", count);
+	
+	count = 0;
+	while ((pack = GETCLIENTNET->getHeadPacket()) && count++ <= 1000)
+	{
+		OnMsg(pack);
+
+		g_PacketPool.Free(pack);
+	}
 }
 
 void StatusLogic()

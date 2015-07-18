@@ -221,6 +221,12 @@ void MsgLogic()
 
 		g_PacketPool.Free( pack );
 	}
+	while ((pack = GETCLIENTNET->getHeadPacket()))
+	{
+		OnMsg(pack);
+
+		g_PacketPool.Free(pack);
+	}
 }
 
 void Logic()

@@ -6,11 +6,11 @@
 #include "tinyxml.h"   
 #include "tinystr.h"
 #include "ObjMgr.h"
-#include "GameObj_Json.h"
+#include "metadata.h"
 
 
 class PACKET_COMMAND;
-class CDataModule : public CObjMgr< CGameJsonObj, int64 >, public Singleton< CDataModule >
+class CDataModule : public CObjMgr< CMetadata, int64 >, public Singleton< CDataModule >
 {
 public:
 	CDataModule()	{objTemplate.SetObject();}
@@ -20,12 +20,12 @@ public:
 
 	bool initObjProxy(const char* xmlFile);
 
-	CGameJsonObj* create(const char* type, int64 id);
-	CGameJsonObj* createGameJsonObj(const char* type, int64 id);
+	CMetadata* create(const char* type, int64 id);
+	CMetadata* createGameJsonObj(const char* type, int64 id);
 
-	void syncCreate(CGameJsonObj* obj, int sock);
-	void syncRemove(CGameJsonObj* obj, int sock);
-	void syncField(CGameJsonObj* obj, int sock, const char* field);
+	void syncCreate(CMetadata* obj, int sock);
+	void syncRemove(CMetadata* obj, int sock);
+	void syncField(CMetadata* obj, int sock, const char* field);
 	void syncAddMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr);
 	void syncSetMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr);
 	void syncDelMap(int64 id, int sock, const char* field, int64 mapkey);

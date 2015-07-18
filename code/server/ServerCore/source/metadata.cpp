@@ -1,105 +1,105 @@
-﻿#include "GameObj_Json.h"
+﻿#include "metadata.h"
 #include "Log.h"
 
 
-int CGameJsonObj::getFieldInt(std::string key)
+int CMetadata::getFieldInt(std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	return this->getFieldInt(member);
 }
 
-void CGameJsonObj::setFieldInt(std::string key, int value)
+void CMetadata::setFieldInt(std::string key, int value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	this->_setFieldInt(member, value);
 }
 
-int64 CGameJsonObj::getFieldI64(std::string key)
+int64 CMetadata::getFieldI64(std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	return this->getFieldI64(member);
 }
 
-void CGameJsonObj::setFieldI64(std::string key, int64 value)
+void CMetadata::setFieldI64(std::string key, int64 value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	this->_setFieldI64(member, value);
 }
 
-std::string CGameJsonObj::getFieldString(std::string key)
+std::string CMetadata::getFieldString(std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	return this->getFieldStr(member);
 }
 
-void CGameJsonObj::setFieldString(std::string key, std::string value)
+void CMetadata::setFieldString(std::string key, std::string value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	this->_setFieldStr(member, value);
 }
 
-int CGameJsonObj::getFieldObjInt(std::string group, std::string key)
+int CMetadata::getFieldObjInt(std::string group, std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, group);
 	rapidjson::Value& attr = this->getFieldVal(member, key);
 	return this->getFieldInt(attr);
 }
 
-void CGameJsonObj::setFieldObjInt(std::string group, std::string key, int value)
+void CMetadata::setFieldObjInt(std::string group, std::string key, int value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, group);
 	rapidjson::Value& attr = this->getFieldVal(member, key);
 	this->_setFieldInt(attr, value);
 }
 
-int64 CGameJsonObj::getFieldObjI64(std::string group, std::string key)
+int64 CMetadata::getFieldObjI64(std::string group, std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, group);
 	rapidjson::Value& attr = this->getFieldVal(member, key);
 	return this->getFieldI64(attr);
 }
 
-void CGameJsonObj::setFieldObjI64(std::string group, std::string key, int64 value)
+void CMetadata::setFieldObjI64(std::string group, std::string key, int64 value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, group);
 	rapidjson::Value& attr = this->getFieldVal(member, key);
 	this->_setFieldI64(attr, value);
 }
 
-std::string CGameJsonObj::getFieldObjString(std::string group, std::string key)
+std::string CMetadata::getFieldObjString(std::string group, std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, group);
 	rapidjson::Value& attr = this->getFieldVal(member, key);
 	return this->getFieldStr(attr);
 }
 
-void CGameJsonObj::setFieldObjString(std::string group, std::string key, std::string value)
+void CMetadata::setFieldObjString(std::string group, std::string key, std::string value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, group);
 	rapidjson::Value& attr = this->getFieldVal(member, key);
 	this->_setFieldStr(attr, value);
 }
 
-int CGameJsonObj::getVecCount(std::string key)
+int CMetadata::getVecCount(std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	return this->_getVecCount(member);
 }
 
-rapidjson::Value& CGameJsonObj::getFieldVec(std::string key, int idx)
+rapidjson::Value& CMetadata::getFieldVec(std::string key, int idx)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	return this->getFieldVec(member, idx);
 }
 
-void CGameJsonObj::addFieldMap(std::string key, int64 id, std::string jsonstring)
+void CMetadata::addFieldMap(std::string key, int64 id, std::string jsonstring)
 {
 	rapidjson::Document document(&m_members.GetAllocator());
 	document.Parse<0>(jsonstring.c_str());
 	this->addFieldMap(key, id, document);
 }
 
-void CGameJsonObj::addFieldMap(std::string key, int64 id, rapidjson::Value& value)
+void CMetadata::addFieldMap(std::string key, int64 id, rapidjson::Value& value)
 {
 	char idx[32] = {0};
 	sprintf(idx, INT64_FMT, id);
@@ -109,14 +109,14 @@ void CGameJsonObj::addFieldMap(std::string key, int64 id, rapidjson::Value& valu
 	}
 }
 
-void CGameJsonObj::setFieldMap(std::string key, int64 id, std::string jsonstring)
+void CMetadata::setFieldMap(std::string key, int64 id, std::string jsonstring)
 {
 	rapidjson::Document document(&m_members.GetAllocator());
 	document.Parse<0>(jsonstring.c_str());
 	this->setFieldMap(key, id, document);
 }
 
-void CGameJsonObj::setFieldMap(std::string key, int64 id, rapidjson::Value& value)
+void CMetadata::setFieldMap(std::string key, int64 id, rapidjson::Value& value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	if (this->isFieldObj(member)) {
@@ -127,7 +127,7 @@ void CGameJsonObj::setFieldMap(std::string key, int64 id, rapidjson::Value& valu
 	}
 }
 
-void CGameJsonObj::delFieldMap(std::string key, int64 id)
+void CMetadata::delFieldMap(std::string key, int64 id)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	if (this->isFieldObj(member)) {
@@ -137,19 +137,19 @@ void CGameJsonObj::delFieldMap(std::string key, int64 id)
 	}
 }
 
-void CGameJsonObj::addFieldObj(std::string key)
+void CMetadata::addFieldObj(std::string key)
 {
 	rapidjson::Document val(&m_members.GetAllocator());
 	val.SetObject();
 	this->_addFiledVal(m_members, key, val);
 }
 
-rapidjson::Value& CGameJsonObj::getFieldObj(std::string key)
+rapidjson::Value& CMetadata::getFieldObj(std::string key)
 {
 	return this->getFieldVal(m_members, key);
 }
 
-void CGameJsonObj::fromBson(mongo::BSONObj& bson)
+void CMetadata::fromBson(mongo::BSONObj& bson)
 {
 	std::vector<mongo::BSONElement> elements;
 	bson.elems(elements);
@@ -158,7 +158,7 @@ void CGameJsonObj::fromBson(mongo::BSONObj& bson)
 	}
 }
 
-void CGameJsonObj::fromBson(mongo::BSONObj& bson, std::string key)
+void CMetadata::fromBson(mongo::BSONObj& bson, std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 
@@ -169,7 +169,7 @@ void CGameJsonObj::fromBson(mongo::BSONObj& bson, std::string key)
 	}
 }
 
-void CGameJsonObj::_fieldBsonToJson(rapidjson::Value& json, std::string key, mongo::BSONObj& bson)
+void CMetadata::_fieldBsonToJson(rapidjson::Value& json, std::string key, mongo::BSONObj& bson)
 {
 	mongo::BSONObj valObj;
 	mongo::vector<mongo::BSONElement> valArray;
@@ -244,7 +244,7 @@ void CGameJsonObj::_fieldBsonToJson(rapidjson::Value& json, std::string key, mon
 	}
 }
 
-void CGameJsonObj::_vecBsonToJson(rapidjson::Value& json, mongo::vector<mongo::BSONElement>& value)
+void CMetadata::_vecBsonToJson(rapidjson::Value& json, mongo::vector<mongo::BSONElement>& value)
 {
 	for (int i=0; i<value.size(); ++i) {
 		rapidjson::Value val;
@@ -259,7 +259,7 @@ void CGameJsonObj::_vecBsonToJson(rapidjson::Value& json, mongo::vector<mongo::B
 	}
 }
 
-void CGameJsonObj::_objBsonToJson(rapidjson::Value& json, mongo::BSONObj& bson)
+void CMetadata::_objBsonToJson(rapidjson::Value& json, mongo::BSONObj& bson)
 {
 	std::vector<mongo::BSONElement> values;
 	bson.elems(values);
@@ -268,7 +268,7 @@ void CGameJsonObj::_objBsonToJson(rapidjson::Value& json, mongo::BSONObj& bson)
 	}
 }
 
-void CGameJsonObj::toBson(mongo::BSONObj& bson)
+void CMetadata::toBson(mongo::BSONObj& bson)
 {
 	mongo::BSONObjBuilder objbuilder;
 	for (rapidjson::Value::MemberIterator it = m_members.MemberBegin(); it != m_members.MemberEnd(); ++it) {
@@ -277,7 +277,7 @@ void CGameJsonObj::toBson(mongo::BSONObj& bson)
 	bson = objbuilder.obj(); 
 }
 
-void CGameJsonObj::toBson(mongo::BSONObj& bson, std::string key)
+void CMetadata::toBson(mongo::BSONObj& bson, std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 
@@ -288,7 +288,7 @@ void CGameJsonObj::toBson(mongo::BSONObj& bson, std::string key)
 	bson = objbuilder.obj(); 
 }
 
-void CGameJsonObj::_fieldJsonToBson(rapidjson::Value& json, std::string key, mongo::BSONObjBuilder& builder)
+void CMetadata::_fieldJsonToBson(rapidjson::Value& json, std::string key, mongo::BSONObjBuilder& builder)
 {
 	rapidjson::Value& member = this->getFieldVal(json, key);
 
@@ -313,7 +313,7 @@ void CGameJsonObj::_fieldJsonToBson(rapidjson::Value& json, std::string key, mon
 	}
 }
 
-void CGameJsonObj::_vecJsonToBson(rapidjson::Value& json, mongo::BSONArrayBuilder& vecBuilder)
+void CMetadata::_vecJsonToBson(rapidjson::Value& json, mongo::BSONArrayBuilder& vecBuilder)
 {
 	for(int i=0; i<this->_getVecCount(json); ++i) {
 
@@ -338,14 +338,14 @@ void CGameJsonObj::_vecJsonToBson(rapidjson::Value& json, mongo::BSONArrayBuilde
 	}
 }
 
-void CGameJsonObj::_objJsonToBson(rapidjson::Value& json, mongo::BSONObjBuilder& objBuilder)
+void CMetadata::_objJsonToBson(rapidjson::Value& json, mongo::BSONObjBuilder& objBuilder)
 {
 	for (rapidjson::Value::MemberIterator it = json.MemberBegin(); it != json.MemberEnd(); ++it) {
 		this->_fieldJsonToBson(json, it->name.GetString(), objBuilder);
 	}
 }
 
-void CGameJsonObj::toJsonstring(rapidjson::Value& json, std::string& str)
+void CMetadata::toJsonstring(rapidjson::Value& json, std::string& str)
 {
 	rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -353,7 +353,7 @@ void CGameJsonObj::toJsonstring(rapidjson::Value& json, std::string& str)
 	str.assign(buffer.GetString(), buffer.Size());
 }
 
-void CGameJsonObj::toJsonstring(std::string& json)
+void CMetadata::toJsonstring(std::string& json)
 {
 	rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -361,13 +361,13 @@ void CGameJsonObj::toJsonstring(std::string& json)
 	json.assign(buffer.GetString(), buffer.Size());
 }
 
-void CGameJsonObj::toJsonstring(std::string& json, std::string key)
+void CMetadata::toJsonstring(std::string& json, std::string key)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	this->toJsonstring(member, json);
 }
 
-void CGameJsonObj::fromJsonstring(std::string json)
+void CMetadata::fromJsonstring(std::string json)
 {
 	rapidjson::Document doc(&m_members.GetAllocator());
 	doc.Parse<0>(json.c_str());
@@ -377,7 +377,7 @@ void CGameJsonObj::fromJsonstring(std::string json)
 	}
 }
 
-void CGameJsonObj::fromJsonstring(std::string json, std::string key)
+void CMetadata::fromJsonstring(std::string json, std::string key)
 {
 	rapidjson::Document doc(&m_members.GetAllocator());
 	doc.Parse<0>(json.c_str());
@@ -407,7 +407,7 @@ void CGameJsonObj::fromJsonstring(std::string json, std::string key)
 	}
 }
 
-void CGameJsonObj::_fieldJsonToJson(rapidjson::Value& desjson, std::string key, rapidjson::Value& srcjson)
+void CMetadata::_fieldJsonToJson(rapidjson::Value& desjson, std::string key, rapidjson::Value& srcjson)
 {
 	rapidjson::Value& srcmember = this->getFieldVal(srcjson, key);
 	if (this->_hasMember(desjson, key)) {
@@ -433,14 +433,14 @@ void CGameJsonObj::_fieldJsonToJson(rapidjson::Value& desjson, std::string key, 
 	}
 }
 
-void CGameJsonObj::_objJsonToJson(rapidjson::Value& desjson, rapidjson::Value& srcjson)
+void CMetadata::_objJsonToJson(rapidjson::Value& desjson, rapidjson::Value& srcjson)
 {
 	for (rapidjson::Value::MemberIterator it = srcjson.MemberBegin(); it != srcjson.MemberEnd(); ++it) {
 		this->_fieldJsonToJson(desjson, it->name.GetString(), srcjson);
 	}
 }
 
-void CGameJsonObj::_vecJsonToJson(rapidjson::Value& desjson, rapidjson::Value& srcjson)
+void CMetadata::_vecJsonToJson(rapidjson::Value& desjson, rapidjson::Value& srcjson)
 {
 	for(int i=0; i<this->_getVecCount(srcjson); ++i) {
 
@@ -478,12 +478,12 @@ void CGameJsonObj::_vecJsonToJson(rapidjson::Value& desjson, rapidjson::Value& s
 	}
 }
 
-void CGameJsonObj::fromJsonstringCompletely(std::string json)
+void CMetadata::fromJsonstringCompletely(std::string json)
 {
 	m_members.Parse<0>(json.c_str());
 }
 
-void CGameJsonObj::fromJsonstringCompletely(std::string json, std::string key)
+void CMetadata::fromJsonstringCompletely(std::string json, std::string key)
 {
 	rapidjson::Document document(&m_members.GetAllocator());
 	document.Parse<0>(json.c_str());
@@ -491,7 +491,7 @@ void CGameJsonObj::fromJsonstringCompletely(std::string json, std::string key)
 	this->_setFieldVal(member, document);
 }
 
-void CGameJsonObj::toProtobuf(google::protobuf::Message &message)
+void CMetadata::toProtobuf(google::protobuf::Message &message)
 {
 	//protobuf
 	const google::protobuf::Reflection	*pReflection = message.GetReflection();
@@ -557,7 +557,7 @@ void CGameJsonObj::toProtobuf(google::protobuf::Message &message)
 	}
 }
 
-void CGameJsonObj::fromProtobuf(google::protobuf::Message& message)
+void CMetadata::fromProtobuf(google::protobuf::Message& message)
 {
 	//protobuf
 	const google::protobuf::Reflection *pReflection = message.GetReflection();

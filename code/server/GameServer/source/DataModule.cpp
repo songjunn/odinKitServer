@@ -75,9 +75,9 @@ void CDataModule::_parseXmlNode(TiXmlElement* node, rapidjson::Value& json)
 	json.AddMember(jsonName, jsonValue, objTemplate.GetAllocator());
 }
 
-CGameJsonObj* CDataModule::create(const char* type, int64 id)
+CMetadata* CDataModule::create(const char* type, int64 id)
 {
-	CGameJsonObj* obj = Create(id);
+	CMetadata* obj = Create(id);
 	if (!obj)
 		return NULL;
 
@@ -89,9 +89,9 @@ CGameJsonObj* CDataModule::create(const char* type, int64 id)
 	return obj;
 }
 
-CGameJsonObj* CDataModule::createGameJsonObj(const char* type, int64 id)
+CMetadata* CDataModule::createGameJsonObj(const char* type, int64 id)
 {
-	CGameJsonObj* obj = create(type, id);
+	CMetadata* obj = create(type, id);
 	if (!obj)
 		return NULL;
 
@@ -103,7 +103,7 @@ CGameJsonObj* CDataModule::createGameJsonObj(const char* type, int64 id)
 	return obj;
 }
 
-void CDataModule::syncCreate(CGameJsonObj* obj, int sock)
+void CDataModule::syncCreate(CMetadata* obj, int sock)
 {
 	std::string json;
 	obj->toJsonstring(json);
@@ -118,7 +118,7 @@ void CDataModule::syncCreate(CGameJsonObj* obj, int sock)
 	GETSERVERNET->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncRemove(CGameJsonObj* obj, int sock)
+void CDataModule::syncRemove(CMetadata* obj, int sock)
 {
 	Message::SyncObjField msg;
 	msg.set_id(obj->m_id);
@@ -128,7 +128,7 @@ void CDataModule::syncRemove(CGameJsonObj* obj, int sock)
 	GETSERVERNET->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncField(CGameJsonObj* obj, int sock, const char* field)
+void CDataModule::syncField(CMetadata* obj, int sock, const char* field)
 {
 	std::string json;
 	obj->toJsonstring(json, field);
@@ -192,7 +192,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
-				CGameJsonObj* obj = this->createGameJsonObj(msg.type().c_str(), msg.id());
+				CMetadata* obj = this->createGameJsonObj(msg.type().c_str(), msg.id());
 				if (obj) {
 					obj->fromJsonstring(msg.jsonstr());
 				}
@@ -203,7 +203,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
-				CGameJsonObj* obj = this->GetObj(msg.id());
+				CMetadata* obj = this->GetObj(msg.id());
 				if (obj) {
 					obj->fromJsonstring(msg.jsonstr(), msg.key());
 				}
@@ -214,7 +214,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
-				CGameJsonObj* obj = this->GetObj(msg.id());
+				CMetadata* obj = this->GetObj(msg.id());
 				if (obj && obj->HaveMember(msg.key())) {
 					obj->addFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());
 				}
@@ -226,7 +226,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				if (msg.type() == "player") {
-					CGameJsonObj* obj = this->GetObj(msg.id());
+					CMetadata* obj = this->GetObj(msg.id());
 					if (obj) {
 						LoginModule.eventPlayerLoadover(msg.id());
 					}
