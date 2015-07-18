@@ -24,7 +24,6 @@ enum EServerState
 #define GETCLIENTNET	((CNetwork *)MainServer.getPlugin(CMainServer::Plugin_Net4Client))
 #define GETMONGODB		((CMongoDB *)MainServer.getPlugin(CMainServer::Plugin_Mongodb))
 
-struct CServerObj;
 class CPlugin;
 class CMainServer : public Singleton< CMainServer >
 {
