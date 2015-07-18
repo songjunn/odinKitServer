@@ -9,7 +9,7 @@
 #include "plugin_Mongodb.h"
 
 
-#define TRAVERSE_JSONOBJ_MAP(obj, key, jsonstr, id)					\
+#define TRAVERSE_METADATA_MAP(obj, key, jsonstr, id)				\
 	rapidjson::Value& member = obj->getFieldObj(key);				\
 	for (rapidjson::Value::MemberIterator it = member.MemberBegin(); it != member.MemberEnd(); ++it) {	\
 		std::string jsonstr;										\
@@ -17,7 +17,7 @@
 		rapidjson::Value& itor = member[it->name.GetString()];		\
 		obj->toJsonstring(itor, jsonstr);							\
 
-#define TRAVERSE_JSONOBJ_VECTOR(obj, key, value)					\
+#define TRAVERSE_METADATA_VECTOR(obj, key, value)					\
 	for (int idx = 0; idx < obj->getVecCount(key); ++idx) {			\
 		rapidjson::Value& member = obj->getFieldVec(key, idx);		\
 		int64 value = member.GetInt64();							\
@@ -25,13 +25,12 @@
 #define GETINT_FROM_JSONSTR(json, key, value)						\
 	rapidjson::Document document;									\
 	document.Parse<0>(json.c_str());								\
-	int value = CMetadata::getFieldInt(document[key]);			\
+	int value = CMetadata::getFieldInt(document[key]);				\
 
 #define GETI64_FROM_JSONSTR(json, key, value)						\
 	rapidjson::Document document;									\
 	document.Parse<0>(json.c_str());								\
 	int64 value = CMetadata::getFieldI64(document[key]);			\
-
 
 
 class CMetadata
