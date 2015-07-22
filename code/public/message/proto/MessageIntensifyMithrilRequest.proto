@@ -1,7 +1,0 @@
-package Message; 
-message IntensifyMithrilRequest						//秘银强化请求
-{
-	optional int64		roleid				= 1;	//英雄或主角ID
-	optional int64		itemid				= 2;	//秘银实体ID
-	repeated int64		material			= 3;    //秘银材料ID
-} 

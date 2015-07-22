@@ -1,5 +1,0 @@
-package Message; 
-message RandHeroRequest						//斗酒请求
-{ 
-	optional int32	    randtype	= 1;	//0:请求打开斗酒界面 1:免费斗酒一次 2:花费斗酒一次 3:花费斗酒十次
-} 

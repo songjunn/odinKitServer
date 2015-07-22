@@ -1,5 +1,0 @@
-package Message; 
-message PlayerBuyActionRequest			//请求购买体力
-{ 
-	optional	int64  	playerid 		= 1;  	//角色ID
-} 

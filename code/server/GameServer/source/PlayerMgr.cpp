@@ -7,7 +7,6 @@
 #include "MessageReqPlayerData.pb.h"
 #include "MessagePlayerDataResponse.pb.h"
 #include "MessageObservePlayerRequest.pb.h"
-#include "MessageSyncBuffer.pb.h"
 
 
 CPlayer* CPlayerMgr::Create(int templateid, PersonID playerid)
@@ -75,7 +74,6 @@ bool CPlayerMgr::OnMsg(PACKET_COMMAND* pack)
 	case D2G_NOTIFY_PLAYER_LOADOVER:_HandlePacket_PlayerLoadOver(pack);	break;
 	case D2G_RESPONSE_PLAYER_DATA:	_HandlePacket_OfflinePlayerData(pack); break;
 	case P2G_REQUEST_OBSERVE_PLAYER:_HandlePacket_ObservePlayer(pack);	break;
-	case D2G_NOTIFY_BUFFER:			_HandlePacket_SyncBuff(pack);	break;
 	default:	return false;
 	}
 
@@ -284,21 +282,4 @@ void CPlayerMgr::SyncObservePlayer(CPlayer* player, CPlayer* toPlayer)
 		return;
 
 	player->SyncAttribute(false, toPlayer);
-}
-
-bool CPlayerMgr::_HandlePacket_SyncBuff(PACKET_COMMAND* pack)
-{
-	if( !pack ) {
-		return false;
-	}
-
-	Message::SyncBuffer msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	CPlayer* player = GetObj( msg.pid() );
-	if( !player ) {
-		return false;
-	}
-
-	return true;
 }

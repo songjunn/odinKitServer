@@ -1,7 +1,0 @@
-package Message;
-
-/*G2P_NOTIFY_ARENA_KNIGHT_APPEAR = 1504, //  notify appear a knight*/
-message ArenaKnightAppearNotify
-{
-	optional int32 id = 1;
-};

@@ -1,7 +1,0 @@
-package Message; 
-message ItemEquipResponse								//响应穿装
-{
-   optional int64		itemid 				= 1;	//道具实体ID
-   optional int64		roleid 				= 2;	//英雄ID， roleid
-   optional int32			position			= 3;	//装备位置
-} 

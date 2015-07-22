@@ -1,7 +1,0 @@
-package Message; 
-message WorldDataResponse							//同步游戏世界初始数据
-{ 
-   optional int64     itemid		= 1;  //物品ID
-   optional int64     heroid		= 2;  //英雄ID
-   optional int64     playerid	= 3;  //玩家ID
-} 

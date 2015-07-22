@@ -1,8 +1,0 @@
-package Message; 
-message BossAttackResponse					//攻击boss响应
-{ 
-   optional int32     damage 		= 1;  //单场伤害
-   optional int32     total 		= 2;  //总伤害
-   optional int32			silver		= 3;	//银币奖励
-   optional int32			cdtime		= 4;	//剩余cd时间
-} 

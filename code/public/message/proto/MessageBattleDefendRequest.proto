@@ -1,5 +1,0 @@
-package Message; 
-message BattleDefendRequest					//国战请求防御
-{ 
-   optional int32			wpid		= 1;	//路点编号
-} 

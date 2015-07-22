@@ -1,5 +1,0 @@
-package Message; 
-message BossJoinRequest						//请求参加世界boss
-{ 
-   optional int64     pid 		= 1;  //角色ID
-} 

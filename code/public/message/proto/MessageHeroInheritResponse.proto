@@ -1,5 +1,0 @@
-package Message; 
-message HeroInheritResponse						//·µ»ØÓ¢ÐÛ¼Ì³Ð½á¹û
-{
-   optional bool		result 			= 1;
-} 

@@ -1,8 +1,0 @@
-package Message;
-
-/*G2P_NOTIFY_ARENA_REFRESH            = 1520, //  notify arena refresh*/
-message ArenaRefresh
-{
-	optional int32	reason		= 1;
-};
-

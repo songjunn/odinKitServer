@@ -1,6 +1,0 @@
-package Message; 
-message ZoneAward			//获得宝箱请求
-{
-	optional int32 zoneid = 1;	//区域ID
-	optional int32 boxidx = 2;	//宝箱序号(从0开始)
-}

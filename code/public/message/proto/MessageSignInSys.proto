@@ -1,6 +1,0 @@
-package Message;
-message SignInSystemRequest		// 签到系统
-{
-    optional int32 opttype = 1;	        // 0:打开面板 1:签到 2:打开补签面板 3:补签 4:打开兑换面板 5:兑换 6:刷新物品单 7:打开分享面板 8:分享
-    optional int32 subtype = 2;		// 相应子操作或参数
-}

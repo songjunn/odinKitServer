@@ -1,8 +1,0 @@
-package Message; 
-message ItemInlayJadeRequest						//镶嵌魂玉请求
-{
-	optional int64		roleid				= 1;	//英雄或主角ID
-	optional int64		itemid 				= 2;	//装备实体ID
-	optional int64		soulid 				= 3;	//魂玉实体ID
-	optional int32		kongid 				= 4;	//孔位标识
-} 

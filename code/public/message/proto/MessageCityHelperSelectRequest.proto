@@ -1,5 +1,0 @@
-package Message; 
-message CityHelperSelectRequest				//请求选择助阵者
-{
-   optional int64			helper	= 1;		//助阵玩家ID
-} 

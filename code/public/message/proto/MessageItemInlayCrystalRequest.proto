@@ -1,7 +1,0 @@
-package Message; 
-message ItemInlayCrystalRequest						//镶嵌魂晶请求
-{
-	optional int64		roleid				= 1;	//英雄或主角ID
-	optional int64		itemid 				= 2;	//装备实体ID
-	optional int64		soulid 				= 3;	//魂晶实体ID
-} 

@@ -1,7 +1,0 @@
-package Message; 
-message RecastCrystalRequest								//魂晶重铸请求
-{
-	optional int64		roleid					= 1;	//英雄或主角ID
-	optional int64		itemid_one				= 2;	//魂晶实体ID
-	optional int64		itemid_two				= 3;	//魂晶实体ID
-} 

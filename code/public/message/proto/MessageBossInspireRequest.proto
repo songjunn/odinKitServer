@@ -1,5 +1,0 @@
-package Message; 
-message BossInspireRequest					//ÇëÇó¹ÄÎè
-{ 
-   optional int64     pid 		= 1;  //½ÇÉ«ID
-} 

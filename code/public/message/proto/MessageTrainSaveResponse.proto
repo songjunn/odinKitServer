@@ -1,5 +1,0 @@
-package Message; 
-message TrainSaveResponse						//训练保存响应
-{
-   optional int64		role 			= 1;	//主角或英雄ID
-} 

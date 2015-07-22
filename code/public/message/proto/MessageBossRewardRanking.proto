@@ -1,5 +1,0 @@
-package Message; 
-message BossRewardRanking						//世界boss排名奖励
-{ 
-   optional int32     merit 		= 1;  //战功奖励
-} 

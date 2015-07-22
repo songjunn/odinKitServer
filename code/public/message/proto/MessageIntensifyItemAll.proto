@@ -1,5 +1,0 @@
-package Message; 
-message IntensifyItemAll								//道具强化请求
-{
-	optional int64		roleid				= 1;			//英雄或主角ID
-} 

@@ -1,8 +1,0 @@
-package Message; 
-message NotifyExpeditionInfo				//同步远征数据
-{ 
-	optional int32	mode1curstage	= 1;
-	optional int32	mode2curstage	= 2;
-	optional int32	teamanger		= 3;
-	optional int32	mode2chlgcnt	= 4;
-} 

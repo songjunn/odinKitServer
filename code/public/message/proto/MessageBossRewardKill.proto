@@ -1,5 +1,0 @@
-package Message; 
-message BossRewardKill						//ÊÀ½çboss»÷É±½±Àø
-{ 
-   optional int32     silver 		= 1;  //Òø±Ò½±Àø
-} 

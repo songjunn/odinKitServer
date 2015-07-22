@@ -1,5 +1,0 @@
-package Message; 
-message BattleBuyActionRequest			//请求购买战斗次数
-{ 
-   optional int64     pid 		= 1;  //角色ID
-} 

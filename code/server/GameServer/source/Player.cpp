@@ -4,9 +4,7 @@
 #include "MessagePlayerAttrib.pb.h"
 #include "MessagePlayerAttribInt.pb.h"
 #include "MessagePlayerAttribI64.pb.h"
-#include "MessageTaskSync.pb.h"
 #include "MessageErrorNo.pb.h"
-#include "MessageSyncBuffer.pb.h"
 #include "gtime.h"
 #include "error.h"
 #include "NoticeModule.h"
@@ -474,15 +472,3 @@ int CPlayer::SilverCoin()
 	return GetFieldInt(Role_Attrib_SilverCoin);
 }
 
-void CPlayer::SyncBuffInfo(int opt, int buffid, int actions)
-{
-	Message::SyncBuffer msg;
-	msg.set_pid(GetID());
-	msg.set_opttype(opt);
-	msg.add_buffid(buffid);
-	msg.add_actions(actions);
-
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, D2G_NOTIFY_BUFFER );
-	SendDataMsg(&pack);
-}

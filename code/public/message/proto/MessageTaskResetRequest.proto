@@ -1,8 +1,0 @@
-package Message;
-
-// P2G_REQUEST_TASK_RESET
-message TaskResetRequest
-{
-	optional int64 playerId = 1;
-	optional int32 taskId = 2;
-}

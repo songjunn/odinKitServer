@@ -1,5 +1,0 @@
-package Message; 
-message MessageUnloadAllSoul
-{
-	optional int64 roleId = 1;
-};

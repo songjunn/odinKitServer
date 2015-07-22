@@ -1,7 +1,0 @@
-package Message; 
-message ItemSlottingRequest						//打孔请求
-{
-	optional int64		roleid				= 1;	//英雄或主角ID
-	optional int64		itemid 				= 2;	//装备实体ID
-	optional int32		kongid 				= 3;	//孔的id
-} 

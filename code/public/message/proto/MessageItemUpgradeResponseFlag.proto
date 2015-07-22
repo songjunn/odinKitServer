@@ -1,5 +1,0 @@
-package Message; 
-message ItemUpgradeResponseFlag								//道具升级响应标识
-{
-	optional int32		flag 				= 1;	//成功与否 标识
-} 

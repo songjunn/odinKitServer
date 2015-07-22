@@ -1,5 +1,0 @@
-package Message; 
-message BattleWinnerRewardGetRequest		//请求领取获胜奖励
-{ 
-	optional	int64  	playerid	 		= 1;  //角色ID
-} 

@@ -1,5 +1,0 @@
-package Message; 
-message HeroLeaveRequest							//请求英雄离队
-{
-   optional int64		hero 				= 1;	//英雄实体ID
-} 

@@ -1,5 +1,0 @@
-package Message; 
-message ItemSellRequest								//请求出售道具
-{
-   optional int64		itemid 				= 1;	//道具实体ID
-} 

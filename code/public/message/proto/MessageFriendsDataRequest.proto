@@ -1,7 +1,0 @@
-package Message;
-
-message FriendsDataRequest
-{
-	optional int64	src_pid = 1;
-	optional int64 	dst_pid = 2;
-}

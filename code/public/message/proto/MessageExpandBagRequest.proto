@@ -1,5 +1,0 @@
-package Message;
-message ExpandBag			// À©³ä±³°ü
-{
-     optional int64     pid = 1;	// player ID
-}

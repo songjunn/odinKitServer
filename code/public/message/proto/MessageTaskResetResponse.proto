@@ -1,8 +1,0 @@
-package Message;
-
-// G2P_RESPONSE_TASK_RESET
-message TaskResetResponse
-{
-	optional int32 result = 1;
-	optional int32 taskId = 2;
-};

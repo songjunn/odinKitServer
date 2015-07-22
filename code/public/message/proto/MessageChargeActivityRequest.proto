@@ -1,6 +1,0 @@
-package Message; 
-message ChargeActivityRequest			//充值相关活动请求(领取奖品)
-{
-	optional int64	playerid	= 1;	//玩家ID(不能是英雄ID)
-	optional int32	idx		= 2;	//活动档次编号
-} 

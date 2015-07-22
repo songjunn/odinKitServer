@@ -1,6 +1,0 @@
-package Message; 
-message ItemEquipRequest								//请求穿装
-{
-   optional int64		itemid 				= 1;	//道具实体ID
-   optional int64		roleid 				= 2;	//英雄ID， roleid
-} 

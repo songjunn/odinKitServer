@@ -1,5 +1,0 @@
-package Message; 
-message ItemDeleteResponse							//通知删除道具
-{
-   optional int64		itemid 				= 1;	//道具实体ID
-} 

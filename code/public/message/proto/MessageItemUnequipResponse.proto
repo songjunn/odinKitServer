@@ -1,6 +1,0 @@
-package Message; 
-message ItemUnequipResponse							//响应卸装
-{
-   optional int64		roleid			= 1;	//英雄id
-   optional int64		itemid 			= 2;	//道具实体id
-} 

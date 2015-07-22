@@ -1,5 +1,0 @@
-package Message; 
-message BattleSingleRewardDoubleRequest		//请求翻倍单场奖励
-{ 
-	optional	int64  	playerid	 		= 1;  	//角色ID
-} 

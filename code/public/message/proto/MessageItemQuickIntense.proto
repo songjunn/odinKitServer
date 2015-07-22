@@ -1,6 +1,0 @@
-package Message; 
-message ItemQuickIntense								//道具强化请求
-{
-	optional int64		roleid				= 1;			//英雄或主角ID
-	optional int64		itemId 				= 2;			//装备实体ID
-} 

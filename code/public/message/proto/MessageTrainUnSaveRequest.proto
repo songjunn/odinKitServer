@@ -1,5 +1,0 @@
-package Message; 
-message TrainUnSaveRequest				//请求不保存训练
-{
-   optional int64		role 		= 1;	//主角或英雄ID
-} 

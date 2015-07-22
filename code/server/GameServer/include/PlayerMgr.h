@@ -60,8 +60,6 @@ protected:
 	void	_HandleLoadRequest(CPlayer* reqPlayer, PersonID tarID, int module);
 	void	_HandleLoadCache(PersonID reqID, PersonID tarID, int module);
 
-	bool	_HandlePacket_SyncBuff(PACKET_COMMAND* pack);
-
 protected:
 	PersonID	m_FactId;
 

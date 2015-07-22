@@ -1,6 +1,0 @@
-package Message; 
-message LoginActivityNotify								//同步连续登录活动数据
-{
-	optional int32	contlogindays		= 1;			//连续登录天数
-	optional bool	bgetaward			= 2;			//当天是否已经领取奖励
-} 

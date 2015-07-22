@@ -1,8 +1,0 @@
-package Message;
-message SyncBuffer
-{
-	optional int64 pid = 1;
-	optional int32 opttype = 2;		// 0:同步 1:增 2:删 3:改
-	repeated int32 buffid = 3;
-	repeated int32 actions = 4;
-};

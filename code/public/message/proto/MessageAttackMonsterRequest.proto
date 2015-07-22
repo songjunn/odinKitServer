@@ -1,9 +1,0 @@
-package Message; 
-message AttackMonsterRequest		      //攻击怪物请求
-{ 
-	optional int32	    scene	= 1;	  //场景模板
-	optional int32	    monster	= 2;	  //怪物组ID(当type=3时没用)
-	optional int32      type	= 3;	  //1:进击模式  2:绝杀模式	 3:扫荡模式
-	optional int32	    engage	= 4;	  //雇佣令数目(当type=3时)
-	optional int32	    score       = 5;	  //战斗评分(进击模式使用)
-} 

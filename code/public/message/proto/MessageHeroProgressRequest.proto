@@ -1,6 +1,0 @@
-package Message; 
-message HeroProgressRequest						//请求角色提品进度
-{
-   optional int64		role 				= 1;	//角色实体ID
-   optional int32		num					= 2;	//使用道具数量
-} 

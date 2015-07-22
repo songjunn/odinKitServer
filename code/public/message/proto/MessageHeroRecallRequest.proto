@@ -1,5 +1,0 @@
-package Message; 
-message HeroRecallRequest						//请求召回英雄
-{
-   optional int64		hero 				= 1;	//英雄实体ID
-} 

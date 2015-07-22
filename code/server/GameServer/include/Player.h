@@ -60,8 +60,6 @@ public:
 	virtual void	ChangeFieldInt(int i, int value, bool client=false, bool data=false);
 
 protected:
-	void	SyncBuffInfo(int opt, int buffid, int actions);
-
 	virtual void	_ChangeRelatedField(int i, bool client = false, bool data = false);
 
 protected:
