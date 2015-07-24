@@ -1,7 +1,0 @@
-package Message; 
-message CheckNameRequest						//验证重名
-{
-   optional int64     uid 		= 1;  //账号ID
-   optional int64     pid 		= 2;  //角色ID
-   optional string    name 		= 3;  //角色名
-} 

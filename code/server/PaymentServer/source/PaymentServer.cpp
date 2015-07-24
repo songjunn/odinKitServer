@@ -6,7 +6,6 @@
 #include "PaymentVerifyModule.h"
 #ifdef __linux__
 #include <unistd.h>
-#include "PacketDefine.h"
 #include "monitor.h"
 #endif
 #include "GameWorldMgr.h"

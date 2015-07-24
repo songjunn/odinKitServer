@@ -53,7 +53,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if( !g_PacketPool.Init("", 10000) )
 		return FALSE;
 
-	if( !RobotNet.Startup(NET_IO_IOCP, 20001, nRobotNum*2+1, 10240, 10240, 10000) )
+	if( !RobotNet.startup(CNet::NET_IO_IOCP, 20001, nRobotNum*2+1, 10240, 10240, 10000) )
 	{
 		printf("Æô¶¯ÍøÂçÊ§°Ü£¡\n");
 		return FALSE;

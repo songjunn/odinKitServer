@@ -1,7 +1,0 @@
-package Message; 
-message HeroAttrI64Notify									//同步英雄信息
-{
-   optional int64			heroid 				= 1;	//英雄实体ID
-   optional int32			attr					= 2;	//属性ID
-   optional int64			value					= 3;	//属性值
-} 

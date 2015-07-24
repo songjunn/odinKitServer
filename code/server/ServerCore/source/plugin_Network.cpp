@@ -1,8 +1,8 @@
 #include "plugin_Network.h"
 #include "MainServer.h"
 #include "memorypool.h"
-#include "PacketDefine.h"
-#include "MessageNetControl.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
 
 extern CObjectMemoryPool<PACKET_COMMAND> g_PacketPool;
 
@@ -73,7 +73,7 @@ void CNetwork::_closeReturn(SOCKET sock)
 	if (pCmd) {
 		Message::NetControl tMsg;
 		tMsg.set_sock(sock);
-		PROTOBUF_CMD_PACKAGE((*pCmd), tMsg, N2S_NOTIFY_CONTROL_CLOSE);
+		PROTOBUF_CMD_PACKAGE((*pCmd), tMsg, Message::MSG_SERVER_NET_CLOSE);
 		handlePacket(pCmd);
 	}
 }
@@ -84,7 +84,7 @@ void CNetwork::_acceptReturn(SOCKET sock)
 	if (pCmd) {
 		Message::NetControl tMsg;
 		tMsg.set_sock(sock);
-		PROTOBUF_CMD_PACKAGE((*pCmd), tMsg, N2S_NOTIFY_CONTROL_ACCEPT);
+		PROTOBUF_CMD_PACKAGE((*pCmd), tMsg, Message::MSG_SERVER_NET_ACCEPT);
 		handlePacket(pCmd);
 	}
 }
@@ -96,7 +96,7 @@ void CNetwork::_connectReturn(SOCKET sock, int error)
 		Message::NetControl tMsg;
 		tMsg.set_sock(sock);
 		tMsg.set_error(error);
-		PROTOBUF_CMD_PACKAGE((*pCmd), tMsg, N2S_NOTIFY_CONTROL_CONNECTASYC);
+		PROTOBUF_CMD_PACKAGE((*pCmd), tMsg, Message::MSG_SERVER_NET_CONNECT);
 		handlePacket(pCmd);
 	}
 }

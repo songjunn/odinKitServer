@@ -1,8 +1,8 @@
 ﻿#include "DataModule.h"
 #include "gtime.h"
 #include "MainServer.h"
-#include "PacketDefine.h"
-#include "MessageSyncObjField.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageGameobj.pb.h"
 
 
 void CDataModule::_setSaveType(CDataObj* obj, int type)
@@ -131,7 +131,7 @@ void CDataModule::syncObj(CDataObj* obj, int sock)
 	msg.set_jsonstr(json);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC);
 	GETSERVERNET->sendMsg(sock, &pack);
 }
 
@@ -147,7 +147,7 @@ void CDataModule::syncObj(CDataObj* obj, std::string key, int sock)
 	msg.set_jsonstr(json);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC_OBJFIELD);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_OBJFIELD);
 	GETSERVERNET->sendMsg(sock, &pack);
 }
 
@@ -158,7 +158,7 @@ void CDataModule::syncObjFinish(int sock, std::string type, int64 id)
 	msg.set_type(type);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC_FINISH);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_FINISH);
 	GETSERVERNET->sendMsg(sock, &pack);
 }
 
@@ -174,7 +174,7 @@ void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string 
 	msg.set_jsonstr(jsonstr);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_GAMEOBJ_SYNC_MAPFIELD);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_MAPFIELD);
 	GETSERVERNET->sendMsg(sock, &pack);
 }
 
@@ -245,7 +245,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 		return false;
 
 	switch(pack->Type()) {
-		case G2D_GAMEOBJ_OBJFIELD_SET:
+		case Message::MSG_GAMEOBJ_OBJFIELD_SET:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
@@ -257,7 +257,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case G2D_GAMEOBJ_MAPFIELD_SET:
+		case Message::MSG_GAMEOBJ_MAPFIELD_SET:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
@@ -269,7 +269,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case G2D_GAMEOBJ_MAPFIELD_ADD:
+		case Message::MSG_GAMEOBJ_MAPFIELD_ADD:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
@@ -284,7 +284,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case G2D_GAMEOBJ_MAPFIELD_DEL:
+		case Message::MSG_GAMEOBJ_MAPFIELD_DEL:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
@@ -296,7 +296,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case G2D_GAMEOBJ_CREATE:
+		case Message::MSG_GAMEOBJ_CREATE:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
@@ -308,7 +308,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case G2D_GAMEOBJ_REMOVE:
+		case Message::MSG_GAMEOBJ_REMOVE:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);

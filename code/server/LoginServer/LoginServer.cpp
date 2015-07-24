@@ -9,11 +9,12 @@
 #include "WorldConfig.h"
 #ifdef __linux__
 #include <unistd.h>
-#include "PacketDefine.h"
 #include "linux_time.h"
 #include "vprof.h"
 #include "monitor.h"
 #endif
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
 
 
 createFileSingleton(CLog);
@@ -172,14 +173,14 @@ void OnMsg(PACKET_COMMAND* pack)
 	switch( pack->Type() )
 	{
 	//从客户端发来的消息
-	case P2L_REQUEST_USER_CHECK:
-	case P2L_REQUEST_GUEST_CHECK:
-	case N2S_NOTIFY_CONTROL_ACCEPT:
-	case N2S_NOTIFY_CONTROL_CLOSE:
+	case Message::MSG_REQUEST_USER_CHECK:
+	case Message::MSG_REQUEST_GUEST_CHECK:
+	case Message::MSG_SERVER_NET_ACCEPT:
+	case Message::MSG_SERVER_NET_CLOSE:
 		UserMgr.OnMsg( pack );
 		return;
 	//服务端首次发来的消息
-	case S2C_REQUEST_REGISTER_SERVER:
+	case Message::MSG_SERVER_REGISTER:
 		GETSERVERMGR->OnMsg(pack);
 		return;
 	default:
@@ -190,7 +191,7 @@ void OnMsg(PACKET_COMMAND* pack)
 	CServerObj* pServer = GETSERVERMGR->GetServer(pack->GetNetID());
 	if( pServer )
 	{
-		if( SERVER_MESSAGE_BEGIN >= pack->Type() || SERVER_MESSAGE_END <= pack->Type() )
+		if (Message::MSG_SERVER_BEGIN >= pack->Type() || Message::MSG_SERVER_END <= pack->Type())
 		{
 			Log.Error("[LoginServer] Recv Error Message From Server, type:%d, sock:%d", pack->Type(), pack->GetNetID());
 			return;
@@ -198,9 +199,9 @@ void OnMsg(PACKET_COMMAND* pack)
 
 		switch( pack->Type() )
 		{
-		case A2L_NOTIFY_SYNC_GATELOAD:
-		case C2S_NOTIFY_SYNC_SERVER:
-		case N2S_NOTIFY_CONTROL_CONNECTASYC:
+		case Message::MSG_SERVER_SYNCGATELOAD:
+		case Message::MSG_SERVER_SYNCSERVER:
+		case Message::MSG_SERVER_NET_CONNECT:
 			GETSERVERMGR->OnMsg(pack);
 			break;
 		default:

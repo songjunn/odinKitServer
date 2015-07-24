@@ -1,5 +1,0 @@
-package Message; 
-message UserHeartRequest					  //ĞÄÌøÇëÇó
-{ 
-   optional int64    pid 		= 1;  	//½ÇÉ«ID
-} 

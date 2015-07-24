@@ -1,5 +1,0 @@
-package Message; 
-message PlayerLoadOver							//角色信息同步结束
-{
-   optional int64			pid			= 1;	//角色ID
-} 

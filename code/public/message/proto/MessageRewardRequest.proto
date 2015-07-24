@@ -1,5 +1,0 @@
-package Message; 
-message RewardRequest							//推送奖励信息
-{
-	optional	int32		reward	= 1;	//奖励类型
-} 

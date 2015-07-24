@@ -2,7 +2,6 @@
 #include <cctype>
 #include <algorithm>
 #include "UserMgr.h"
-#include "PacketDefine.h"
 #include "random.h"
 #include "MainServer.h"
 #include "error.h"
@@ -11,14 +10,11 @@
 #include "strtools.h"
 #include "md5.h"
 #include "curl/curl.h"
-#include "MessageUserCheck.pb.h"
-#include "MessageGuestCheck.pb.h"
-#include "MessageUserLogin.pb.h"
-#include "MessageConnectGate.pb.h"
-#include "MessageLoginSession.pb.h"
-#include "MessageErrorNo.pb.h"
-#include "MessageNetControl.pb.h"
-#include "MessageNotifySWChecher.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
+#include "MessageCommon.pb.h"
+#include "MessageUser.pb.h"
+
 
 #define  SW_POST_URL			"http://interface.kedou.com/front/interface/verifyLoginStatus.htm"
 #define	 SW_POST_FIELDS_FORMAT	"siteId=%d&time=%s&gameId=%d&memberId=%lld&flagGuid=1&ticket=%s&sign=%s"
@@ -80,7 +76,7 @@ void CUserMgr::SendErrorMsg(CUser* user, int errid)
 	msg.set_error(errid);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, S2P_NOTIFY_SYNC_ERROR);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
 	GETCLIENTNET->sendMsg(user->m_sock, &pack);
 }
 
@@ -91,10 +87,10 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 
 	switch (pack->Type())
 	{
-	case P2L_REQUEST_USER_CHECK:	_HandlePacket_UserCheck(pack);		break;
-	case P2L_REQUEST_GUEST_CHECK:	_HandlePacket_GuestCheck(pack);		break;
-	case N2S_NOTIFY_CONTROL_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
-	case N2S_NOTIFY_CONTROL_CLOSE:	_HandlePacket_NetClose(pack);		break;
+	case Message::MSG_REQUEST_USER_CHECK:	_HandlePacket_UserCheck(pack);		break;
+	case Message::MSG_REQUEST_GUEST_CHECK:	_HandlePacket_GuestCheck(pack);		break;
+	case Message::MSG_SERVER_NET_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
+	case Message::MSG_SERVER_NET_CLOSE:		_HandlePacket_NetClose(pack);		break;
 	default:	return false;
 	}
 
@@ -255,7 +251,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 	msg1.set_key(session);
 
 	PACKET_COMMAND pack1;
-	PROTOBUF_CMD_PACKAGE(pack1, msg1, L2A_REQUEST_USER_PRLOGIN);
+	PROTOBUF_CMD_PACKAGE(pack1, msg1, Message::MSG_USER_PRLOGIN_REQUEST);
 	GETSERVERNET->sendMsg(pServer->m_Socket, &pack1);
 
 	//֪ͨClient
@@ -267,7 +263,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 	msg2.set_port(pServer->m_extPort);
 
 	PACKET_COMMAND pack2;
-	PROTOBUF_CMD_PACKAGE(pack2, msg2, L2P_NOTIFY_CONNECT_GATESVR);
+	PROTOBUF_CMD_PACKAGE(pack2, msg2, Message::MSG_USER_GET_GATESVR);
 	GETCLIENTNET->sendMsg(pUser->m_sock, &pack2);
 
 	return true;
@@ -397,7 +393,7 @@ size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *us
 
 void CUserMgr::sendSWChecker(CUser *pUser)
 {
-	Message::NotifySWChecker msg;
+	/*Message::NotifySWChecker msg;
 	msg.set_guid(pUser->m_guid);
 	msg.set_accesstoken(pUser->m_accessToken);
 	msg.set_paysrvip(paysrv_addr);
@@ -405,6 +401,6 @@ void CUserMgr::sendSWChecker(CUser *pUser)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, L2P_NOTIFY_SW_CHECKER);
-	GETCLIENTNET->sendMsg(pUser->m_sock, &pack);
+	GETCLIENTNET->sendMsg(pUser->m_sock, &pack);*/
 }
 

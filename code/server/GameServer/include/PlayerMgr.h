@@ -52,9 +52,7 @@ public:
 protected:
 	bool	_HandlePacket_SyncAttrInt(PACKET_COMMAND* pack);
 	bool	_HandlePacket_SyncAttrI64(PACKET_COMMAND* pack);
-	bool	_HandlePacket_SyncAttrName(PACKET_COMMAND* pack);
 	bool	_HandlePacket_PlayerLoadOver(PACKET_COMMAND* pack);
-	bool	_HandlePacket_OfflinePlayerData(PACKET_COMMAND* pack);
 	bool	_HandlePacket_ObservePlayer(PACKET_COMMAND* pack);
 
 	void	_HandleLoadRequest(CPlayer* reqPlayer, PersonID tarID, int module);

@@ -1,0 +1,17 @@
+package Message; 
+
+//同步GameObj属性
+message SyncObjField {
+    optional int64  id      = 1;	//identify
+    optional string type    = 2;	//obj type
+    optional string key     = 3;	//field key
+    optional int64  mapkey  = 4;	//field map identify
+    optional string jsonstr = 5;	//field json string
+} 
+
+//向数据中心请求角色数据
+message ReqPlayerData { 
+    optional int64  pid     = 1;    //角色ID
+    optional string type    = 2;
+    optional string key     = 3;
+} 

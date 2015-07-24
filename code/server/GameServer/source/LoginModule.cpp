@@ -4,23 +4,15 @@
 #include "UserMgr.h"
 #include "PlayerMgr.h"
 #include "NameText.h"
-#include "PacketDefine.h"
 #include "MainServer.h"
 #include "NoticeModule.h"
 #include "LuaEngine.h"
 #include "Event.h"
 #include "gtime.h"
-#include "MessageUserLogin.pb.h"
-#include "MessagePlayerLogin.pb.h"
-#include "MessagePlayerCount.pb.h"
-#include "MessageReqPlayerData.pb.h"
-#include "MessagePlayerLogout.pb.h"
-#include "MessageCreatePlayer.pb.h"
-#include "MessageLoadWorldData.pb.h"
-#include "MessageCheckNameRequest.pb.h"
-#include "MessageCheckNameResponse.pb.h"
-#include "MessagePlayerLoadOver.pb.h"
-#include "MessageUserDisplace.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
+#include "MessageUser.pb.h"
+#include "MessagePlayer.pb.h"
 
 
 CLoginModule::CLoginModule()
@@ -39,13 +31,13 @@ bool CLoginModule::OnMsg(PACKET_COMMAND* pack)
 
 	switch( pack->Type() )
 	{
-	case D2G_REQUEST_LOGIN_GAMEWORLD:	_HandlePacket_PlayerLogin(pack);	break;
-	case A2D_REQUEST_USER_LOGIN:		_HandlePacket_UserLogin(pack);		break;
-	case A2G_NOTIFY_PLAYER_LOGOUT:		_HandlePacket_PlayerLogout(pack);	break;
-	case D2P_NOTIFY_PLAYER_COUNT:		_HandlePacket_PlayerCount(pack);	break;
-	case P2D_REQUEST_PLAYER_CREATE:		_HandlePacket_PlayerCreate(pack);	break;
-	case G2D_RESPONSE_CHECK_NAME:		_HandlePacket_PlayerOnCreate(pack);	break;
-	case D2G_NOTIFY_WORLD_DATA:			_HandlePacket_LoadWorldData(pack);	break;
+	case Message::MSG_PLAYER_LOGIN_REQUEST:		_HandlePacket_PlayerLogin(pack);	break;
+	case Message::MSG_USER_lOGIN_REQUEST:		_HandlePacket_UserLogin(pack);		break;
+	case Message::MSG_PLAYER_LOGOUT_REQEUST:	_HandlePacket_PlayerLogout(pack);	break;
+	case Message::MSG_PLAYER_LOAD_COUNT:		_HandlePacket_PlayerCount(pack);	break;
+	case Message::MSG_REQUEST_PLAYER_CREATE:	_HandlePacket_PlayerCreate(pack);	break;
+	case Message::MSG_PLAYER_CHECKNAME_RESPONSE:_HandlePacket_PlayerOnCreate(pack);	break;
+	case Message::MSG_SERVER_WORLD_RESPONSE:	_HandlePacket_LoadWorldData(pack);	break;
 	default:	return false;
 	}
 
@@ -69,7 +61,7 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 			Message::UserDisplace msgKick;
 			msgKick.set_uid( msg.uid() );
 			PACKET_COMMAND packKick;
-			PROTOBUF_CMD_PACKAGE( packKick, msgKick, G2A_NOTIFY_USER_DISPLACE );
+			PROTOBUF_CMD_PACKAGE(packKick, msgKick, Message::MSG_USER_DISPLACE);
 			pUser->SendGateMsg( &packKick );
 		}
 
@@ -102,7 +94,7 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 			//msgCount.set_count( 0 );
 
 			PACKET_COMMAND packCount;
-			PROTOBUF_CMD_PACKAGE( packCount, msgCount, D2P_NOTIFY_PLAYER_COUNT );
+			PROTOBUF_CMD_PACKAGE(packCount, msgCount, Message::MSG_PLAYER_LOAD_COUNT);
 			pUser->SendGateMsg( &packCount );
 		}
 	}
@@ -219,7 +211,7 @@ bool CLoginModule::_HandlePacket_PlayerCreate(PACKET_COMMAND* pack)
 	msg1.set_pid( player->GetID() );
 	msg1.set_name( msg.name().c_str() );
 	PACKET_COMMAND pack1;
-	PROTOBUF_CMD_PACKAGE( pack1, msg1, G2D_REQUEST_CHECK_NAME );
+	PROTOBUF_CMD_PACKAGE(pack1, msg1, Message::MSG_PLAYER_CHECKNAME_REQUEST);
 	player->SendDataMsg( &pack1 );
 
 	return true;
@@ -254,7 +246,7 @@ bool CLoginModule::_HandlePacket_PlayerOnCreate(PACKET_COMMAND* pack)
 	msgCreate.set_quality( player->GetFieldInt(Role_Attrib_Quality) );
 	msgCreate.set_pid( player->GetID() );
 	PACKET_COMMAND packCreate;
-	PROTOBUF_CMD_PACKAGE( packCreate, msgCreate, P2D_REQUEST_PLAYER_CREATE );
+	PROTOBUF_CMD_PACKAGE(packCreate, msgCreate, Message::MSG_REQUEST_PLAYER_CREATE);
 	player->SendDataMsg( &packCreate );
 
 	//Ö´ÐÐ½Å±¾
@@ -280,7 +272,7 @@ bool CLoginModule::_HandlePacket_LoadWorldData(PACKET_COMMAND* pack)
 	if( !pack )
 		return false;
 
-	Message::LoadWorldData msg;
+	Message::WorldDataResponse msg;
 	PROTOBUF_CMD_PARSER( pack, msg );
 
 	int64 id = msg.playerid() > 0 ? msg.playerid() : g_MakeInitPlayerID(MainServer.World());
@@ -320,7 +312,7 @@ bool CLoginModule::_OnPlayerSync(CPlayer* player)
 	msgLogin.set_uid(player->GetFieldI64(Role_Attrib_UserID));
 	msgLogin.set_pid(player->GetID());
 	PACKET_COMMAND packLogin;
-	PROTOBUF_CMD_PACKAGE(packLogin, msgLogin, D2G_REQUEST_LOGIN_GAMEWORLD);
+	PROTOBUF_CMD_PACKAGE(packLogin, msgLogin, Message::MSG_PLAYER_LOGIN_REQUEST);
 	player->SendClientMsg(&packLogin);
 
 	player->DataSync();
@@ -334,7 +326,7 @@ bool CLoginModule::_OnPlayerSync(CPlayer* player)
 	Message::PlayerLoadOver msg;
 	msg.set_pid(player->GetID());
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, D2G_NOTIFY_PLAYER_LOADOVER);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_OVER);
 	player->SendClientMsg(&pack);
 
 	return true;
@@ -358,7 +350,7 @@ bool CLoginModule::OnPlayerLogout(PersonID id)
 	msg.set_pid( id );
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, A2G_NOTIFY_PLAYER_LOGOUT );
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOGOUT_REQEUST);
 	player->SendDataMsg( &pack );
 
 	Log.Notice("[Logout] Online User:"INT64_FMT" Player:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID), id);

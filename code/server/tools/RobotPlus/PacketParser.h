@@ -2,20 +2,11 @@
 #include "RobotUnit.h"
 #include "RobotObj.h"
 #include "Packet.h"
-#include "PacketDefine.h"
-#include "MessageConnectGate.pb.h"
-#include "MessagePlayerCount.pb.h"
-#include "MessageCreatePlayer.pb.h"
-#include "MessagePlayerAttrib.pb.h"
-#include "MessagePlayerLoadOver.pb.h"
-#include "MessageCombatStart.pb.h"
-#include "MessageCombatReport.pb.h"
-#include "MessageCombatResult.pb.h"
-#include "MessageErrorNo.pb.h"
-#include "MessageNetTestResponse.pb.h"
-#include "MessagePlayerAttribI64.pb.h"
-#include "MessagePlayerAttribInt.pb.h"
-#include "MessagePlayerAttribName.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageCommon.pb.h"
+#include "MessageUser.pb.h"
+#include "MessagePlayer.pb.h"
+#include "MessageDebug.pb.h"
 
 
 void PacketParser( PACKET_COMMAND* pack )
@@ -34,7 +25,7 @@ void PacketParser( PACKET_COMMAND* pack )
 
 	switch( pack->Type() )
 	{
-	case L2P_NOTIFY_CONNECT_GATESVR:
+	case Message::MSG_USER_GET_GATESVR:
 		{
 			Message::ConnectGate msg;
 			PROTOBUF_CMD_PARSER( pack, msg );
@@ -51,7 +42,7 @@ void PacketParser( PACKET_COMMAND* pack )
 			LuaEngine.RunLuaFunction(handler->m_szFunc, handler->m_szUnit, NULL, pParam, index);
 		}
 		break;
-	case S2P_NOTIFY_SYNC_ERROR:
+	case Message::MSG_COMMON_ERROR:
 		{
 			Message::ErrorNo msg;
 			PROTOBUF_CMD_PARSER( pack, msg );
@@ -59,18 +50,18 @@ void PacketParser( PACKET_COMMAND* pack )
 			printf("Error:%d\n", msg.error());
 		} 
 		break;
-	case D2P_NOTIFY_PLAYER_COUNT:
+	case Message::MSG_PLAYER_LOAD_COUNT:
 		{
 			Message::PlayerCount msg;
 			PROTOBUF_CMD_PARSER( pack, msg );
 
 			pParam[index++].SetDataNum( pack->GetNetID() );
-			pParam[index++].SetDataNum( msg.count() );
+			pParam[index++].SetDataNum( msg.player_size() );
 
 			LuaEngine.RunLuaFunction(handler->m_szFunc, handler->m_szUnit, NULL, pParam, index);
 		}
 		break;
-	case G2P_NOTIFY_PLAYER_ATTRIBUTE:
+	case Message::MSG_PLAYER_LOAD_DATA:
 		{
 			Message::PlayerAttrib msg;
 			PROTOBUF_CMD_PARSER( pack, msg );
@@ -82,7 +73,7 @@ void PacketParser( PACKET_COMMAND* pack )
 			//LuaEngine.RunLuaFunction(handler->m_szFunc, handler->m_szUnit, NULL, pParam, index);
 		}
 		break;
-	case D2G_NOTIFY_PLAYER_ATTRINT:
+	case Message::MSG_PLAYER_SYNC_ATTRINT:
 		{
 			Message::PlayerAttribInt msg;
 			PROTOBUF_CMD_PARSER( pack, msg );
@@ -90,7 +81,7 @@ void PacketParser( PACKET_COMMAND* pack )
 			printf("SetAttrInt player:%I64d attr:%d value:%d\n", msg.pid(), msg.attr(), msg.value());
 		}
 		break;
-	case D2G_NOTIFY_PLAYER_ATTRI64:
+	case Message::MSG_PLAYER_SYNC_ATTRI64:
 		{
 			Message::PlayerAttribI64 msg;
 			PROTOBUF_CMD_PARSER( pack, msg );
@@ -98,15 +89,7 @@ void PacketParser( PACKET_COMMAND* pack )
 			printf("SetAttrI64 player:%I64d attr:%d value:%I64d\n", msg.pid(), msg.attr(), msg.value());
 		}
 		break;
-	case D2G_NOTIFY_PLAYER_NAME:
-		{
-			Message::PlayerAttribName msg;
-			PROTOBUF_CMD_PARSER( pack, msg );
-
-			printf("SetName player:%I64d name:%s\n", msg.pid(), msg.name());
-		}
-		break;
-	case D2G_NOTIFY_PLAYER_LOADOVER:
+	case Message::MSG_PLAYER_LOAD_OVER:
 		{
 			Message::PlayerLoadOver msg;
 			PROTOBUF_CMD_PARSER( pack, msg );
@@ -118,7 +101,7 @@ void PacketParser( PACKET_COMMAND* pack )
 				robot->setStat(ESTAT_LOGINGATE);
 				//robot->AddExp(1000);
 				//robot->AddItem();
-				robot->AddHero();
+				//robot->AddHero();
 				//robot->SendChat();
 				//robot->RequestObserver();
 				//robot->RequestJoinBattle();
@@ -132,65 +115,9 @@ void PacketParser( PACKET_COMMAND* pack )
 			LuaEngine.RunLuaFunction(handler->m_szFunc, handler->m_szUnit, NULL, pParam, index);
 		}
 		break;
-	case G2P_NOTIFY_COBBAT_START:
+	case Message::MSG_REQUEST_NET_TEST:
 		{
-			Message::CombatStart msg;
-			PROTOBUF_CMD_PARSER( pack, msg );
-
-			pParam[index++].SetDataNum( pack->GetNetID() );
-			
-			for(int i=0; i<msg.fighter_size(); ++i)
-			{
-				int type = msg.fighter(i).type();
-				int id = msg.fighter(i).id();
-				std::string name(msg.fighter(i).name());
-				int hp = msg.fighter(i).hp();
-				int level = msg.fighter(i).level();
-				int pos = msg.fighter(i).pos();
-			}
-
-			//LuaEngine.RunLuaFunction(handler->m_szFunc, handler->m_szUnit, NULL, pParam, index);
-		}
-		break;
-	case G2P_NOTIFY_COMBAT_REPORT:
-		{
-			Message::CombatReport msg;
-			PROTOBUF_CMD_PARSER( pack, msg );
-
-			pParam[index++].SetDataNum( pack->GetNetID() );
-
-			for(int i=0; i<msg.action_size(); ++i)
-			{
-				int round = msg.action(i).round();
-				int attackerindex = msg.action(i).attackerindex();
-				int skill = msg.action(i).skill();
-
-				/*int defenderindex = msg.action(i).defenderindex();
-				int damage = msg.action(i).damage();
-				int flag = msg.action(i).flag();
-				int counter = msg.action(i).counter();*/
-			}
-
-			//LuaEngine.RunLuaFunction(handler->m_szFunc, handler->m_szUnit, NULL, pParam, index);
-		}
-		break;
-	case G2P_NOTIFY_COMBAT_RESULT:
-		{
-			Message::CombatResult msg;
-			PROTOBUF_CMD_PARSER( pack, msg );
-
-			pParam[index++].SetDataNum( pack->GetNetID() );
-			/*if( msg.result() )
-				pParam[index++].SetDataNum( TRUE );
-			else
-				pParam[index++].SetDataNum( FALSE );*/
-
-			LuaEngine.RunLuaFunction(handler->m_szFunc, handler->m_szUnit, NULL, pParam, index);
-		}
-		break;
-	case G2P_RESPONSE_NET_TEST:
-		{
-			Message::NetTestResponse msg;
+			Message::NetTestRequest msg;
 			PROTOBUF_CMD_PARSER(pack, msg);
 
 			pParam[index++].SetDataNum( pack->GetNetID() );

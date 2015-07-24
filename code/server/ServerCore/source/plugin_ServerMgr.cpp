@@ -3,11 +3,8 @@
 #include "Log.h"
 #include "vprof.h"
 #include "linux_time.h"
-#include "PacketDefine.h"
-#include "MessageRegistServer.pb.h"
-#include "MessageSyncServer.pb.h"
-#include "MessageSyncGateLoad.pb.h"
-#include "MessageNetControl.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
 
 
 CServerMgr::CServerMgr()
@@ -197,10 +194,10 @@ bool CServerMgr::OnMsg(PACKET_COMMAND* pack)
 
 	switch(pack->Type())
 	{
-	case S2C_REQUEST_REGISTER_SERVER:	_HandlePacket_RegistServer(pack);	break;
-	case C2S_NOTIFY_SYNC_SERVER:		_HandlePacket_ConnectServer(pack);	break;
-	case A2L_NOTIFY_SYNC_GATELOAD:		_HandlePacket_SyncGateLoad(pack);	break;
-	case N2S_NOTIFY_CONTROL_CONNECTASYC:_HandlePacket_RegistAsyncReturn(pack); break;
+	case Message::MSG_SERVER_REGISTER:		_HandlePacket_RegistServer(pack);	break;
+	case Message::MSG_SERVER_SYNCSERVER:		_HandlePacket_ConnectServer(pack);	break;
+	case Message::MSG_SERVER_SYNCGATELOAD:	_HandlePacket_SyncGateLoad(pack);	break;
+	case Message::MSG_SERVER_NET_CONNECT:		_HandlePacket_RegistAsyncReturn(pack); break;
 	default:	return false;
 	}
 
@@ -342,7 +339,7 @@ bool CServerMgr::_Regist(CServerObj* pObj)
 	msg.set_world( MainServer.World());
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, S2C_REQUEST_REGISTER_SERVER );
+	PROTOBUF_CMD_PACKAGE( pack, msg, Message::MSG_SERVER_REGISTER );
 	GETSERVERNET->sendMsg(pObj->m_Socket, &pack);
 
 	//pObj->m_bBreak = false;`
@@ -393,7 +390,7 @@ bool CServerMgr::_RegistAsyncReturn(SOCKET sock, int error)
 		msg.set_world( MainServer.World());
 
 		PACKET_COMMAND pack;
-		PROTOBUF_CMD_PACKAGE( pack, msg, S2C_REQUEST_REGISTER_SERVER );
+		PROTOBUF_CMD_PACKAGE( pack, msg, Message::MSG_SERVER_REGISTER );
 		GETSERVERNET->sendMsg(pObj->m_Socket, &pack);
 
 		pObj->m_bBreak = false;

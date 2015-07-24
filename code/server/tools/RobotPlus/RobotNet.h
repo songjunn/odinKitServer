@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SharedInc.h"
+#include "shared.h"
 #include "Net.h"
 #include "stllist.h"
 

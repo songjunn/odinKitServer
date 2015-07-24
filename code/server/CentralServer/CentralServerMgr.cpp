@@ -1,9 +1,8 @@
 #include "CentralServerMgr.h"
-#include "MessageRegistServer.pb.h"
-#include "MessageSyncServer.pb.h"
 #include "MainServer.h"
-#include "PacketDefine.h"
 #include "Log.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
 
 bool CCentralServerMgr::OnLogic()
 {
@@ -74,7 +73,7 @@ bool CCentralServerMgr::_OnAddServer(CServerObj* pServer)
 			msg.set_world( pObj->m_worldID );
 
 			PACKET_COMMAND pack;
-			PROTOBUF_CMD_PACKAGE( pack, msg, C2S_NOTIFY_SYNC_SERVER );
+			PROTOBUF_CMD_PACKAGE( pack, msg, Message::MSG_SERVER_SYNCSERVER );
 			GETSERVERNET->sendMsg(pServer->m_Socket, &pack);
 		}
 	}

@@ -8,7 +8,7 @@ cd ..
 
 for i in proto/*.proto
 do
-	protoc -I=./proto --cpp_out=./source $i
+	./protoc -I=./proto --cpp_out=./source $i
 	if [ "$?" -eq 0 ]
 	then
 		echo "已生成$i.pb.h $i.pb.cc"

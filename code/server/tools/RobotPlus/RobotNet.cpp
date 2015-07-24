@@ -11,7 +11,7 @@ int CRobotNet::SendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack)
 {
 	pack->SetTrans(uid);
 
-	return CNet::Send(s, (char*)pack->Data(), pack->Size());
+	return CNet::send(s, (char*)pack->Data(), pack->Size());
 }
 
 bool CRobotNet::HandlePacket(PACKET_COMMAND * pack)

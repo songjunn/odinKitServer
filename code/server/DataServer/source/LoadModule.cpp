@@ -6,14 +6,11 @@
 #include "gtime.h"
 #include "MainServer.h"
 #include "Packet.h"
-#include "PacketDefine.h"
-#include "MessagePlayerCount.pb.h"
-#include "MessageUserLogin.pb.h"
-#include "MessageReqPlayerData.pb.h"
-#include "MessageCheckNameRequest.pb.h"
-#include "MessageCheckNameResponse.pb.h"
-#include "MessageWorldDataRequest.pb.h"
-#include "MessageWorldDataResponse.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageGameobj.pb.h"
+#include "MessageServer.pb.h"
+#include "MessageUser.pb.h"
+#include "MessagePlayer.pb.h"
 
 
 bool CLoadModule::onMessage(PACKET_COMMAND* pack)
@@ -23,10 +20,10 @@ bool CLoadModule::onMessage(PACKET_COMMAND* pack)
 
 	switch(pack->Type())
 	{
-	case A2D_REQUEST_USER_LOGIN:		_handlePacket_LoadPlayerCount(pack);	break;
-	case G2D_REQUEST_GAMEOBJ_DATA:		_handlePakcet_LoadObjData(pack);		break;
-	case G2D_REQUEST_CHECK_NAME:		_handlePacket_CheckNameRepeat(pack);	break;
-	case D2G_REQUEST_WORLD_DATA:		_handlePacket_LoadWorldData(pack);		break;
+	case Message::MSG_USER_lOGIN_REQUEST:		_handlePacket_LoadPlayerCount(pack);	break;
+	case Message::MSG_GAMEOBJ_REQUEST:			_handlePakcet_LoadObjData(pack);		break;
+	case Message::MSG_PLAYER_CHECKNAME_REQUEST:	_handlePacket_CheckNameRepeat(pack);	break;
+	case Message::MSG_SERVER_WORLD_REQUEST:		_handlePacket_LoadWorldData(pack);		break;
 	default:	return false;
 	}
 
@@ -84,7 +81,7 @@ bool CLoadModule::_handlePacket_LoadWorldData(PACKET_COMMAND* pack)
 	msgData.set_playerid( playerid );
 
 	PACKET_COMMAND packData;
-	PROTOBUF_CMD_PACKAGE( packData, msgData, D2G_RESPONSE_WORLD_DATA );
+	PROTOBUF_CMD_PACKAGE(packData, msgData, Message::MSG_SERVER_WORLD_RESPONSE);
 	GETSERVERNET->sendMsg(pack->GetNetID(), &packData);
 
 	return true;
@@ -143,7 +140,7 @@ bool CLoadModule::_handlePacket_CheckNameRepeat(PACKET_COMMAND* pack)
 	msg1.set_result( result );
 
 	PACKET_COMMAND pack1;
-	PROTOBUF_CMD_PACKAGE( pack1, msg1, G2D_RESPONSE_CHECK_NAME );
+	PROTOBUF_CMD_PACKAGE(pack1, msg1, Message::MSG_PLAYER_CHECKNAME_RESPONSE);
 	GETSERVERNET->sendMsg(pack->GetNetID(), &pack1);
 
 	return true;
@@ -179,7 +176,7 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 		msgCnt.add_player(objs[i]);
 
 	PACKET_COMMAND packCnt;
-	PROTOBUF_CMD_PACKAGE(packCnt, msgCnt, D2P_NOTIFY_PLAYER_COUNT);
+	PROTOBUF_CMD_PACKAGE(packCnt, msgCnt, Message::MSG_PLAYER_LOAD_COUNT);
 	GETSERVERNET->sendMsg(pack->GetNetID(), &packCnt);
 
 	return true;

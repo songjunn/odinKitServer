@@ -2,8 +2,8 @@
 #include "PlayerMgr.h"
 #include "LoginModule.h"
 #include "Packet.h"
-#include "PacketDefine.h"
-#include "MessageEventSync.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageCommon.pb.h"
 
 
 CEventUnit::CEventUnit()
@@ -223,7 +223,7 @@ void CEventUnit::OnEvent(CEvent* ev)
 		msg.set_parent(m_parent->GetID());
 
 		PACKET_COMMAND pack;
-		PROTOBUF_CMD_PACKAGE( pack, msg, G2B_NOTIFY_EVENT );
+		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_EVENT);
 		GETSERVERNET->sendMsg(GETSERVERMGR->getBISock(), &pack);
 	}
 }

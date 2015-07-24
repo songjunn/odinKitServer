@@ -162,7 +162,7 @@ int	CIOCP::Send(SOCKET sock, char * data, int size)
 
 bool CIOCP::Recv(SOCKET sock, char * data, int size)
 {
-	return m_pNet->Recv(sock, data, size);
+	return m_pNet->recv(sock, data, size);
 }
 
 bool CIOCP::Shutdown(SOCKET sock)

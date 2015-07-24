@@ -60,12 +60,6 @@
     <ClCompile Include="util\gtime.cpp">
       <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="util\linux_cpu.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
-    <ClCompile Include="util\linux_time.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
     <ClCompile Include="util\Log.cpp">
       <Filter>util</Filter>
     </ClCompile>
@@ -75,9 +69,6 @@
     <ClCompile Include="util\md5.cpp">
       <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="util\monitor.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
     <ClCompile Include="util\PathFunc.cpp">
       <Filter>util</Filter>
     </ClCompile>
@@ -85,9 +76,6 @@
       <Filter>util</Filter>
     </ClCompile>
     <ClCompile Include="util\strtools.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
-    <ClCompile Include="util\udsvr.cpp">
       <Filter>util</Filter>
     </ClCompile>
     <ClCompile Include="util\vprof.cpp">
@@ -114,9 +102,6 @@
     <ClCompile Include="network\Net.cpp">
       <Filter>network</Filter>
     </ClCompile>
-    <ClCompile Include="network\NetMonitor.cpp">
-      <Filter>network</Filter>
-    </ClCompile>
     <ClCompile Include="network\Packet.cpp">
       <Filter>network</Filter>
     </ClCompile>
@@ -133,9 +118,6 @@
       <Filter>config</Filter>
     </ClCompile>
     <ClCompile Include="thread\ThreadLibFunctions.cpp">
-      <Filter>thread</Filter>
-    </ClCompile>
-    <ClCompile Include="thread\threadpool.c">
       <Filter>thread</Filter>
     </ClCompile>
     <ClCompile Include="xml\tinystr.cpp">
@@ -188,12 +170,6 @@
     <ClInclude Include="util\ip_filter.h">
       <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="util\linux_time.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="util\linux_type.h">
-      <Filter>util</Filter>
-    </ClInclude>
     <ClInclude Include="util\Log.h">
       <Filter>util</Filter>
     </ClInclude>
@@ -201,9 +177,6 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="util\md5.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="util\monitor.h">
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="util\PathFunc.h">
@@ -222,9 +195,6 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="util\strtools.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="util\udsvr.h">
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="util\vprof.h">
@@ -326,9 +296,6 @@
     <ClInclude Include="network\NetHeader.h">
       <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="network\NetMonitor.h">
-      <Filter>network</Filter>
-    </ClInclude>
     <ClInclude Include="network\NetObservable.h">
       <Filter>network</Filter>
     </ClInclude>
@@ -366,9 +333,6 @@
       <Filter>thread</Filter>
     </ClInclude>
     <ClInclude Include="thread\ThreadLibFunctions.h">
-      <Filter>thread</Filter>
-    </ClInclude>
-    <ClInclude Include="thread\threadpool.h">
       <Filter>thread</Filter>
     </ClInclude>
     <ClInclude Include="xml\tinystr.h">

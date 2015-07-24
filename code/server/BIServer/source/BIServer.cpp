@@ -15,7 +15,6 @@
 #include "AnalysisModule.h"
 #ifdef __linux__
 #include <unistd.h>
-#include "PacketDefine.h"
 #include "linux_time.h"
 #include "vprof.h"
 #include "monitor.h"

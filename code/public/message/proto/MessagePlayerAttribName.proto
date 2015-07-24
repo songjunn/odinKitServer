@@ -1,6 +1,0 @@
-package Message; 
-message PlayerAttribName					//同步角色名字
-{
-   optional int64		pid			= 1;	//角色id
-   optional string	name		= 2;	//名字
-} 

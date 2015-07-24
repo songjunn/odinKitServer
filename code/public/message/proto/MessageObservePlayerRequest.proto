@@ -1,6 +1,0 @@
-package Message; 
-message ObservePlayerRequest			//请求观察其他人
-{
-   optional int64		playerid 		= 1;	//主角ID
-   optional	string	playername	= 2;	//主角名字
-} 

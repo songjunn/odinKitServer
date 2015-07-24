@@ -1,7 +1,0 @@
-package Message; 
-message PlayerAttribInt							//同步角色属性
-{ 
-   optional int64     pid 		= 1;  //角色ID
-   optional int32			attr		= 2;	//属性ID
-   optional int32			value		= 3;	//属性值
-} 

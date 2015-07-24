@@ -1,12 +1,7 @@
 #include "PlayerMgr.h"
-#include "PacketDefine.h"
-#include "MessagePlayerAttribInt.pb.h"
-#include "MessagePlayerAttribI64.pb.h"
-#include "MessagePlayerAttribName.pb.h"
-#include "MessagePlayerLoadOver.pb.h"
-#include "MessageReqPlayerData.pb.h"
-#include "MessagePlayerDataResponse.pb.h"
-#include "MessageObservePlayerRequest.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessagePlayer.pb.h"
+#include "MessageGameobj.pb.h"
 
 
 CPlayer* CPlayerMgr::Create(int templateid, PersonID playerid)
@@ -68,12 +63,10 @@ bool CPlayerMgr::OnMsg(PACKET_COMMAND* pack)
 
 	switch( pack->Type() )
 	{
-	case D2G_NOTIFY_PLAYER_ATTRINT:	_HandlePacket_SyncAttrInt(pack);	break;
-	case D2G_NOTIFY_PLAYER_ATTRI64:	_HandlePacket_SyncAttrI64(pack);	break;
-	case D2G_NOTIFY_PLAYER_NAME:	_HandlePacket_SyncAttrName(pack);	break;
-	case D2G_NOTIFY_PLAYER_LOADOVER:_HandlePacket_PlayerLoadOver(pack);	break;
-	case D2G_RESPONSE_PLAYER_DATA:	_HandlePacket_OfflinePlayerData(pack); break;
-	case P2G_REQUEST_OBSERVE_PLAYER:_HandlePacket_ObservePlayer(pack);	break;
+	case Message::MSG_PLAYER_SYNC_ATTRINT:	_HandlePacket_SyncAttrInt(pack);	break;
+	case Message::MSG_PLAYER_SYNC_ATTRI64:	_HandlePacket_SyncAttrI64(pack);	break;
+	case Message::MSG_PLAYER_LOAD_OVER:		_HandlePacket_PlayerLoadOver(pack);	break;
+	case Message::MSG_REQUEST_PLAYER_OBSERVE:	_HandlePacket_ObservePlayer(pack);	break;
 	default:	return false;
 	}
 
@@ -114,23 +107,6 @@ bool CPlayerMgr::_HandlePacket_SyncAttrI64(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CPlayerMgr::_HandlePacket_SyncAttrName(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::PlayerAttribName msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	CPlayer* player = GetObj( msg.pid() );
-	if( !player )
-		return false;
-
-	player->SetName( msg.name().c_str() );
-
-	return true;
-}
-
 bool CPlayerMgr::_HandlePacket_PlayerLoadOver(PACKET_COMMAND* pack)
 {
 	if( !pack )
@@ -147,24 +123,6 @@ bool CPlayerMgr::_HandlePacket_PlayerLoadOver(PACKET_COMMAND* pack)
 
 	CEvent* evnt = MakeEvent(Event_Player_Loadover, player->GetID());
 	player->OnEvent(evnt);
-
-	return true;
-}
-
-bool CPlayerMgr::_HandlePacket_OfflinePlayerData(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::PlayerDataResponse msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	CPlayer* player = this->Create( msg.templateid(), msg.pid() );
-	if( !player )
-		return false;
-
-	player->SetLoadTime(timeGetTime());
-	player->SetOnline(Online_Flag_Off);
 
 	return true;
 }
@@ -263,7 +221,7 @@ void CPlayerMgr::_HandleLoadCache(PersonID reqID, PersonID tarID, int module)
 	msg.set_pid(tarID);
 	
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, G2D_REQUEST_PLAYER_DATA);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_REQUEST);
 	GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), &pack);
 }
 

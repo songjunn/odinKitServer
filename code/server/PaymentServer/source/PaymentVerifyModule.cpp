@@ -1,6 +1,5 @@
 #include "PaymentVerifyModule.h"
 #include "MainServer.h"
-#include "PacketDefine.h"
 #include "Log.h"
 #include "Packet.h"
 #include "MessagePayment.pb.h"

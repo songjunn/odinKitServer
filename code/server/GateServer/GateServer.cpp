@@ -11,14 +11,13 @@
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #ifdef __linux__
-#include "PacketDefine.h"
 #include "linux_time.h"
 #include "udsvr.h"
 #include "monitor.h"
 #endif
-#include "PacketDefine.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
 #include "exception.h"
-#include "MessageSyncGateLoad.pb.h"
 
 
 createFileSingleton(CLog);
@@ -151,8 +150,8 @@ void OnMsg(PACKET_COMMAND* pack)
 	// from net
 	switch(pack->Type())
 	{
-		case N2S_NOTIFY_CONTROL_CLOSE:
-		case N2S_NOTIFY_CONTROL_ACCEPT:
+		case Message::MSG_SERVER_NET_CLOSE:
+		case Message::MSG_SERVER_NET_ACCEPT:
 			UserMgr.OnMsg( pack );
 			break;
 		default:
@@ -162,7 +161,7 @@ void OnMsg(PACKET_COMMAND* pack)
 	CServerObj* pServer = GETSERVERMGR->GetServer(pack->GetNetID());
 	if( pServer )
 	{
-		if( SERVER_MESSAGE_BEGIN >= pack->Type() || SERVER_MESSAGE_END <= pack->Type() )
+		if (Message::MSG_SERVER_BEGIN >= pack->Type() || Message::MSG_SERVER_END <= pack->Type())
 		{
 			Log.Error("[GateServer] Recv Wrong Message From Server, Type:%d, Sock:%d, Server:%d", pack->Type(), pack->GetNetID(), pServer->m_type);
 			return;
@@ -170,16 +169,15 @@ void OnMsg(PACKET_COMMAND* pack)
 
 		switch( pack->Type() )
 		{
-		case L2A_REQUEST_USER_PRLOGIN:
-		case D2G_REQUEST_LOGIN_GAMEWORLD:
-		case D2P_NOTIFY_PLAYER_COUNT:
-		case S2P_NOTIFY_SYNC_ERROR:
-		case G2A_NOTIFY_USER_DISPLACE:
-		case S2S_NOTIFY_SWCHARGE:
+		case Message::MSG_USER_PRLOGIN_REQUEST:
+		case Message::MSG_PLAYER_LOGIN_REQUEST:
+		case Message::MSG_PLAYER_LOAD_COUNT:
+		case Message::MSG_COMMON_ERROR:
+		case Message::MSG_USER_DISPLACE:
 			UserMgr.OnMsg( pack );
 			break;
-		case C2S_NOTIFY_SYNC_SERVER:
-		case N2S_NOTIFY_CONTROL_CONNECTASYC:
+		case Message::MSG_SERVER_SYNCSERVER:
+		case Message::MSG_SERVER_NET_CONNECT:
 			GETSERVERMGR->OnMsg(pack);
 			break;	
 		default:
@@ -195,14 +193,14 @@ void OnMsg(PACKET_COMMAND* pack)
 	CUser* pUser = UserMgr.GetObj( pack->GetNetID() );
 	if( pUser )
 	{
-		if( CLIENT_MESSAGE_BEGIN >= pack->Type() || CLIENT_MESSAGE_END <= pack->Type() )
+		if (Message::MSG_CLIENT_BEGIN >= pack->Type() || Message::MSG_CLIENT_END <= pack->Type())
 		{
 			Log.Error("[GateServer] Recv Wrong Message From Client, Type:%d, Sock:%d, User:"INT64_FMT, pack->Type(), pack->GetNetID(), pUser->m_id);
 			return;
 		}
 
 		//验证消息来源，客户端发来的第一条登陆消息就不验证了
-		if( pack->Type() != P2A_REQUEST_USER_LOGIN && pack->GetTrans() != pUser->m_id )
+		if (pack->Type() != Message::MSG_REQUEST_USER_LOGIN && pack->GetTrans() != pUser->m_id)
 		{
 			Log.Error("[GateServer] Message Source Error, Msg:"INT64_FMT", Type:%d, User:"INT64_FMT, pack->GetTrans(), pack->Type(), pUser->m_id);
 			return;
@@ -217,13 +215,13 @@ void OnMsg(PACKET_COMMAND* pack)
 
 		switch( pack->Type() )
 		{
-		case P2G_REQUEST_NET_TEST:
+		case Message::MSG_REQUEST_NET_TEST:
 			GETCLIENTNET->sendMsg(pUser->m_ClientSock, pack);
 		    break;
-		case P2A_REQUEST_USER_HEART:
-		case P2A_REQUEST_USER_LOGIN:
-		case P2A_REQUEST_USER_LOGOUT:
-		case P2D_REQUEST_PLAYER_CREATE:
+		case Message::MSG_REQUEST_USER_HEART:
+		case Message::MSG_REQUEST_USER_LOGIN:
+		case Message::MSG_REQUEST_USER_LOGOUT:
+		case Message::MSG_REQUEST_PLAYER_CREATE:
 			UserMgr.OnMsg( pack );
 			break;
 		//向DataServer转发的消息
@@ -244,7 +242,7 @@ void OnMsg(PACKET_COMMAND* pack)
 	//从后端连接后首次发来的消息
 	switch( pack->Type() )
 	{
-	case S2C_REQUEST_REGISTER_SERVER:
+	case Message::MSG_SERVER_REGISTER:
 		GETSERVERMGR->OnMsg(pack);
 		return;
 	default:
@@ -281,7 +279,7 @@ void StatusLogic()
 	msg.set_count( UserMgr.Count() );
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, A2L_NOTIFY_SYNC_GATELOAD );
+	PROTOBUF_CMD_PACKAGE( pack, msg, Message::MSG_SERVER_SYNCGATELOAD );
 	GETSERVERNET->sendMsg(GETSERVERMGR->getLoginSock(), &pack);
 }
 

@@ -1,7 +1,0 @@
-package Message; 
-message SWChargeChecker
-{
-	optional int64		userid			= 1;	//用户ID
-	optional int64		playerid		= 2;	//玩家ID
-	optional int32		money			= 3;	//充值金额
-} 

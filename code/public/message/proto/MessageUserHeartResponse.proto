@@ -1,5 +1,0 @@
-package Message; 
-message UserHeartResponse					  //心跳响应
-{ 
-   optional int64    stime 		= 1;  //服务器时间戳
-} 

@@ -3,8 +3,8 @@
 #include "PlayerMgr.h"
 #include "MainServer.h"
 #include "Packet.h"
-#include "PacketDefine.h"
-#include "MessageErrorNo.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageCommon.pb.h"
 
 
 CNoticeModule::CNoticeModule()
@@ -76,7 +76,7 @@ void CNoticeModule::SendBroadcast(CPlayer* player, CNotice* notice)
 	msg.set_paramstr3(notice->m_string[2]);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, S2P_NOTIFY_SYNC_ERROR);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
 	player->SendClientMsg(&pack);
 }
 
@@ -99,7 +99,7 @@ void CNoticeModule::SendErrorMsg(CFighter* role, int errid, int int1, int int2, 
 		msg.set_paramstr3(str3);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, S2P_NOTIFY_SYNC_ERROR);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
 	role->SendClientMsg(&pack);
 }
 
@@ -123,6 +123,6 @@ void CNoticeModule::SendErrorMsg(int sock, UserID uid, int errid, int int1, int 
 		msg.set_paramstr3(str3);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, S2P_NOTIFY_SYNC_ERROR);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
 	GETSERVERNET->sendMsg(sock, &pack);
 }

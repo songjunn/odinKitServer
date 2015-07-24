@@ -1,13 +1,10 @@
 #include "Player.h"
 #include "RoleTemplate.h"
-#include "PacketDefine.h"
-#include "MessagePlayerAttrib.pb.h"
-#include "MessagePlayerAttribInt.pb.h"
-#include "MessagePlayerAttribI64.pb.h"
-#include "MessageErrorNo.pb.h"
 #include "gtime.h"
 #include "error.h"
 #include "NoticeModule.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessagePlayer.pb.h"
 
 
 void CPlayer::Release()
@@ -268,7 +265,7 @@ void CPlayer::SyncFieldInt(int i, bool client, bool data, CPlayer* toPlayer)
 	msg.set_value( GetFieldInt(i) );
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, D2G_NOTIFY_PLAYER_ATTRINT );
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_SYNC_ATTRINT);
 
 	if( client )
 		SendClientMsg( &pack );
@@ -289,7 +286,7 @@ void CPlayer::SyncFieldI64(int i, bool client, bool data, CPlayer* toPlayer)
 	msg.set_value( GetFieldI64(i) );
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, D2G_NOTIFY_PLAYER_ATTRI64 );
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_SYNC_ATTRI64);
 
 	if( client )
 		SendClientMsg( &pack );
@@ -352,7 +349,7 @@ void CPlayer::SyncAttribute(bool client, CPlayer* toPlayer)
 	msg.set_baseagility(GetFieldInt(Role_Attrib_BaseAgility));
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_PLAYER_ATTRIBUTE );
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_DATA);
 
 	if( client )
 		SendClientMsg( &pack );

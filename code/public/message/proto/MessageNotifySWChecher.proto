@@ -1,8 +1,0 @@
-package Message; 
-message NotifySWChecker							//将顺网返回的信息发给客户端
-{
-	optional string		guid			= 1;	//玩家在顺网的游戏ID
-	optional string		accessToken		= 2;	//访问token
-	optional string		paysrvip		= 3;	//payment server ip
-	optional int32		srvport			= 4;	//payment server port
-} 

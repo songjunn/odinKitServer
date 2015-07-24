@@ -1,7 +1,0 @@
-package Message; 
-message ItemSyncAttribInt								//同步道具属性
-{
-   optional int64		itemid 				= 1;	//道具实体ID
-   optional int32		attr	 				= 2;	//属性ID
-   optional int32		value 				= 3;	//属性值
-} 

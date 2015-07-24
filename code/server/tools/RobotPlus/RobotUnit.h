@@ -1,5 +1,5 @@
 #pragma once
-#include "SharedInc.h"
+#include "shared.h"
 #include "utllinkedlist.h"
 #include "utlmap.h"
 #include "LuaEngine.h"

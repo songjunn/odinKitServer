@@ -1,9 +1,6 @@
 #pragma once
-
 #include "Singleton.h"
-#include "Player.h"
-#include <vector>
-#include "MessageDebugRequest.pb.h"
+#include "Packet.h"
 
 class CDebugModule: public Singleton<CDebugModule>
 {

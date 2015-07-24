@@ -1,23 +1,12 @@
 #include "UserMgr.h"
 #include "MainServer.h"
-#include "PacketDefine.h"
 #include "Packet.h"
 #include "error.h"
-#include "MessageClientLogin.pb.h"
-#include "MessageLoginSession.pb.h"
-#include "MessagePlayerLogin.pb.h"
-#include "MessagePlayerCount.pb.h"
-#include "MessageUserLogin.pb.h"
-#include "MessagePlayerLogout.pb.h"
-#include "MessageUserLogout.pb.h"
-#include "MessageUserDisplace.pb.h"
-#include "MessageErrorNo.pb.h"
-#include "MessageNetControl.pb.h"
-#include "MessageCreatePlayer.pb.h"
-#include "MessageUserHeartRequest.pb.h"
-#include "MessageUserHeartResponse.pb.h"
-#include "MessageSWChargeChecker.pb.h"
-
+#include "MessageTypeDefine.pb.h"
+#include "MessageCommon.pb.h"
+#include "MessageServer.pb.h"
+#include "MessageUser.pb.h"
+#include "MessagePlayer.pb.h"
 
 const int g_PacketLimitTime = 10;
 static int g_PacketLimitCount = 0;
@@ -108,18 +97,17 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 
 	switch(pack->Type())
 	{
-	case P2A_REQUEST_USER_HEART:	_HandlePacket_UserHeart(pack);		break;
-	case P2A_REQUEST_USER_LOGIN:	_HandlePacket_UserLogin(pack);		break;
-	case P2A_REQUEST_USER_LOGOUT:	_HandlePacket_UserLogout(pack);		break;
-	case L2A_REQUEST_USER_PRLOGIN:	_HandlePacket_UserPreLogin(pack);	break;
-	case D2G_REQUEST_LOGIN_GAMEWORLD:	_HandlePacket_PlayerLogin(pack);break;
-	case P2D_REQUEST_PLAYER_CREATE:	_HandlePacket_PlayerCreate(pack);	break;
-	case D2P_NOTIFY_PLAYER_COUNT:	_HandlePacket_PlayerCount(pack);	break;
-	case N2S_NOTIFY_CONTROL_CLOSE:	_HandlePacket_NetClose(pack);		break;
-	case N2S_NOTIFY_CONTROL_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
-	case S2P_NOTIFY_SYNC_ERROR:		_HandlePacket_GameError(pack);		break;
-	case G2A_NOTIFY_USER_DISPLACE:	_HandlePacket_UserDisplace(pack);	break;
-	case S2S_NOTIFY_SWCHARGE:		_HandlePacket_SWCharge(pack);		break;
+	case Message::MSG_REQUEST_USER_HEART:	_HandlePacket_UserHeart(pack);		break;
+	case Message::MSG_REQUEST_USER_LOGIN:	_HandlePacket_UserLogin(pack);		break;
+	case Message::MSG_REQUEST_USER_LOGOUT:	_HandlePacket_UserLogout(pack);		break;
+	case Message::MSG_USER_PRLOGIN_REQUEST:	_HandlePacket_UserPreLogin(pack);	break;
+	case Message::MSG_PLAYER_LOGIN_REQUEST:	_HandlePacket_PlayerLogin(pack); break;
+	case Message::MSG_REQUEST_PLAYER_CREATE:	_HandlePacket_PlayerCreate(pack);	break;
+	case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);	break;
+	case Message::MSG_SERVER_NET_CLOSE:	_HandlePacket_NetClose(pack);		break;
+	case Message::MSG_SERVER_NET_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
+	case Message::MSG_COMMON_ERROR:		_HandlePacket_GameError(pack);		break;
+	case Message::MSG_USER_DISPLACE:	_HandlePacket_UserDisplace(pack);	break;
 	default:	return false;
 	}
 
@@ -176,7 +164,7 @@ bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 				message.set_server( server->m_nID );
 
 				PACKET_COMMAND packet;
-				PROTOBUF_CMD_PACKAGE( packet, message, A2D_REQUEST_USER_LOGIN );
+				PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
 				GETSERVERNET->sendMsg(server->m_Socket, &packet);
 
 				//同步服务器时间
@@ -367,30 +355,6 @@ bool CUserMgr::_HandlePacket_NetClose(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CUserMgr::_HandlePacket_SWCharge(PACKET_COMMAND* pack)
-{
-	Message::SWChargeChecker msg;
-	PROTOBUF_CMD_PARSER(pack, msg);
-
-	CUser *pUser = GetUserByUID(msg.userid());
-	if (!pUser) {
-		Log.Error("_HandlePacket_SWCharge !pUser. user: %lld, money: %d", msg.userid(), msg.money());
-		return false;
-	}
-
-	Message::SWChargeChecker msg2;
-	msg2.set_playerid(pUser->m_LogonPlayer);
-	msg2.set_money(msg.money());
-
-	PACKET_COMMAND pack2;
-	PROTOBUF_CMD_PACKAGE(pack2, msg2, S2S_NOTIFY_SWCHARGE);
-	GETSERVERNET->sendMsg(pUser->m_GameSock, &pack2);
-
-	Log.Notice("SWCharge. user: %lld, player: %lld, money: %d", pUser->m_id, pUser->m_LogonPlayer, msg.money());
-
-	return true;
-}
-
 bool CUserMgr::_CheckUserKey(UserID id, int64 key, SOCKET sock)
 {
 	UserKey* ukey = m_KeysList.Find( id );
@@ -427,7 +391,7 @@ void CUserMgr::SendHeartResponse(CUser* user)
 		message.set_stime(user->m_HeartTime);
 
 		PACKET_COMMAND packet;
-		PROTOBUF_CMD_PACKAGE(packet, message, P2A_RESPONSE_USER_HEART);
+		PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_HEART_RESPONSE);
 		GETCLIENTNET->sendMsg(user->m_ClientSock, &packet);
 	}
 }
@@ -438,7 +402,7 @@ void CUserMgr::SendErrorMsg(SOCKET sock, int errid)
 	msg.set_error( errid );
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, S2P_NOTIFY_SYNC_ERROR );
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
 	GETCLIENTNET->sendMsg(sock, &pack);
 }
 
@@ -481,7 +445,7 @@ void CUserMgr::RemoveUser(CUser* user, bool sync)
 			msg.set_pid( user->m_LogonPlayer );
 
 			PACKET_COMMAND pack;
-			PROTOBUF_CMD_PACKAGE( pack, msg, A2G_NOTIFY_PLAYER_LOGOUT );
+			PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOGOUT_REQEUST);
 			GETSERVERNET->sendMsg( user->m_GameSock, &pack );
 		}
 

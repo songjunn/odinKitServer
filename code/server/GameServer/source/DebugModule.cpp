@@ -1,13 +1,11 @@
 #include <vector>
 #include <iostream>
-
 #include "DebugModule.h"
-#include "PacketDefine.h"
-#include "MessageDebugRequest.pb.h"
 #include "Log.h"
 #include "PlayerMgr.h"
 #include "gamedef.h"
-#include "MessagePlayerAttrib.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageDebug.pb.h"
 
 
 #ifdef DEBUG
@@ -189,7 +187,7 @@ bool CDebugModule::OnMsg(PACKET_COMMAND* pack)
 	//_setMessage(false);
 	switch(pack->Type())
 	{
-		case P2G_REQUEST_DEBUG: 
+		case Message::MSG_REQUEST_DEBUG:
 			_handleDebug(pack);
 			break; 
 

@@ -1,7 +1,0 @@
-package Message; 
-message ClientLogin 								//客户端连接网关
-{ 
-   optional int64     uid 		= 1;  //账号ID
-   optional int64	    key 		= 2;  //密钥
-   optional int32	    server	= 3;  //选择的区服号
-} 

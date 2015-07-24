@@ -1,7 +1,0 @@
-package Message;
-
-message NetTestResponse {
-	required int32 no	= 1;
-	repeated int32 idata = 2;
-	optional string sdata = 3;
-};

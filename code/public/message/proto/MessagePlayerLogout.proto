@@ -1,5 +1,0 @@
-package Message; 
-message PlayerLogout								//½ÇÉ«µÇ³ö
-{
-   optional int64			pid			= 1;	//½ÇÉ«ID
-} 

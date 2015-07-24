@@ -1,6 +1,0 @@
-package Message; 
-message GuestCheck 								  //游客验证
-{ 
-   optional string    device	= 1;  //设备号
-   optional int32			server	= 2;	//选择的区服号
-} 

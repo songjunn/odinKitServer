@@ -3,8 +3,8 @@
 #include "Log.h"
 #include "Packet.h"
 #include "eventdef.h"
-#include "PacketDefine.h"
-#include "MessageEventSync.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageCommon.pb.h"
 
 
 CAnalysisModule::CAnalysisModule()
@@ -42,7 +42,7 @@ bool CAnalysisModule::OnMsg(PACKET_COMMAND* pack)
 
 	switch( pack->Type() )
 	{
-	case G2B_NOTIFY_EVENT:	_HandlePacket_EventSync(pack);	break;
+	case Message::MSG_COMMON_EVENT:	_HandlePacket_EventSync(pack);	break;
 	default:	return false;
 	}
 

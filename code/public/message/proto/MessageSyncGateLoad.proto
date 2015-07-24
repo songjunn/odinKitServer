@@ -1,5 +1,0 @@
-package Message; 
-message SyncGateLoad							//网关同步负载信息
-{ 
-   optional int32     count = 1;  //服务程序ID 
-} 
