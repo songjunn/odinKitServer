@@ -11,11 +11,11 @@ public:
 	CRobotNet()		{};
 	~CRobotNet()	{};
 
-	void Break(SOCKET sock);
-	int	 SendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack);
+	bool shutdown(SOCKET sock);
+	int	 sendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack);
 
-	bool HandlePacket(PACKET_COMMAND * pCmd);
-	PACKET_COMMAND*	GetHeadPacket();
+	bool handlePacket(PACKET_COMMAND * pCmd);
+	PACKET_COMMAND*	getHeadPacket();
 
 private:
 	Mutex						m_PackLock;

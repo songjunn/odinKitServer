@@ -1,6 +1,6 @@
 --公共脚本
 LoadLuaFile("//scripts//common.lua")
-LoadLuaFile("//scripts//ActivityParams.lua")
+--LoadLuaFile("//scripts//ActivityParams.lua")
 LoadLuaFile("//scripts//register.lua")
 LoadLuaFile("//scripts//server.lua")
 LoadLuaFile("//scripts//player.lua")
@@ -99,7 +99,7 @@ LoadLuaFile("//scripts//effect//Effect_2210.lua")
 LoadLuaFile("//scripts//effect//Effect_2211.lua")
 
 --活动脚本
-LoadLuaFile("//scripts//campain//battle.lua")
-LoadLuaFile("//scripts//campain//boss.lua")
-LoadLuaFile("//scripts//campain//arena.lua")
-LoadLuaFile("//scripts//campain//task.lua")
+--LoadLuaFile("//scripts//campain//battle.lua")
+--LoadLuaFile("//scripts//campain//boss.lua")
+--LoadLuaFile("//scripts//campain//arena.lua")
+--LoadLuaFile("//scripts//campain//task.lua")

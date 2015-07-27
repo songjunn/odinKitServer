@@ -131,9 +131,9 @@ bool Begin()
 	const char* strOpenTime = LuaEngine.GetLuaVariableString("ServerOpenTime", "Key");
 	//g_firstServerTime = StringToDatetime(strOpenTime);
 
-	/*//加载lua脚本
+	//加载lua脚本
 	if (!onLoadScript())
-		return false;*/
+		return false;
 
 	if( !UserMgr.Initialize("user", playercnt) )
 		return false;

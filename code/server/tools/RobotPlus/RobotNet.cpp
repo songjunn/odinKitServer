@@ -2,19 +2,19 @@
 #include "Packet.h"
 
 
-void CRobotNet::Break(SOCKET sock)
+bool CRobotNet::shutdown(SOCKET sock)
 {
-
+	return CNet::shutdown(sock);
 }
 
-int CRobotNet::SendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack)
+int CRobotNet::sendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack)
 {
 	pack->SetTrans(uid);
 
 	return CNet::send(s, (char*)pack->Data(), pack->Size());
 }
 
-bool CRobotNet::HandlePacket(PACKET_COMMAND * pack)
+bool CRobotNet::handlePacket(PACKET_COMMAND * pack)
 {
 	m_PackLock.LOCK();
 	m_PacketList.AddToTail(pack);
@@ -23,7 +23,7 @@ bool CRobotNet::HandlePacket(PACKET_COMMAND * pack)
 	return true;
 }
 
-PACKET_COMMAND*	 CRobotNet::GetHeadPacket()
+PACKET_COMMAND*	 CRobotNet::getHeadPacket()
 {
 	PACKET_COMMAND* pack = NULL;
 	m_PackLock.LOCK();

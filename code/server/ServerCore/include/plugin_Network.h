@@ -28,6 +28,7 @@ private:
 	void _connectReturn(SOCKET sock, int error = 0);
 
 private:
+	int m_type;
 	CDoubleQueue<PACKET_COMMAND> m_PacketQueue;
 
 };

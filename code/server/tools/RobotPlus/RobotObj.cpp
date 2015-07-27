@@ -73,7 +73,7 @@ bool CRobotObj::Check(const char* szip, int port, const char* ver)
 
 		PACKET_COMMAND pack;
 		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_GUEST_CHECK);
-		RobotNet.SendMsg(m_uid, m_sock, &pack);
+		RobotNet.sendMsg(m_uid, m_sock, &pack);
 
 		return true;
 	}
@@ -97,8 +97,8 @@ bool CRobotObj::Logon(const char* szip, int port)
 		msg.set_server(m_server);
 
 		PACKET_COMMAND pack;
-		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_USER_lOGIN_REQUEST);
-		RobotNet.SendMsg(m_uid, m_sock, &pack);
+		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_USER_LOGIN);
+		RobotNet.sendMsg(m_uid, m_sock, &pack);
 
 		return true;
 	}
@@ -128,7 +128,7 @@ void CRobotObj::Heart()
 
 		PACKET_COMMAND pack;
 		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_USER_HEART);
-		RobotNet.SendMsg(m_uid, m_sock, &pack);
+		RobotNet.sendMsg(m_uid, m_sock, &pack);
 
 		m_HeartTime = t;
 	}
@@ -148,7 +148,7 @@ void CRobotObj::CreatePlayer(int64 uid, int server, const char* name, int vocati
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_PLAYER_CREATE);
-	RobotNet.SendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);
 }
 
 void CRobotObj::AttackMonster(int64 pid, int scene, int monster)
@@ -172,7 +172,7 @@ void CRobotObj::AddExp(int exp)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_DEBUG);
-	RobotNet.SendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);
 }
 
 void CRobotObj::AddItem()
@@ -188,7 +188,7 @@ void CRobotObj::AddItem()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_DEBUG);
-	RobotNet.SendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);
 }
 
 void CRobotObj::SendChat()
@@ -203,7 +203,7 @@ void CRobotObj::RequestObserver()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_PLAYER_OBSERVE);
-	RobotNet.SendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);
 }
 
 void CRobotObj::RequestJoinBattle()
@@ -242,7 +242,7 @@ void CRobotObj::AddHero()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_DEBUG);
-	RobotNet.SendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);
 }
 
 void CRobotObj::DoNetTest()
@@ -260,7 +260,7 @@ void CRobotObj::DoNetTest()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_NET_TEST);
-	RobotNet.SendMsg(m_uid, m_sock, &pack); 
+	RobotNet.sendMsg(m_uid, m_sock, &pack); 
 	//printf("send message [%d:%s]\n", P2G_REQUEST_NET_TEST, msg.ShortDebugString().c_str());
 }
 

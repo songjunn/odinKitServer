@@ -2,7 +2,7 @@ Player = {}
 
 Player.OnCreate = function(id)
 
-	--���ó�ʼ�ȼ�
+	--[[--���ó�ʼ�ȼ�
 	SetRoleFieldInt(id, Role_Attrib_Level, 1, false, true);
 	--���ó�ʼvip�ȼ�
 	SetRoleFieldInt(id, Role_Attrib_Vip, 0, false, true);
@@ -31,7 +31,7 @@ Player.OnCreate = function(id)
 	SetArenaFieldInt(id, EARENA_DATA_KNIGHTID, 0, false, true);
 	
 	--��ó�ʼװ��
-	--Player.GetInitEquip(id, id);
+	--Player.GetInitEquip(id, id);]]
 	
 end
 
@@ -42,7 +42,7 @@ end
 
 Player.OnLogin = function(id)
 	
-	local nowTimeSec = GetTimeSec();
+	--[[local nowTimeSec = GetTimeSec();
 	local logoutTimeSec = GetRoleFieldI64(id, Role_Attrib_LogoutTime);
 	--每6分钟增加一点体力
 	local ap = (nowTimeSec - logoutTimeSec) / 60 / 6;
@@ -66,7 +66,7 @@ Player.OnLogin = function(id)
 		SetRoleFieldInt(id, Role_Attrib_BossInspireFree, 0, true, true);
 		SetRoleFieldInt(id, Role_Attrib_SignInFree, 0, true, true);
 		SetRoleFieldInt(id, Role_Attrib_SkillResetFree, 0, true, true);
-	end
+	end]]
 
 end
 

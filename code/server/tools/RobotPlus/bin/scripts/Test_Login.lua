@@ -1,8 +1,8 @@
 LoginUnit = {}
 
 --RegMessage(106, "LoginUnit", "OnPlayerLogin")
-RegMessage(108, "LoginUnit", "OnUserLogin")
-RegMessage(109, "LoginUnit", "OnPlayerCount")
+RegMessage(303, "LoginUnit", "OnUserLogin")
+RegMessage(404, "LoginUnit", "OnPlayerCount")
 
 LoginUnit.Logic = function()
 end

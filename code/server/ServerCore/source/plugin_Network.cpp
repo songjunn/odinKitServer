@@ -20,6 +20,8 @@ bool CNetwork::startup(int type, int port, int connectmax, int sendbuffsize, int
 		return false;
 	}
 
+	m_type = type;
+
 	return CNet::startup(type, port, connectmax, sendbuffsize, recvbuffsize, packsize);
 }
 
@@ -69,6 +71,10 @@ PACKET_COMMAND*	 CNetwork::getHeadPacket()
 
 void CNetwork::_closeReturn(SOCKET sock)
 {
+	if (m_type == CNet::NET_IO_SELECT) {
+		return;
+	}
+
 	PACKET_COMMAND *pCmd = g_PacketPool.Alloc();
 	if (pCmd) {
 		Message::NetControl tMsg;
@@ -80,6 +86,10 @@ void CNetwork::_closeReturn(SOCKET sock)
 
 void CNetwork::_acceptReturn(SOCKET sock)
 {
+	if (m_type == CNet::NET_IO_SELECT) {
+		return;
+	}
+
 	PACKET_COMMAND *pCmd = g_PacketPool.Alloc();
 	if (pCmd) {
 		Message::NetControl tMsg;
