@@ -3,13 +3,18 @@
 #include "gtime.h"
 #include "error.h"
 #include "NoticeModule.h"
+#include "DataModule.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessagePlayer.pb.h"
 
 
 void CPlayer::Release()
 {
+	DataModule.Delete(m_GameObj->getId());
+	m_GameObj = NULL;
+
 	CFighter::Release();
+	m_EventUnit.Release();
 }
 
 void CPlayer::Init()
@@ -92,6 +97,8 @@ void CPlayer::Init()
 	m_CarnageAchieveMax = 0;
 	m_CarnageResetCnt = 0;
 	m_CarnageChlgCnt = 0;
+
+	m_EventUnit.Initialize(this);
 }
 
 bool CPlayer::OnMsg(PACKET_COMMAND* pack)
@@ -116,6 +123,13 @@ bool CPlayer::OnCreate(int templateid)
 		return false;
 	}
 
+	CMetadata* json = DataModule.GetObj( GetID() );
+	if( json )
+		m_GameObj = json;
+	else
+		m_GameObj = DataModule.createGameJsonObj("player", GetID());
+
+	SetTemplateID(templateid);
 	SetFieldInt(Role_Attrib_TemplateID, templateid);
 	SetFieldInt(Role_Attrib_Vocation, temp->m_Career);
 	SetFieldInt(Role_Attrib_Sex, temp->m_Sex);
@@ -167,21 +181,6 @@ int* CPlayer::_FindFieldInt(int i)
 
 	switch(i)
 	{
-	case Role_Attrib_GoldCoin:			return &m_GoldCoin;
-	case Role_Attrib_SilverCoin:		return &m_SilverCoin;
-	case Role_Attrib_ColorCoin:			return &m_ThirdCoin;
-	case Role_Attrib_Stamina:			return &m_Stamina;
-	case Role_Attrib_StaminaMax:		return &m_StaminaMax;
-	case Role_Attrib_Merit:				return &m_Merit;
-	case Role_Attrib_Credit:			return &m_Credit;
-	case Role_Attrib_KnightState:		return &m_KnightState;
-	case Role_Attrib_WorshipCount:		return &m_WorshipCount;
-	case Role_Attrib_StateGreen:		return &m_StateGreen;
-	case Role_Attrib_StateBlue:		    return &m_StateBlue;
-	case Role_Attrib_StatePurple:		return &m_StatePurple;
-	case Role_Attrib_StateOrange:		return &m_StateOrange;
-	case Role_Attrib_BagMaxCapacity:	return &m_MaxBagCapacity;
-	case Role_Attrib_Vip:				return &m_VipLevel;
 	case Role_Attrib_BattleCamp:		return &m_BattleCamp;
 	case Role_Attrib_BattleWpID:		return &m_BattleWpID;
 	case Role_Attrib_BattleActions:		return &m_BattleActions;
@@ -231,11 +230,6 @@ int64* CPlayer::_FindFieldI64(int i)
 
 	switch(i)
 	{
-	case Role_Attrib_Exp:			return &m_Exp;
-	case Role_Attrib_UserID:		return &m_UserID;
-	case Role_Attrib_KnightStateExp:return &m_StateExp;
-	case Role_Attrib_LoginTime:		return &m_LoginTime;
-	case Role_Attrib_LogoutTime:	return &m_LogoutTime;
 	case Role_Attrib_BattleActionTime:	return &m_BattleActionTime;
 	case Role_Attrib_ChatCampTime:		return &m_ChatCampTime;
 	case Role_Attrib_ChatPrivateTime:	return &m_ChatPrivateTime;
@@ -254,11 +248,103 @@ int64* CPlayer::_FindFieldI64(int i)
 	return NULL;
 }
 
-void CPlayer::SyncFieldInt(int i, bool client, bool data, CPlayer* toPlayer)
+void CPlayer::_SetXmlFieldInt(int i, int value)
 {
-	if( !client && !data && !toPlayer )
-		return;
+	switch(i)
+	{
+	case Role_Attrib_TemplateID:		m_GameObj->setFieldInt("template", value);					break;
+	case Role_Attrib_Quality:			m_GameObj->setFieldObjInt("attr", "quality", value);		break;
+	case Role_Attrib_QualityProgress:	m_GameObj->setFieldObjInt("attr", "qualitypro", value);		break;
+	case Role_Attrib_Level:				m_GameObj->setFieldObjInt("attr", "level", value);			break;
+	case Role_Attrib_GoldCoin:			m_GameObj->setFieldObjInt("attr", "gold", value);			break;
+	case Role_Attrib_SilverCoin:		m_GameObj->setFieldObjInt("attr", "silver", value);			break;
+	case Role_Attrib_Credit:			m_GameObj->setFieldObjInt("attr", "credit", value);			break;
+	case Role_Attrib_Stamina:			m_GameObj->setFieldObjInt("attr", "stamina", value);		break;
+	case Role_Attrib_UseStuntSkill:		m_GameObj->setFieldObjInt("attr", "stunt", value);			break;
+	case Role_Attrib_KnightState:		m_GameObj->setFieldObjInt("attr", "knight", value);			break;
+	case Role_Attrib_Merit:				m_GameObj->setFieldObjInt("attr", "merit", value);			break;
+	case Role_Attrib_BagMaxCapacity:	m_GameObj->setFieldObjInt("attr", "bagmax", value);			break;
+	case Role_Attrib_Vip:				m_GameObj->setFieldObjInt("attr", "viplevel", value);		break;
+	case Role_Attrib_TrainStrength:		m_GameObj->setFieldObjInt("train", "strength", value);		break;
+	case Role_Attrib_TrainIntellect:	m_GameObj->setFieldObjInt("train", "intellect", value);		break;
+	case Role_Attrib_TrainTechnique:	m_GameObj->setFieldObjInt("train", "technique", value);		break;
+	case Role_Attrib_TrainAgility:		m_GameObj->setFieldObjInt("train", "agility", value);		break;
+	case Role_Attrib_WorshipCount:		m_GameObj->setFieldObjInt("worship", "count", value);		break;
+	case Role_Attrib_FreeCount:			m_GameObj->setFieldObjInt("worship", "free", value);		break;
+	case Role_Attrib_StateGreen:		m_GameObj->setFieldObjInt("worship", "green", value);		break;
+	case Role_Attrib_StateBlue:			m_GameObj->setFieldObjInt("worship", "blue", value);		break;
+	case Role_Attrib_StatePurple:		m_GameObj->setFieldObjInt("worship", "purple", value);		break;
+	case Role_Attrib_StateOrange:		m_GameObj->setFieldObjInt("worship", "orange", value);		break;
+	default:	break;
+	}
+}
 
+void CPlayer::_SetXmlFieldI64(int i, int64 value)
+{
+	switch(i)
+	{
+	case Role_Attrib_UserID:			m_GameObj->setFieldI64("userid", value);					break;
+	case Role_Attrib_LoginTime:			m_GameObj->setFieldObjI64("login", "logintime", value);		break;
+	case Role_Attrib_LogoutTime:		m_GameObj->setFieldObjI64("login", "logouttime", value);	break;
+	case Role_Attrib_Exp:				m_GameObj->setFieldObjI64("attr", "exp", value);			break;
+	case Role_Attrib_KnightStateExp:	m_GameObj->setFieldObjI64("attr", "knightexp", value);		break;
+	default:	break;
+	}
+}
+
+int CPlayer::_GetXmlFieldInt(int i)
+{
+	switch(i)
+	{	
+	case Role_Attrib_TemplateID:		return m_GameObj->getFieldInt("template");
+	case Role_Attrib_Quality:			return m_GameObj->getFieldObjInt("attr", "quality");		
+	case Role_Attrib_QualityProgress:	return m_GameObj->getFieldObjInt("attr", "qualitypro");	
+	case Role_Attrib_Level:				return m_GameObj->getFieldObjInt("attr", "level");		
+	case Role_Attrib_GoldCoin:			return m_GameObj->getFieldObjInt("attr", "gold");			
+	case Role_Attrib_SilverCoin:		return m_GameObj->getFieldObjInt("attr", "silver");			
+	case Role_Attrib_Credit:			return m_GameObj->getFieldObjInt("attr", "credit");			
+	case Role_Attrib_Stamina:			return m_GameObj->getFieldObjInt("attr", "stamina");		
+	case Role_Attrib_UseStuntSkill:		return m_GameObj->getFieldObjInt("attr", "stunt");
+	case Role_Attrib_KnightState:		return m_GameObj->getFieldObjInt("attr", "knight");			
+	case Role_Attrib_Merit:				return m_GameObj->getFieldObjInt("attr", "merit");			
+	case Role_Attrib_BagMaxCapacity:	return m_GameObj->getFieldObjInt("attr", "bagmax");			
+	case Role_Attrib_Vip:				return m_GameObj->getFieldObjInt("attr", "viplevel");
+	case Role_Attrib_TrainStrength:		return m_GameObj->getFieldObjInt("train", "strength");		
+	case Role_Attrib_TrainIntellect:	return m_GameObj->getFieldObjInt("train", "intellect");		
+	case Role_Attrib_TrainTechnique:	return m_GameObj->getFieldObjInt("train", "technique");		
+	case Role_Attrib_TrainAgility:		return m_GameObj->getFieldObjInt("train", "agility");		
+	case Role_Attrib_WorshipCount:		return m_GameObj->getFieldObjInt("worship", "count");		
+	case Role_Attrib_FreeCount:			return m_GameObj->getFieldObjInt("worship", "free");		
+	case Role_Attrib_StateGreen:		return m_GameObj->getFieldObjInt("worship", "green");		
+	case Role_Attrib_StateBlue:			return m_GameObj->getFieldObjInt("worship", "blue");		
+	case Role_Attrib_StatePurple:		return m_GameObj->getFieldObjInt("worship", "purple");		
+	case Role_Attrib_StateOrange:		return m_GameObj->getFieldObjInt("worship", "orange");		
+	default:	break;
+	}
+	return INVALID_VALUE;
+}
+
+int64 CPlayer::_GetXmlFieldI64(int i)
+{
+	switch(i)
+	{
+	case Role_Attrib_UserID:			return m_GameObj->getFieldI64("userid");					
+	case Role_Attrib_LoginTime:			return m_GameObj->getFieldObjI64("login", "logintime");	
+	case Role_Attrib_LogoutTime:		return m_GameObj->getFieldObjI64("login", "logouttime");	
+	case Role_Attrib_Exp:				return m_GameObj->getFieldObjI64("attr", "exp");			
+	case Role_Attrib_KnightStateExp:	return m_GameObj->getFieldObjI64("attr", "knightexp");		
+	default:	break;
+	}
+	return INVALID_VALUE;
+}
+
+void CPlayer::SyncFieldToData(const char* field)
+{
+	DataModule.syncField(m_GameObj, GETSERVERMGR->getDataSock(), field);
+}
+
+void CPlayer::SyncFieldIntToClient(int i, CPlayer* toPlayer)
+{
 	Message::PlayerAttribInt msg;
 	msg.set_pid( GetID() );
 	msg.set_attr( i );
@@ -267,49 +353,26 @@ void CPlayer::SyncFieldInt(int i, bool client, bool data, CPlayer* toPlayer)
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_SYNC_ATTRINT);
 
-	if( client )
-		SendClientMsg( &pack );
-	if( data )
-		SendDataMsg( &pack );
 	if( toPlayer )
 		SendObserveMsg( &pack, toPlayer );
+	else
+		SendClientMsg( &pack );
 }
 
-void CPlayer::SyncFieldI64(int i, bool client, bool data, CPlayer* toPlayer)
+void CPlayer::SyncFieldI64ToClient(int i, CPlayer* toPlayer)
 {
-	if( !client && !data && !toPlayer )
-		return;
-
 	Message::PlayerAttribI64 msg;
-	msg.set_pid( GetID() );
-	msg.set_attr( i );
-	msg.set_value( GetFieldI64(i) );
+	msg.set_pid(GetID());
+	msg.set_attr(i);
+	msg.set_value(GetFieldI64(i));
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_SYNC_ATTRI64);
 
-	if( client )
-		SendClientMsg( &pack );
-	if( data )
-		SendDataMsg( &pack );
-	if( toPlayer )
-		SendObserveMsg( &pack, toPlayer );
-}
-
-void CPlayer::ChangeFieldInt(int i, int value, bool client, bool data)
-{
-	CFighter::ChangeFieldInt(i, value, client, data);
-}
-
-void CPlayer::_ChangeRelatedField(int i, bool client, bool data)
-{
-	CFighter::_ChangeRelatedField(i, client, data);
-
-	switch(i)
-	{
-	default:
-		break;
-	}
+	if (toPlayer)
+		SendObserveMsg(&pack, toPlayer);
+	else
+		SendClientMsg(&pack);
 }
 
 void CPlayer::SyncAttribute(bool client, CPlayer* toPlayer)
@@ -356,21 +419,21 @@ void CPlayer::SyncAttribute(bool client, CPlayer* toPlayer)
 	if( toPlayer )
 		SendObserveMsg( &pack, toPlayer );
 
-	SyncFieldInt(Role_Attrib_TrainStrength, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_TrainIntellect, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_TrainTechnique, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_TrainAgility, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_UseStuntSkill, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_Vip, client, false, toPlayer);
-	SyncFieldI64(Role_Attrib_RechargeSum, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_Credit, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_KnightState, client, false, toPlayer);
-	SyncFieldI64(Role_Attrib_KnightStateExp, client, false, toPlayer);
+	/*SyncFieldInt(Role_Attrib_TrainStrength, client, false, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_TrainIntellect, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_TrainTechnique, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_TrainAgility, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_UseStuntSkill, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_Vip, toPlayer);
+	SyncFieldI64ToClient(Role_Attrib_RechargeSum, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_Credit, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_KnightState, toPlayer);
+	SyncFieldI64ToClient(Role_Attrib_KnightStateExp, toPlayer);
 	
-	SyncFieldInt(Role_Attrib_Fighting, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_Quality, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_QualityProgress, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_Hotohori, client, false, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_Fighting, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_Quality, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_QualityProgress, toPlayer);
+	SyncFieldIntToClient(Role_Attrib_Hotohori, toPlayer);
 	SyncFieldInt(Role_Attrib_BagMaxCapacity, client, false, toPlayer);
 
 	SyncFieldInt(Role_Attrib_BuyStamina, client, false, toPlayer);
@@ -387,7 +450,7 @@ void CPlayer::SyncAttribute(bool client, CPlayer* toPlayer)
 	SyncFieldInt(Role_Attrib_CarnageChlgCnt, client, false, toPlayer);
 
 	SyncFieldI64(Role_Attrib_FirstChargeTime, client, false, toPlayer);
-	SyncFieldI64(Role_Attrib_FirstServerTime, client, false, toPlayer);
+	SyncFieldI64(Role_Attrib_FirstServerTime, client, false, toPlayer);*/
 }
 
 void CPlayer::DataInit()
@@ -404,7 +467,8 @@ void CPlayer::DataSync()
 
 void CPlayer::GainAp(int value)
 {
-	this->ChangeFieldInt(Role_Attrib_Stamina, value, true, true);
+	this->ChangeFieldInt(Role_Attrib_Stamina, value, true);
+	this->SyncFieldToData("attr");
 }
 
 bool CPlayer::GainGold(int nGold, GOLD_REASON reason)
@@ -420,7 +484,8 @@ bool CPlayer::GainGold(int nGold, GOLD_REASON reason)
 		return false;
 	}
 
-	ChangeFieldInt(Role_Attrib_GoldCoin, nGold, true, true);
+	ChangeFieldInt(Role_Attrib_GoldCoin, nGold, true);
+	this->SyncFieldToData("attr");
 
 	if(GoldCoin() < 0) { // 金币上溢
 		Log.Error("Serious Error. GoldCoin Overflow CurGold: %d, Reason: %d, player:"INT64_FMT, GoldCoin(), reason, GetID());
@@ -446,7 +511,8 @@ bool CPlayer::GainSilver(int nSilver, SILVER_REASON reason)
 		return false;
 	}
 
-	ChangeFieldInt(Role_Attrib_SilverCoin, nSilver, true, true);
+	ChangeFieldInt(Role_Attrib_SilverCoin, nSilver, true);
+	this->SyncFieldToData("attr");
 
 	if(SilverCoin() < 0) { // 银币上溢
 		Log.Error("Serious Error. SilverCoin Overflow CurSilver: %d, Reason: %d, player:"INT64_FMT, SilverCoin(), reason, GetID());

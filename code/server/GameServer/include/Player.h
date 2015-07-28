@@ -54,18 +54,19 @@ public:
 	inline void	SetLoadTime(TMV time) {m_LoadTime = time;}
 	inline TMV	GetLoadTime() {return m_LoadTime;}
 
-	void	SyncFieldInt(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
-	void	SyncFieldI64(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
-
-	virtual void	ChangeFieldInt(int i, int value, bool client=false, bool data=false);
-
-protected:
-	virtual void	_ChangeRelatedField(int i, bool client = false, bool data = false);
+	void	SyncFieldToData(const char* field = NULL);
+	void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL);
+	void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL);
 
 protected:
 	int*	_FindFieldInt(int i);
 	int64*	_FindFieldI64(int i);
 
+	void	_SetXmlFieldInt(int i, int value);
+	void	_SetXmlFieldI64(int i, int64 value);
+
+	int		_GetXmlFieldInt(int i);
+	int64	_GetXmlFieldI64(int i);
 public:
 	CEventUnit			m_EventUnit;
 

@@ -6,6 +6,7 @@
 #include "NameText.h"
 #include "MainServer.h"
 #include "NoticeModule.h"
+#include "DataModule.h"
 #include "LuaEngine.h"
 #include "Event.h"
 #include "gtime.h"
@@ -13,6 +14,7 @@
 #include "MessageServer.pb.h"
 #include "MessageUser.pb.h"
 #include "MessagePlayer.pb.h"
+#include "MessageGameobj.pb.h"
 
 
 CLoginModule::CLoginModule()
@@ -107,8 +109,17 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 		pUser->m_ID = msg.uid();
 		pUser->m_GateSocket = pack->GetNetID();
 
+		Message::UserLogin message;
+		message.set_uid(msg.uid());
+		message.set_world(msg.world());
+		message.set_server(msg.server());
+		message.set_type("player");
+		message.set_key("userid");
+
 		//向data发送请求，加载角色数据
-		GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), pack);
+		PACKET_COMMAND packet;
+		PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
+		GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), &packet);
 	}
 
 	Log.Notice( "[Login] User:"INT64_FMT, msg.uid() );
@@ -173,7 +184,24 @@ bool CLoginModule::_HandlePacket_PlayerCount(PACKET_COMMAND* pack)
 	if( !pUser )
 		return false;
 
-	pUser->SendGateMsg(pack);
+	if( msg.player_size() <= 0 )
+	{	
+		pUser->SendGateMsg(pack);
+	}
+	else
+	{
+		PersonID playerid = msg.player(0);
+		m_LoginMap.Insert(playerid, playerid);
+
+		Message::ReqPlayerData msgData;
+		msgData.set_pid(playerid);
+		msgData.set_type("player");
+		msgData.set_key("playerid");
+		
+		PACKET_COMMAND packData;
+		PROTOBUF_CMD_PACKAGE(packData, msgData, Message::MSG_GAMEOBJ_REQUEST);
+		GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), &packData);
+	}
 
 	return true;
 }
@@ -198,6 +226,11 @@ bool CLoginModule::_HandlePacket_PlayerCreate(PACKET_COMMAND* pack)
 	CPlayer* player = PlayerMgr.Create( msg.roletemplate() );
 	if( !player )
 		return false;
+
+	player->m_GameObj->setFieldI64("playerid", player->GetID());
+	player->m_GameObj->setFieldI64("userid", msg.uid());
+	player->m_GameObj->setFieldString("name", msg.name().c_str());
+	player->m_GameObj->setFieldInt("template", msg.roletemplate());
 
 	player->SetLoadTime(timeGetTime());
 	player->SetOnline(Online_Flag_Load);
@@ -237,18 +270,6 @@ bool CLoginModule::_HandlePacket_PlayerOnCreate(PACKET_COMMAND* pack)
 		return false;
 	}
 
-	//通知DataServer创建
-	Message::CreatePlayer msgCreate;
-	msgCreate.set_name( player->GetName() );
-	msgCreate.set_roletemplate( player->GetFieldInt(Role_Attrib_TemplateID) );
-	msgCreate.set_uid( player->GetFieldI64(Role_Attrib_UserID) );
-	msgCreate.set_stunt( player->GetFieldInt(Role_Attrib_UseStuntSkill) );
-	msgCreate.set_quality( player->GetFieldInt(Role_Attrib_Quality) );
-	msgCreate.set_pid( player->GetID() );
-	PACKET_COMMAND packCreate;
-	PROTOBUF_CMD_PACKAGE(packCreate, msgCreate, Message::MSG_REQUEST_PLAYER_CREATE);
-	player->SendDataMsg( &packCreate );
-
 	//执行脚本
 	LuaParam param[1];
 	param[0].SetDataNum( player->GetID() );
@@ -258,6 +279,8 @@ bool CLoginModule::_HandlePacket_PlayerOnCreate(PACKET_COMMAND* pack)
 		PlayerMgr.Delete( player->GetID() );
 		return false;
 	}
+	//同步DataServer创建
+	DataModule.syncCreate(player->m_GameObj, GETSERVERMGR->getDataSock());
 
 	CEvent* evnt = MakeEvent(Event_Player_Create, player->GetID(), player->GetFieldI64(Role_Attrib_UserID), NULL, true);
 	player->OnEvent(evnt);
@@ -289,8 +312,8 @@ bool CLoginModule::OnPlayerLogin(CPlayer* player)
 
 	//player->DataInit();  //移到CPlayerMgr::_HandlePacket_PlayerLoadOver
 	player->SetOnline(Online_Flag_On);
-	player->SetFieldI64(Role_Attrib_LoginTime, GetTimeSec(), false, true);
-	player->SyncFieldInt(Role_Attrib_Fighting, false, true );
+	player->SyncFieldToData("attr");
+	player->SyncFieldToData("login");
 
 	_OnPlayerSync(player);
 
@@ -322,6 +345,9 @@ bool CLoginModule::_OnPlayerSync(CPlayer* player)
 	param[0].SetDataNum( player->GetID() );
 	LuaEngine.RunLuaFunction("OnLogin", "Player", NULL, param, 1);
 
+	player->SetOnline(Online_Flag_On);
+	player->SetFieldI64(Role_Attrib_LoginTime, GetTimeSec());
+	player->SyncFieldToData("login");
 	//加载结束
 	Message::PlayerLoadOver msg;
 	msg.set_pid(player->GetID());
@@ -339,7 +365,8 @@ bool CLoginModule::OnPlayerLogout(PersonID id)
 		return false;
 
 	//下线前同步属性存盘
-	player->SetFieldI64(Role_Attrib_LogoutTime, GetTimeSec(), false, true);
+	player->SetFieldI64(Role_Attrib_LogoutTime, GetTimeSec(), false);
+	player->SyncFieldToData("login");
 
 	//登出事件
 	CEvent* evnt = MakeEvent(Event_Player_Logout, player->GetID(), NULL, true);
@@ -352,6 +379,8 @@ bool CLoginModule::OnPlayerLogout(PersonID id)
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOGOUT_REQEUST);
 	player->SendDataMsg( &pack );
+	//同步DataServer创建
+	DataModule.syncRemove(player->m_GameObj, GETSERVERMGR->getDataSock());
 
 	Log.Notice("[Logout] Online User:"INT64_FMT" Player:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID), id);
 
@@ -370,7 +399,27 @@ void CLoginModule::eventPlayerLoadover(PersonID id)
 
 	CPlayer* player = PlayerMgr.GetObj(id);
 	if( !player )
+	{
+		CMetadata* json = DataModule.GetObj( id );
+		if( !json )
+			return;
+
+		player = PlayerMgr.Create( json->getFieldInt("template"), id );
+		if( !player )
+			return;
+	}
+
+	CUser* pUser = UserMgr.GetObj( player->GetFieldI64(Role_Attrib_UserID) );
+	if( !pUser )
+	{
+		PlayerMgr.Delete(id);
 		return;
+	}
+
+	pUser->RelatePlayer( player->GetID() );
+	player->SetGateSocket( pUser->m_GateSocket );
+	player->SetLoadTime(timeGetTime());
+	player->SetOnline(Online_Flag_Load);
 
 	OnPlayerLogin(player);
 }

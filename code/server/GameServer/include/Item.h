@@ -3,6 +3,7 @@
 #include "ItemTemplate.h"
 
 
+class CPlayer;
 class CItem : public IBaseObj
 {
 public:
@@ -27,6 +28,10 @@ public:
 	void	SendClientMsg(PACKET_COMMAND* pack);
 	void	SendDataMsg(PACKET_COMMAND* pack);
 
+	void	SyncFieldToData(const char* field = NULL);
+	void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL);
+	void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL);
+
 	void	SyncFieldInt(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
 	void	SyncFieldI64(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
 
@@ -36,6 +41,12 @@ public:
 protected:
 	int*	_FindFieldInt(int i);
 	int64*	_FindFieldI64(int i);
+
+	void	_SetXmlFieldInt(int i, int value);
+	void	_SetXmlFieldI64(int i, int64 value);
+
+	int		_GetXmlFieldInt(int i);
+	int64	_GetXmlFieldI64(int i);
 
 private:
 	ItemID		m_ItemID;				//物品实体ID

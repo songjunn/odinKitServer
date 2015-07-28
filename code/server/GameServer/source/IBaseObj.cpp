@@ -9,69 +9,89 @@ void IBaseObj::Init()
 int	IBaseObj::GetFieldInt(int i)
 {
 	int* field = _FindFieldInt(i);
-	if( !field )
-		return -1;
-	return *field;
+	if( field )
+		return *field;
+	else
+		return _GetXmlFieldInt(i);
 }
 
-void IBaseObj::SetFieldInt(int i, int value, bool client, bool data)
+void IBaseObj::SetFieldInt(int i, int value, bool client)
 {
 	int* field = _FindFieldInt(i);
-	if( !field )
-		return;
-	*field = value;
+	if( field )
+		*field = value;
+	else
+		_SetXmlFieldInt(i, value);
 
-	SyncFieldInt(i, client, data);
+	if( client )
+		SyncFieldIntToClient(i);
 
-	_ChangeRelatedField(i, client, data);
+	_ChangeRelatedField(i, client);
 }
 
 int64 IBaseObj::GetFieldI64(int i)
 {
 	int64* field = _FindFieldI64(i);
-	if( !field )
-		return -1;
-	return *field;
+	if( field )
+		return *field;
+	else
+		return _GetXmlFieldI64(i);
 }
 
-void IBaseObj::SetFieldI64(int i, int64 value, bool client, bool data)
+void IBaseObj::SetFieldI64(int i, int64 value, bool client)
 {
 	int64* field = _FindFieldI64(i);
-	if( !field )
-		return;
-	*field = value;
+	if( field )
+		*field = value;
+	else
+		_SetXmlFieldI64(i, value);
 
-	SyncFieldI64(i, client, data);
+	if( client )
+		SyncFieldI64ToClient(i);
 
-	_ChangeRelatedField(i, client, data);
+	_ChangeRelatedField(i, client);
 }
 
-void IBaseObj::ChangeFieldInt(int i, int value, bool client, bool data)
+void IBaseObj::ChangeFieldInt(int i, int value, bool client)
 {
 	if( value == 0 )
 		return;
+
 	int* field = _FindFieldInt(i);
-	if( !field )
-		return;
-	*field += value;
-	//*field = *field >= 0 ? *field : 0;
+	if( field )
+	{
+		*field += value;
+	}
+	else
+	{
+		int v = _GetXmlFieldInt(i);
+		_SetXmlFieldInt(i, v + value);
+	}
 
-	SyncFieldInt(i, client, data);
+	if( client )
+		SyncFieldIntToClient(i);
 
-	_ChangeRelatedField(i, client, data);
+	_ChangeRelatedField(i, client);
 }
 
-void IBaseObj::ChangeFieldI64(int i, int64 value, bool client, bool data)
+void IBaseObj::ChangeFieldI64(int i, int64 value, bool client)
 {
 	if( value == 0 )
 		return;
+
 	int64* field = _FindFieldI64(i);
-	if( !field )
-		return;
-	*field += value;
-	*field = *field >= 0 ? *field : 0;
+	if( field )
+	{
+		*field += value;
+	}
+	else
+	{
+		int64 v = _GetXmlFieldI64(i);
+		_SetXmlFieldI64(i, v + value);
+	}
 
-	SyncFieldI64(i, client, data);
+	if( client )
+		SyncFieldI64ToClient(i);
 
-	_ChangeRelatedField(i, client, data);
+	_ChangeRelatedField(i, client);
 }

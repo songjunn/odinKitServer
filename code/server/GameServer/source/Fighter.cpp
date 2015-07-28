@@ -275,10 +275,10 @@ int* CFighter::_FindFieldInt(int i)
 {
 	switch(i)
 	{
-	case Role_Attrib_TemplateID:	return &m_templateId;
+	//case Role_Attrib_TemplateID:	return &m_templateId;
 	case Role_Attrib_Vocation:		return &m_Vocation;
 	case Role_Attrib_Sex:			return &m_Sex;
-	case Role_Attrib_Level:			return &m_Level;
+	//case Role_Attrib_Level:			return &m_Level;
 	case Role_Attrib_Hp:			return &m_Hp;
 	case Role_Attrib_SceneID:		return &m_SceneID;
 	case Role_Attrib_Position:		return &m_Position;
@@ -292,23 +292,23 @@ int* CFighter::_FindFieldInt(int i)
 	case Role_Attrib_MoraleRevert:	return &m_MoraleRevert;
 	case Role_Attrib_HpRevert:		return &m_HpRevert;
 	case Role_Attrib_AttackSkill:	return &m_CommSkill;
-	case Role_Attrib_UseStuntSkill:	return &m_StuntSkill;
+	//case Role_Attrib_UseStuntSkill:	return &m_StuntSkill;
 	case Role_Attrib_UseFinalSkill:	return &m_FinalSkill;
 	case Role_Attrib_Fighting:		return &m_Fighting;
 	case Role_Attrib_Body:			return &m_Body;
 	case Role_Attrib_StarsID:		return &m_StarsID;
-	case Role_Attrib_Quality:		return &m_Quality;
-	case Role_Attrib_QualityProgress:	return &m_QualityProgress;
+	//case Role_Attrib_Quality:		return &m_Quality;
+	//case Role_Attrib_QualityProgress:	return &m_QualityProgress;
 
 	case Role_Attrib_BaseStrength:		return &m_BaseStrength;
 	case Role_Attrib_BaseIntellect:		return &m_BaseIntellect;
 	case Role_Attrib_BaseTechnique:		return &m_BaseTechnique;
 	case Role_Attrib_BaseAgility:		return &m_BaseAgility;
 
-	case Role_Attrib_TrainStrength:		return &m_TrainStrength;
-	case Role_Attrib_TrainIntellect:	return &m_TrainIntellect;
-	case Role_Attrib_TrainTechnique:	return &m_TrainTechnique;
-	case Role_Attrib_TrainAgility:		return &m_TrainAgility;
+	//case Role_Attrib_TrainStrength:		return &m_TrainStrength;
+	//case Role_Attrib_TrainIntellect:	return &m_TrainIntellect;
+	//case Role_Attrib_TrainTechnique:	return &m_TrainTechnique;
+	//case Role_Attrib_TrainAgility:		return &m_TrainAgility;
 
 	case Role_Attrib_Strength:		return &m_Strength[Attrib_Value];
 	case Role_Attrib_Intellect:		return &m_Intellect[Attrib_Value];
@@ -455,8 +455,8 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 		{
 			float percent = 1.00f + (float)m_HpMax[Attrib_Percent] / 100;
 			int value = (m_BaseHpMax + m_HpMax[Attrib_Addons]) * percent;
-			SetFieldInt(Role_Attrib_HpMax, value, client, data);
-			SetFieldInt(Role_Attrib_Hp, value, client, data);
+			SetFieldInt(Role_Attrib_HpMax, value, client);
+			SetFieldInt(Role_Attrib_Hp, value, client);
 		}
 		break;
 	case Role_Attrib_BasePhysiDamage:
@@ -464,7 +464,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_PhysiDamagePercent:
 		{
 			int value = (m_BasePhysiDamage + m_PhysiDamage[Attrib_Addons]) * (100 + m_PhysiDamage[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_PhysiDamage, value, client, data);
+			SetFieldInt(Role_Attrib_PhysiDamage, value, client);
 		}
 		break;
 	case Role_Attrib_BasePhysiDefense:
@@ -472,7 +472,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_PhysiDefensePercent:
 		{
 			int value = (m_BasePhysiDefense + m_PhysiDefense[Attrib_Addons]) * (100 + m_PhysiDefense[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_PhysiDefense, value, client, data);
+			SetFieldInt(Role_Attrib_PhysiDefense, value, client);
 		}
 		break;
 	case Role_Attrib_BaseMagicDamage:
@@ -480,7 +480,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_MagicDamagePercent:
 		{
 			int value = (m_BaseMagicDamage + m_MagicDamage[Attrib_Addons]) * (100 + m_MagicDamage[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_MagicDamage, value, client, data);
+			SetFieldInt(Role_Attrib_MagicDamage, value, client);
 		}
 		break;
 	case Role_Attrib_BaseMagicDefense:
@@ -488,7 +488,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_MagicDefensePercent:
 		{
 			int value = (m_BaseMagicDefense + m_MagicDefense[Attrib_Addons]) * (100 + m_MagicDefense[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_MagicDefense, value, client, data);
+			SetFieldInt(Role_Attrib_MagicDefense, value, client);
 		}
 		break;
 	case Role_Attrib_BaseStuntDamage:
@@ -496,7 +496,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_StuntDamagePercent:
 		{
 			int value = (m_BaseStuntDamage + m_StuntDamage[Attrib_Addons]) * (100 + m_StuntDamage[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_StuntDamage, value, client, data);
+			SetFieldInt(Role_Attrib_StuntDamage, value, client);
 		}
 		break;
 	case Role_Attrib_BaseStuntDefense:
@@ -504,7 +504,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_StuntDefensePercent:
 		{
 			int value = (m_BaseStuntDefense + m_StuntDefense[Attrib_Addons]) * (100 + m_StuntDefense[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_StuntDefense, value, client, data);
+			SetFieldInt(Role_Attrib_StuntDefense, value, client);
 		}
 		break;
 	case Role_Attrib_BaseStrength:
@@ -512,8 +512,8 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_StrengthAddons:
 	case Role_Attrib_StrengthPercent:
 		{
-			int value = (m_BaseStrength + m_TrainStrength + m_Strength[Attrib_Addons]) * (100 + m_Strength[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Strength, value, client, data);
+			int value = (m_BaseStrength + this->GetFieldInt(Role_Attrib_TrainStrength) + m_Strength[Attrib_Addons]) * (100 + m_Strength[Attrib_Percent]) / 100;
+			SetFieldInt(Role_Attrib_Strength, value, client);
 		}
 		break;
 	case Role_Attrib_BaseIntellect:
@@ -521,8 +521,8 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_IntellectAddons:
 	case Role_Attrib_IntellectPercent:
 		{
-			int value = (m_BaseIntellect + m_TrainIntellect + m_Intellect[Attrib_Addons]) * (100 + m_Intellect[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Intellect, value, client, data);
+			int value = (m_BaseIntellect + this->GetFieldInt(Role_Attrib_TrainIntellect) + m_Intellect[Attrib_Addons]) * (100 + m_Intellect[Attrib_Percent]) / 100;
+			SetFieldInt(Role_Attrib_Intellect, value, client);
 		}
 		break;
 	case Role_Attrib_BaseTechnique:
@@ -530,8 +530,8 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_TechniqueAddons:
 	case Role_Attrib_TechniquePercent:
 		{
-			int value = (m_BaseTechnique + m_TrainTechnique + m_Technique[Attrib_Addons]) * (100 + m_Technique[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Technique, value, client, data);
+			int value = (m_BaseTechnique + this->GetFieldInt(Role_Attrib_TrainTechnique) + m_Technique[Attrib_Addons]) * (100 + m_Technique[Attrib_Percent]) / 100;
+			SetFieldInt(Role_Attrib_Technique, value, client);
 		}
 		break;
 	case Role_Attrib_BaseAgility:
@@ -539,8 +539,8 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_AgilityAddons:
 	case Role_Attrib_AgilityPercent:
 		{
-			int value = (m_BaseAgility + m_TrainAgility + m_Agility[Attrib_Addons]) * (100 + m_Agility[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Agility, value, client, data);
+			int value = (m_BaseAgility + this->GetFieldInt(Role_Attrib_TrainAgility) + m_Agility[Attrib_Addons]) * (100 + m_Agility[Attrib_Percent]) / 100;
+			SetFieldInt(Role_Attrib_Agility, value, client);
 		}
 		break;
 	case Role_Attrib_BaseHit:
@@ -548,7 +548,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_HitPercent:
 		{
 			int value = (m_BaseHit + m_Hit[Attrib_Addons]) * (100 + m_Hit[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Hit, value, client, data);
+			SetFieldInt(Role_Attrib_Hit, value, client);
 		}
 		break;
 	case Role_Attrib_BaseJouk:
@@ -556,7 +556,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_JoukPercent:
 		{
 			int value = (m_BaseJouk + m_Jouk[Attrib_Addons]) * (100 + m_Jouk[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Jouk, value, client, data);
+			SetFieldInt(Role_Attrib_Jouk, value, client);
 		}
 		break;
 	case Role_Attrib_BaseCrit:
@@ -564,7 +564,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_CritPercent:
 		{
 			int value = (m_BaseCrit + m_Crit[Attrib_Addons]) * (100 + m_Crit[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Crit, value, client, data);
+			SetFieldInt(Role_Attrib_Crit, value, client);
 		}
 		break;
 	case Role_Attrib_BaseTenacity:
@@ -572,7 +572,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_TenacityPercent:
 		{
 			int value = (m_BaseTenacity + m_Tenacity[Attrib_Addons]) * (100 + m_Tenacity[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Tenacity, value, client, data);
+			SetFieldInt(Role_Attrib_Tenacity, value, client);
 		}
 		break;
 	case Role_Attrib_BaseParry:
@@ -580,7 +580,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_ParryPercent:
 		{
 			int value = (m_BaseParry + m_Parry[Attrib_Addons]) * (100 + m_Parry[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Parry, value, client, data);
+			SetFieldInt(Role_Attrib_Parry, value, client);
 		}
 		break;
 	case Role_Attrib_BaseTreat:
@@ -588,7 +588,7 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 	case Role_Attrib_TreatPercent:
 		{
 			int value = (m_BaseTreat + m_Treat[Attrib_Addons]) * (100 + m_Treat[Attrib_Percent]) / 100;
-			SetFieldInt(Role_Attrib_Treat, value, client, data);
+			SetFieldInt(Role_Attrib_Treat, value, client);
 		}
 		break;
 	case Role_Attrib_Strength:
@@ -638,8 +638,9 @@ void CFighter::GainHp(int value)
 
 void CFighter::OnLevelup(int up)
 {
-	ChangeFieldInt(Role_Attrib_Level, up, true, true);
+	ChangeFieldInt(Role_Attrib_Level, up, true);
 	InitBaseAttr(true);
+	SyncFieldToData("attr");
 
 	if( this->IsPlayer() )
 	{

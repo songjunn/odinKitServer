@@ -1,5 +1,7 @@
 #pragma once
+#include <string>
 #include "commdata.h"
+#include "metadata.h"
 
 class CPlayer;
 class PACKET_COMMAND;
@@ -15,11 +17,11 @@ public:
 	int		GetFieldInt(int i);
 	int64	GetFieldI64(int i);
 
-	void	SetFieldInt(int i, int value, bool client=false, bool data=false);
-	void	SetFieldI64(int i, int64 value, bool client=false, bool data=false);
+	void	SetFieldInt(int i, int value, bool client=false);
+	void	SetFieldI64(int i, int64 value, bool client=false);
 
-	virtual void	ChangeFieldInt(int i, int value, bool client=false, bool data=false);
-	void	ChangeFieldI64(int i, int64 value, bool client=false, bool data=false);
+	void	ChangeFieldInt(int i, int value, bool client=false);
+	void	ChangeFieldI64(int i, int64 value, bool client=false);
 
 	inline	int		GetTemplateID()			{return m_templateId;}
 	inline  void	SetTemplateID(int id)	{m_templateId = id;}
@@ -31,17 +33,29 @@ public:
 	virtual	void	SendDataMsg(PACKET_COMMAND* pack)	{return;}
 	virtual	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player)	{return;}
 
-	virtual void	SyncFieldInt(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL)	{return;};
-	virtual void	SyncFieldI64(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL)	{return;};
+	virtual void	SyncFieldToData()			{return;}
+	virtual void	SyncFieldToData(std::string field)	{return;}
+
+	virtual void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL)	{return;}
+	virtual void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL)	{return;}
 
 protected:
 	virtual int*	_FindFieldInt(int i)			{return NULL;}
 	virtual int64*	_FindFieldI64(int i)			{return NULL;}
 
-	virtual void	_ChangeRelatedField(int i, bool client=false, bool data=false)	{return;}
+	virtual void	_SetXmlFieldInt(int i, int value)	{return;}
+	virtual void	_SetXmlFieldI64(int i, int64 value)	{return;}
+
+	virtual int		_GetXmlFieldInt(int i)			{return INVALID_VALUE;}
+	virtual int64	_GetXmlFieldI64(int i)			{return INVALID_VALUE;}
+
+	virtual void	_ChangeRelatedField(int i, bool client=false)	{return;}
 
 protected:
 	int		m_templateId;
 	int64	m_ObjID;
+
+public:
+	CMetadata* m_GameObj;
 
 };

@@ -16,7 +16,7 @@ end
 
 LoginUnit.OnPlayerCount = function(socket, count)
 	if count <= 0 then
-		CreatePlayer(socket, 1, "»úÆ÷ÈË"..socket, 1, 1, 1)
+		CreatePlayer(socket, 1, "robot"..socket, 1, 1, 1)
 	end
 end
 

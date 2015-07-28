@@ -1,4 +1,5 @@
 #include "PlayerMgr.h"
+#include "DataModule.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessagePlayer.pb.h"
 #include "MessageGameobj.pb.h"
@@ -178,6 +179,12 @@ void CPlayerMgr::eventPlayerLoadover(PersonID tarID)
 				_HandleLoadRequest(player, load->tarID, load->module);
 
 				CPlayer* tarPlayer = this->GetObj(tarID);
+				if( !tarPlayer )
+				{
+					CMetadata* json = DataModule.GetObj( tarID );
+					if( json )
+						tarPlayer = this->Create( json->getFieldInt("template"), tarID );
+				}
 				if( tarPlayer && tarPlayer->GetOnline() == Online_Flag_Off )
 				{
 					this->Delete(tarID);
@@ -219,6 +226,8 @@ void CPlayerMgr::_HandleLoadCache(PersonID reqID, PersonID tarID, int module)
 
 	Message::ReqPlayerData msg;
 	msg.set_pid(tarID);
+	msg.set_type("player");
+	msg.set_key("playerid");
 	
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_REQUEST);
