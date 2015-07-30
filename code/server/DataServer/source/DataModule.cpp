@@ -1,6 +1,7 @@
 ﻿#include "DataModule.h"
 #include "gtime.h"
 #include "MainServer.h"
+#include "LoadModule.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageGameobj.pb.h"
 
@@ -293,6 +294,19 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				if (obj) {
 					obj->delFieldMap(msg.key(), msg.mapkey());
 					this->_setSaveType(obj, SAVE_UPDATE);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_REQUEST:
+			{
+				Message::ReqPlayerData msg;
+				PROTOBUF_CMD_PARSER(pack, msg);
+
+				CDataObj* obj = this->GetObj(msg.pid());
+				if (obj) {
+					DataModule.syncObjSeparate(obj, pack->GetNetID());
+				} else {
+					LoadModule.addToLoad(msg.type(), msg.key(), msg.pid(), pack->GetNetID());
 				}
 			}
 			break;

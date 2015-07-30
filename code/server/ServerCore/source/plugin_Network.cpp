@@ -1,5 +1,5 @@
 #include "plugin_Network.h"
-#include "MainServer.h"
+#include "server.h"
 #include "memorypool.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"
@@ -71,10 +71,6 @@ PACKET_COMMAND*	 CNetwork::getHeadPacket()
 
 void CNetwork::_closeReturn(SOCKET sock)
 {
-	if (m_type == CNet::NET_IO_SELECT) {
-		return;
-	}
-
 	PACKET_COMMAND *pCmd = g_PacketPool.Alloc();
 	if (pCmd) {
 		Message::NetControl tMsg;
@@ -86,10 +82,6 @@ void CNetwork::_closeReturn(SOCKET sock)
 
 void CNetwork::_acceptReturn(SOCKET sock)
 {
-	if (m_type == CNet::NET_IO_SELECT) {
-		return;
-	}
-
 	PACKET_COMMAND *pCmd = g_PacketPool.Alloc();
 	if (pCmd) {
 		Message::NetControl tMsg;

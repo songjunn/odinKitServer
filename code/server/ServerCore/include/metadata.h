@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef _METADATA_H_
+#define _METADATA_H_
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
 #include "platform.h"
@@ -149,3 +150,5 @@ public:
 	rapidjson::Document m_members;
 
 };
+
+#endif //_METADATA_H_

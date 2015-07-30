@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <tchar.h>
 #endif
-#include "MainServer.h"
+#include "server.h"
 #include "UserMgr.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"

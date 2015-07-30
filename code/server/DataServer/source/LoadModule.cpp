@@ -7,7 +7,6 @@
 #include "MainServer.h"
 #include "Packet.h"
 #include "MessageTypeDefine.pb.h"
-#include "MessageGameobj.pb.h"
 #include "MessageServer.pb.h"
 #include "MessageUser.pb.h"
 #include "MessagePlayer.pb.h"
@@ -21,7 +20,6 @@ bool CLoadModule::onMessage(PACKET_COMMAND* pack)
 	switch(pack->Type())
 	{
 	case Message::MSG_USER_lOGIN_REQUEST:		_handlePacket_LoadPlayerCount(pack);	break;
-	case Message::MSG_GAMEOBJ_REQUEST:			_handlePakcet_LoadObjData(pack);		break;
 	case Message::MSG_PLAYER_CHECKNAME_REQUEST:	_handlePacket_CheckNameRepeat(pack);	break;
 	case Message::MSG_SERVER_WORLD_REQUEST:		_handlePacket_LoadWorldData(pack);		break;
 	default:	return false;
@@ -83,36 +81,6 @@ bool CLoadModule::_handlePacket_LoadWorldData(PACKET_COMMAND* pack)
 	PACKET_COMMAND packData;
 	PROTOBUF_CMD_PACKAGE(packData, msgData, Message::MSG_SERVER_WORLD_RESPONSE);
 	GETSERVERNET->sendMsg(pack->GetNetID(), &packData);
-
-	return true;
-}
-
-bool CLoadModule::_handlePakcet_LoadObjData(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::ReqPlayerData msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	CDataObj* obj = DataModule.GetObj(msg.pid());
-	if( obj )
-	{
-		DataModule.syncObjSeparate(obj, pack->GetNetID());
-	}
-	else
-	{
-		CLoadObj* loader = NEW CLoadObj;
-		if( !loader )
-			return false;
-
-		loader->type = msg.type();
-		loader->key = msg.key();
-		loader->id = msg.pid();
-		loader->sock = pack->GetNetID();
-
-		m_LoadList.AddToTail(loader);
-	}
 
 	return true;
 }
@@ -180,4 +148,19 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 	GETSERVERNET->sendMsg(pack->GetNetID(), &packCnt);
 
 	return true;
+}
+
+void CLoadModule::addToLoad(std::string type, std::string key, int64 id, int sock)
+{
+	CLoadObj* loader = NEW CLoadObj;
+	if (!loader) {
+		return;
+	}
+
+	loader->type = type;
+	loader->key = key;
+	loader->id = id;
+	loader->sock = sock;
+
+	m_LoadList.AddToTail(loader);
 }

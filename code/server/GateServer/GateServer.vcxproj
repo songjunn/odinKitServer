@@ -182,6 +182,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\public\message\source\MessageSWChargeChecker.pb.cc" />
     <ClCompile Include="GateServer.cpp" />
+    <ClCompile Include="source\GateServer.cpp" />
     <ClCompile Include="source\UserMgr.cpp" />
     <ClCompile Include="..\..\public\message\source\MessageClientLogin.pb.cc" />
     <ClCompile Include="..\..\public\message\source\MessageCreatePlayer.pb.cc" />
@@ -200,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\public\message\source\MessageSWChargeChecker.pb.h" />
+    <ClInclude Include="include\GateServer.h" />
     <ClInclude Include="include\UserMgr.h" />
     <ClInclude Include="..\..\public\message\source\MessageClientLogin.pb.h" />
     <ClInclude Include="..\..\public\message\source\MessageCreatePlayer.pb.h" />

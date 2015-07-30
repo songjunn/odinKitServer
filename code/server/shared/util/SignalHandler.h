@@ -1,6 +1,5 @@
 #include <signal.h>
 #include "Log.h"
-#include "MainServer.h"
 #include "errno.h"
 
 /*

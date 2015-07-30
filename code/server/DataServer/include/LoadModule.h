@@ -24,10 +24,11 @@ public:
 	bool	onMessage(PACKET_COMMAND* pack);
 	void	onLogic();
 
+	void	addToLoad(std::string type, std::string key, int64 id, int sock);
+
 protected:
 	bool	_handlePacket_LoadWorldData(PACKET_COMMAND* pack);
 	bool	_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack);
-	bool	_handlePakcet_LoadObjData(PACKET_COMMAND* pack);
 	bool	_handlePacket_CheckNameRepeat(PACKET_COMMAND* pack);
 
 protected:
