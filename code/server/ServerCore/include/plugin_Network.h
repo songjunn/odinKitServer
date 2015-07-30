@@ -3,7 +3,6 @@
 
 #include "plugin.h"
 #include "Net.h"
-#include "utldoublequeue.h"
 
 class CNetwork : public CPlugin, public CNet
 {
@@ -20,8 +19,6 @@ public:
 	virtual void close(SOCKET sock);
 	virtual bool handlePacket(PACKET_COMMAND * pCmd);
 
-	PACKET_COMMAND* getHeadPacket();
-
 private:
 	void _closeReturn(SOCKET sock);
 	void _acceptReturn(SOCKET sock);
@@ -29,7 +26,6 @@ private:
 
 private:
 	int m_type;
-	CDoubleQueue<PACKET_COMMAND> m_PacketQueue;
 
 };
 

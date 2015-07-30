@@ -1,4 +1,18 @@
 #include "GateServer.h"
+#include "UserMgr.h"
+#include "LuaEngine.h"
+#include "PathFunc.h"
+#ifdef __linux__
+#include "linux_time.h"
+#include "udsvr.h"
+#include "monitor.h"
+#endif
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
+#include "exception.h"
+
+static TMV g_StatusLogicTime = 0;
+CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 
 CGateServer::CGateServer()
 {
@@ -9,8 +23,10 @@ CGateServer::~CGateServer()
 {
 }
 
-bool CGateServer::Init()
+bool CGateServer::onStartup()
 {
+	CBaseServer::onStartup();
+
 	//初始化启动参数
 	char g_szExePath[512] = { 0 };
 	GetExePath(g_szExePath, 512);
@@ -87,4 +103,160 @@ bool CGateServer::Init()
 #endif
 
 	return true;
+}
+
+bool CGatteServer::onMessage(PACKET_COMMAND* pack)
+{
+	VPROF("CGatteServer::onMessage");
+
+	if (!pack) {
+		return;
+	}
+
+	// from net
+	switch (pack->Type())
+	{
+	case Message::MSG_SERVER_NET_CLOSE:
+	case Message::MSG_SERVER_NET_ACCEPT:
+		CBaseServer::onMessage(pack);
+		return;
+	default:
+		break;
+	}
+
+	CLinker* pServer = getServer(pack->GetNetID());
+	if (pServer)
+	{
+		if (Message::MSG_SERVER_BEGIN >= pack->Type() || Message::MSG_SERVER_END <= pack->Type())
+		{
+			Log.Error("[GateServer] Recv Wrong Message From Server, Type:%d, Sock:%d, Server:%d", pack->Type(), pack->GetNetID(), pServer->m_type);
+			return;
+		}
+
+		switch (pack->Type())
+		{
+		case Message::MSG_USER_PRLOGIN_REQUEST:
+		case Message::MSG_PLAYER_LOGIN_REQUEST:
+		case Message::MSG_PLAYER_LOAD_COUNT:
+		case Message::MSG_COMMON_ERROR:
+		case Message::MSG_USER_DISPLACE:
+			UserMgr.OnMsg(pack);
+			break;
+		case Message::MSG_SERVER_REGISTER:
+		case Message::MSG_SERVER_SYNCSERVER:
+		case Message::MSG_SERVER_NET_CONNECT:
+			CBaseServer::onMessage(pack);
+			break;
+		default:
+			SOCKET s = UserMgr.GetNetIDByPID(pack->GetTrans());
+			GETCLIENTNET(this)->sendMsg(s, pack);
+			Log.Debug("[GateServer] Transmit From:%d To Client pid:"INT64_FMT" sock:%d packet:%d size:%d", pack->GetNetID(), pack->GetTrans(), s, pack->Type(), pack->Size());
+			break;
+		}
+
+		return;
+	}
+
+	CUser* pUser = UserMgr.GetObj(pack->GetNetID());
+	if (pUser)
+	{
+		if (Message::MSG_CLIENT_BEGIN >= pack->Type() || Message::MSG_CLIENT_END <= pack->Type())
+		{
+			Log.Error("[GateServer] Recv Wrong Message From Client, Type:%d, Sock:%d, User:"INT64_FMT, pack->Type(), pack->GetNetID(), pUser->m_id);
+			return;
+		}
+
+		//验证消息来源，客户端发来的第一条登陆消息就不验证了
+		if (pack->Type() != Message::MSG_REQUEST_USER_LOGIN && pack->GetTrans() != pUser->m_id)
+		{
+			Log.Error("[GateServer] Message Source Error, Msg:"INT64_FMT", Type:%d, User:"INT64_FMT, pack->GetTrans(), pack->Type(), pUser->m_id);
+			return;
+		}
+
+		//user发包频率限制
+		if (!UserMgr.UserPacketLimit(pUser))
+			return;
+
+		//设置转发对象
+		pack->SetTrans(pUser->m_LogonPlayer);
+
+		switch (pack->Type())
+		{
+		case Message::MSG_REQUEST_NET_TEST:
+			GETCLIENTNET(this)->sendMsg(pUser->m_ClientSock, pack);
+			break;
+		case Message::MSG_REQUEST_USER_HEART:
+		case Message::MSG_REQUEST_USER_LOGIN:
+		case Message::MSG_REQUEST_USER_LOGOUT:
+		case Message::MSG_REQUEST_PLAYER_CREATE:
+			UserMgr.OnMsg(pack);
+			break;
+			//向DataServer转发的消息
+			/*case :
+			Log.Debug("[GateServer] Transmit To DataServer packet:%d size:%d", pack->Type(), pack->Size());
+			GETSERVERNET->sendMsg( GETSERVERMGR->getDataSock(), pack );
+			break;*/
+			//默认向GameServer转发
+		default:
+			Log.Debug("[GateServer] Transmit To GameServer packet:%d size:%d", pack->Type(), pack->Size());
+			GETSERVERNET(this)->sendMsg(pUser->m_GameSock, pack);
+			break;
+		}
+
+		return;
+	}
+}
+
+void CGateServer::StatusLogic()
+{
+	Message::SyncGateLoad msg;
+	msg.set_count(UserMgr.Count());
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_SERVER_SYNCGATELOAD);
+	GETSERVERNET(this)->sendMsg(getLoginSock(), &pack);
+}
+
+void CGateServer::onLogic()
+{
+	CBaseServer::onLogic();
+
+	UserMgr.OnLogic();
+
+	//30秒同步一次负载
+	TMV nowtime = timeGetTime();
+	if (nowtime - g_StatusLogicTime >= 30000)
+	{
+		g_StatusLogicTime = nowtime;
+
+		StatusLogic();
+	}
+}
+
+void CGateServer::onPrint(char* output)
+{
+	char szPackPool[10240] = { 0 };
+	char szUserPool[10240] = { 0 };
+	char szServer[10240] = { 0 };
+
+	g_PacketPool.Output(szPackPool, 10240);
+	UserMgr.m_pool.Output(szUserPool, 10240);
+	CBaseServer::onPrint(szServer);
+
+	sprintf(output,
+		" GateServer monitor: User:%d UKey:%d\n"
+		" ======================================================\n"
+		" memory pool used:\n"
+		"  %s"
+		"  %s"
+		" ======================================================\n"
+		" %s",
+		UserMgr.Count(), UserMgr.GetUserKeyCount(),
+		szPackPool, szUserPool,
+		szServer);
+}
+
+void CGateServer::onShutdown()
+{
+	CBaseServer::onShutdown();
 }

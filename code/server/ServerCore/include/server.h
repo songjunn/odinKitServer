@@ -4,6 +4,7 @@
 #include "linux_type.h"
 #include "utlmap.h"
 #include "utllinkedlist.h"
+#include "utldoublequeue.h"
 #include "Packet.h"
 #include "plugin_Mongodb.h"
 #include "plugin_HttpServe.h"
@@ -87,20 +88,18 @@ public:
 	CBaseServer(int type);
 	virtual ~CBaseServer();
 
-	bool startup();
 	bool run();
-
 	void initSelf(int world, int type, int id, int port, const char* szip, int extport = 0, const char* extip = NULL, const char* udPath = NULL);
 	CLinker* createLinker(int type, int id, int port, const char* szip, int extport, const char* extip, int world, bool host, SOCKET sock = INVALID_SOCKET);
 
+	virtual bool onStartup();
+	virtual bool onLogic();
+	virtual void onShutdown();
+	virtual bool onMessage(PACKET_COMMAND* pack);
+	virtual void onPrint(char* output);
+	
 	CPlugin* createPlugin(int plugin);
 	CPlugin* getPlugin(int plugin) { return m_plugins[plugin]; }
-
-	virtual bool onInit() { return true; }
-	virtual bool onMessage(PACKET_COMMAND* pack);
-	virtual bool onLogic();
-	virtual void onPrint();
-	virtual void onShutdown();
 
 	CLinker* getLinker(SOCKET s);
 	CLinker* getServerById(int id);
@@ -118,7 +117,11 @@ protected:
 	bool addLinker(CLinker* linker);
 	bool connectLinker(CLinker* linker);
 	void breakLinker(SOCKET s);
+
 	bool loop_linkers();
+	bool loop_message();
+
+	inline PACKET_COMMAND* getHeadPacket() { return m_PacketQueue.Pop(); }
 
 	bool regist(CLinker* pObj);
 	bool registAsync(CLinker* pObj);
@@ -138,6 +141,7 @@ private:
 	CLinker m_self;
 	EServerState m_ServerState;
 	CPlugin* m_plugins[Plugin_End];
+	CDoubleQueue<PACKET_COMMAND> m_PacketQueue;
 
 	Mutex m_linkerLock;
 	CUtlMap<SOCKET, CLinker*> m_linkerMap;

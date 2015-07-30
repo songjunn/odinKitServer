@@ -2,18 +2,23 @@
 #define _GATESERVER_H_
 
 #include "server.h"
+#include "Singleton.h"
 
-class CGateServer : public CBaseServer
+class CGateServer : public CBaseServer, public Singleton<CGateServer>
 {
 public:
 	CGateServer();
 	~CGateServer();
 
-	virtual bool onInit();
-	virtual bool onMessage(PACKET_COMMAND* pack);
+	virtual bool onStartup();
 	virtual bool onLogic();
-	virtual void onPrint();
-	virtual void output(char* output);
+	virtual void onShutdown();
+	virtual bool onMessage(PACKET_COMMAND* pack);
+	virtual void onPrint(char* output);
+
+	void StatusLogic();
 };
+
+#define GateServer CGateServer::getSingletonPtr()
 
 #endif //_GATESERVER_H_

@@ -18,9 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GateServer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\UserMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -70,6 +67,9 @@
       <Filter>message</Filter>
     </ClCompile>
     <ClCompile Include="source\GateServer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

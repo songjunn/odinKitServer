@@ -21,7 +21,56 @@ CBaseServer::~CBaseServer()
 {
 }
 
-bool CBaseServer::startup()
+bool CBaseServer::run()
+{
+	if (!onStartup()) {
+		return false;
+	}
+
+	DWORD time = 0;
+	while (true)
+	{
+#if !defined(_DEBUG) && defined(WIN32)
+		__try
+		{
+#endif
+			if (this->getServerState() == EStateStopping) {
+				break;
+			}
+
+			onLogic();
+
+			if (timeGetTime() - time > 1000)
+			{
+				time = timeGetTime();
+
+				onPrint();
+			}
+
+#if !defined(_DEBUG) && defined(WIN32)
+		}
+		__except (HandleException(GetExceptionInformation(), "BaseServers"))
+		{
+			// We don't actually do anything inside the handler. All of the
+			// work is done by HandleException()
+		}
+#endif
+
+#ifdef _WIN32
+		Sleep(1);
+#else
+#if defined(__linux__) && defined(DEBUG)
+		usleep(1000);
+#endif
+#endif
+	}
+
+	onShutdown();
+
+	return true;
+}
+
+bool CBaseServer::onStartup()
 {
 #ifdef _WIN
 #ifndef _DEBUG
@@ -63,50 +112,6 @@ bool CBaseServer::startup()
 		return false;
 	}
 
-	return onInit();
-}
-
-bool CBaseServer::run()
-{
-	DWORD time = 0;
-	while (true)
-	{
-#if !defined(_DEBUG) && defined(WIN32)
-		__try
-		{
-#endif
-			if (this->getServerState() == EStateStopping)
-				break;
-
-			onLogic();
-
-			if (timeGetTime() - time > 1000)
-			{
-				time = timeGetTime();
-
-				onPrint();
-			}
-
-#if !defined(_DEBUG) && defined(WIN32)
-		}
-		__except (HandleException(GetExceptionInformation(), "BaseServers"))
-		{
-			// We don't actually do anything inside the handler. All of the
-			// work is done by HandleException()
-		}
-#endif
-
-#ifdef _WIN32
-		Sleep(1);
-#else
-#if defined(__linux__) && defined(DEBUG)
-		usleep(1000);
-#endif
-#endif
-	}
-
-	onShutdown();
-
 	return true;
 }
 
@@ -118,10 +123,10 @@ void CBaseServer::onLogic()
 	VProfCurrentProfile().MarkFrame();
 
 	loop_message();
-	loop_linker();
+	loop_linkers();
 }
 
-void CBaseServer::onPrint()
+void CBaseServer::onPrint(char* output)
 {
 	printf("Connected Servers:\n");
 
@@ -349,9 +354,24 @@ CLinker* CBaseServer::getServerById(int id)
 	return p;
 }
 
+bool CBaseServer::loop_message()
+{
+	VPROF("loop_message");
+
+	int count = 0;
+	PACKET_COMMAND* pack = NULL;
+
+	while ((pack = getHeadPacket()) && count++ <= 10000)
+	{
+		onMessage(pack);
+
+		g_PacketPool.Free(pack);
+	}
+}
+
 bool CBaseServer::loop_linkers()
 {
-	VPROF("CBaseServer::loop_linkers");
+	VPROF("loop_linkers");
 
 	int tmp;
 	for (int index = m_linkerList.Head(); m_linkerList.IsValidIndex(tmp = index);)

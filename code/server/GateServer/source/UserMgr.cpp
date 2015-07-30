@@ -4,7 +4,6 @@
 #include "error.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageCommon.pb.h"
-#include "MessageServer.pb.h"
 #include "MessageUser.pb.h"
 #include "MessagePlayer.pb.h"
 
@@ -135,53 +134,60 @@ bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 	Message::ClientLogin msg;
 	PROTOBUF_CMD_PARSER( pack, msg ); 
 
+	CUser* user = UserMgr.Create(pack->GetNetID());
+	if (!user)
+		return false;
+
+	TMV t = time(NULL);
+	user->m_ClientSock = pack->GetNetID();
+	user->m_HeartTime = t;
+	user->m_CanCreate = false;
+	user->m_PackCount = 0;
+	user->m_PackTime = t;
+
 	//验证md5密钥
 	if( _CheckUserKey(msg.uid(), msg.key(), pack->GetNetID()) )
 	{
-		CUser* user = GetObj(pack->GetNetID());
-		if( user )
+		CServerObj* server = GETSERVERMGR->GetLowerGame();
+		if( server )
 		{
-			CServerObj* server = GETSERVERMGR->GetLowerGame();
-			if( server )
-			{
-				CUser* oldUser = GetUserByUID(msg.uid());
-				if( oldUser )
-					Displace( oldUser );
+			CUser* oldUser = GetUserByUID(msg.uid());
+			if( oldUser )
+				Displace( oldUser );
+			
+			user->m_id = msg.uid();
+			user->m_ClientSock = pack->GetNetID();
+			user->m_GameSock = server->m_Socket;
+			user->m_HeartTime = time(NULL);
 
-				user->m_id = msg.uid();
-				user->m_ClientSock = pack->GetNetID();
-				user->m_GameSock = server->m_Socket;
-				user->m_HeartTime = time(NULL);
+			m_UserLock.LOCK();
+			m_UserList.Insert( user->m_id, user );
+			m_UserLock.UNLOCK();
+			
+			//验证通过，登入游戏
+			Message::UserLogin message;
+			message.set_uid( user->m_id );
+			message.set_world( server->m_worldID );
+			message.set_server( server->m_nID );
+			
+			PACKET_COMMAND packet;
+			PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
+			GETSERVERNET->sendMsg(server->m_Socket, &packet);
 
-				m_UserLock.LOCK();
-				m_UserList.Insert( user->m_id, user );
-				m_UserLock.UNLOCK();
-
-				//验证通过，登入游戏
-				Message::UserLogin message;
-				message.set_uid( user->m_id );
-				message.set_world( server->m_worldID );
-				message.set_server( server->m_nID );
-
-				PACKET_COMMAND packet;
-				PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
-				GETSERVERNET->sendMsg(server->m_Socket, &packet);
-
-				//同步服务器时间
-				SendHeartResponse(user);
-
-				return true;
-			}
-			else
-			{
-				Log.Error("[Login] Get GameServer Failed, Socket:%d User:"INT64_FMT, pack->GetNetID(), msg.uid());
-			}
+			//同步服务器时间
+			SendHeartResponse(user);
+			
+			return true;
+		}
+		else
+		{
+			Log.Error("[Login] Get GameServer Failed, Socket:%d User:"INT64_FMT, pack->GetNetID(), msg.uid());
 		}
 	}
 
 	SendErrorMsg( pack->GetNetID(), Error_Login_CheckFailed );
 
-	GETCLIENTNET->shutdown( pack->GetNetID() );
+	GETCLIENTNET(GateServer)->shutdown( pack->GetNetID() );
 
 	return false;
 }

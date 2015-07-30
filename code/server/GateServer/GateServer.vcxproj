@@ -181,7 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\public\message\source\MessageSWChargeChecker.pb.cc" />
-    <ClCompile Include="GateServer.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="source\GateServer.cpp" />
     <ClCompile Include="source\UserMgr.cpp" />
     <ClCompile Include="..\..\public\message\source\MessageClientLogin.pb.cc" />
