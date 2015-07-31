@@ -27,6 +27,9 @@
     <ClCompile Include="..\..\public\message\source\MessageEventSync.pb.cc">
       <Filter>message</Filter>
     </ClCompile>
+    <ClCompile Include="source\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnalysisModule.h">
@@ -34,6 +37,9 @@
     </ClInclude>
     <ClInclude Include="..\..\public\message\source\MessageEventSync.pb.h">
       <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BIServer.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿#include "DataModule.h"
 #include "gtime.h"
-#include "MainServer.h"
+#include "GameServer.h"
 #include "LoginModule.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageGameobj.pb.h"
@@ -115,7 +115,7 @@ void CDataModule::syncCreate(CMetadata* obj, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_CREATE);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncRemove(CMetadata* obj, int sock)
@@ -125,7 +125,7 @@ void CDataModule::syncRemove(CMetadata* obj, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_REMOVE);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncField(CMetadata* obj, int sock, const char* field)
@@ -140,7 +140,7 @@ void CDataModule::syncField(CMetadata* obj, int sock, const char* field)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SET);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncAddMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr)
@@ -153,7 +153,7 @@ void CDataModule::syncAddMap(int64 id, int sock, const char* field, int64 mapkey
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_ADD);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncSetMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr)
@@ -166,7 +166,7 @@ void CDataModule::syncSetMap(int64 id, int sock, const char* field, int64 mapkey
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_SET);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncDelMap(int64 id, int sock, const char* field, int64 mapkey)
@@ -178,7 +178,7 @@ void CDataModule::syncDelMap(int64 id, int sock, const char* field, int64 mapkey
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_DEL);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
 bool CDataModule::onMessage(PACKET_COMMAND* pack)

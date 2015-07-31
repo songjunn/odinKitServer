@@ -1,7 +1,7 @@
 ﻿#include "NoticeModule.h"
 #include "Log.h"
 #include "PlayerMgr.h"
-#include "MainServer.h"
+#include "GameServer.h"
 #include "Packet.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageCommon.pb.h"
@@ -124,5 +124,5 @@ void CNoticeModule::SendErrorMsg(int sock, UserID uid, int errid, int int1, int 
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }

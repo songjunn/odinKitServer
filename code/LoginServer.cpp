@@ -11,7 +11,6 @@
 #include <unistd.h>
 #include "linux_time.h"
 #include "vprof.h"
-#include "monitor.h"
 #endif
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"

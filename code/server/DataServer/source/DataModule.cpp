@@ -1,6 +1,6 @@
 ﻿#include "DataModule.h"
 #include "gtime.h"
-#include "MainServer.h"
+#include "DataServer.h"
 #include "LoadModule.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageGameobj.pb.h"
@@ -46,7 +46,7 @@ CDataObj* CDataModule::loadDb(std::string type, std::string key, int64 id)
 {
 	mongo::Query query = QUERY(key<<id);
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	GETMONGODB->select(cursor, type, query);
+	GETMONGODB(&DataServer)->select(cursor, type, query);
 
 	if (cursor.get() && cursor->more()) {
 	    mongo::BSONObj p = cursor->next();
@@ -69,14 +69,14 @@ bool CDataModule::loadDb(std::string type)
 {
 	mongo::Query query;
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	GETMONGODB->select(cursor, type, query);
+	GETMONGODB(&DataServer)->select(cursor, type, query);
 
 	while (cursor.get() && cursor->more()) {
 	    mongo::BSONObj p = cursor->next();
 
 		int64 id;
 		std::string idstr = type + "id";
-		if (!GETMONGODB->getBsonFieldI64(p, idstr, id)) {
+		if (!GETMONGODB(&DataServer)->getBsonFieldI64(p, idstr, id)) {
 			return false;
 		}
 
@@ -98,7 +98,7 @@ void CDataModule::saveDb(CDataObj* obj, std::string key)
 	mongo::BSONObj objbson;
 	obj->toBson(objbson);
 
-	GETMONGODB->execute(CMongoDB::Mongo_Insert, obj->m_type, query, objbson);
+	GETMONGODB(&DataServer)->execute(CMongoDB::Mongo_Insert, obj->m_type, query, objbson);
 
 	Log.Debug("[CDataModule] saveDb: (%s, "INT64_FMT"): %s", obj->m_type.c_str(), obj->getId(), objbson.toString().c_str());
 }
@@ -109,7 +109,7 @@ void CDataModule::updateDb(CDataObj* obj, std::string key)
 	mongo::BSONObj objbson;
 	obj->toBson(objbson);
 
-	GETMONGODB->execute(CMongoDB::Mongo_Update, obj->m_type, query, objbson);
+	GETMONGODB(&DataServer)->execute(CMongoDB::Mongo_Update, obj->m_type, query, objbson);
 
 	Log.Debug("[CDataModule] updateDb: (%s, "INT64_FMT"): %s", obj->m_type.c_str(), obj->getId(), objbson.toString().c_str());
 }
@@ -133,7 +133,7 @@ void CDataModule::syncObj(CDataObj* obj, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObj(CDataObj* obj, std::string key, int sock)
@@ -149,7 +149,7 @@ void CDataModule::syncObj(CDataObj* obj, std::string key, int sock)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_OBJFIELD);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObjFinish(int sock, std::string type, int64 id)
@@ -160,7 +160,7 @@ void CDataModule::syncObjFinish(int sock, std::string type, int64 id)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_FINISH);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string key, int64 mapkey, int sock)
@@ -176,7 +176,7 @@ void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string 
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_MAPFIELD);
-	GETSERVERNET->sendMsg(sock, &pack);
+	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
 }
 
 void CDataModule::syncObjSeparate(CDataObj* obj, int sock)

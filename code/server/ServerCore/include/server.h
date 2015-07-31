@@ -9,6 +9,7 @@
 #include "plugin_Mongodb.h"
 #include "plugin_HttpServe.h"
 #include "plugin_Network.h"
+#include "plugin_Monitor.h"
 
 enum EServerState
 {
@@ -34,7 +35,7 @@ struct CLinker {
 	int		m_nPort;
 	bool	m_bHost;
 	long	m_LostTime;
-	int		m_UserCount;
+	int		m_count;
 	char	m_extIP[32];
 	int		m_extPort;
 	int		m_worldID;
@@ -49,7 +50,7 @@ struct CLinker {
 		m_nPort = -1;
 		m_bHost = false;
 		m_LostTime = -1;
-		m_UserCount = 0;
+		m_count = 0;
 		m_extIP[0] = '\0';
 		m_extPort = -1;
 		m_worldID = -1;
@@ -80,15 +81,17 @@ public:
 		Plugin_Net4Client,
 		Plugin_Mongodb,
 		Plugin_HttpServe,
+		Plugin_Monitor,
 
 		Plugin_End,
 	};
 
 public:
-	CBaseServer(int type);
+	CBaseServer();
 	virtual ~CBaseServer();
 
-	bool run();
+	bool run(int frame = 0);
+	void setType(int type);
 	void initSelf(int world, int type, int id, int port, const char* szip, int extport = 0, const char* extip = NULL, const char* udPath = NULL);
 	CLinker* createLinker(int type, int id, int port, const char* szip, int extport, const char* extip, int world, bool host, SOCKET sock = INVALID_SOCKET);
 
@@ -97,15 +100,25 @@ public:
 	virtual void onShutdown();
 	virtual bool onMessage(PACKET_COMMAND* pack);
 	virtual void onPrint(char* output);
-	
+	virtual bool onLoadData() { return true; }
+	virtual bool onLoadScript() { return true; }
+
 	CPlugin* createPlugin(int plugin);
 	CPlugin* getPlugin(int plugin) { return m_plugins[plugin]; }
 
 	CLinker* getLinker(SOCKET s);
+	CLinker* getServer(SOCKET s);
 	CLinker* getServerById(int id);
-	CLinker* getLowerGate(int world);
-	CLinker* getLowerGame();
 	SOCKET getServerSock(int type);
+
+	inline int getSelfWorld() { return m_self.m_worldID; }
+
+	static bool isServer(int type) { return type >= Linker_Server_Central && type < Linker_Server_End; }
+	static bool isUser(int type) { return type == Linker_User; }
+
+	inline PACKET_COMMAND* getHeadPacket() { return m_PacketQueue.Pop(); }
+	inline CDoubleQueue<PACKET_COMMAND>& getPacketQueue() { return m_PacketQueue; }
+	inline CUtlLinkedList<CLinker*>& getLinkerList() { return m_linkerList; }
 
 protected:
 	void setServerState(EServerState state) { m_ServerState = state;}
@@ -121,31 +134,25 @@ protected:
 	bool loop_linkers();
 	bool loop_message();
 
-	inline PACKET_COMMAND* getHeadPacket() { return m_PacketQueue.Pop(); }
-
 	bool regist(CLinker* pObj);
 	bool registAsync(CLinker* pObj);
 	bool registAsyncReturn(SOCKET sock, int error = 0);
 	void deleteServer(CLinker* pObj);
 
-	void setGateLoadStatus(SOCKET sock, int num);
-
 	virtual bool _HandlePacket_NetAccept(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_NetClose(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_RegistServer(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_ConnectServer(PACKET_COMMAND* pack);
-	virtual bool _HandlePacket_SyncGateLoad(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_RegistAsyncReturn(PACKET_COMMAND* pack);
 
 private:
 	CLinker m_self;
 	EServerState m_ServerState;
 	CPlugin* m_plugins[Plugin_End];
-	CDoubleQueue<PACKET_COMMAND> m_PacketQueue;
 
-	Mutex m_linkerLock;
 	CUtlMap<SOCKET, CLinker*> m_linkerMap;
 	CUtlLinkedList<CLinker*> m_linkerList;
+	CDoubleQueue<PACKET_COMMAND> m_PacketQueue;
 
 };
 

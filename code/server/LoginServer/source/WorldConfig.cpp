@@ -1,6 +1,6 @@
 ﻿#include "WorldConfig.h"
 #include "CSVParser.h"
-#include "MainServer.h"
+#include "LoginServer.h"
 
 
 CWorldConfig::CWorldConfig()
@@ -51,6 +51,6 @@ void CWorldConfig::ConnectAllWorld()
 	{
 		worldID = m_list.Next(worldID);
 
-		GETSERVERMGR->CreateServer(CServerMgr::Svr_Central, world->serverID, world->port, world->ip, NULL, NULL, world->worldID, true);
+		LoginServer.createLinker(CBaseServer::Linker_Server_Central, world->serverID, world->port, world->ip, NULL, NULL, world->worldID, true);
 	}
 }

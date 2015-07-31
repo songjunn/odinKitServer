@@ -4,19 +4,22 @@
 #include "PathFunc.h"
 #ifdef __linux__
 #include "linux_time.h"
-#include "udsvr.h"
-#include "monitor.h"
 #endif
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"
 #include "exception.h"
+
+createFileSingleton(CLog);
+createFileSingleton(CLuaEngine);
+createFileSingleton(CGateServer);
+createFileSingleton(CUserMgr);
 
 static TMV g_StatusLogicTime = 0;
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 
 CGateServer::CGateServer()
 {
-	CBaseServer::CBaseServer(CBaseServer::Linker_Server_GateWay);
+	setType(CBaseServer::Linker_Server_GateWay);
 }
 
 CGateServer::~CGateServer()
@@ -64,9 +67,6 @@ bool CGateServer::onStartup()
 	int packlimit = LuaEngine.GetLuaVariableNumber("user_pack_limit", "GateServer");
 
 	//初始化
-	myid = param_id > 0 ? param_id : myid;
-	myport = param_id > 0 ? param_port : myport;
-	extport = param_id > 0 ? param_extport : extport;
 	char mpath[1024] = { 0 };
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
 	this->initSelf(worldID, CBaseServer::Linker_Server_GateWay, myid, myport, myip, extport, extip, mpath);
@@ -91,26 +91,28 @@ bool CGateServer::onStartup()
 		return false;
 	}
 
-	if (!this->createLinker(CBaseServer::Linker_Server_Central, centralid, centralport, centralip, NULL, NULL, worldID)) {
+	if (!this->createLinker(CBaseServer::Linker_Server_Central, centralid, centralport, centralip, 0, NULL, worldID, true)) {
 		Log.Error("[CGateServer] create Central Server failed");
 		return false;
 	}
 
-#ifdef __linux__
 	char spath[1024] = { 0 };
 	sprintf(spath, "%s//Server_%d.sock", udPath, myid);
-	NEW CMonitor(spath, &StatusOutput);
-#endif
+	CMonitor* monitor = (CMonitor *)this->createPlugin(CBaseServer::Plugin_Monitor);
+	if (!monitor->startup(spath)) {
+		Log.Error("[CGateServer] create Plugin_Monitor failed");
+		return false;
+	}
 
 	return true;
 }
 
-bool CGatteServer::onMessage(PACKET_COMMAND* pack)
+bool CGateServer::onMessage(PACKET_COMMAND* pack)
 {
-	VPROF("CGatteServer::onMessage");
+	VPROF("CGateServer::onMessage");
 
 	if (!pack) {
-		return;
+		return false;
 	}
 
 	// from net
@@ -119,7 +121,7 @@ bool CGatteServer::onMessage(PACKET_COMMAND* pack)
 	case Message::MSG_SERVER_NET_CLOSE:
 	case Message::MSG_SERVER_NET_ACCEPT:
 		CBaseServer::onMessage(pack);
-		return;
+		return true;
 	default:
 		break;
 	}
@@ -130,7 +132,7 @@ bool CGatteServer::onMessage(PACKET_COMMAND* pack)
 		if (Message::MSG_SERVER_BEGIN >= pack->Type() || Message::MSG_SERVER_END <= pack->Type())
 		{
 			Log.Error("[GateServer] Recv Wrong Message From Server, Type:%d, Sock:%d, Server:%d", pack->Type(), pack->GetNetID(), pServer->m_type);
-			return;
+			return false;
 		}
 
 		switch (pack->Type())
@@ -154,7 +156,7 @@ bool CGatteServer::onMessage(PACKET_COMMAND* pack)
 			break;
 		}
 
-		return;
+		return true;
 	}
 
 	CUser* pUser = UserMgr.GetObj(pack->GetNetID());
@@ -163,19 +165,19 @@ bool CGatteServer::onMessage(PACKET_COMMAND* pack)
 		if (Message::MSG_CLIENT_BEGIN >= pack->Type() || Message::MSG_CLIENT_END <= pack->Type())
 		{
 			Log.Error("[GateServer] Recv Wrong Message From Client, Type:%d, Sock:%d, User:"INT64_FMT, pack->Type(), pack->GetNetID(), pUser->m_id);
-			return;
+			return false;
 		}
 
 		//验证消息来源，客户端发来的第一条登陆消息就不验证了
 		if (pack->Type() != Message::MSG_REQUEST_USER_LOGIN && pack->GetTrans() != pUser->m_id)
 		{
 			Log.Error("[GateServer] Message Source Error, Msg:"INT64_FMT", Type:%d, User:"INT64_FMT, pack->GetTrans(), pack->Type(), pUser->m_id);
-			return;
+			return false;
 		}
 
 		//user发包频率限制
 		if (!UserMgr.UserPacketLimit(pUser))
-			return;
+			return false;
 
 		//设置转发对象
 		pack->SetTrans(pUser->m_LogonPlayer);
@@ -203,8 +205,10 @@ bool CGatteServer::onMessage(PACKET_COMMAND* pack)
 			break;
 		}
 
-		return;
+		return true;
 	}
+
+	return false;
 }
 
 void CGateServer::StatusLogic()
@@ -214,10 +218,10 @@ void CGateServer::StatusLogic()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_SERVER_SYNCGATELOAD);
-	GETSERVERNET(this)->sendMsg(getLoginSock(), &pack);
+	GETSERVERNET(this)->sendMsg(getServerSock(CBaseServer::Linker_Server_Login), &pack);
 }
 
-void CGateServer::onLogic()
+bool CGateServer::onLogic()
 {
 	CBaseServer::onLogic();
 
@@ -231,6 +235,8 @@ void CGateServer::onLogic()
 
 		StatusLogic();
 	}
+
+	return true;
 }
 
 void CGateServer::onPrint(char* output)
@@ -259,4 +265,26 @@ void CGateServer::onPrint(char* output)
 void CGateServer::onShutdown()
 {
 	CBaseServer::onShutdown();
+}
+
+CLinker* CGateServer::getLowerGame()
+{
+	CLinker* pLowerGame = NULL;
+
+	FOR_EACH_LL(getLinkerList(), index)
+	{
+		CLinker* pServer = getLinkerList()[index];
+		if (!pServer || pServer->m_bBreak || pServer->m_type != CBaseServer::Linker_Server_Game)
+			continue;
+
+		if (!pLowerGame || pLowerGame->m_count > pServer->m_count)
+		{
+			pLowerGame = pServer;
+		}
+	}
+
+	/*if (pLowerGame)
+		pLowerGame->m_count++;*/
+
+	return pLowerGame;
 }

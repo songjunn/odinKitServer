@@ -21,51 +21,6 @@
     <ClCompile Include="source\UserMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageClientLogin.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageCreatePlayer.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageErrorNo.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageLoginSession.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageNetControl.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessagePlayerCount.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessagePlayerLogin.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessagePlayerLogout.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageUserDisplace.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageUserHeartRequest.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageUserHeartResponse.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageUserKickout.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageUserLogin.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageUserLogout.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageSWChargeChecker.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
     <ClCompile Include="source\GateServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -76,51 +31,6 @@
   <ItemGroup>
     <ClInclude Include="include\UserMgr.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageClientLogin.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageCreatePlayer.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageErrorNo.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageLoginSession.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageNetControl.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessagePlayerCount.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessagePlayerLogin.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessagePlayerLogout.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageUserDisplace.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageUserHeartRequest.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageUserHeartResponse.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageUserKickout.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageUserLogin.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageUserLogout.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageSWChargeChecker.pb.h">
-      <Filter>message</Filter>
     </ClInclude>
     <ClInclude Include="include\GateServer.h">
       <Filter>头文件</Filter>

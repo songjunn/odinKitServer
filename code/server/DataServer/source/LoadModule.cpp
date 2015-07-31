@@ -4,7 +4,7 @@
 #include "utlsymbol.h"
 #include "strtools.h"
 #include "gtime.h"
-#include "MainServer.h"
+#include "DataServer.h"
 #include "Packet.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"
@@ -68,11 +68,11 @@ bool CLoadModule::_handlePacket_LoadWorldData(PACKET_COMMAND* pack)
 
 	mongo::Query query;
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	GETMONGODB->select(cursor, "player", query.sort(BSON("playerid" << -1)));
+	GETMONGODB(&DataServer)->select(cursor, "player", query.sort(BSON("playerid" << -1)));
 
 	PersonID playerid = INVALID_VALUE;
 	if (cursor.get() && cursor->more()) {
-		GETMONGODB->getBsonFieldI64(cursor->next(), "playerid", playerid);
+		GETMONGODB(&DataServer)->getBsonFieldI64(cursor->next(), "playerid", playerid);
 	}
 
 	Message::WorldDataResponse msgData;
@@ -80,7 +80,7 @@ bool CLoadModule::_handlePacket_LoadWorldData(PACKET_COMMAND* pack)
 
 	PACKET_COMMAND packData;
 	PROTOBUF_CMD_PACKAGE(packData, msgData, Message::MSG_SERVER_WORLD_RESPONSE);
-	GETSERVERNET->sendMsg(pack->GetNetID(), &packData);
+	GETSERVERNET(&DataServer)->sendMsg(pack->GetNetID(), &packData);
 
 	return true;
 }
@@ -109,7 +109,7 @@ bool CLoadModule::_handlePacket_CheckNameRepeat(PACKET_COMMAND* pack)
 
 	PACKET_COMMAND pack1;
 	PROTOBUF_CMD_PACKAGE(pack1, msg1, Message::MSG_PLAYER_CHECKNAME_RESPONSE);
-	GETSERVERNET->sendMsg(pack->GetNetID(), &pack1);
+	GETSERVERNET(&DataServer)->sendMsg(pack->GetNetID(), &pack1);
 
 	return true;
 }
@@ -124,7 +124,7 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 
 	mongo::Query query = QUERY(msg.key()<<(int64)msg.uid());
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	GETMONGODB->select(cursor, msg.type(), query);
+	GETMONGODB(&DataServer)->select(cursor, msg.type(), query);
 
 	std::string idstr = msg.type() + "id";
 	std::vector<int64> objs;
@@ -133,7 +133,7 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 		mongo::BSONObj p = cursor->next();
 
 		PersonID playerid = INVALID_VALUE;
-		if (GETMONGODB->getBsonFieldI64(p, idstr, playerid)) {
+		if (GETMONGODB(&DataServer)->getBsonFieldI64(p, idstr, playerid)) {
 			objs.push_back(playerid);
 		}
 	}
@@ -145,7 +145,7 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 
 	PACKET_COMMAND packCnt;
 	PROTOBUF_CMD_PACKAGE(packCnt, msgCnt, Message::MSG_PLAYER_LOAD_COUNT);
-	GETSERVERNET->sendMsg(pack->GetNetID(), &packCnt);
+	GETSERVERNET(&DataServer)->sendMsg(pack->GetNetID(), &packCnt);
 
 	return true;
 }

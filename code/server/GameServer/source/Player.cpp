@@ -340,7 +340,7 @@ int64 CPlayer::_GetXmlFieldI64(int i)
 
 void CPlayer::SyncFieldToData(const char* field)
 {
-	DataModule.syncField(m_GameObj, GETSERVERMGR->getDataSock(), field);
+	DataModule.syncField(m_GameObj, GameServer.getServerSock(CBaseServer::Linker_Server_Data), field);
 }
 
 void CPlayer::SyncFieldIntToClient(int i, CPlayer* toPlayer)

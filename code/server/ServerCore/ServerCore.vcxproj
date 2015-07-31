@@ -177,24 +177,24 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="source\metadata.cpp" />
+    <ClCompile Include="source\plugin_Monitor.cpp" />
     <ClCompile Include="source\server.cpp" />
     <ClCompile Include="source\plugin_HttpServe.cpp" />
     <ClCompile Include="source\plugin_Mongodb.cpp" />
     <ClCompile Include="source\plugin_Network.cpp" />
-    <ClCompile Include="source\plugin_ServerMgr.cpp" />
     <ClCompile Include="..\..\public\message\source\MessageRegistServer.pb.cc" />
     <ClCompile Include="..\..\public\message\source\MessageSyncGateLoad.pb.cc" />
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\metadata.h" />
+    <ClInclude Include="include\plugin_Monitor.h" />
     <ClInclude Include="include\server.h" />
     <ClInclude Include="include\plugin.h" />
     <ClInclude Include="include\pluginHandler.h" />
     <ClInclude Include="include\plugin_HttpServe.h" />
     <ClInclude Include="include\plugin_Mongodb.h" />
     <ClInclude Include="include\plugin_Network.h" />
-    <ClInclude Include="include\plugin_ServerMgr.h" />
     <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h" />
     <ClInclude Include="..\..\public\message\source\MessageSyncGateLoad.pb.h" />
     <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h" />

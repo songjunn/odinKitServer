@@ -21,9 +21,6 @@
     <ClCompile Include="source\DBOperate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LoginServer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\UserMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -44,6 +41,12 @@
     </ClCompile>
     <ClCompile Include="..\..\public\message\source\MessageUserCheck.pb.cc">
       <Filter>message</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LoginServer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="..\..\public\message\source\MessageUserCheck.pb.h">
       <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LoginServer.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

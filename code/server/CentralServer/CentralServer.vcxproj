@@ -180,13 +180,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CentralServer.cpp" />
-    <ClCompile Include="CentralServerMgr.cpp" />
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc" />
+    <ClCompile Include="CentralServer.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CentralServerMgr.h" />
     <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h" />
+    <ClInclude Include="CentralServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.vcxproj">

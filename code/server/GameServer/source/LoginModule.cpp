@@ -4,7 +4,7 @@
 #include "UserMgr.h"
 #include "PlayerMgr.h"
 #include "NameText.h"
-#include "MainServer.h"
+#include "GameServer.h"
 #include "NoticeModule.h"
 #include "DataModule.h"
 #include "LuaEngine.h"
@@ -119,7 +119,7 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 		//向data发送请求，加载角色数据
 		PACKET_COMMAND packet;
 		PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
-		GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), &packet);
+		GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), &packet);
 	}
 
 	Log.Notice( "[Login] User:"INT64_FMT, msg.uid() );
@@ -200,7 +200,7 @@ bool CLoginModule::_HandlePacket_PlayerCount(PACKET_COMMAND* pack)
 		
 		PACKET_COMMAND packData;
 		PROTOBUF_CMD_PACKAGE(packData, msgData, Message::MSG_GAMEOBJ_REQUEST);
-		GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), &packData);
+		GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), &packData);
 	}
 
 	return true;
@@ -280,7 +280,7 @@ bool CLoginModule::_HandlePacket_PlayerOnCreate(PACKET_COMMAND* pack)
 		return false;
 	}
 	//同步DataServer创建
-	DataModule.syncCreate(player->m_GameObj, GETSERVERMGR->getDataSock());
+	DataModule.syncCreate(player->m_GameObj, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
 	CEvent* evnt = MakeEvent(Event_Player_Create, player->GetID(), player->GetFieldI64(Role_Attrib_UserID), NULL, true);
 	player->OnEvent(evnt);
@@ -298,7 +298,7 @@ bool CLoginModule::_HandlePacket_LoadWorldData(PACKET_COMMAND* pack)
 	Message::WorldDataResponse msg;
 	PROTOBUF_CMD_PARSER( pack, msg );
 
-	int64 id = msg.playerid() > 0 ? msg.playerid() : g_MakeInitPlayerID(MainServer.World());
+	int64 id = msg.playerid() > 0 ? msg.playerid() : g_MakeInitPlayerID(GameServer.getSelfWorld());
 
 	PlayerMgr.SetLoadFactID(id);
 
@@ -380,7 +380,7 @@ bool CLoginModule::OnPlayerLogout(PersonID id)
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOGOUT_REQEUST);
 	player->SendDataMsg( &pack );
 	//同步DataServer创建
-	DataModule.syncRemove(player->m_GameObj, GETSERVERMGR->getDataSock());
+	DataModule.syncRemove(player->m_GameObj, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
 	Log.Notice("[Logout] Online User:"INT64_FMT" Player:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID), id);
 

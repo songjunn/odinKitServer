@@ -231,7 +231,7 @@ void CPlayerMgr::_HandleLoadCache(PersonID reqID, PersonID tarID, int module)
 	
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_REQUEST);
-	GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), &pack);
+	GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), &pack);
 }
 
 void CPlayerMgr::_HandleLoadRequest(CPlayer* reqPlayer, PersonID tarID, int module)

@@ -1,7 +1,7 @@
 #pragma once
 #include "shared.h"
 #include "Fighter.h"
-#include "MainServer.h"
+#include "GameServer.h"
 #include "EventUnit.h"
 
 //class CFriendsUnit;
@@ -24,9 +24,9 @@ public:
 	inline	void	SetGateSocket(SOCKET socket)		{m_GateSocket = socket;}
 	inline	SOCKET	GetGateSocket()						{return m_GateSocket;}
 
-	inline  void	SendClientMsg(PACKET_COMMAND* pack)	{ if(pack) {pack->SetTrans(GetID()); GETSERVERNET->sendMsg(m_GateSocket, pack);_SendFormat(pack);} }
-	inline	void	SendDataMsg(PACKET_COMMAND* pack){ if (pack) { pack->SetTrans(GetID()); GETSERVERNET->sendMsg(GETSERVERMGR->getDataSock(), pack); } _SendFormat(pack); }
-	inline	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player) {if(pack && player) {pack->SetTrans(player->GetID()); GETSERVERNET->sendMsg(player->m_GateSocket, pack);} _SendFormat(pack); }
+	inline  void	SendClientMsg(PACKET_COMMAND* pack)	{ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(m_GateSocket, pack); _SendFormat(pack); } }
+	inline	void	SendDataMsg(PACKET_COMMAND* pack){ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), pack); } _SendFormat(pack); }
+	inline	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player) { if (pack && player) { pack->SetTrans(player->GetID()); GETSERVERNET(&GameServer)->sendMsg(player->m_GateSocket, pack); } _SendFormat(pack); }
 
 	void _SendFormat(PACKET_COMMAND *pack){Log.Debug("%s", pack->toFormat());}
 	inline CPlayer* GetPlayer() {return this;}

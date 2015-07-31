@@ -36,9 +36,6 @@
     <ClCompile Include="source\plugin_Mongodb.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\plugin_ServerMgr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\plugin_Network.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -46,6 +43,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="source\server.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\plugin_Monitor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,9 +71,6 @@
     <ClInclude Include="include\plugin_Mongodb.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\plugin_ServerMgr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\plugin_Network.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -81,6 +78,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\server.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\plugin_Monitor.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

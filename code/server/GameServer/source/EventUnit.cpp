@@ -224,6 +224,6 @@ void CEventUnit::OnEvent(CEvent* ev)
 
 		PACKET_COMMAND pack;
 		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_EVENT);
-		GETSERVERNET->sendMsg(GETSERVERMGR->getBISock(), &pack);
+		GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_DataAnalysis), &pack);
 	}
 }

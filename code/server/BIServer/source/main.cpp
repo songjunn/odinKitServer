@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <tchar.h>
 #endif
-#include "GateServer.h"
+#include "BIServer.h"
 
 #ifdef _WIN32
 int _tmain(int argc, _TCHAR* argv[])
@@ -11,7 +11,7 @@ int _tmain(int argc, _TCHAR* argv[])
 int main(int argc, char* argv[])
 #endif
 {
-	GateServer.run();
+	BIServer.run();
 
 	return 0;
 }

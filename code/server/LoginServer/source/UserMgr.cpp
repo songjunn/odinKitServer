@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "UserMgr.h"
 #include "random.h"
-#include "MainServer.h"
+#include "LoginServer.h"
 #include "error.h"
 #include "DBOperate.h"
 #include "gtime.h"
@@ -77,7 +77,7 @@ void CUserMgr::SendErrorMsg(CUser* user, int errid)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
-	GETCLIENTNET->sendMsg(user->m_sock, &pack);
+	GETCLIENTNET(&LoginServer)->sendMsg(user->m_sock, &pack);
 }
 
 bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
@@ -89,8 +89,6 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 	{
 	case Message::MSG_REQUEST_USER_CHECK:	_HandlePacket_UserCheck(pack);		break;
 	case Message::MSG_REQUEST_GUEST_CHECK:	_HandlePacket_GuestCheck(pack);		break;
-	case Message::MSG_SERVER_NET_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
-	case Message::MSG_SERVER_NET_CLOSE:		_HandlePacket_NetClose(pack);		break;
 	default:	return false;
 	}
 
@@ -222,7 +220,7 @@ void CUserMgr::_Shutdown(CUser* pUser)
 		return;
 
 	//断开user
-	GETCLIENTNET->shutdown(pUser->m_sock);
+	GETCLIENTNET(&LoginServer)->shutdown(pUser->m_sock);
 
 	UserMgr.Delete(pUser->m_sock);
 }
@@ -233,7 +231,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 		return false;
 
 	//取得该服负载最低的GateServer
-	CServerObj* pServer = GETSERVERMGR->GetLowerGate(pUser->m_server);
+	CLinker* pServer = LoginServer.getLowerGate(pUser->m_server);
 	if (!pServer)
 	{
 		Log.Error("[Login] Get Lower GateServer Failed, World:%d User:"INT64_FMT, pUser->m_server, pUser->m_id);
@@ -252,7 +250,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 
 	PACKET_COMMAND pack1;
 	PROTOBUF_CMD_PACKAGE(pack1, msg1, Message::MSG_USER_PRLOGIN_REQUEST);
-	GETSERVERNET->sendMsg(pServer->m_Socket, &pack1);
+	GETSERVERNET(&LoginServer)->sendMsg(pServer->m_Socket, &pack1);
 
 	//通知Client
 	Message::ConnectGate msg2;
@@ -264,7 +262,7 @@ bool CUserMgr::_CheckSuccess(CUser* pUser)
 
 	PACKET_COMMAND pack2;
 	PROTOBUF_CMD_PACKAGE(pack2, msg2, Message::MSG_USER_GET_GATESVR);
-	GETCLIENTNET->sendMsg(pUser->m_sock, &pack2);
+	GETCLIENTNET(&LoginServer)->sendMsg(pUser->m_sock, &pack2);
 
 	return true;
 }
@@ -307,7 +305,7 @@ void CUserMgr::httpCheckUserThread(void *pParam)
 		Log.Error("curl curl_easy_perform error: %s", curl_easy_strerror(res));
 	}
 
-	GETCLIENTNET->shutdown(pUser->m_sock);
+	GETCLIENTNET(&LoginServer)->shutdown(pUser->m_sock);
 }
 
 string CUserMgr::generatePostField(CUser *pUser)

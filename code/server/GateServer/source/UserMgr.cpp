@@ -1,5 +1,5 @@
 #include "UserMgr.h"
-#include "MainServer.h"
+#include "GateServer.h"
 #include "Packet.h"
 #include "error.h"
 #include "MessageTypeDefine.pb.h"
@@ -103,8 +103,6 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 	case Message::MSG_PLAYER_LOGIN_REQUEST:	_HandlePacket_PlayerLogin(pack); break;
 	case Message::MSG_REQUEST_PLAYER_CREATE:	_HandlePacket_PlayerCreate(pack);	break;
 	case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);	break;
-	case Message::MSG_SERVER_NET_CLOSE:	_HandlePacket_NetClose(pack);		break;
-	case Message::MSG_SERVER_NET_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
 	case Message::MSG_COMMON_ERROR:		_HandlePacket_GameError(pack);		break;
 	case Message::MSG_USER_DISPLACE:	_HandlePacket_UserDisplace(pack);	break;
 	default:	return false;
@@ -148,7 +146,7 @@ bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 	//验证md5密钥
 	if( _CheckUserKey(msg.uid(), msg.key(), pack->GetNetID()) )
 	{
-		CServerObj* server = GETSERVERMGR->GetLowerGame();
+		CLinker* server = GateServer.getLowerGame();
 		if( server )
 		{
 			CUser* oldUser = GetUserByUID(msg.uid());
@@ -172,7 +170,7 @@ bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 			
 			PACKET_COMMAND packet;
 			PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
-			GETSERVERNET->sendMsg(server->m_Socket, &packet);
+			GETSERVERNET(&GateServer)->sendMsg(server->m_Socket, &packet);
 
 			//同步服务器时间
 			SendHeartResponse(user);
@@ -187,7 +185,7 @@ bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 
 	SendErrorMsg( pack->GetNetID(), Error_Login_CheckFailed );
 
-	GETCLIENTNET(GateServer)->shutdown( pack->GetNetID() );
+	GETCLIENTNET(&GateServer)->shutdown( pack->GetNetID() );
 
 	return false;
 }
@@ -271,7 +269,7 @@ bool CUserMgr::_HandlePacket_PlayerCreate(PACKET_COMMAND* pack)
 	if( !user->m_CanCreate )
 		return false;
 
-	GETSERVERNET->sendMsg( user->m_GameSock, pack );
+	GETSERVERNET(&GateServer)->sendMsg( user->m_GameSock, pack );
 
 	return true;
 }
@@ -291,7 +289,7 @@ bool CUserMgr::_HandlePacket_PlayerCount(PACKET_COMMAND* pack)
 	if( msg.player().size() <= 0 )
 		user->m_CanCreate = true;
 
-	GETCLIENTNET->sendMsg(user->m_ClientSock, pack);
+	GETCLIENTNET(&GateServer)->sendMsg(user->m_ClientSock, pack);
 
 	return true;
 }
@@ -307,56 +305,16 @@ bool CUserMgr::_HandlePacket_GameError(PACKET_COMMAND* pack)
 	SOCKET s = GetNetIDByPID( pack->GetTrans() );
 	if( s != INVALID_SOCKET )
 	{
-		GETCLIENTNET->sendMsg(s, pack);
+		GETCLIENTNET(&GateServer)->sendMsg(s, pack);
 		return true;
 	}
 
 	CUser* user = GetUserByUID( msg.userid() );
 	if( user )
 	{
-		GETCLIENTNET->sendMsg(user->m_ClientSock, pack);
+		GETCLIENTNET(&GateServer)->sendMsg(user->m_ClientSock, pack);
 		return true;
 	}
-
-	return true;
-}
-
-bool CUserMgr::_HandlePacket_NetAccept(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::NetControl msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	SOCKET sock = msg.sock();
-	CUser* user = UserMgr.Create(sock);
-	if( !user )
-		return false;
-	
-	TMV t = time(NULL);
-	user->m_ClientSock = sock;
-	user->m_HeartTime = t;
-	user->m_CanCreate = false;
-	user->m_PackCount = 0;
-	user->m_PackTime = t;
-
-	return true;
-}
-
-bool CUserMgr::_HandlePacket_NetClose(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::NetControl msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	SOCKET sock = msg.sock();
-
-	CUser* user = UserMgr.GetObj(sock);
-	if( user )
-		UserMgr.RemoveUser(user);
 
 	return true;
 }
@@ -398,7 +356,7 @@ void CUserMgr::SendHeartResponse(CUser* user)
 
 		PACKET_COMMAND packet;
 		PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_HEART_RESPONSE);
-		GETCLIENTNET->sendMsg(user->m_ClientSock, &packet);
+		GETCLIENTNET(&GateServer)->sendMsg(user->m_ClientSock, &packet);
 	}
 }
 
@@ -409,7 +367,7 @@ void CUserMgr::SendErrorMsg(SOCKET sock, int errid)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_COMMON_ERROR);
-	GETCLIENTNET->sendMsg(sock, &pack);
+	GETCLIENTNET(&GateServer)->sendMsg(sock, &pack);
 }
 
 void CUserMgr::Exit(CUser* user)
@@ -417,7 +375,7 @@ void CUserMgr::Exit(CUser* user)
 	if( !user )
 		return;
 
-	GETCLIENTNET->shutdown(user->m_ClientSock);
+	GETCLIENTNET(&GateServer)->shutdown(user->m_ClientSock);
 
 	this->RemoveUser(user);
 }
@@ -429,7 +387,7 @@ void CUserMgr::Displace(CUser* user)
 
 	SendErrorMsg(user->m_ClientSock, Error_User_Displace);
 
-	GETCLIENTNET->shutdown(user->m_ClientSock);
+	GETCLIENTNET(&GateServer)->shutdown(user->m_ClientSock);
 
 	this->RemoveUser(user);
 }
@@ -452,7 +410,7 @@ void CUserMgr::RemoveUser(CUser* user, bool sync)
 
 			PACKET_COMMAND pack;
 			PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOGOUT_REQEUST);
-			GETSERVERNET->sendMsg( user->m_GameSock, &pack );
+			GETSERVERNET(&GateServer)->sendMsg(user->m_GameSock, &pack);
 		}
 
 		m_PlayerList.Remove( user->m_LogonPlayer );

@@ -171,10 +171,12 @@
     <ClCompile Include="source\AnalysisModule.cpp" />
     <ClCompile Include="source\BIServer.cpp" />
     <ClCompile Include="..\..\public\message\source\MessageEventSync.pb.cc" />
+    <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AnalysisModule.h" />
     <ClInclude Include="..\..\public\message\source\MessageEventSync.pb.h" />
+    <ClInclude Include="include\BIServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

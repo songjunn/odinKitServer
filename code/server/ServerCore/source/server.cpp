@@ -9,11 +9,12 @@
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"
 
+extern CObjectMemoryPool<PACKET_COMMAND> g_PacketPool;
+
 static const char* svrname[CBaseServer::Linker_Server_End] = { "Null", "CentralServer", "DataServer", "WorldServer", "LoginServer", "GameServer", "GateServer", "BIServer", "PaymentServer" };
 
-CBaseServer::CBaseServer(int type)
+CBaseServer::CBaseServer()
 {
-	m_self.m_type = type;
 	m_ServerState = EStateRunning;
 }
 
@@ -21,13 +22,15 @@ CBaseServer::~CBaseServer()
 {
 }
 
-bool CBaseServer::run()
+bool CBaseServer::run(int frame)
 {
 	if (!onStartup()) {
 		return false;
 	}
 
-	DWORD time = 0;
+	int sleeptime = frame > 0 ? 1000/frame : 1;
+
+	//DWORD time = 0;
 	while (true)
 	{
 #if !defined(_DEBUG) && defined(WIN32)
@@ -37,15 +40,22 @@ bool CBaseServer::run()
 			if (this->getServerState() == EStateStopping) {
 				break;
 			}
+			else if (this->getServerState() == EStateReloadData) {
+				onLoadData();
+				this->setServerState(EStateRunning);
+			} else if (this->getServerState() == EStateReloadScript) {
+				onLoadScript();
+				this->setServerState(EStateRunning);
+			}
 
 			onLogic();
 
-			if (timeGetTime() - time > 1000)
+			/*if (timeGetTime() - time > 1000)
 			{
 				time = timeGetTime();
 
 				onPrint();
-			}
+			}*/
 
 #if !defined(_DEBUG) && defined(WIN32)
 		}
@@ -57,10 +67,10 @@ bool CBaseServer::run()
 #endif
 
 #ifdef _WIN32
-		Sleep(1);
+		Sleep(sleeptime);
 #else
 #if defined(__linux__) && defined(DEBUG)
-		usleep(1000);
+		usleep(sleeptime*1000);
 #endif
 #endif
 	}
@@ -115,7 +125,7 @@ bool CBaseServer::onStartup()
 	return true;
 }
 
-void CBaseServer::onLogic()
+bool CBaseServer::onLogic()
 {
 	VProfCurrentProfile().Pause();
 	VProfCurrentProfile().Server_OutputReport();
@@ -124,6 +134,8 @@ void CBaseServer::onLogic()
 
 	loop_message();
 	loop_linkers();
+
+	return true;
 }
 
 void CBaseServer::onPrint(char* output)
@@ -151,7 +163,6 @@ bool CBaseServer::onMessage(PACKET_COMMAND* pack)
 	case Message::MSG_SERVER_NET_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
 	case Message::MSG_SERVER_REGISTER:		_HandlePacket_RegistServer(pack);	break;
 	case Message::MSG_SERVER_SYNCSERVER:	_HandlePacket_ConnectServer(pack);	break;
-	case Message::MSG_SERVER_SYNCGATELOAD:	_HandlePacket_SyncGateLoad(pack);	break;
 	case Message::MSG_SERVER_NET_CONNECT:	_HandlePacket_RegistAsyncReturn(pack); break;
 	default:	return false;
 	}
@@ -169,6 +180,11 @@ void CBaseServer::onShutdown()
 #else
 	Sleep(5000);
 #endif
+}
+
+void CBaseServer::setType(int type)
+{
+	m_self.m_type = type;
 }
 
 void CBaseServer::initSelf(int world, int type, int id, int port, const char* szip, int extport, const char* extip, const char* udPath)
@@ -293,10 +309,7 @@ CLinker* CBaseServer::createLinker(int type, int id, int port, const char* szip,
 bool CBaseServer::addLinker(CLinker* linker)
 {
 	m_linkerList.AddToTail(linker);
-
-	m_linkerLock.LOCK();
 	m_linkerMap.Insert(linker->m_Socket, linker);
-	m_linkerLock.UNLOCK();
 
 	Log.Notice("[CBaseServer] Create Server %s:%d World:%d ID:%d Sock:%d", linker->m_szIP, linker->m_nPort, linker->m_worldID, linker->m_nID, linker->m_Socket);
 
@@ -317,14 +330,12 @@ bool CBaseServer::connectLinker(CLinker* linker)
 void CBaseServer::breakLinker(SOCKET s)
 {
 	CLinker* pObj = NULL;
-	m_linkerLock.LOCK();
 	int idx = m_linkerMap.Find(s);
 	if (m_linkerMap.IsValidIndex(idx))
 	{
 		pObj = m_linkerMap.Element(idx);
 		m_linkerMap.RemoveAt(idx);
 	}
-	m_linkerLock.UNLOCK();
 
 	if (pObj)
 	{
@@ -335,11 +346,16 @@ void CBaseServer::breakLinker(SOCKET s)
 
 CLinker* CBaseServer::getLinker(SOCKET s)
 {
-	CLinker* p = NULL;
-	m_linkerLock.LOCK();
-	p = m_linkerMap.GetElement(s);
-	m_linkerLock.UNLOCK();
-	return p;
+	return m_linkerMap.GetElement(s);
+}
+
+CLinker* CBaseServer::getServer(SOCKET s)
+{
+	CLinker* linker = m_linkerMap.GetElement(s);
+	if (linker && isServer(linker->m_type)) {
+		return linker;
+	}
+	return NULL;
 }
 
 CLinker* CBaseServer::getServerById(int id)
@@ -352,6 +368,17 @@ CLinker* CBaseServer::getServerById(int id)
 			break;
 	}
 	return p;
+}
+
+SOCKET CBaseServer::getServerSock(int type)
+{
+	FOR_EACH_LL(m_linkerList, index)
+	{
+		CLinker* p = m_linkerList[index];
+		if (p && p->m_type == type)
+			return p->m_Socket;
+	}
+	return INVALID_SOCKET;
 }
 
 bool CBaseServer::loop_message()
@@ -367,6 +394,8 @@ bool CBaseServer::loop_message()
 
 		g_PacketPool.Free(pack);
 	}
+
+	return true;
 }
 
 bool CBaseServer::loop_linkers()
@@ -494,19 +523,6 @@ bool CBaseServer::_HandlePacket_ConnectServer(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CBaseServer::_HandlePacket_SyncGateLoad(PACKET_COMMAND* pack)
-{
-	if (!pack)
-		return false;
-
-	Message::SyncGateLoad msg;
-	PROTOBUF_CMD_PARSER(pack, msg);
-
-	setGateLoadStatus(pack->GetNetID(), msg.count());
-
-	return true;
-}
-
 bool CBaseServer::_HandlePacket_RegistAsyncReturn(PACKET_COMMAND* pack)
 {
 	if (!pack)
@@ -526,57 +542,6 @@ void CBaseServer::deleteServer(CLinker* pObj)
 
 	delete pObj;
 	pObj = NULL;
-}
-
-void CBaseServer::setGateLoadStatus(SOCKET sock, int num)
-{
-	CLinker* pServer = getLinker(sock);
-	if (pServer)
-		pServer->m_UserCount = num;
-}
-
-CLinker* CBaseServer::getLowerGate(int world)
-{
-	CLinker* pLowerGate = NULL;
-
-	FOR_EACH_LL(m_linkerList, index)
-	{
-		CLinker* pServer = m_linkerList[index];
-		if (!pServer || pServer->m_bBreak || pServer->m_type != Linker_Server_GateWay || pServer->m_worldID != world)
-			continue;
-
-		if (!pLowerGate || pLowerGate->m_UserCount > pServer->m_UserCount)
-		{
-			pLowerGate = pServer;
-		}
-	}
-
-	if (pLowerGate)
-		pLowerGate->m_UserCount++;
-
-	return pLowerGate;
-}
-
-CLinker* CBaseServer::getLowerGame()
-{
-	CLinker* pLowerGame = NULL;
-
-	FOR_EACH_LL(m_linkerList, index)
-	{
-		CLinker* pServer = m_linkerList[index];
-		if (!pServer || pServer->m_bBreak || pServer->m_type != Linker_Server_Game)
-			continue;
-
-		if (!pLowerGame || pLowerGame->m_UserCount > pServer->m_UserCount)
-		{
-			pLowerGame = pServer;
-		}
-	}
-
-	if (pLowerGame)
-		pLowerGame->m_UserCount++;
-
-	return pLowerGame;
 }
 
 bool CBaseServer::regist(CLinker* pObj)
@@ -623,9 +588,7 @@ bool CBaseServer::registAsync(CLinker* pObj)
 		return FALSE;
 	}
 
-	m_linkerLock.LOCK();
 	m_linkerMap.Insert(sock, pObj);
-	m_linkerLock.UNLOCK();
 
 	pObj->m_Socket = sock;
 	pObj->m_bWaiting = true;
@@ -637,10 +600,7 @@ bool CBaseServer::registAsync(CLinker* pObj)
 
 bool CBaseServer::registAsyncReturn(SOCKET sock, int error)
 {
-	m_linkerLock.LOCK();
 	CLinker* pObj = m_linkerMap.GetElement(sock);
-	m_linkerLock.UNLOCK();
-
 	if (!pObj || !pObj->m_bBreak)
 		return false;
 
@@ -664,9 +624,7 @@ bool CBaseServer::registAsyncReturn(SOCKET sock, int error)
 	}
 	else
 	{
-		m_linkerLock.LOCK();
 		m_linkerMap.Remove(sock);
-		m_linkerLock.UNLOCK();
 
 		pObj->m_bWaiting = false;
 

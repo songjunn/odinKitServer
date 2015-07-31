@@ -1,26 +1,31 @@
-// DataServer.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+ï»¿// BIServer.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN             // ä» Windows å¤´ä¸­æ’é™¤æå°‘ä½¿ç”¨çš„èµ„æ–™
+#include <windows.h>
+#include <tchar.h>
+#endif
+#include <stdio.h>
 #include "MainServer.h"
-#include "exception.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
+#include "exception.h"
+#include "Singleton.h"
+#include "AnalysisModule.h"
 #ifdef __linux__
+#include <unistd.h>
 #include "linux_time.h"
-#include "monitor.h"
+#include "vprof.h"
 #endif
-#include "commdata.h"
-#include "DataModule.h"
-#include "LoadModule.h"
-#include "utlsymbol.h"
 
 
 createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CMainServer);
 createFileSingleton(CServerMgr);
-createFileSingleton(CDataModule);
-createFileSingleton(CLoadModule);
+createFileSingleton(CAnalysisModule);
+
 
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 extern CObjectMemoryPool<OperObj>	g_MongoOperPool;
@@ -37,14 +42,15 @@ void StatusOutput(char* output)
 	GETSERVERMGR->Output(szServer);
 
 	sprintf(output, 
-		" DataServer monitor: \n"
+		" BIServer monitor: Player:%d\n"
         " ======================================================\n"
         " memory pool used:\n"
-        "  %s"
+		"  %s"
 		"  %s"
 		" ======================================================\n"
         " %s",
-		szPackPool, szMongoPool,
+		AnalysisModule.GetOnlinePlayer(), 
+		szPackPool, szMongoPool, 
 		szServer);
 }
 
@@ -53,61 +59,51 @@ bool Begin()
 	char g_szExePath[512] = { 0 };
 	GetExePath( g_szExePath, 512 );
 
-	//Æô¶¯MainServer
-	if( !MainServer.Startup("DataServer") )
+	//å¯åŠ¨MainServer
+	if( !MainServer.Startup("BIServer") )
 		return false;
 
-	//³õÊ¼»¯Æô¶¯²ÎÊı
+	//åˆå§‹åŒ–å¯åŠ¨å‚æ•°
 	char szConfile[256]= { 0 };
 	sprintf(szConfile,"%ssconf.lua", g_szExePath);
 	if( !LuaEngine.LoadLuaFile( szConfile ) )
 	{
-		Log.Error("¼ÓÔØsconf.luaÊ§°Ü£¡");
+		Log.Error("åŠ è½½sconf.luaå¤±è´¥ï¼");
 		return false;
 	}
 
-	//¶ÁÈ¡Æô¶¯²ÎÊı
-	const char* centralip = LuaEngine.GetLuaVariableString( "CentralServer_ip", "Sconf" );
+	//è¯»å–å¯åŠ¨å‚æ•°
+	const char* centralip = LuaEngine.GetLuaVariableString( "CentralServer_ip",	"Sconf" );
 	int centralid		= LuaEngine.GetLuaVariableNumber( "CentralServer_id",	"Sconf" );
-	int centralport		= LuaEngine.GetLuaVariableNumber( "CentralServer_port", "Sconf" );
-	const char* myip	= LuaEngine.GetLuaVariableString( "DataServer_ip",		"Sconf" );
-	int myid			= LuaEngine.GetLuaVariableNumber( "DataServer_id",		"Sconf" );
-	int myport			= LuaEngine.GetLuaVariableNumber( "DataServer_port",	"Sconf" );
-	const char* gamedbip= LuaEngine.GetLuaVariableString( "db_game_ip",	        "Sconf" );
-	const char* gamedbname = LuaEngine.GetLuaVariableString( "db_game_name",    "Sconf" );
-    const char* gamedbport = LuaEngine.GetLuaVariableString( "db_game_port",	"Sconf" );
-	const char* eventdbip  = LuaEngine.GetLuaVariableString( "db_event_ip",     "Sconf" );
-	const char* eventdbname= LuaEngine.GetLuaVariableString( "db_event_name",   "Sconf" );
-	const char* eventdbport= LuaEngine.GetLuaVariableString( "db_event_port",	"Sconf" );
+	int centralport		= LuaEngine.GetLuaVariableNumber( "CentralServer_port",	"Sconf" );
+	const char* myip	= LuaEngine.GetLuaVariableString( "BIServer_ip",		"Sconf" );
+	int myid			= LuaEngine.GetLuaVariableNumber( "BIServer_id",		"Sconf" );
+	int myport			= LuaEngine.GetLuaVariableNumber( "BIServer_port",		"Sconf" );
+	const char* eventdbip		= LuaEngine.GetLuaVariableString( "db_event_ip",	"Sconf" );
+	const char* eventdbname		= LuaEngine.GetLuaVariableString( "db_event_name",	"Sconf" );
+	const char* eventdbport     = LuaEngine.GetLuaVariableString( "db_event_port",	"Sconf" );
 	int worldID         = LuaEngine.GetLuaVariableNumber( "WorldID",            "Sconf" );
-	int connmax			= LuaEngine.GetLuaVariableNumber( "connect_count_max",	"DataServer" );
-	int packsize		= LuaEngine.GetLuaVariableNumber( "packet_pool_size",	"DataServer" );
-	int recvsize		= LuaEngine.GetLuaVariableNumber( "recv_buff_size",		"DataServer" );
-	int sendsize		= LuaEngine.GetLuaVariableNumber( "send_buff_size",		"DataServer" );
-	int usercnt 		= LuaEngine.GetLuaVariableNumber( "user_count_max",		"DataServer" );
-	int playercnt		= LuaEngine.GetLuaVariableNumber( "player_count_max",	"DataServer" );
-	int herocnt         = LuaEngine.GetLuaVariableNumber( "hero_count_max",     "DataServer" );
-	int itemcnt			= LuaEngine.GetLuaVariableNumber( "item_count_max",		"DataServer" );
-	int saveTime        = LuaEngine.GetLuaVariableNumber( "save_logic_interval","DataServer" );
-	int orderSaveTime   = LuaEngine.GetLuaVariableNumber( "save_logic_interval","DataServer" );
-	int dboperator		= LuaEngine.GetLuaVariableNumber( "db_operator_max",	"DataServer" );
+	int connmax			= LuaEngine.GetLuaVariableNumber( "connect_count_max",	"BIServer" );
+	int packsize		= LuaEngine.GetLuaVariableNumber( "packet_pool_size",	"BIServer" );
+	int recvsize		= LuaEngine.GetLuaVariableNumber( "recv_buff_size",		"BIServer" );
+	int sendsize		= LuaEngine.GetLuaVariableNumber( "send_buff_size",		"BIServer" );
+	int dboperator		= LuaEngine.GetLuaVariableNumber( "db_operator_max",	"BIServer" );
 	const char* udPath	= LuaEngine.GetLuaVariableString( "MonitorPath",		"Key" );
 
-	DataModule.Initialize("DataObj", playercnt);
+	//åˆå§‹åŒ–
+	char mpath[1024] = {0};
+	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
+	MainServer.Init(0, CServerMgr::Svr_DataAnalysis, myid, myport, myip, 0, NULL, mpath);
 
 	if( !g_PacketPool.Init("Packet", packsize) )
 		return false;
 
-	if( !g_MongoOperPool.Init("MongoOper", dboperator) )
+	if (!g_MongoOperPool.Init("MongoOper", dboperator))
 		return false;
 
-	//³õÊ¼»¯
-	char mpath[1024] = {0};
-	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-	MainServer.Init(worldID, CServerMgr::Svr_Data, myid, myport, myip, 0, NULL, mpath);
-
-	CMongoDB* db = (CMongoDB *) MainServer.createPlugin(CMainServer::Plugin_Mongodb);
-	if (!db->startup(gamedbip, gamedbport, gamedbname)) {
+	CMongoDB* db = (CMongoDB *)MainServer.createPlugin(CMainServer::Plugin_Mongodb);
+	if (!db->startup(eventdbip, eventdbport, eventdbname)) {
+		Log.Error("[CMainServer] create plugin CMongoDB failed");
 		return false;
 	}
 
@@ -123,8 +119,6 @@ bool Begin()
 		return false;
 	}
 
-	//g_LoadAllName();
-
 #ifdef __linux__
 	char spath[1024] = {0};
 	sprintf(spath, "%s//Server_%d.sock", udPath, myid);
@@ -139,18 +133,11 @@ void OnMsg(PACKET_COMMAND* pack)
 	if( !pack )
 		return;
 
-	if( LoadModule.onMessage(pack) )
-		return;
-
-	if( DataModule.onMessage(pack) )
+	if( AnalysisModule.OnMsg(pack) )
 		return;
 
 	if (GETSERVERMGR->OnMsg(pack))
 		return;
-
-	Log.Debug("OnMsg no module %d", pack->Type());
-
-	return;
 }
 
 void MsgLogic()
@@ -171,13 +158,7 @@ void Logic()
 	VProfCurrentProfile().Resume();
 	VProfCurrentProfile().MarkFrame();
 
-	TMV nowtime = timeGetTime();
-
 	MsgLogic();
-
-	LoadModule.onLogic();
-
-	DataModule.onSave();
 
 	GETSERVERMGR->OnLogic();
 }
@@ -185,20 +166,16 @@ void Logic()
 void Output()
 {
 #if _WIN32
-	//ÉèÖÃ¿ØÖÆÌ¨±êÌâ
+	//è®¾ç½®æ§åˆ¶å°æ ‡é¢˜
 	char title[128] = {0};
-	sprintf(title, "DataServer  User:%d", UserMgr.Count());
+	sprintf(title, "BIServer");
 	SetConsoleTitle(title);
-
-	system("cls");
 #endif
 }
 
 void End()
 {
 	Log.Notice("End ..");
-	DataModule.onSave();
-
 	Log.Shutdown();
 
 #ifdef __linux__
@@ -206,7 +183,6 @@ void End()
 #else
 	Sleep(5000);
 #endif
-	
 }
 
 #ifdef _WIN32
@@ -215,6 +191,7 @@ int _tmain(int argc, _TCHAR* argv[])
 int main(int argc, char* argv[])
 #endif
 {
+
 	if( !Begin() )
 		return -1;
 
@@ -225,10 +202,10 @@ int main(int argc, char* argv[])
 		__try
 		{
 #endif
-			if (MainServer.getServerState() == EStateStopping)
+			if (MainServer.getServerState() == EStateStopping) {
 				break;
-
-			Logic();
+			}
+			Logic();		
 
 			if( timeGetTime() - time > 2000 )
 			{
@@ -245,7 +222,6 @@ int main(int argc, char* argv[])
 			// work is done by HandleException()
 		}
 #endif
-
 #ifdef _WIN32
 		Sleep(1);
 #else
@@ -259,4 +235,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-

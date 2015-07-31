@@ -18,22 +18,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CentralServer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CentralServerMgr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc">
       <Filter>message</Filter>
     </ClCompile>
+    <ClCompile Include="CentralServer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CentralServerMgr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h">
       <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="CentralServer.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

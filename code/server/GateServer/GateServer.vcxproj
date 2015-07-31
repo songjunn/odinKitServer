@@ -180,43 +180,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\public\message\source\MessageSWChargeChecker.pb.cc" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\GateServer.cpp" />
     <ClCompile Include="source\UserMgr.cpp" />
-    <ClCompile Include="..\..\public\message\source\MessageClientLogin.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageCreatePlayer.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageErrorNo.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageLoginSession.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageNetControl.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessagePlayerCount.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessagePlayerLogin.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessagePlayerLogout.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageUserDisplace.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageUserHeartRequest.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageUserHeartResponse.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageUserKickout.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageUserLogin.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageUserLogout.pb.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\public\message\source\MessageSWChargeChecker.pb.h" />
     <ClInclude Include="include\GateServer.h" />
     <ClInclude Include="include\UserMgr.h" />
-    <ClInclude Include="..\..\public\message\source\MessageClientLogin.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageCreatePlayer.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageErrorNo.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageLoginSession.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageNetControl.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessagePlayerCount.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessagePlayerLogin.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessagePlayerLogout.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageUserDisplace.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageUserHeartRequest.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageUserHeartResponse.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageUserKickout.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageUserLogin.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageUserLogout.pb.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.vcxproj">

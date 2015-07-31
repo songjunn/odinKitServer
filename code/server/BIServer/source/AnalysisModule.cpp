@@ -1,5 +1,5 @@
 ﻿#include "AnalysisModule.h"
-#include "MainServer.h"
+#include "BIServer.h"
 #include "Log.h"
 #include "Packet.h"
 #include "eventdef.h"
@@ -18,13 +18,13 @@ void CAnalysisModule::_GetPlayerCountFromDB()
 {
 	mongo::Query query = QUERY("serverID" << 0);
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
-	GETMONGODB->select(cursor, "serverInfo", query);
+	GETMONGODB(&BIServer)->select(cursor, "serverInfo", query);
 
 	Log.Debug("++++++++LogIn playerCount is %d", m_OnlinePlayer);
 	while (cursor.get() && cursor->more())
 	{
 		mongo::BSONObj p = cursor->next();
-		GETMONGODB->getBsonFieldInt(p, "playerCount", m_OnlinePlayer);
+		GETMONGODB(&BIServer)->getBsonFieldInt(p, "playerCount", m_OnlinePlayer);
 	}
 	Log.Debug("__________________LogIn playerCount is %d", m_OnlinePlayer);
 	return;
@@ -127,7 +127,7 @@ void CAnalysisModule::_SaveEvent(int nEventID, int64 parent, int64 PID, const ch
 	obj.append("param6", nParam6);
 	obj.append("param7", szParam1);
 
-	GETMONGODB->execute(CMongoDB::Mongo_Insert, "event", query, obj.obj());
+	GETMONGODB(&BIServer)->execute(CMongoDB::Mongo_Insert, "event", query, obj.obj());
 }
 
 void CAnalysisModule::_SaveServerInfoToDB()
@@ -140,7 +140,7 @@ void CAnalysisModule::_SaveServerInfoToDB()
 	obj.append("rechargeCount", m_GoldCount);
 	obj.append("serverID", 0);
 
-	GETMONGODB->execute(CMongoDB::Mongo_Update, "serverInfo", query, obj.obj());
+	GETMONGODB(&BIServer)->execute(CMongoDB::Mongo_Update, "serverInfo", query, obj.obj());
 	return;
 }
 

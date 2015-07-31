@@ -16,7 +16,7 @@ CNetwork::~CNetwork()
 
 bool CNetwork::startup(int type, int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize)
 {
-	if (!m_server->m_PacketQueue.Init(packsize)) {
+	if (!m_server->getPacketQueue().Init(packsize)) {
 		return false;
 	}
 
@@ -61,7 +61,7 @@ void CNetwork::close(SOCKET sock)
 
 bool CNetwork::handlePacket(PACKET_COMMAND * pCmd)
 {
-	return m_server->m_PacketQueue.Push(pCmd);
+	return m_server->getPacketQueue().Push(pCmd);
 }
 
 void CNetwork::_closeReturn(SOCKET sock)

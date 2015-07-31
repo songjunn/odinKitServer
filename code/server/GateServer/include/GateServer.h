@@ -17,8 +17,10 @@ public:
 	virtual void onPrint(char* output);
 
 	void StatusLogic();
+
+	CLinker* getLowerGame();
 };
 
-#define GateServer CGateServer::getSingletonPtr()
+#define GateServer CGateServer::getSingleton()
 
 #endif //_GATESERVER_H_
