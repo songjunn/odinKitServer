@@ -5,6 +5,8 @@
 #ifdef __linux__
 #include "linux_time.h"
 #endif
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
 
 createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
@@ -116,4 +118,81 @@ void CCentralServer::onPrint(char* output)
 void CCentralServer::onShutdown()
 {
 	CBaseServer::onShutdown();
+}
+
+bool CCentralServer::loop_linkers()
+{
+	int tmp;
+	for (int index = getLinkerList().Head(); getLinkerList().IsValidIndex(tmp = index);)
+	{
+		index = getLinkerList().Next(index);
+
+		CLinker* pObj = getLinkerList()[tmp];
+		if (!pObj)
+		{
+			getLinkerList().Remove(tmp);
+		}
+		else if (pObj->m_bBreak)
+		{
+			deleteServer(pObj);
+			getLinkerList().Remove(tmp);
+		}
+	}
+
+	return true;
+}
+
+bool CCentralServer::_HandlePacket_RegistServer(PACKET_COMMAND* pack)
+{
+	if (!pack)
+		return false;
+
+	Message::RegistServer msg;
+	PROTOBUF_CMD_PARSER(pack, msg);
+
+	CLinker* server = createLinker(msg.type(), msg.id(), msg.port(), msg.ip().c_str(), msg.extport(), msg.extip().c_str(), msg.world(), false, pack->GetNetID());
+	if (!server)
+		return false;
+
+	return _OnAddServer(server);
+}
+
+bool CCentralServer::_OnAddServer(CLinker* pServer)
+{
+	if (!pServer)
+		return false;
+
+	FOR_EACH_LL(getLinkerList(), index)
+	{
+		CLinker* pObj = getLinkerList()[index];
+		if (!pObj || pObj->m_nID == pServer->m_nID) {
+			continue;
+		}
+
+		bool flag = false;
+		if (pServer->m_type == CBaseServer::Linker_Server_Data && (pObj->m_type == CBaseServer::Linker_Server_Game)) flag = true;
+		else if (pServer->m_type == CBaseServer::Linker_Server_Game && (pObj->m_type == CBaseServer::Linker_Server_Data || pObj->m_type == CBaseServer::Linker_Server_GateWay || pObj->m_type == CBaseServer::Linker_Server_DataAnalysis)) flag = true;
+		else if (pServer->m_type == CBaseServer::Linker_Server_GateWay && (pObj->m_type == CBaseServer::Linker_Server_Game || pObj->m_type == CBaseServer::Linker_Server_Login || pObj->m_type == CBaseServer::Linker_Server_Payment)) flag = true;
+		else if (pServer->m_type == CBaseServer::Linker_Server_Login && (pObj->m_type == CBaseServer::Linker_Server_GateWay)) flag = true;
+		else if (pServer->m_type == CBaseServer::Linker_Server_Payment && (pObj->m_type == CBaseServer::Linker_Server_GateWay)) flag = true;
+		else if (pServer->m_type == CBaseServer::Linker_Server_DataAnalysis && (pObj->m_type == CBaseServer::Linker_Server_Game)) flag = true;
+
+		if (flag)
+		{
+			Message::SyncServer msg;
+			msg.set_id(pObj->m_nID);
+			msg.set_type(pObj->m_type);
+			msg.set_port(pObj->m_nPort);
+			msg.set_ip(pObj->m_szIP);
+			msg.set_extport(pObj->m_extPort);
+			msg.set_extip(pObj->m_extIP);
+			msg.set_world(pObj->m_worldID);
+
+			PACKET_COMMAND pack;
+			PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_SERVER_SYNCSERVER);
+			GETSERVERNET(this)->sendMsg(pServer->m_Socket, &pack);
+		}
+	}
+
+	return true;
 }

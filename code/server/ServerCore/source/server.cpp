@@ -212,6 +212,7 @@ CPlugin* CBaseServer::createPlugin(int plugin)
 		case Plugin_Net4Client:	m_plugins[Plugin_Net4Client] = NEW CNetwork; break;
 		case Plugin_Mongodb:	m_plugins[Plugin_Mongodb] = NEW CMongoDB; break;
 		case Plugin_HttpServe:	m_plugins[Plugin_HttpServe] = NEW CHttpServe; break;
+		case Plugin_Monitor:	m_plugins[Plugin_Monitor] = NEW CMonitor; break;
 		default: return NULL;
 	}
 	m_plugins[plugin]->setServer(this);

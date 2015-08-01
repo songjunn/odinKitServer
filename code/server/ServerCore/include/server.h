@@ -131,13 +131,13 @@ protected:
 	bool connectLinker(CLinker* linker);
 	void breakLinker(SOCKET s);
 
-	bool loop_linkers();
-	bool loop_message();
-
 	bool regist(CLinker* pObj);
 	bool registAsync(CLinker* pObj);
 	bool registAsyncReturn(SOCKET sock, int error = 0);
 	void deleteServer(CLinker* pObj);
+
+	virtual bool loop_linkers();
+	virtual bool loop_message();
 
 	virtual bool _HandlePacket_NetAccept(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_NetClose(PACKET_COMMAND* pack);
