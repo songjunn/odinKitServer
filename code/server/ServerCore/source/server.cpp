@@ -16,6 +16,8 @@ static const char* svrname[CBaseServer::Linker_Server_End] = { "Null", "CentralS
 CBaseServer::CBaseServer()
 {
 	m_ServerState = EStateRunning;
+
+	SetDefLessFunc(m_linkerMap);
 }
 
 CBaseServer::~CBaseServer()
