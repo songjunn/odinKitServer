@@ -19,7 +19,7 @@ public:
 	virtual bool loop_linkers();
 
 	virtual bool _HandlePacket_RegistServer(PACKET_COMMAND* pack);
-	virtual bool _OnAddServer(CServerObj* pServer);
+	virtual bool _OnAddServer(CLinker* pServer);
 };
 
 #define CentralServer CCentralServer::getSingleton()
