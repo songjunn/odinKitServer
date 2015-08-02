@@ -306,6 +306,8 @@ CLinker* CBaseServer::createLinker(int type, int id, int port, const char* szip,
 
 	addLinker(linker);
 
+	Log.Notice("[CBaseServer] Create Server %s:%d World:%d ID:%d Sock:%d", linker->m_szIP, linker->m_nPort, linker->m_worldID, linker->m_nID, linker->m_Socket);
+
 	return linker;
 }
 
@@ -313,8 +315,6 @@ bool CBaseServer::addLinker(CLinker* linker)
 {
 	m_linkerList.AddToTail(linker);
 	m_linkerMap.Insert(linker->m_Socket, linker);
-
-	Log.Notice("[CBaseServer] Create Server %s:%d World:%d ID:%d Sock:%d", linker->m_szIP, linker->m_nPort, linker->m_worldID, linker->m_nID, linker->m_Socket);
 
 	return true;
 }
@@ -457,6 +457,7 @@ bool CBaseServer::_HandlePacket_NetAccept(PACKET_COMMAND* pack)
 	CLinker* linker = NEW CLinker;
 	if (linker) {
 		linker->m_Socket = msg.sock();
+		linker->m_bBreak = false;
 		addLinker(linker);
 	}
 
@@ -509,19 +510,7 @@ bool CBaseServer::_HandlePacket_ConnectServer(PACKET_COMMAND* pack)
 	Message::SyncServer msg;
 	PROTOBUF_CMD_PARSER(pack, msg);
 
-	CLinker* linker = NEW CLinker;
-	if (linker) {
-		linker->m_type = msg.type();
-		linker->m_nID = msg.id();
-		linker->m_nPort = msg.port();
-		linker->m_worldID = msg.world();
-		linker->m_bHost = true;
-		strncpy(linker->m_szIP, msg.ip().c_str(), 32);
-		linker->m_extPort = msg.extport();
-		strncpy(linker->m_extIP, msg.extip().c_str(), 32);
-		connectLinker(linker);
-		addLinker(linker);
-	}
+	createLinker(msg.type(), msg.id(), msg.port(), msg.ip().c_str(), msg.extport(), msg.extip().c_str(), msg.world(), true);
 
 	return true;
 }
