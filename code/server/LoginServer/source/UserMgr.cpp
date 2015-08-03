@@ -103,11 +103,12 @@ bool CUserMgr::_HandlePacket_UserCheck(PACKET_COMMAND* pack)
 	Message::UserCheck msg;
 	PROTOBUF_CMD_PARSER(pack, msg);
 
-	CUser* pUser = GetObj(pack->GetNetID());
+	CUser* pUser = Create(pack->GetNetID());
 	if (!pUser)
 		return false;
 
 	pUser->m_sock = pack->GetNetID();
+	pUser->m_HeartTime = time(NULL);
 	pUser->m_server = msg.server();
 	pUser->m_id = atoll(msg.userid().c_str());
 	pUser->m_ticket = msg.ticket();
@@ -129,11 +130,12 @@ bool CUserMgr::_HandlePacket_GuestCheck(PACKET_COMMAND* pack)
 
 	Log.Notice("[Login] Guest:%s Sock:%d Request Login", msg.device().c_str(), pack->GetNetID());
 
-	CUser* pUser = GetObj(pack->GetNetID());
+	CUser* pUser = Create(pack->GetNetID());
 	if (!pUser)
 		return false;
 
 	pUser->m_sock = pack->GetNetID();
+	pUser->m_HeartTime = time(NULL);
 	pUser->m_server = msg.server();
 	pUser->m_device = msg.device();
 	std::transform(pUser->m_device.begin(), pUser->m_device.end(), pUser->m_device.begin(), ::tolower);

@@ -115,23 +115,31 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 		return false;
 	}
 
-	// from net
 	switch (pack->Type())
 	{
+	// from net
 	case Message::MSG_SERVER_NET_CLOSE:
 	case Message::MSG_SERVER_NET_ACCEPT:
+	case Message::MSG_SERVER_REGISTER:
 		CBaseServer::onMessage(pack);
+		return true;
+	case Message::MSG_REQUEST_USER_LOGIN:
+		UserMgr.OnMsg(pack);
 		return true;
 	default:
 		break;
 	}
 
-	CLinker* pServer = getServer(pack->GetNetID());
-	if (pServer)
+	CLinker* pLinker = getLinker(pack->GetNetID());
+	if (!pLinker) {
+		return false;
+	}
+
+	if (CBaseServer::isServer(pLinker->m_type))
 	{
 		if (Message::MSG_SERVER_BEGIN >= pack->Type() || Message::MSG_SERVER_END <= pack->Type())
 		{
-			Log.Error("[GateServer] Recv Wrong Message From Server, Type:%d, Sock:%d, Server:%d", pack->Type(), pack->GetNetID(), pServer->m_type);
+			Log.Error("[GateServer] Recv Wrong Message From Server, Type:%d, Sock:%d, Server:%d", pack->Type(), pack->GetNetID(), pLinker->m_type);
 			return false;
 		}
 
@@ -144,7 +152,6 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 		case Message::MSG_USER_DISPLACE:
 			UserMgr.OnMsg(pack);
 			break;
-		case Message::MSG_SERVER_REGISTER:
 		case Message::MSG_SERVER_SYNCSERVER:
 		case Message::MSG_SERVER_NET_CONNECT:
 			CBaseServer::onMessage(pack);
@@ -158,18 +165,21 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 
 		return true;
 	}
-
-	CUser* pUser = UserMgr.GetObj(pack->GetNetID());
-	if (pUser)
+	else if (CBaseServer::isUser(pLinker->m_type))
 	{
+		CUser* pUser = UserMgr.GetObj(pLinker->m_Socket);
+		if (!pUser) {
+			return false;
+		}
+
 		if (Message::MSG_CLIENT_BEGIN >= pack->Type() || Message::MSG_CLIENT_END <= pack->Type())
 		{
 			Log.Error("[GateServer] Recv Wrong Message From Client, Type:%d, Sock:%d, User:"INT64_FMT, pack->Type(), pack->GetNetID(), pUser->m_id);
 			return false;
 		}
 
-		//验证消息来源，客户端发来的第一条登陆消息就不验证了
-		if (pack->Type() != Message::MSG_REQUEST_USER_LOGIN && pack->GetTrans() != pUser->m_id)
+		//验证消息来源
+		if (pack->GetTrans() != pUser->m_id)
 		{
 			Log.Error("[GateServer] Message Source Error, Msg:"INT64_FMT", Type:%d, User:"INT64_FMT, pack->GetTrans(), pack->Type(), pUser->m_id);
 			return false;
@@ -188,7 +198,6 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 			GETCLIENTNET(this)->sendMsg(pUser->m_ClientSock, pack);
 			break;
 		case Message::MSG_REQUEST_USER_HEART:
-		case Message::MSG_REQUEST_USER_LOGIN:
 		case Message::MSG_REQUEST_USER_LOGOUT:
 		case Message::MSG_REQUEST_PLAYER_CREATE:
 			UserMgr.OnMsg(pack);
