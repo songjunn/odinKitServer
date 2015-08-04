@@ -135,7 +135,11 @@ bool CLoginServer::onMessage(PACKET_COMMAND* pack)
 		UserMgr.OnMsg(pack);
 		return true;
 	case Message::MSG_SERVER_NET_ACCEPT:
+	case Message::MSG_SERVER_REGISTER:
+		CBaseServer::onMessage(pack);
+		return true;
 	case Message::MSG_SERVER_NET_CLOSE:
+		UserMgr.OnMsg(pack);
 		CBaseServer::onMessage(pack);
 		return true;
 	default:
@@ -157,7 +161,6 @@ bool CLoginServer::onMessage(PACKET_COMMAND* pack)
 		case Message::MSG_SERVER_SYNCGATELOAD:
 		case Message::MSG_SERVER_SYNCSERVER:
 		case Message::MSG_SERVER_NET_CONNECT:
-		case Message::MSG_SERVER_REGISTER:
 			CBaseServer::onMessage(pack);
 			break;
 		default:

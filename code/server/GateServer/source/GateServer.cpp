@@ -118,7 +118,6 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 	switch (pack->Type())
 	{
 	// from net
-	case Message::MSG_SERVER_NET_CLOSE:
 	case Message::MSG_SERVER_NET_ACCEPT:
 	case Message::MSG_SERVER_REGISTER:
 		CBaseServer::onMessage(pack);
@@ -126,20 +125,20 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 	case Message::MSG_REQUEST_USER_LOGIN:
 		UserMgr.OnMsg(pack);
 		return true;
+	case Message::MSG_SERVER_NET_CLOSE:
+		CBaseServer::onMessage(pack);
+		UserMgr.OnMsg(pack);
+		return true;
 	default:
 		break;
 	}
 
-	CLinker* pLinker = getLinker(pack->GetNetID());
-	if (!pLinker) {
-		return false;
-	}
-
-	if (CBaseServer::isServer(pLinker->m_type))
+	CLinker* pServer = getServer(pack->GetNetID());
+	if (pServer)
 	{
 		if (Message::MSG_SERVER_BEGIN >= pack->Type() || Message::MSG_SERVER_END <= pack->Type())
 		{
-			Log.Error("[GateServer] Recv Wrong Message From Server, Type:%d, Sock:%d, Server:%d", pack->Type(), pack->GetNetID(), pLinker->m_type);
+			Log.Error("[GateServer] Recv Wrong Message From Server, Type:%d, Sock:%d, Server:%d", pack->Type(), pack->GetNetID(), pServer->m_type);
 			return false;
 		}
 
@@ -165,13 +164,10 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 
 		return true;
 	}
-	else if (CBaseServer::isUser(pLinker->m_type))
-	{
-		CUser* pUser = UserMgr.GetObj(pLinker->m_Socket);
-		if (!pUser) {
-			return false;
-		}
 
+	CUser* pUser = UserMgr.GetObj(pack->GetNetID());
+	if (pUser)
+	{
 		if (Message::MSG_CLIENT_BEGIN >= pack->Type() || Message::MSG_CLIENT_END <= pack->Type())
 		{
 			Log.Error("[GateServer] Recv Wrong Message From Client, Type:%d, Sock:%d, User:"INT64_FMT, pack->Type(), pack->GetNetID(), pUser->m_id);
@@ -202,13 +198,7 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 		case Message::MSG_REQUEST_PLAYER_CREATE:
 			UserMgr.OnMsg(pack);
 			break;
-			//向DataServer转发的消息
-			/*case :
-			Log.Debug("[GateServer] Transmit To DataServer packet:%d size:%d", pack->Type(), pack->Size());
-			GETSERVERNET->sendMsg( GETSERVERMGR->getDataSock(), pack );
-			break;*/
-			//默认向GameServer转发
-		default:
+		default:	//默认向GameServer转发
 			Log.Debug("[GateServer] Transmit To GameServer packet:%d size:%d", pack->Type(), pack->Size());
 			GETSERVERNET(this)->sendMsg(pUser->m_GameSock, pack);
 			break;

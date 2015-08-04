@@ -79,6 +79,7 @@ protected:
 	bool	_HandlePacket_PlayerCreate(PACKET_COMMAND* pack);
 	bool	_HandlePacket_PlayerCount(PACKET_COMMAND* pack);
 	bool	_HandlePacket_GameError(PACKET_COMMAND* pack);
+	bool	_HandlePacket_NetClose(PACKET_COMMAND* pack);
 
 	void	_CreateUserKey(UserID id, int64 key);
 	bool	_CheckUserKey(UserID id, int64 key, SOCKET sock);

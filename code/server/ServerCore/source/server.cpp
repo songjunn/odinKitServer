@@ -345,6 +345,8 @@ void CBaseServer::breakLinker(SOCKET s)
 		pObj->m_bBreak = true;
 		pObj->m_LostTime = timeGetTime();
 	}
+
+	Log.Notice("[CBaseServer] Break Linker Sock:%d", s);
 }
 
 CLinker* CBaseServer::getLinker(SOCKET s)
@@ -472,7 +474,7 @@ bool CBaseServer::_HandlePacket_NetClose(PACKET_COMMAND* pack)
 	Message::NetControl msg;
 	PROTOBUF_CMD_PARSER(pack, msg);
 
-	CLinker* linker = getLinker(msg.sock());
+	breakLinker(msg.sock());
 
 	return true;
 }

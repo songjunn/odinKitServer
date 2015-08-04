@@ -5,6 +5,7 @@
 #include "MessageTypeDefine.pb.h"
 #include "MessageCommon.pb.h"
 #include "MessageUser.pb.h"
+#include "MessageServer.pb.h"
 #include "MessagePlayer.pb.h"
 
 const int g_PacketLimitTime = 10;
@@ -105,6 +106,7 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 	case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);	break;
 	case Message::MSG_COMMON_ERROR:		_HandlePacket_GameError(pack);		break;
 	case Message::MSG_USER_DISPLACE:	_HandlePacket_UserDisplace(pack);	break;
+	case Message::MSG_SERVER_NET_CLOSE:	_HandlePacket_NetClose(pack);		break;
 	default:	return false;
 	}
 
@@ -216,6 +218,22 @@ bool CUserMgr::_HandlePacket_UserDisplace(PACKET_COMMAND* pack)
 	CUser* user = GetObj( msg.uid() );
 	if( user )
 		Displace( user );
+
+	return true;
+}
+
+bool CUserMgr::_HandlePacket_NetClose(PACKET_COMMAND* pack)
+{
+	if (!pack)
+		return false;
+
+	Message::NetControl msg;
+	PROTOBUF_CMD_PARSER(pack, msg);
+
+	CUser* user = UserMgr.GetObj(msg.sock());
+	if (user) {
+		UserMgr.RemoveUser(user);
+	}
 
 	return true;
 }

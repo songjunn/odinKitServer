@@ -87,6 +87,7 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 
 	switch (pack->Type())
 	{
+	case Message::MSG_SERVER_NET_CLOSE:		_HandlePacket_NetClose(pack);		break;
 	case Message::MSG_REQUEST_USER_CHECK:	_HandlePacket_UserCheck(pack);		break;
 	case Message::MSG_REQUEST_GUEST_CHECK:	_HandlePacket_GuestCheck(pack);		break;
 	default:	return false;
