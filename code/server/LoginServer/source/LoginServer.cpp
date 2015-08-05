@@ -2,12 +2,10 @@
 #include "UserMgr.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
-#include "exception.h"
 #include "WorldConfig.h"
 #ifdef __linux__
 #include <unistd.h>
 #include "linux_time.h"
-#include "vprof.h"
 #endif
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"

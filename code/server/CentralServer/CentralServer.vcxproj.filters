@@ -13,14 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="message">
-      <UniqueIdentifier>{5713844b-d747-4e1a-ae15-521ae960081c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
     <ClCompile Include="CentralServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -29,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
     <ClInclude Include="CentralServer.h">
       <Filter>头文件</Filter>
     </ClInclude>

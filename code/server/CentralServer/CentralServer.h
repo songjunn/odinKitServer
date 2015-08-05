@@ -16,8 +16,6 @@ public:
 	virtual bool onMessage(PACKET_COMMAND* pack);
 	virtual void onPrint(char* output);
 
-	virtual bool loop_linkers();
-
 	virtual bool _HandlePacket_RegistServer(PACKET_COMMAND* pack);
 	virtual bool _OnAddServer(CLinker* pServer);
 };

@@ -7,7 +7,6 @@
 #endif
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"
-#include "exception.h"
 
 createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);

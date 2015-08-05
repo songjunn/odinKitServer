@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="message">
-      <UniqueIdentifier>{9753b75b-0415-4c61-bd2c-001b7d01b708}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\DBOperate.cpp">
@@ -26,21 +23,6 @@
     </ClCompile>
     <ClCompile Include="source\WorldConfig.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageConnectGate.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageErrorNo.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageGuestCheck.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageLoginSession.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageUserCheck.pb.cc">
-      <Filter>message</Filter>
     </ClCompile>
     <ClCompile Include="source\LoginServer.cpp">
       <Filter>源文件</Filter>
@@ -58,21 +40,6 @@
     </ClInclude>
     <ClInclude Include="include\WorldConfig.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageConnectGate.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageErrorNo.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageGuestCheck.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageLoginSession.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageUserCheck.pb.h">
-      <Filter>message</Filter>
     </ClInclude>
     <ClInclude Include="include\LoginServer.h">
       <Filter>头文件</Filter>

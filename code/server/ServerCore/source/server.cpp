@@ -1,6 +1,7 @@
 #include "server.h"
 #include "random.h"
 #include "console.h"
+#include "exception.h"
 #include "LuaEngine.h"
 #ifdef __linux__
 #include "udsvr.h"

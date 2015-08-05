@@ -1,5 +1,4 @@
 #include "CentralServer.h"
-#include "exception.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #ifdef __linux__
@@ -118,28 +117,6 @@ void CCentralServer::onPrint(char* output)
 void CCentralServer::onShutdown()
 {
 	CBaseServer::onShutdown();
-}
-
-bool CCentralServer::loop_linkers()
-{
-	int tmp;
-	for (int index = getLinkerList().Head(); getLinkerList().IsValidIndex(tmp = index);)
-	{
-		index = getLinkerList().Next(index);
-
-		CLinker* pObj = getLinkerList()[tmp];
-		if (!pObj)
-		{
-			getLinkerList().Remove(tmp);
-		}
-		else if (pObj->m_bBreak)
-		{
-			deleteServer(pObj);
-			getLinkerList().Remove(tmp);
-		}
-	}
-
-	return true;
 }
 
 bool CCentralServer::_HandlePacket_RegistServer(PACKET_COMMAND* pack)

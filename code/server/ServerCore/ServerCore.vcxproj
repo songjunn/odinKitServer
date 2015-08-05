@@ -182,9 +182,6 @@
     <ClCompile Include="source\plugin_HttpServe.cpp" />
     <ClCompile Include="source\plugin_Mongodb.cpp" />
     <ClCompile Include="source\plugin_Network.cpp" />
-    <ClCompile Include="..\..\public\message\source\MessageRegistServer.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageSyncGateLoad.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\metadata.h" />
@@ -195,9 +192,6 @@
     <ClInclude Include="include\plugin_HttpServe.h" />
     <ClInclude Include="include\plugin_Mongodb.h" />
     <ClInclude Include="include\plugin_Network.h" />
-    <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageSyncGateLoad.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

@@ -13,22 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="message">
-      <UniqueIdentifier>{bc211d6f-a8bf-498e-856c-6704cb9a569a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageRegistServer.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageSyncGateLoad.pb.cc">
-      <Filter>message</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc">
-      <Filter>message</Filter>
     </ClCompile>
     <ClCompile Include="source\plugin_HttpServe.cpp">
       <Filter>源文件</Filter>
@@ -50,15 +38,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\public\message\source\MessageRegistServer.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageSyncGateLoad.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h">
-      <Filter>message</Filter>
-    </ClInclude>
     <ClInclude Include="include\plugin.h">
       <Filter>头文件</Filter>
     </ClInclude>

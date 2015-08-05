@@ -185,22 +185,12 @@
     <ClCompile Include="source\LoginServer.cpp" />
     <ClCompile Include="source\UserMgr.cpp" />
     <ClCompile Include="source\WorldConfig.cpp" />
-    <ClCompile Include="..\..\public\message\source\MessageConnectGate.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageErrorNo.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageGuestCheck.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageLoginSession.pb.cc" />
-    <ClCompile Include="..\..\public\message\source\MessageUserCheck.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DBOperate.h" />
     <ClInclude Include="include\LoginServer.h" />
     <ClInclude Include="include\UserMgr.h" />
     <ClInclude Include="include\WorldConfig.h" />
-    <ClInclude Include="..\..\public\message\source\MessageConnectGate.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageErrorNo.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageGuestCheck.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageLoginSession.pb.h" />
-    <ClInclude Include="..\..\public\message\source\MessageUserCheck.pb.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.vcxproj">

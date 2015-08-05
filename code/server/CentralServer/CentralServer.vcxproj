@@ -180,12 +180,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\public\message\source\MessageSyncServer.pb.cc" />
     <ClCompile Include="CentralServer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\public\message\source\MessageSyncServer.pb.h" />
     <ClInclude Include="CentralServer.h" />
   </ItemGroup>
   <ItemGroup>

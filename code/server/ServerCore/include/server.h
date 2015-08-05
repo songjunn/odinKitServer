@@ -121,23 +121,26 @@ public:
 	inline CUtlLinkedList<CLinker*>& getLinkerList() { return m_linkerList; }
 
 protected:
+	// handle signals
 	void setServerState(EServerState state) { m_ServerState = state;}
 	EServerState getServerState() { return m_ServerState; }
 	void sigHandle(int sig);
 	bool startupSigThread();
 	static void SignalThread(void *param);
 
+	// create and delete servers
 	bool addLinker(CLinker* linker);
 	bool connectLinker(CLinker* linker);
 	void breakLinker(SOCKET s);
+	void deleteServer(CLinker* pObj);
 
+	// regist servers
 	bool regist(CLinker* pObj);
 	bool registAsync(CLinker* pObj);
 	bool registAsyncReturn(SOCKET sock, int error = 0);
-	void deleteServer(CLinker* pObj);
 
-	virtual bool loop_linkers();
-	virtual bool loop_message();
+	bool loop_linkers();
+	bool loop_message();
 
 	virtual bool _HandlePacket_NetAccept(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_NetClose(PACKET_COMMAND* pack);

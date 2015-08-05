@@ -1,5 +1,4 @@
 #include "DataServer.h"
-#include "exception.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #ifdef __linux__

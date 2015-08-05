@@ -9,9 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="message">
-      <UniqueIdentifier>{9eeed5ef-bd69-4dd0-9988-1f4962954004}</UniqueIdentifier>
-    </Filter>
     <Filter Include="manager">
       <UniqueIdentifier>{89d20c6f-6774-4ace-9157-cc38e05ff30a}</UniqueIdentifier>
     </Filter>
