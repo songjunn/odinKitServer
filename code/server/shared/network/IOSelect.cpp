@@ -56,15 +56,15 @@ bool CIOSelect::Startup(int port, int connectmax, int sendbuffsize, int recvbuff
 
 	//创建非阻塞连接线程
 	m_ConnThreadID = ThreadLib::Create(ConnThread, this);
-	Log.Notice("[IOSelect]ThreadLib Create:ConnThread %u", m_ConnThreadID);
+	Log.Notice("[IOSelect]ThreadLib Create:ConnThread %lu", m_ConnThreadID);
 
 	//创建发送线程
 	m_SendThreadID = ThreadLib::Create(SendThread, this);
-	Log.Notice("[IOSelect]ThreadLib Create:SendThread %u", m_SendThreadID);
+	Log.Notice("[IOSelect]ThreadLib Create:SendThread %lu", m_SendThreadID);
 
 	//创建接收线程
 	m_RecvThreadID = ThreadLib::Create(RecvThread, this);
-	Log.Notice("[IOSelect]ThreadLib Create:RecvThread %u", m_RecvThreadID);
+	Log.Notice("[IOSelect]ThreadLib Create:RecvThread %lu", m_RecvThreadID);
 
 	//创建关闭线程	//关闭线程意义不大，改为及时释放socket资源，减少线程切换
 	//ThreadLib::Create(CloseThread, this);
