@@ -39,6 +39,8 @@ bool CLog::Startup(const char * szName, int level)
 
 	m_LogThread = ThreadLib::Create(LogThread, this);
 
+	Log.Notice("[CLog]Create Thread:%lu", m_LogThread);
+
 	return true;
 }
 
