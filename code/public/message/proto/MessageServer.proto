@@ -22,9 +22,10 @@ message SyncServer {
     optional int32  world   = 7;    //区服编号
 } 
 
-//网关同步负载信息
-message SyncGateLoad { 
-    optional int32  count   = 1;    //服务程序ID 
+//同步负载信息
+message SyncLoadNumber { 
+    optional int32  server  = 1;    //服务程序ID 
+    optional int32  count   = 2;    //负载数量
 } 
 
 //请求加载游戏世界初始数据

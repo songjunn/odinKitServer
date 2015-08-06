@@ -26,9 +26,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* SyncServer_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SyncServer_reflection_ = NULL;
-const ::google::protobuf::Descriptor* SyncGateLoad_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* SyncLoadNumber_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  SyncGateLoad_reflection_ = NULL;
+  SyncLoadNumber_reflection_ = NULL;
 const ::google::protobuf::Descriptor* WorldDataRequest_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   WorldDataRequest_reflection_ = NULL;
@@ -90,21 +90,22 @@ void protobuf_AssignDesc_MessageServer_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SyncServer));
-  SyncGateLoad_descriptor_ = file->message_type(2);
-  static const int SyncGateLoad_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SyncGateLoad, count_),
+  SyncLoadNumber_descriptor_ = file->message_type(2);
+  static const int SyncLoadNumber_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SyncLoadNumber, server_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SyncLoadNumber, count_),
   };
-  SyncGateLoad_reflection_ =
+  SyncLoadNumber_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      SyncGateLoad_descriptor_,
-      SyncGateLoad::default_instance_,
-      SyncGateLoad_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SyncGateLoad, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SyncGateLoad, _unknown_fields_),
+      SyncLoadNumber_descriptor_,
+      SyncLoadNumber::default_instance_,
+      SyncLoadNumber_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SyncLoadNumber, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SyncLoadNumber, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(SyncGateLoad));
+      sizeof(SyncLoadNumber));
   WorldDataRequest_descriptor_ = file->message_type(3);
   static const int WorldDataRequest_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorldDataRequest, world_),
@@ -171,7 +172,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SyncServer_descriptor_, &SyncServer::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    SyncGateLoad_descriptor_, &SyncGateLoad::default_instance());
+    SyncLoadNumber_descriptor_, &SyncLoadNumber::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     WorldDataRequest_descriptor_, &WorldDataRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -187,8 +188,8 @@ void protobuf_ShutdownFile_MessageServer_2eproto() {
   delete RegistServer_reflection_;
   delete SyncServer::default_instance_;
   delete SyncServer_reflection_;
-  delete SyncGateLoad::default_instance_;
-  delete SyncGateLoad_reflection_;
+  delete SyncLoadNumber::default_instance_;
+  delete SyncLoadNumber_reflection_;
   delete WorldDataRequest::default_instance_;
   delete WorldDataRequest_reflection_;
   delete WorldDataResponse::default_instance_;
@@ -210,23 +211,23 @@ void protobuf_AddDesc_MessageServer_2eproto() {
     "xtip\030\006 \001(\t\022\r\n\005world\030\007 \001(\005\"o\n\nSyncServer\022"
     "\n\n\002id\030\001 \001(\005\022\014\n\004type\030\002 \001(\005\022\014\n\004port\030\003 \001(\005\022"
     "\n\n\002ip\030\004 \001(\t\022\017\n\007extport\030\005 \001(\005\022\r\n\005extip\030\006 "
-    "\001(\t\022\r\n\005world\030\007 \001(\005\"\035\n\014SyncGateLoad\022\r\n\005co"
-    "unt\030\001 \001(\005\"1\n\020WorldDataRequest\022\r\n\005world\030\001"
-    " \001(\005\022\016\n\006server\030\002 \001(\005\"E\n\021WorldDataRespons"
-    "e\022\020\n\010playerid\030\001 \001(\003\022\016\n\006itemid\030\002 \001(\003\022\016\n\006h"
-    "eroid\030\003 \001(\003\")\n\nNetControl\022\014\n\004sock\030\001 \002(\005\022"
-    "\r\n\005error\030\002 \001(\005", 454);
+    "\001(\t\022\r\n\005world\030\007 \001(\005\"/\n\016SyncLoadNumber\022\016\n\006"
+    "server\030\001 \001(\005\022\r\n\005count\030\002 \001(\005\"1\n\020WorldData"
+    "Request\022\r\n\005world\030\001 \001(\005\022\016\n\006server\030\002 \001(\005\"E"
+    "\n\021WorldDataResponse\022\020\n\010playerid\030\001 \001(\003\022\016\n"
+    "\006itemid\030\002 \001(\003\022\016\n\006heroid\030\003 \001(\003\")\n\nNetCont"
+    "rol\022\014\n\004sock\030\001 \002(\005\022\r\n\005error\030\002 \001(\005", 472);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "MessageServer.proto", &protobuf_RegisterTypes);
   RegistServer::default_instance_ = new RegistServer();
   SyncServer::default_instance_ = new SyncServer();
-  SyncGateLoad::default_instance_ = new SyncGateLoad();
+  SyncLoadNumber::default_instance_ = new SyncLoadNumber();
   WorldDataRequest::default_instance_ = new WorldDataRequest();
   WorldDataResponse::default_instance_ = new WorldDataResponse();
   NetControl::default_instance_ = new NetControl();
   RegistServer::default_instance_->InitAsDefaultInstance();
   SyncServer::default_instance_->InitAsDefaultInstance();
-  SyncGateLoad::default_instance_->InitAsDefaultInstance();
+  SyncLoadNumber::default_instance_->InitAsDefaultInstance();
   WorldDataRequest::default_instance_->InitAsDefaultInstance();
   WorldDataResponse::default_instance_->InitAsDefaultInstance();
   NetControl::default_instance_->InitAsDefaultInstance();
@@ -1207,77 +1208,96 @@ void SyncServer::Swap(SyncServer* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int SyncGateLoad::kCountFieldNumber;
+const int SyncLoadNumber::kServerFieldNumber;
+const int SyncLoadNumber::kCountFieldNumber;
 #endif  // !_MSC_VER
 
-SyncGateLoad::SyncGateLoad()
+SyncLoadNumber::SyncLoadNumber()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void SyncGateLoad::InitAsDefaultInstance() {
+void SyncLoadNumber::InitAsDefaultInstance() {
 }
 
-SyncGateLoad::SyncGateLoad(const SyncGateLoad& from)
+SyncLoadNumber::SyncLoadNumber(const SyncLoadNumber& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void SyncGateLoad::SharedCtor() {
+void SyncLoadNumber::SharedCtor() {
   _cached_size_ = 0;
+  server_ = 0;
   count_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-SyncGateLoad::~SyncGateLoad() {
+SyncLoadNumber::~SyncLoadNumber() {
   SharedDtor();
 }
 
-void SyncGateLoad::SharedDtor() {
+void SyncLoadNumber::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void SyncGateLoad::SetCachedSize(int size) const {
+void SyncLoadNumber::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* SyncGateLoad::descriptor() {
+const ::google::protobuf::Descriptor* SyncLoadNumber::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return SyncGateLoad_descriptor_;
+  return SyncLoadNumber_descriptor_;
 }
 
-const SyncGateLoad& SyncGateLoad::default_instance() {
+const SyncLoadNumber& SyncLoadNumber::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_MessageServer_2eproto();
   return *default_instance_;
 }
 
-SyncGateLoad* SyncGateLoad::default_instance_ = NULL;
+SyncLoadNumber* SyncLoadNumber::default_instance_ = NULL;
 
-SyncGateLoad* SyncGateLoad::New() const {
-  return new SyncGateLoad;
+SyncLoadNumber* SyncLoadNumber::New() const {
+  return new SyncLoadNumber;
 }
 
-void SyncGateLoad::Clear() {
+void SyncLoadNumber::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    server_ = 0;
     count_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool SyncGateLoad::MergePartialFromCodedStream(
+bool SyncLoadNumber::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int32 count = 1;
+      // optional int32 server = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &server_)));
+          set_has_server();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_count;
+        break;
+      }
+
+      // optional int32 count = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_count:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &count_)));
@@ -1305,11 +1325,16 @@ bool SyncGateLoad::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void SyncGateLoad::SerializeWithCachedSizes(
+void SyncLoadNumber::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional int32 count = 1;
+  // optional int32 server = 1;
+  if (has_server()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->server(), output);
+  }
+
+  // optional int32 count = 2;
   if (has_count()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->count(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->count(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -1318,11 +1343,16 @@ void SyncGateLoad::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* SyncGateLoad::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* SyncLoadNumber::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional int32 count = 1;
+  // optional int32 server = 1;
+  if (has_server()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->server(), target);
+  }
+
+  // optional int32 count = 2;
   if (has_count()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->count(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->count(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1332,11 +1362,18 @@ void SyncGateLoad::SerializeWithCachedSizes(
   return target;
 }
 
-int SyncGateLoad::ByteSize() const {
+int SyncLoadNumber::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int32 count = 1;
+    // optional int32 server = 1;
+    if (has_server()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->server());
+    }
+
+    // optional int32 count = 2;
     if (has_count()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1355,10 +1392,10 @@ int SyncGateLoad::ByteSize() const {
   return total_size;
 }
 
-void SyncGateLoad::MergeFrom(const ::google::protobuf::Message& from) {
+void SyncLoadNumber::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const SyncGateLoad* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const SyncGateLoad*>(
+  const SyncLoadNumber* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SyncLoadNumber*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1367,9 +1404,12 @@ void SyncGateLoad::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void SyncGateLoad::MergeFrom(const SyncGateLoad& from) {
+void SyncLoadNumber::MergeFrom(const SyncLoadNumber& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_server()) {
+      set_server(from.server());
+    }
     if (from.has_count()) {
       set_count(from.count());
     }
@@ -1377,25 +1417,26 @@ void SyncGateLoad::MergeFrom(const SyncGateLoad& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void SyncGateLoad::CopyFrom(const ::google::protobuf::Message& from) {
+void SyncLoadNumber::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void SyncGateLoad::CopyFrom(const SyncGateLoad& from) {
+void SyncLoadNumber::CopyFrom(const SyncLoadNumber& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SyncGateLoad::IsInitialized() const {
+bool SyncLoadNumber::IsInitialized() const {
 
   return true;
 }
 
-void SyncGateLoad::Swap(SyncGateLoad* other) {
+void SyncLoadNumber::Swap(SyncLoadNumber* other) {
   if (other != this) {
+    std::swap(server_, other->server_);
     std::swap(count_, other->count_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -1403,11 +1444,11 @@ void SyncGateLoad::Swap(SyncGateLoad* other) {
   }
 }
 
-::google::protobuf::Metadata SyncGateLoad::GetMetadata() const {
+::google::protobuf::Metadata SyncLoadNumber::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = SyncGateLoad_descriptor_;
-  metadata.reflection = SyncGateLoad_reflection_;
+  metadata.descriptor = SyncLoadNumber_descriptor_;
+  metadata.reflection = SyncLoadNumber_reflection_;
   return metadata;
 }
 

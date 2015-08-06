@@ -199,7 +199,7 @@ void PACKET_COMMAND::getBuffer(std::string& buf)
 	if( Size() >= _rpos )
 	{
 		buf.assign((char*)&data[_rpos], _DataSize());
-		_rpos += _DataSize();
+		//_rpos += _DataSize();
 	}
 	else
 	{

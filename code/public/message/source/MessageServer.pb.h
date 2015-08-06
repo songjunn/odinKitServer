@@ -35,7 +35,7 @@ void protobuf_ShutdownFile_MessageServer_2eproto();
 
 class RegistServer;
 class SyncServer;
-class SyncGateLoad;
+class SyncLoadNumber;
 class WorldDataRequest;
 class WorldDataResponse;
 class NetControl;
@@ -346,14 +346,14 @@ class SyncServer : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class SyncGateLoad : public ::google::protobuf::Message {
+class SyncLoadNumber : public ::google::protobuf::Message {
  public:
-  SyncGateLoad();
-  virtual ~SyncGateLoad();
+  SyncLoadNumber();
+  virtual ~SyncLoadNumber();
 
-  SyncGateLoad(const SyncGateLoad& from);
+  SyncLoadNumber(const SyncLoadNumber& from);
 
-  inline SyncGateLoad& operator=(const SyncGateLoad& from) {
+  inline SyncLoadNumber& operator=(const SyncLoadNumber& from) {
     CopyFrom(from);
     return *this;
   }
@@ -367,17 +367,17 @@ class SyncGateLoad : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const SyncGateLoad& default_instance();
+  static const SyncLoadNumber& default_instance();
 
-  void Swap(SyncGateLoad* other);
+  void Swap(SyncLoadNumber* other);
 
   // implements Message ----------------------------------------------
 
-  SyncGateLoad* New() const;
+  SyncLoadNumber* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const SyncGateLoad& from);
-  void MergeFrom(const SyncGateLoad& from);
+  void CopyFrom(const SyncLoadNumber& from);
+  void MergeFrom(const SyncLoadNumber& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -400,31 +400,41 @@ class SyncGateLoad : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 count = 1;
+  // optional int32 server = 1;
+  inline bool has_server() const;
+  inline void clear_server();
+  static const int kServerFieldNumber = 1;
+  inline ::google::protobuf::int32 server() const;
+  inline void set_server(::google::protobuf::int32 value);
+
+  // optional int32 count = 2;
   inline bool has_count() const;
   inline void clear_count();
-  static const int kCountFieldNumber = 1;
+  static const int kCountFieldNumber = 2;
   inline ::google::protobuf::int32 count() const;
   inline void set_count(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:Message.SyncGateLoad)
+  // @@protoc_insertion_point(class_scope:Message.SyncLoadNumber)
  private:
+  inline void set_has_server();
+  inline void clear_has_server();
   inline void set_has_count();
   inline void clear_has_count();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
+  ::google::protobuf::int32 server_;
   ::google::protobuf::int32 count_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
 
   friend void  protobuf_AddDesc_MessageServer_2eproto();
   friend void protobuf_AssignDesc_MessageServer_2eproto();
   friend void protobuf_ShutdownFile_MessageServer_2eproto();
 
   void InitAsDefaultInstance();
-  static SyncGateLoad* default_instance_;
+  static SyncLoadNumber* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1225,26 +1235,48 @@ inline void SyncServer::set_world(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// SyncGateLoad
+// SyncLoadNumber
 
-// optional int32 count = 1;
-inline bool SyncGateLoad::has_count() const {
+// optional int32 server = 1;
+inline bool SyncLoadNumber::has_server() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SyncGateLoad::set_has_count() {
+inline void SyncLoadNumber::set_has_server() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SyncGateLoad::clear_has_count() {
+inline void SyncLoadNumber::clear_has_server() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SyncGateLoad::clear_count() {
+inline void SyncLoadNumber::clear_server() {
+  server_ = 0;
+  clear_has_server();
+}
+inline ::google::protobuf::int32 SyncLoadNumber::server() const {
+  return server_;
+}
+inline void SyncLoadNumber::set_server(::google::protobuf::int32 value) {
+  set_has_server();
+  server_ = value;
+}
+
+// optional int32 count = 2;
+inline bool SyncLoadNumber::has_count() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SyncLoadNumber::set_has_count() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SyncLoadNumber::clear_has_count() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SyncLoadNumber::clear_count() {
   count_ = 0;
   clear_has_count();
 }
-inline ::google::protobuf::int32 SyncGateLoad::count() const {
+inline ::google::protobuf::int32 SyncLoadNumber::count() const {
   return count_;
 }
-inline void SyncGateLoad::set_count(::google::protobuf::int32 value) {
+inline void SyncLoadNumber::set_count(::google::protobuf::int32 value) {
   set_has_count();
   count_ = value;
 }

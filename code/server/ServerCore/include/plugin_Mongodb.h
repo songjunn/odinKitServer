@@ -31,7 +31,7 @@ public:
 	~CMongoDB();
 
 	bool startup(std::string host, std::string port, std::string dbname);
-	bool shutdown();
+	bool exit();
 	void execute(int opr_type, std::string opr_collection, mongo::Query opr_condition, mongo::BSONObj opr_bson);
 	void select(mongo::auto_ptr<mongo::DBClientCursor>& cursor, const std::string collection, mongo::Query condition);
 

@@ -11,7 +11,7 @@ centralserver
 biserver
 paymentserver
 "
-signo="-10"
+signo="-9"
 if [[ $# != 0 ]]; then
 	signo="-9"
 fi

@@ -16,8 +16,6 @@ public:
 	virtual bool onMessage(PACKET_COMMAND* pack);
 	virtual void onPrint(char* output);
 
-	void StatusLogic();
-
 	CLinker* getLowerGame();
 };
 

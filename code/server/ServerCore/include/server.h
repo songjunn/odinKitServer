@@ -132,12 +132,13 @@ protected:
 	bool addLinker(CLinker* linker);
 	bool connectLinker(CLinker* linker);
 	void breakLinker(SOCKET s);
-	void deleteServer(CLinker* pObj);
+	void deleteLinker(CLinker* pObj);
 
 	// regist servers
 	bool regist(CLinker* pObj);
 	bool registAsync(CLinker* pObj);
 	bool registAsyncReturn(SOCKET sock, int error = 0);
+	void syncLoadNumber(int socket, int number);
 
 	bool loop_linkers();
 	bool loop_message();
@@ -147,6 +148,7 @@ protected:
 	virtual bool _HandlePacket_RegistServer(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_ConnectServer(PACKET_COMMAND* pack);
 	virtual bool _HandlePacket_RegistAsyncReturn(PACKET_COMMAND* pack);
+	virtual bool _HandlePacket_SyncLoadNumber(PACKET_COMMAND* pack);
 
 private:
 	CLinker m_self;

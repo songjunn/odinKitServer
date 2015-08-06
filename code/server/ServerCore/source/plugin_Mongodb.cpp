@@ -41,7 +41,7 @@ bool CMongoDB::startup(std::string host, std::string port, std::string dbname)
 	return true;
 }
 
-bool CMongoDB::shutdown()
+bool CMongoDB::exit()
 {
 	m_working = false;
 	ThreadLib::WaitForFinish(m_threadID);

@@ -209,16 +209,6 @@ bool CGateServer::onMessage(PACKET_COMMAND* pack)
 	return false;
 }
 
-void CGateServer::StatusLogic()
-{
-	Message::SyncGateLoad msg;
-	msg.set_count(UserMgr.Count());
-
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_SERVER_SYNCGATELOAD);
-	GETSERVERNET(this)->sendMsg(getServerSock(CBaseServer::Linker_Server_Login), &pack);
-}
-
 bool CGateServer::onLogic()
 {
 	CBaseServer::onLogic();
@@ -231,7 +221,7 @@ bool CGateServer::onLogic()
 	{
 		g_StatusLogicTime = nowtime;
 
-		StatusLogic();
+		syncLoadNumber(getServerSock(CBaseServer::Linker_Server_Login), UserMgr.Count());
 	}
 
 	return true;

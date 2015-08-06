@@ -10,7 +10,7 @@ public:
 	virtual ~CPlugin() {}
 
 	virtual bool startup() { return false; }
-	virtual bool shutdown() { return false; }
+	virtual bool exit() { return false; }
 
 	void setHandler(CPluginHandler* handler) {
 		m_handler = handler;

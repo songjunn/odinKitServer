@@ -162,6 +162,7 @@ bool CBaseServer::onMessage(PACKET_COMMAND* pack)
 
 	switch (pack->Type())
 	{
+	case Message::MSG_SERVER_SYNCGATELOAD:	_HandlePacket_SyncLoadNumber(pack);	break;
 	case Message::MSG_SERVER_NET_CLOSE:		_HandlePacket_NetClose(pack);		break;
 	case Message::MSG_SERVER_NET_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
 	case Message::MSG_SERVER_REGISTER:		_HandlePacket_RegistServer(pack);	break;
@@ -426,7 +427,7 @@ bool CBaseServer::loop_linkers()
 			{
 				if (!pObj->m_bHost)
 				{
-					deleteServer(pObj);
+					deleteLinker(pObj);
 					m_linkerList.Remove(tmp);
 				}
 				else if (!pObj->m_bWaiting)
@@ -438,10 +439,18 @@ bool CBaseServer::loop_linkers()
 					}
 					else
 					{
-						deleteServer(pObj);
+						deleteLinker(pObj);
 						m_linkerList.Remove(tmp);
 					}
 				}
+			}
+		}
+		else
+		{
+			if (pObj->m_bBreak)
+			{
+				deleteLinker(pObj);
+				m_linkerList.Remove(tmp);
 			}
 		}
 	}
@@ -531,9 +540,25 @@ bool CBaseServer::_HandlePacket_RegistAsyncReturn(PACKET_COMMAND* pack)
 	return true;
 }
 
-void CBaseServer::deleteServer(CLinker* pObj)
+bool CBaseServer::_HandlePacket_SyncLoadNumber(PACKET_COMMAND* pack)
 {
-	Log.Notice("[CBaseServer] Delete Server %s:%d World:%d ID:%d Sock:%d", pObj->m_szIP, pObj->m_nPort, pObj->m_worldID, pObj->m_nID, pObj->m_Socket);
+	if (!pack)
+		return false;
+
+	Message::SyncLoadNumber msg;
+	PROTOBUF_CMD_PARSER(pack, msg);
+
+	CLinker* server = getServer(pack->GetNetID());
+	if (server) {
+		server->m_count += msg.count();
+	}
+
+	return true;
+}
+
+void CBaseServer::deleteLinker(CLinker* pObj)
+{
+	Log.Notice("[CBaseServer] Delete Linker %s:%d World:%d ID:%d Sock:%d", pObj->m_szIP, pObj->m_nPort, pObj->m_worldID, pObj->m_nID, pObj->m_Socket);
 
 	delete pObj;
 	pObj = NULL;
@@ -627,4 +652,15 @@ bool CBaseServer::registAsyncReturn(SOCKET sock, int error)
 	}
 
 	return true;
+}
+
+void CBaseServer::syncLoadNumber(int socket, int number)
+{
+	Message::SyncLoadNumber msg;
+	msg.set_server(m_self.m_nID);
+	msg.set_count(number);
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_SERVER_SYNCGATELOAD);
+	GETSERVERNET(this)->sendMsg(socket, &pack);
 }

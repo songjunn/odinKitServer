@@ -29,6 +29,7 @@ public:
 	virtual bool	accept(SOCKET sock, const char * ip);
 	virtual int		send(SOCKET sock, char * data, int size);
 	virtual bool	recv(SOCKET sock, char * data, int size);
+	virtual int		sendMsg(SOCKET sock, PACKET_COMMAND* pack);
 	virtual void	close(SOCKET sock);
 	virtual bool	shutdown(SOCKET sock);
 	virtual SOCKET	connect(const char * ip, int port);
@@ -43,6 +44,10 @@ private:
 	PACKET_COMMAND * getPacketBuff(SOCKET sock);
 	PACKET_COMMAND * removePacketBuff(SOCKET sock);
 	bool insertPacketBuff(SOCKET sock, PACKET_COMMAND * pCmd);
+
+	virtual void _closeReturn(SOCKET sock) {}
+	virtual void _acceptReturn(SOCKET sock) {}
+	virtual void _connectReturn(SOCKET sock, int error = 0) {}
 
 private:
 	Mutex								m_PacketLock;

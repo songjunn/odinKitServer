@@ -68,6 +68,11 @@ int CNet::send(SOCKET sock, char * data, int size)
 	return m_Net->Send( sock, data, size );
 }
 
+int CNet::sendMsg(SOCKET sock, PACKET_COMMAND* pack)
+{
+	return send(sock, (char*)pack->Data(), pack->Size());
+}
+
 bool CNet::recv(SOCKET sock, char * data, int size)
 {
 	if( size <= 0 || !data )
@@ -167,14 +172,14 @@ void CNet::close(SOCKET sock)
 	PACKET_COMMAND * pCmd = removePacketBuff(sock);
 	if( pCmd )
 		g_PacketPool.Free( pCmd );
+
+	_closeReturn(sock);
 }
 
 bool CNet::shutdown(SOCKET sock)
 {
 	if( !m_Net )
 		return false;
-
-	close(sock);
 
 	return m_Net->Shutdown(sock);
 }
@@ -188,6 +193,7 @@ void CNet::printLog()
 
 bool CNet::accept(SOCKET sock, const char * ip)
 {
+	_acceptReturn(sock);
 	return true;
 }
 

@@ -20,43 +20,7 @@ bool CNetwork::startup(int type, int port, int connectmax, int sendbuffsize, int
 		return false;
 	}
 
-	m_type = type;
-
 	return CNet::startup(type, port, connectmax, sendbuffsize, recvbuffsize, packsize);
-}
-
-SOCKET CNetwork::connect(const char * ip, int port)
-{
-	return CNet::connect(ip, port);
-}
-
-SOCKET CNetwork::connectAsync(const char * ip, int port)
-{
-	return CNet::connectAsync(ip, port);
-}
-
-bool CNetwork::shutdown(SOCKET sock)
-{
-	return CNet::shutdown(sock);
-}
-
-int CNetwork::sendMsg(SOCKET sock, PACKET_COMMAND* pack)
-{
-	if (sock == INVALID_SOCKET || !pack)
-		return -1;
-	return CNet::send(sock, (char*)pack->Data(), pack->Size());
-}
-
-bool CNetwork::accept(SOCKET sock, const char* ip)
-{
-	_acceptReturn(sock);
-	return true;
-}
-
-void CNetwork::close(SOCKET sock)
-{
-	_closeReturn(sock);
-	CNet::close(sock);
 }
 
 bool CNetwork::handlePacket(PACKET_COMMAND * pCmd)
