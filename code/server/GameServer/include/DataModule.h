@@ -17,11 +17,10 @@ public:
 	~CDataModule()	{}
 
 	bool onMessage(PACKET_COMMAND* pack);
-
-	bool initObjProxy(const char* xmlFile);
+	bool onLoadConfig(const char* xmlFile);
 
 	CMetadata* create(const char* type, int64 id);
-	CMetadata* createGameJsonObj(const char* type, int64 id);
+	CMetadata* createMetadata(const char* type, int64 id);
 
 	void syncCreate(CMetadata* obj, int sock);
 	void syncRemove(CMetadata* obj, int sock);

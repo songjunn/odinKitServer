@@ -24,11 +24,10 @@ public:
 	inline	void	SetGateSocket(SOCKET socket)		{m_GateSocket = socket;}
 	inline	SOCKET	GetGateSocket()						{return m_GateSocket;}
 
-	inline  void	SendClientMsg(PACKET_COMMAND* pack)	{ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(m_GateSocket, pack); _SendFormat(pack); } }
-	inline	void	SendDataMsg(PACKET_COMMAND* pack){ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), pack); } _SendFormat(pack); }
-	inline	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player) { if (pack && player) { pack->SetTrans(player->GetID()); GETSERVERNET(&GameServer)->sendMsg(player->m_GateSocket, pack); } _SendFormat(pack); }
+	inline  void	SendClientMsg(PACKET_COMMAND* pack)	{ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(m_GateSocket, pack); }}
+	inline	void	SendDataMsg(PACKET_COMMAND* pack){ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), pack); }}
+	inline	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player) { if (pack && player) { pack->SetTrans(player->GetID()); GETSERVERNET(&GameServer)->sendMsg(player->m_GateSocket, pack); }}
 
-	void _SendFormat(PACKET_COMMAND *pack){Log.Debug("%s", pack->toFormat());}
 	inline CPlayer* GetPlayer() {return this;}
 
 	bool	OnCreate(int templateid);
@@ -37,7 +36,6 @@ public:
 	void	DataSync();
 
 	void	SyncAttribute(bool client = true, CPlayer* toPlayer = NULL);
-	void 	SyncTask();
 
 	void	GainAp(int value);
 	bool	GainGold(int nGold, GOLD_REASON reason);
@@ -67,6 +65,7 @@ protected:
 
 	int		_GetXmlFieldInt(int i);
 	int64	_GetXmlFieldI64(int i);
+
 public:
 	CEventUnit			m_EventUnit;
 

@@ -35,16 +35,12 @@ private:
 	SOCKET	sock;			//发送的网络id,在接受Packet时设置
 	uint16	_rpos, _wpos, _cpos;	//拼包解包收包时的读写指针
 
-	static const int8 HEAD_SIZE = 0;	//消息长度
-	static const int8 HEAD_TYPE = 2;	//消息号
-	static const int8 HEAD_CRC16 = 4;	//数据校验位
-	static const int8 HEAD_COMPRESS = 6;//数据压缩位
-	static const int8 HEAD_TRANS = 8;	//发送对象
+	static const int8 HEAD_SIZE = 0;	//消息长度(int16)
+	static const int8 HEAD_TYPE = 2;	//消息号(int16)
+	static const int8 HEAD_CRC = 4;		//数据校验位(int32)
+	static const int8 HEAD_TRANS = 8;	//发送对象(int64)
 	static const int8 DATA_PARAM = 16;	//数据位
 	char data[PACKET_BUFFER_SIZE];		//消息缓冲
-
-	static char _Format[10240];
-
 
 public:
 	PACKET_COMMAND();
@@ -59,7 +55,6 @@ public:
 	inline void		SetTrans(int64 s)	{*(int64*)(data + HEAD_TRANS) = s;}
 
 	inline uint16	Type()				{return *(uint16*)(data + HEAD_TYPE);}
-	inline bool		Compress()			{return *(uint16*)(data + HEAD_COMPRESS) == 1;}
 	inline char *	Data()				{return data;}
 	inline uint16	Size()				{return *(uint16*)(data + HEAD_SIZE);}
 
@@ -70,25 +65,7 @@ public:
 	bool crcCheck();
 
 	/*设置packet头，请在参数put完之后再调用*/
-	void end(uint16 wType);
-
-	char * toFormat()
-	{
-		sprintf(_Format, "socket=%d _rpos=%d _wpos=%d _cpos=%d HEAD(size=%d type=%d crc16=%d cpmpress=%d trans=%lld) [",
-				sock, _rpos, _wpos, _cpos, Size(), Type(), *(uint16*)(data+HEAD_CRC16), Compress(), GetTrans());
-		return _Format;
-
-		for (int i = 0; i < Size(); i++) {
-			char v = data[i];
-			int len = strlen(_Format);
-			sprintf(_Format + len,"%d,", (int)v);
-		}
-
-		strcat(_Format, "]");
-
-		return _Format;
-	}
-
+	void setHeader(uint16 wType);
 
 #if USE_SHARED_PARSER
 	void put(int8 value);
@@ -130,14 +107,13 @@ public:
 private:
 	inline void		_SetSize(uint16 wSize) {*(uint16*)(data + HEAD_SIZE) = wSize;}
 	inline void		_SetType(uint16 wType) {*(uint16*)(data + HEAD_TYPE) = wType;}
-	inline void		_SetCompress(uint16 flag)	{*(uint16*)(data + HEAD_COMPRESS) = flag;}
 
 	inline uint16	_HeadSize()				{return DATA_PARAM;}
 	inline char *	_DataBuffer()			{return data + DATA_PARAM;}
 	inline uint16	_DataSize()				{return Size() - _HeadSize();}
 
-	inline uint16	_CRC16()				{return *(uint16*)(data + HEAD_CRC16);}
-	inline void		_SetCRC16(uint16 CRC16)	{*(uint16*)(data + HEAD_CRC16) = CRC16;}
+	inline uint32_t	_CRC()					{ return *(uint32_t*)(data + HEAD_CRC); }
+	inline void		_SetCRC(uint32_t CRC)	{ *(uint32_t*)(data + HEAD_CRC) = CRC; }
 
 #if USE_SHARED_PARSER
 	template <typename T> void append(T value);

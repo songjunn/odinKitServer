@@ -23,6 +23,8 @@ CNet::~CNet()
 
 bool CNet::startup(int type, int port, int connectmax, int sendbuffsize, int recvbuffsize, int packsize)
 {
+	make_crc32_table();
+
 	switch(type)
 	{
 	case NET_IO_SELECT:
@@ -124,8 +126,7 @@ bool CNet::recv(SOCKET sock, char * data, int size)
 			//数据校验
 			if( !pCmd->crcCheck() )
 			{
-				Log.Error("[CNet] crcCheck() sock=%d size=%d lsize=%d nReadPtr=%d failed pCmd=%p bOldPacket=%d, %s", 
-						sock, size, lsize, nReadPtr, pCmd, bOldPacket, pCmd->toFormat());
+				Log.Error("[CNet] crcCheck() sock=%d size=%d lsize=%d nReadPtr=%d failed", sock, size, lsize, nReadPtr);
 				pCmd->init();
 				return false;
 			}
@@ -151,8 +152,7 @@ bool CNet::recv(SOCKET sock, char * data, int size)
 		} 
 		else if (pCmd->GetLeftSize() < 0) 
 		{
-			Log.Error("[CNet] (pCmd->GetLeftSize() < 0 sock=%d pCmd=%p bOldPacket=%d %s",
-					sock, pCmd, bOldPacket, pCmd->toFormat());
+			Log.Error("[CNet] (pCmd->GetLeftSize() < 0 sock=%d", sock);
 			pCmd->init();
 			return false;
 	   }

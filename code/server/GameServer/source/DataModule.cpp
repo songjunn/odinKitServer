@@ -6,7 +6,7 @@
 #include "MessageGameobj.pb.h"
 
 
-bool CDataModule::initObjProxy(const char* xmlFile)
+bool CDataModule::onLoadConfig(const char* xmlFile)
 {
 	TiXmlDocument xmlDoc(xmlFile);
 
@@ -89,7 +89,7 @@ CMetadata* CDataModule::create(const char* type, int64 id)
 	return obj;
 }
 
-CMetadata* CDataModule::createGameJsonObj(const char* type, int64 id)
+CMetadata* CDataModule::createMetadata(const char* type, int64 id)
 {
 	CMetadata* obj = create(type, id);
 	if (!obj)
@@ -192,7 +192,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
-				CMetadata* obj = this->createGameJsonObj(msg.type().c_str(), msg.id());
+				CMetadata* obj = this->createMetadata(msg.type().c_str(), msg.id());
 				if (obj) {
 					obj->fromJsonstring(msg.jsonstr());
 				}

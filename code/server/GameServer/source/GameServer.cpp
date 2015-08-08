@@ -1,5 +1,4 @@
 #include "GameServer.h"
-#include "exception.h"
 #include "LoginModule.h"
 #include "DebugModule.h"
 #include "LuaEngine.h"
@@ -9,7 +8,6 @@
 #include "RoleTemplate.h"
 #include "PlayerMgr.h"
 #include "UserMgr.h"
-#include "vprof.h"
 #include "NameText.h"
 #include "TimerModule.h"
 #include "DataModule.h"
@@ -94,9 +92,9 @@ bool CGameServer::onStartup()
 	if (!EventPool.Create(1000))
 		return false;
 
-	DataModule.initObjProxy("xml//player.xml");
-	DataModule.initObjProxy("xml//item.xml");
-	//DataModule.initObjProxy("xml//hero.xml");
+	DataModule.onLoadConfig("xml//player.xml");
+	DataModule.onLoadConfig("xml//item.xml");
+	//DataModule.onLoadConfig("xml//hero.xml");
 
 	DataModule.Initialize("objproxy", 100);
 

@@ -3,6 +3,7 @@ LoginUnit = {}
 --RegMessage(106, "LoginUnit", "OnPlayerLogin")
 RegMessage(303, "LoginUnit", "OnUserLogin")
 RegMessage(404, "LoginUnit", "OnPlayerCount")
+RegMessage(406, "LoginUnit", "OnLoadover")
 
 LoginUnit.Logic = function()
 end
@@ -22,4 +23,8 @@ end
 
 LoginUnit.OnPlayerLogin = function(socket, pid)
 	--UserLogout(socket)
+end
+
+LoginUnit.OnLoadover = function(socket, pid)
+	
 end

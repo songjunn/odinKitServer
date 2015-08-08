@@ -7,8 +7,13 @@
 #ifndef SHARED_CRC_H
 #define SHARED_CRC_H
 
+#include <stdint.h>
 
-unsigned short Caluation_CRC16(char * buff, int size);
+// crc16
+uint16_t make_crc16(char * buff, uint32_t size);
 
+// crc32
+void make_crc32_table();
+uint32_t make_crc32(char *string, uint32_t size);
 
 #endif	//SHARED_CRC_H

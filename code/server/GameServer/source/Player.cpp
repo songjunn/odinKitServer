@@ -127,7 +127,7 @@ bool CPlayer::OnCreate(int templateid)
 	if( json )
 		m_GameObj = json;
 	else
-		m_GameObj = DataModule.createGameJsonObj("player", GetID());
+		m_GameObj = DataModule.createMetadata("player", GetID());
 
 	SetTemplateID(templateid);
 	SetFieldInt(Role_Attrib_TemplateID, templateid);

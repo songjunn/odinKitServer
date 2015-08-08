@@ -2,9 +2,6 @@
 #include "crc.h"
 #include "Log.h"
 
-
-char PACKET_COMMAND::_Format[10240] = {0};
-
 PACKET_COMMAND::PACKET_COMMAND()
 {
 	init();
@@ -28,7 +25,7 @@ void PACKET_COMMAND::Copy(char * buf, uint16 size)
 {
 	if( size <= 0 || _cpos + size > PACKET_BUFFER_SIZE )
 	{
-		Log.Error("[Packet] Copy faild %s size=%d", toFormat(), size);
+		Log.Error("[Packet] Copy faild size=%d", size);
 		return;
 	}
 	memcpy(data+_cpos, buf, size);
@@ -37,20 +34,20 @@ void PACKET_COMMAND::Copy(char * buf, uint16 size)
 
 bool PACKET_COMMAND::crcCheck()
 {
-	uint16 crc = Caluation_CRC16(_DataBuffer(), _DataSize());
+	uint32_t crc = make_crc32(_DataBuffer(), _DataSize());
 
-	if (_CRC16() == crc ) return true;
-	else Log.Error("[Packet] _CRC16():%d != crc:%d %s", _CRC16(), crc, toFormat());
+	if (_CRC() == crc ) return true;
+	else Log.Error("[Packet] _CRC():%d != crc:%d ", _CRC(), crc);
 	return false;
 }
 
-void PACKET_COMMAND::end(uint16 wType)
+void PACKET_COMMAND::setHeader(uint16 wType)
 {
 	_SetType(wType);
 	_SetSize(_wpos);
 
-	uint16 crc = Caluation_CRC16(_DataBuffer(), _DataSize());
-	_SetCRC16(crc);
+	uint32_t crc = make_crc32(_DataBuffer(), _DataSize());
+	_SetCRC(crc);
 }
 
 #if USE_SHARED_PARSER
@@ -185,7 +182,7 @@ void PACKET_COMMAND::setBuffer(uint16 wType, const char* buf, uint16 size)
 	{
 		memcpy(&data[DATA_PARAM], buf, size);
 		_wpos += size;
-		end(wType);
+		setHeader(wType);
 	}
 	else
 	{
