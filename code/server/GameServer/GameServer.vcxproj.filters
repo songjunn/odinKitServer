@@ -72,9 +72,6 @@
     <ClInclude Include="include\Player.h">
       <Filter>obj</Filter>
     </ClInclude>
-    <ClInclude Include="include\Role.h">
-      <Filter>obj</Filter>
-    </ClInclude>
     <ClInclude Include="include\User.h">
       <Filter>obj</Filter>
     </ClInclude>
@@ -129,9 +126,6 @@
       <Filter>obj</Filter>
     </ClCompile>
     <ClCompile Include="source\Player.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Role.cpp">
       <Filter>obj</Filter>
     </ClCompile>
     <ClCompile Include="source\DebugModule.cpp">

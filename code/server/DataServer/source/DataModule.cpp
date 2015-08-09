@@ -277,7 +277,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					if (!obj->HaveMember(msg.key())) {
+					if (!obj->haveMember(msg.key())) {
 						obj->addFieldObj(msg.key());
 					}
 					obj->addFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());

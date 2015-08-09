@@ -2,8 +2,18 @@
 
 void IBaseObj::Init()
 {
-	m_templateId = 0;
 	m_ObjID = 0;
+	m_type = 0;
+	m_templateId = 0;
+	memset(m_name, 0, OBJ_NAME_LEN);
+}
+
+void IBaseObj::Copy(const IBaseObj& obj)
+{
+	m_ObjID = obj.m_ObjID;
+	m_RoleType = obj.m_RoleType;
+	m_templateId = obj.m_templateId;
+	strncpy(m_name, obj.m_name, OBJ_NAME_LEN);
 }
 
 int	IBaseObj::GetFieldInt(int i)

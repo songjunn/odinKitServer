@@ -1,8 +1,6 @@
 #pragma once
-#include "Role.h"
+#include "IBaseObj.h"
 #include "utlmap.h"
-#include "utllinkedlist.h"
-#include "eventdef.h"
 
 #define FIGHTER_LEVEL_MAX	99
 #define ROLE_SKILL_MAX		10
@@ -21,9 +19,8 @@ struct FlagBit
 	//...
 };
 
-class PKTeam;
 class CPlayer;
-class CFighter : public CRole
+class CFighter : public IBaseObj
 {
 public:
 	CFighter();
@@ -58,8 +55,6 @@ public:
 	inline	bool	IsDead()						{return m_Dead; /*return GetFieldInt(Role_Attrib_Hp) <= 0;*/}
 	inline	void	Die()							{m_Dead = true;}
 	inline  void	Revive()						{m_Dead = false;}
-
-	virtual	void	OnEvent(CEvent* ev)				{return;}
 
 	virtual void	Copy(const CFighter& fighter);
 

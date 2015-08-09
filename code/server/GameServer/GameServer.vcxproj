@@ -205,7 +205,6 @@
     <ClInclude Include="include\IBaseObj.h" />
     <ClInclude Include="include\Item.h" />
     <ClInclude Include="include\Player.h" />
-    <ClInclude Include="include\Role.h" />
     <ClInclude Include="include\User.h" />
     <ClInclude Include="include\DebugModule.h" />
     <ClInclude Include="include\LoginModule.h" />
@@ -224,7 +223,6 @@
     <ClCompile Include="source\Fighter.cpp" />
     <ClCompile Include="source\IBaseObj.cpp" />
     <ClCompile Include="source\Player.cpp" />
-    <ClCompile Include="source\Role.cpp" />
     <ClCompile Include="source\DebugModule.cpp" />
     <ClCompile Include="source\LoginModule.cpp" />
     <ClCompile Include="source\NoticeModule.cpp" />

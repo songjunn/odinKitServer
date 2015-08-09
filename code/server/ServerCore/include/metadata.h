@@ -41,7 +41,7 @@ public:
 	virtual ~CMetadata()	{}
 
 	inline int64 getId() {return m_id;}
-	inline bool HaveMember(std::string key) {return _hasMember(m_members, key);}
+	inline bool haveMember(std::string key) {return _hasMember(m_members, key);}
 
 	int getFieldInt(std::string key);
 	void setFieldInt(std::string key, int value);

@@ -9,7 +9,6 @@
 bool CDataModule::onLoadConfig(const char* xmlFile)
 {
 	TiXmlDocument xmlDoc(xmlFile);
-
 	xmlDoc.LoadFile();
 
 	if(xmlDoc.ErrorId() > 0)
@@ -215,7 +214,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CMetadata* obj = this->GetObj(msg.id());
-				if (obj && obj->HaveMember(msg.key())) {
+				if (obj && obj->haveMember(msg.key())) {
 					obj->addFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());
 				}
 			}

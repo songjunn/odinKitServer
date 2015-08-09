@@ -35,7 +35,6 @@ public:
 	void	SyncFieldInt(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
 	void	SyncFieldI64(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
 
-	char*	GetName() { return m_name; }
 	const CEffect &GetUseEffect() { return m_EffectUse; }
 
 protected:
@@ -51,7 +50,6 @@ protected:
 private:
 	ItemID		m_ItemID;				//物品实体ID
 	PersonID	m_ParentID;				//拥有者ID
-	char		m_name[OBJ_NAME_LEN];	//名字
 	int			m_Type;					//类型
 	int			m_Career;				//职业限制
 	int			m_Sex;					//性别限制
