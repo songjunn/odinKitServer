@@ -66,6 +66,8 @@ protected:
 	int		_GetXmlFieldInt(int i);
 	int64	_GetXmlFieldI64(int i);
 
+	void	_PackageAttrMsg(Message::PlayerAttrSync& msg, int i);
+
 public:
 	CEventUnit			m_EventUnit;
 

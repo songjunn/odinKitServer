@@ -1,6 +1,7 @@
 #pragma once
 #include "IBaseObj.h"
 #include "utlmap.h"
+#include "eventdef.h"
 
 #define FIGHTER_LEVEL_MAX	99
 #define ROLE_SKILL_MAX		10

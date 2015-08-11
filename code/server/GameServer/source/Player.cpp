@@ -21,7 +21,7 @@ void CPlayer::Init()
 {
 	CFighter::Init();
 
-	m_RoleType = Role_Type_Player;
+	m_type = Role_Type_Player;
 	m_GateSocket = -1;
 	m_GoldCoin = 0;
 	m_SilverCoin= 0;
@@ -345,13 +345,12 @@ void CPlayer::SyncFieldToData(const char* field)
 
 void CPlayer::SyncFieldIntToClient(int i, CPlayer* toPlayer)
 {
-	Message::PlayerAttribInt msg;
-	msg.set_pid( GetID() );
-	msg.set_attr( i );
-	msg.set_value( GetFieldInt(i) );
+	Message::PlayerAttrSync msg;
+	msg.set_pid(GetID());
+	_PackageMsgAttr32(msg, i);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_SYNC_ATTRINT);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_DATA);
 
 	if( toPlayer )
 		SendObserveMsg( &pack, toPlayer );
@@ -361,13 +360,12 @@ void CPlayer::SyncFieldIntToClient(int i, CPlayer* toPlayer)
 
 void CPlayer::SyncFieldI64ToClient(int i, CPlayer* toPlayer)
 {
-	Message::PlayerAttribI64 msg;
+	Message::PlayerAttrSync msg;
 	msg.set_pid(GetID());
-	msg.set_attr(i);
-	msg.set_value(GetFieldI64(i));
+	_PackageMsgAttr64(msg, i);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_SYNC_ATTRI64);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_DATA);
 
 	if (toPlayer)
 		SendObserveMsg(&pack, toPlayer);
@@ -375,41 +373,54 @@ void CPlayer::SyncFieldI64ToClient(int i, CPlayer* toPlayer)
 		SendClientMsg(&pack);
 }
 
+void CPlayer::_PackageMsgAttr32(Message::PlayerAttrSync& msg, int i)
+{
+	Message::PlayerAttrSync::Attr * attr = msg.add_attr();
+	attr->set_key(i);
+	attr->set_val32(GetFieldInt(i));
+}
+
+void CPlayer::_PackageMsgAttr64(Message::PlayerAttrSync& msg, int i)
+{
+	Message::PlayerAttrSync::Attr * attr = msg.add_attr();
+	attr->set_key(i);
+	attr->set_val64(GetFieldI64(i));
+}
+
 void CPlayer::SyncAttribute(bool client, CPlayer* toPlayer)
 {
-	Message::PlayerAttrib msg;
-	msg.set_pid( GetID() );
-	msg.set_templateid( GetFieldInt(Role_Attrib_TemplateID) );
-	msg.set_name( GetName() );
-	msg.set_level( GetFieldInt(Role_Attrib_Level) );
-	msg.set_hp( GetFieldInt(Role_Attrib_Hp) );
-	msg.set_exp( GetFieldI64(Role_Attrib_Exp) );
-	msg.set_gold( GetFieldInt(Role_Attrib_GoldCoin) );
-	msg.set_silver( GetFieldInt(Role_Attrib_SilverCoin) );
-	msg.set_merit( GetFieldInt(Role_Attrib_Merit) );
-	msg.set_fighting( GetFieldInt(Role_Attrib_Fighting) );
-	msg.set_stamina( GetFieldInt(Role_Attrib_Stamina) );
-	msg.set_staminamax( GetFieldInt(Role_Attrib_StaminaMax) );
-	msg.set_strength( GetFieldInt(Role_Attrib_Strength) );
-	msg.set_intellect( GetFieldInt(Role_Attrib_Intellect) );
-	msg.set_technique( GetFieldInt(Role_Attrib_Technique) );
-	msg.set_agility( GetFieldInt(Role_Attrib_Agility) );
-	msg.set_hit( GetFieldInt(Role_Attrib_Hit) );
-	msg.set_jouk( GetFieldInt(Role_Attrib_Jouk) );
-	msg.set_crit( GetFieldInt(Role_Attrib_Crit) );
-	msg.set_tenacity( GetFieldInt(Role_Attrib_Tenacity) );
-	msg.set_parry( GetFieldInt(Role_Attrib_Parry) );
-	msg.set_treat( GetFieldInt(Role_Attrib_Treat) );
-	msg.set_physidamage( GetFieldInt(Role_Attrib_PhysiDamage) );
-	msg.set_physidefense( GetFieldInt(Role_Attrib_PhysiDefense) );
-	msg.set_magicdamage( GetFieldInt(Role_Attrib_MagicDamage) );
-	msg.set_magicdefense( GetFieldInt(Role_Attrib_MagicDefense) );
-	msg.set_stuntdamage( GetFieldInt(Role_Attrib_StuntDamage) );
-	msg.set_stuntdefense( GetFieldInt(Role_Attrib_StuntDefense) );
-	msg.set_basestrength(GetFieldInt(Role_Attrib_BaseStrength));
-	msg.set_baseintellect(GetFieldInt(Role_Attrib_BaseIntellect));
-	msg.set_basetechnique(GetFieldInt(Role_Attrib_BaseTechnique));
-	msg.set_baseagility(GetFieldInt(Role_Attrib_BaseAgility));
+	Message::PlayerAttrSync msg;
+	msg.set_pid(GetID());
+	_PackageMsgAttr32(msg, Role_Attrib_TemplateID);
+	_PackageMsgAttr32(msg, Role_Attrib_Level);
+	_PackageMsgAttr32(msg, Role_Attrib_Hp);
+	_PackageMsgAttr32(msg, Role_Attrib_GoldCoin);
+	_PackageMsgAttr32(msg, Role_Attrib_SilverCoin);
+	_PackageMsgAttr32(msg, Role_Attrib_Merit);
+	_PackageMsgAttr32(msg, Role_Attrib_Fighting);
+	_PackageMsgAttr32(msg, Role_Attrib_Stamina);
+	_PackageMsgAttr32(msg, Role_Attrib_StaminaMax);
+	_PackageMsgAttr32(msg, Role_Attrib_Strength);
+	_PackageMsgAttr32(msg, Role_Attrib_Intellect);
+	_PackageMsgAttr32(msg, Role_Attrib_Technique);
+	_PackageMsgAttr32(msg, Role_Attrib_Agility);
+	_PackageMsgAttr32(msg, Role_Attrib_Hit);
+	_PackageMsgAttr32(msg, Role_Attrib_Jouk);
+	_PackageMsgAttr32(msg, Role_Attrib_Crit);
+	_PackageMsgAttr32(msg, Role_Attrib_Tenacity);
+	_PackageMsgAttr32(msg, Role_Attrib_Parry);
+	_PackageMsgAttr32(msg, Role_Attrib_Treat);
+	_PackageMsgAttr32(msg, Role_Attrib_PhysiDamage);
+	_PackageMsgAttr32(msg, Role_Attrib_PhysiDefense);
+	_PackageMsgAttr32(msg, Role_Attrib_MagicDamage);
+	_PackageMsgAttr32(msg, Role_Attrib_MagicDefense);
+	_PackageMsgAttr32(msg, Role_Attrib_StuntDamage);
+	_PackageMsgAttr32(msg, Role_Attrib_StuntDefense);
+	_PackageMsgAttr32(msg, Role_Attrib_BaseStrength);
+	_PackageMsgAttr32(msg, Role_Attrib_BaseIntellect);
+	_PackageMsgAttr32(msg, Role_Attrib_BaseTechnique);
+	_PackageMsgAttr32(msg, Role_Attrib_BaseAgility);
+	_PackageMsgAttr64(msg, Role_Attrib_Exp);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_DATA);
@@ -418,39 +429,6 @@ void CPlayer::SyncAttribute(bool client, CPlayer* toPlayer)
 		SendClientMsg( &pack );
 	if( toPlayer )
 		SendObserveMsg( &pack, toPlayer );
-
-	/*SyncFieldInt(Role_Attrib_TrainStrength, client, false, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_TrainIntellect, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_TrainTechnique, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_TrainAgility, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_UseStuntSkill, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_Vip, toPlayer);
-	SyncFieldI64ToClient(Role_Attrib_RechargeSum, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_Credit, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_KnightState, toPlayer);
-	SyncFieldI64ToClient(Role_Attrib_KnightStateExp, toPlayer);
-	
-	SyncFieldIntToClient(Role_Attrib_Fighting, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_Quality, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_QualityProgress, toPlayer);
-	SyncFieldIntToClient(Role_Attrib_Hotohori, toPlayer);
-	SyncFieldInt(Role_Attrib_BagMaxCapacity, client, false, toPlayer);
-
-	SyncFieldInt(Role_Attrib_BuyStamina, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_AdvancedTrain, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_BossInspireFree, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_SignInFree, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_SkillResetFree, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_RandHeroCount, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_TeaseSilver, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_TeaseCount, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_CarnageSceneTop, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_CarnageAchiveMax, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_CarnageResetCnt, client, false, toPlayer);
-	SyncFieldInt(Role_Attrib_CarnageChlgCnt, client, false, toPlayer);
-
-	SyncFieldI64(Role_Attrib_FirstChargeTime, client, false, toPlayer);
-	SyncFieldI64(Role_Attrib_FirstServerTime, client, false, toPlayer);*/
 }
 
 void CPlayer::DataInit()

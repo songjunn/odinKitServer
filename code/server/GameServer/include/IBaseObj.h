@@ -3,12 +3,13 @@
 #include "commdata.h"
 #include "metadata.h"
 
+class CEvent;
 class CPlayer;
 class PACKET_COMMAND;
 class IBaseObj
 {
 public:
-	IBaseObj() : m_templateId(0), m_type(0), m_ObjID(0), m_name(""){}
+	IBaseObj() : m_ObjID(0), m_type(0), m_templateId(0) {}
 	virtual ~IBaseObj() {}
 
 	virtual void Init();

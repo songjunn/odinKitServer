@@ -20,7 +20,7 @@ void CFighter::Release()
 
 void CFighter::Init()
 {
-	CRole::Init();
+	IBaseObj::Init();
 
 	m_Level = 0;
 	m_SceneID = 0;		
@@ -147,7 +147,7 @@ void CFighter::Init()
 
 void CFighter::Copy(const CFighter& fighter)
 {
-	CRole::Copy(fighter);
+	IBaseObj::Copy(fighter);
 
 	m_Vocation = fighter.m_Vocation;	
 	m_Sex = fighter.m_Sex;		

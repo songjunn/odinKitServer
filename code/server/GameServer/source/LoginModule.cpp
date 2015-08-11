@@ -65,6 +65,8 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 			PACKET_COMMAND packKick;
 			PROTOBUF_CMD_PACKAGE(packKick, msgKick, Message::MSG_USER_DISPLACE);
 			pUser->SendGateMsg( &packKick );
+
+			Log.Notice("[Login] Displace Online User:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID));
 		}
 
 		pUser->m_GateSocket = pack->GetNetID();
@@ -79,12 +81,7 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 				return false;
 			}
 
-			_OnPlayerSync(player);
-
-			CEvent* evnt = MakeEvent(Event_Player_Login, player->GetID(), NULL, true);
-			player->OnEvent(evnt);
-
-			Log.Notice("[Login] Displace Online User:"INT64_FMT" Player:"INT64_FMT" Name:%s", player->GetFieldI64(Role_Attrib_UserID), player->GetID(), player->GetName());
+			OnPlayerLogin(player);
 		}
 		else
 		{
@@ -310,10 +307,13 @@ bool CLoginModule::OnPlayerLogin(CPlayer* player)
 	if( !player )
 		return false;
 
-	//player->DataInit();  //移到CPlayerMgr::_HandlePacket_PlayerLoadOver
+	//执行脚本
+	LuaParam param[1];
+	param[0].SetDataNum(player->GetID());
+	LuaEngine.RunLuaFunction("OnLogin", "Player", NULL, param, 1);
+
 	player->SetOnline(Online_Flag_On);
-	player->SyncFieldToData("attr");
-	player->SyncFieldToData("login");
+	player->SetFieldI64(Role_Attrib_LoginTime, GetTimeSec());
 
 	_OnPlayerSync(player);
 
@@ -330,30 +330,27 @@ bool CLoginModule::_OnPlayerSync(CPlayer* player)
 	if( !player )
 		return false;
 
-	//通知GateServer创建成功并登陆
-	Message::PlayerLogin msgLogin;
-	msgLogin.set_uid(player->GetFieldI64(Role_Attrib_UserID));
-	msgLogin.set_pid(player->GetID());
-	PACKET_COMMAND packLogin;
-	PROTOBUF_CMD_PACKAGE(packLogin, msgLogin, Message::MSG_PLAYER_LOGIN_REQUEST);
-	player->SendClientMsg(&packLogin);
+	//同步客户端
+	{
+		Message::PlayerLogin msgLogin;
+		msgLogin.set_uid(player->GetFieldI64(Role_Attrib_UserID));
+		msgLogin.set_pid(player->GetID());
+		PACKET_COMMAND packLogin;
+		PROTOBUF_CMD_PACKAGE(packLogin, msgLogin, Message::MSG_PLAYER_LOGIN_REQUEST);
+		player->SendClientMsg(&packLogin);
 
-	player->DataSync();
+		player->DataSync();
 
-	//执行脚本
-	LuaParam param[1];
-	param[0].SetDataNum( player->GetID() );
-	LuaEngine.RunLuaFunction("OnLogin", "Player", NULL, param, 1);
+		Message::PlayerLoadOver msg;
+		msg.set_pid(player->GetID());
+		PACKET_COMMAND pack;
+		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_OVER);
+		player->SendClientMsg(&pack);
+	}
 
-	player->SetOnline(Online_Flag_On);
-	player->SetFieldI64(Role_Attrib_LoginTime, GetTimeSec());
+	// 同步DataServer
 	player->SyncFieldToData("login");
-	//加载结束
-	Message::PlayerLoadOver msg;
-	msg.set_pid(player->GetID());
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_OVER);
-	player->SendClientMsg(&pack);
+	player->SyncFieldToData("attr");
 
 	return true;
 }

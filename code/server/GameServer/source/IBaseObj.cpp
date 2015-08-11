@@ -11,7 +11,7 @@ void IBaseObj::Init()
 void IBaseObj::Copy(const IBaseObj& obj)
 {
 	m_ObjID = obj.m_ObjID;
-	m_RoleType = obj.m_RoleType;
+	m_type = obj.m_type;
 	m_templateId = obj.m_templateId;
 	strncpy(m_name, obj.m_name, OBJ_NAME_LEN);
 }
