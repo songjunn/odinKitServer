@@ -338,9 +338,33 @@ int64 CPlayer::_GetXmlFieldI64(int i)
 	return INVALID_VALUE;
 }
 
-void CPlayer::SyncFieldToData(const char* field)
+void CPlayer::SyncFieldToData(int i)
 {
 	DataModule.syncField(m_GameObj, GameServer.getServerSock(CBaseServer::Linker_Server_Data), field);
+}
+
+void CPlayer::SyncFieldIntToData(int i)
+{
+	Message::SyncObjFieldItem msg;
+	msg.set_pid(GetID());
+	msg.set_key();
+	msg.set_vali32();
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETI32);
+	SendDataMsg(&pack);
+}
+
+void CPlayer::SyncFieldI64ToData(int i)
+{
+	Message::SyncObjFieldItem msg;
+	msg.set_pid(GetID());
+	msg.set_key();
+	msg.set_vali64();
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETI64);
+	SendDataMsg(&pack);
 }
 
 void CPlayer::SyncFieldIntToClient(int i, CPlayer* toPlayer)

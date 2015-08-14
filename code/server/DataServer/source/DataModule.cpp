@@ -246,7 +246,55 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 		return false;
 
 	switch(pack->Type()) {
-		case Message::MSG_GAMEOBJ_OBJFIELD_SET:
+		case Message::MSG_GAMEOBJ_OBJFIELD_SETI32:
+			{
+				 Message::SyncObjFieldItem msg;
+				 PROTOBUF_CMD_PARSER(pack, msg);
+
+				 CDataObj* obj = this->GetObj(msg.id());
+				 if (obj) {
+					 if (msg.key2() == "") {
+						 obj->setFieldInt(msg.key(), msg.vali32());
+					 } else {
+						 obj->setFieldObjInt(msg.key(), msg.key2(), msg.vali32());
+					 }
+					 this->_setSaveType(obj, SAVE_UPDATE);
+				 }
+			}
+			break;
+		case Message::MSG_GAMEOBJ_OBJFIELD_SETI64:
+			{
+			    Message::SyncObjFieldItem msg;
+			    PROTOBUF_CMD_PARSER(pack, msg);
+
+			    CDataObj* obj = this->GetObj(msg.id());
+			    if (obj) {
+				    if (msg.key2() == "") {
+					    obj->setFieldI64(msg.key(), msg.vali64());
+				    } else {
+					    obj->setFieldObjI64(msg.key(), msg.key2(), msg.vali64());
+				    }
+				    this->_setSaveType(obj, SAVE_UPDATE);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_OBJFIELD_SETSTR:
+			{
+				Message::SyncObjFieldItem msg;
+				PROTOBUF_CMD_PARSER(pack, msg);
+				
+				CDataObj* obj = this->GetObj(msg.id());
+				if (obj) {
+					if (msg.key2() == "") {
+						obj->setFieldString(msg.key(), msg.valstr());
+					} else {
+						obj->setFieldObjString(msg.key(), msg.key2(), msg.valstr());
+					}
+					this->_setSaveType(obj, SAVE_UPDATE);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_OBJFIELD_SETALL:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);

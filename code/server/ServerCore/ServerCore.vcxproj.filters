@@ -27,9 +27,6 @@
     <ClCompile Include="source\plugin_Network.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\metadata.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\server.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -51,9 +48,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\plugin_Network.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\metadata.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\server.h">

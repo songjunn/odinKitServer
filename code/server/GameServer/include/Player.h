@@ -52,7 +52,8 @@ public:
 	inline void	SetLoadTime(TMV time) {m_LoadTime = time;}
 	inline TMV	GetLoadTime() {return m_LoadTime;}
 
-	void	SyncFieldToData(const char* field = NULL);
+	void	SyncFieldIntToData(int i);
+	void	SyncFieldI64ToData(int i);
 	void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL);
 	void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL);
 

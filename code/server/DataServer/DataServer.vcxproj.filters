@@ -26,6 +26,9 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="source\metadata.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DataModule.h">
@@ -35,6 +38,9 @@
       <Filter>manager</Filter>
     </ClInclude>
     <ClInclude Include="include\DataServer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\metadata.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

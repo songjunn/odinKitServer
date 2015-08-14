@@ -185,11 +185,13 @@
     <ClCompile Include="source\DataModule.cpp" />
     <ClCompile Include="source\DataServer.cpp" />
     <ClCompile Include="source\LoadModule.cpp" />
+    <ClCompile Include="source\metadata.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DataModule.h" />
     <ClInclude Include="include\DataServer.h" />
     <ClInclude Include="include\LoadModule.h" />
+    <ClInclude Include="include\metadata.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.vcxproj">

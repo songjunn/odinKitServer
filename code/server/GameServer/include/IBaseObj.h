@@ -42,9 +42,11 @@ public:
 	virtual	void	SendDataMsg(PACKET_COMMAND* pack)	{return;}
 	virtual	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player)	{return;}
 
-	virtual void	SyncFieldToData()			{return;}
-	virtual void	SyncFieldToData(std::string field)	{return;}
+	virtual void	SyncFieldInt(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL)	{ return; };
+	virtual void	SyncFieldI64(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL)	{ return; };
 
+	virtual void	SyncFieldIntToData(int i)	{ return; }
+	virtual void	SyncFieldI64ToData(int i)	{ return; }
 	virtual void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL)	{return;}
 	virtual void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL)	{return;}
 

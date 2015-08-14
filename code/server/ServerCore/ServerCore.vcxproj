@@ -176,7 +176,6 @@
       </PrecompiledHeader>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="source\metadata.cpp" />
     <ClCompile Include="source\plugin_Monitor.cpp" />
     <ClCompile Include="source\server.cpp" />
     <ClCompile Include="source\plugin_HttpServe.cpp" />
@@ -184,7 +183,6 @@
     <ClCompile Include="source\plugin_Network.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\metadata.h" />
     <ClInclude Include="include\plugin_Monitor.h" />
     <ClInclude Include="include\server.h" />
     <ClInclude Include="include\plugin.h" />
