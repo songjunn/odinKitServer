@@ -4,15 +4,18 @@
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #include "User.h"
+#include "attrs.h"
 #include "PlayerMgr.h"
 #include "RoleTemplate.h"
 #include "PlayerMgr.h"
 #include "UserMgr.h"
 #include "NameText.h"
-#include "TimerModule.h"
 #include "DataModule.h"
+#include "TimerModule.h"
 #include "NoticeModule.h"
 #include "LuaFuncDefine.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageServer.pb.h"
 #ifdef __linux__
 #include "linux_type.h"
 #include "linux_time.h"
@@ -92,14 +95,16 @@ bool CGameServer::onStartup()
 	if (!EventPool.Create(1000))
 		return false;
 
-	DataModule.onLoadConfig("xml//player.xml");
-	DataModule.onLoadConfig("xml//item.xml");
+	//DataModule.onLoadConfig("xml//player.xml");
+	//DataModule.onLoadConfig("xml//item.xml");
 	//DataModule.onLoadConfig("xml//hero.xml");
 
-	DataModule.Initialize("objproxy", 100);
+	//DataModule.Initialize("objproxy", 100);
 
 	if (!g_PacketPool.Init("Packet", packsize))
 		return false;
+
+	attrs::init_all_attrs();
 
 	//加载数据文件
 	char roleFile[256] = { 0 };
@@ -174,8 +179,6 @@ bool CGameServer::onLogic()
 {
 	CBaseServer::onLogic();
 
-	PlayerMgr.OnLogic();
-
 	TimerModule.OnLogic();
 
 	return true;
@@ -223,5 +226,31 @@ bool CGameServer::onLoadScript()
 		return false;
 	}
 	Log.Notice("[CGameServer] onLoadScript");
+	return true;
+}
+
+bool CGameServer::_onAddLinker(CLinker* pServer)
+{
+	if (!pServer) {
+		return false;
+	}
+
+	switch (pServer->m_type)
+	{
+	case CBaseServer::Linker_Server_Data:
+		{
+			Message::WorldDataRequest msg;
+			msg.set_world(this->getSelfWorld());
+			msg.set_server(0);
+
+			PACKET_COMMAND pack;
+			PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_SERVER_WORLD_REQUEST);
+			GETSERVERNET(&GameServer)->sendMsg(pServer->m_Socket, &pack);
+		}
+		break;
+	default:
+		break;
+	}
+
 	return true;
 }

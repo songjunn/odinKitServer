@@ -94,6 +94,7 @@ public:
 	void setType(int type);
 	void initSelf(int world, int type, int id, int port, const char* szip, int extport = 0, const char* extip = NULL, const char* udPath = NULL);
 	CLinker* createLinker(int type, int id, int port, const char* szip, int extport, const char* extip, int world, bool host, SOCKET sock = INVALID_SOCKET);
+	CLinker* createLinker(CLinker* linker, int type, int id, int port, const char* szip, int extport, const char* extip, int world, bool host, SOCKET sock = INVALID_SOCKET);
 
 	virtual bool onStartup();
 	virtual bool onLogic();
@@ -130,9 +131,10 @@ protected:
 
 	// create and delete servers
 	bool addLinker(CLinker* linker);
-	bool connectLinker(CLinker* linker);
 	void breakLinker(SOCKET s);
 	void deleteLinker(CLinker* pObj);
+
+	virtual bool _onAddLinker(CLinker* pServer) { return true; }
 
 	// regist servers
 	bool regist(CLinker* pObj);
@@ -143,12 +145,12 @@ protected:
 	bool loop_linkers();
 	bool loop_message();
 
-	virtual bool _HandlePacket_NetAccept(PACKET_COMMAND* pack);
-	virtual bool _HandlePacket_NetClose(PACKET_COMMAND* pack);
-	virtual bool _HandlePacket_RegistServer(PACKET_COMMAND* pack);
-	virtual bool _HandlePacket_ConnectServer(PACKET_COMMAND* pack);
-	virtual bool _HandlePacket_RegistAsyncReturn(PACKET_COMMAND* pack);
-	virtual bool _HandlePacket_SyncLoadNumber(PACKET_COMMAND* pack);
+	bool _handlePacket_NetAccept(PACKET_COMMAND* pack);
+	bool _handlePacket_NetClose(PACKET_COMMAND* pack);
+	bool _handlePacket_RegistServer(PACKET_COMMAND* pack);
+	bool _handlePacket_ConnectServer(PACKET_COMMAND* pack);
+	bool _handlePacket_RegistAsyncReturn(PACKET_COMMAND* pack);
+	bool _handlePacket_SyncLoadNumber(PACKET_COMMAND* pack);
 
 private:
 	CLinker m_self;

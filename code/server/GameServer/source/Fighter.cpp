@@ -275,40 +275,19 @@ int* CFighter::_FindFieldInt(int i)
 {
 	switch(i)
 	{
-	//case Role_Attrib_TemplateID:	return &m_templateId;
+	case Role_Attrib_TemplateID:	return &m_templateId;
 	case Role_Attrib_Vocation:		return &m_Vocation;
 	case Role_Attrib_Sex:			return &m_Sex;
-	//case Role_Attrib_Level:			return &m_Level;
+	case Role_Attrib_Level:			return &m_Level;
 	case Role_Attrib_Hp:			return &m_Hp;
 	case Role_Attrib_SceneID:		return &m_SceneID;
 	case Role_Attrib_Position:		return &m_Position;
-	case Role_Attrib_TeamPos:		return &m_TeamPos;
-	case Role_Attrib_Morale:		return &m_Morale;
-	case Role_Attrib_Counter:		return &m_Counter;
-	case Role_Attrib_FloatProb:		return &m_FloatProb;
-	case Role_Attrib_Sun:			return &m_Sun;
-	case Role_Attrib_Moon:			return &m_Moon;
-	case Role_Attrib_Stars:			return &m_Stars;
-	case Role_Attrib_MoraleRevert:	return &m_MoraleRevert;
-	case Role_Attrib_HpRevert:		return &m_HpRevert;
-	case Role_Attrib_AttackSkill:	return &m_CommSkill;
-	//case Role_Attrib_UseStuntSkill:	return &m_StuntSkill;
-	case Role_Attrib_UseFinalSkill:	return &m_FinalSkill;
 	case Role_Attrib_Fighting:		return &m_Fighting;
-	case Role_Attrib_Body:			return &m_Body;
-	case Role_Attrib_StarsID:		return &m_StarsID;
-	//case Role_Attrib_Quality:		return &m_Quality;
-	//case Role_Attrib_QualityProgress:	return &m_QualityProgress;
 
 	case Role_Attrib_BaseStrength:		return &m_BaseStrength;
 	case Role_Attrib_BaseIntellect:		return &m_BaseIntellect;
 	case Role_Attrib_BaseTechnique:		return &m_BaseTechnique;
 	case Role_Attrib_BaseAgility:		return &m_BaseAgility;
-
-	//case Role_Attrib_TrainStrength:		return &m_TrainStrength;
-	//case Role_Attrib_TrainIntellect:	return &m_TrainIntellect;
-	//case Role_Attrib_TrainTechnique:	return &m_TrainTechnique;
-	//case Role_Attrib_TrainAgility:		return &m_TrainAgility;
 
 	case Role_Attrib_Strength:		return &m_Strength[Attrib_Value];
 	case Role_Attrib_Intellect:		return &m_Intellect[Attrib_Value];
@@ -395,42 +374,6 @@ int* CFighter::_FindFieldInt(int i)
 	case Role_Attrib_StuntRealDamageIncrPer:	return &m_StuntRealDamageIncrPer;
 	case Role_Attrib_StuntRealDamageReducePer:	return &m_StuntRealDamageReducePer;
 
-	case Role_Attrib_Hotohori:					return &m_Hotohori;
-	case Role_Attrib_PlaceProb:					return &m_PlaceProb;
-
-	case Role_Attrib_InitStuntID:				return &m_InitStuntID;
-
-	case Role_Attrib_CombatAll:					return &m_CombatAllPer;
-	case Role_Attrib_CombatCross:				return &m_CombatCrossPer;
-	case Role_Attrib_CombatRow:					return &m_CombatLinePer;
-	case Role_Attrib_CombatLine:				return &m_CombatRowPer;
-	case Role_Attrib_HotohoriDamageIncPer:		return &m_HotohoriDamageIncPer;
-	case Role_Attrib_SunDamageIncPer:			return &m_SunDamageIncPer;
-	case Role_Attrib_MoonDamageIncPer:			return &m_MoonDamageIncPer;
-	case Role_Attrib_StarDamageIncPer:			return &m_StarDamageIncPer;
-	case Role_Attrib_HotohoriDamageRedPer:		return &m_HotohoriDamageRedPer;
-	case Role_Attrib_SunDamageRedPer:			return &m_SunDamageRedPer;
-	case Role_Attrib_MoonDamageRedPer:			return &m_MoonDamageRedPer;
-	case Role_Attrib_StarDamageRedPer:			return &m_StarDamageRedPer;
-	case Role_Attrib_BodyDamageIncPer:			return &m_BodyDamageIncPer;
-	case Role_Attrib_CommonDamageIncPer:		return &m_CommonDamageIncPer;
-	case Role_Attrib_LargeDamageIncPer:			return &m_LargeDamageIncPer;
-	case Role_Attrib_HugeDamageIncPer:			return &m_HugeDamageIncPer;
-	case Role_Attrib_BodyDamageRedPer:			return &m_BodyDamageRedPer;
-	case Role_Attrib_CommonDamageRedPer:		return &m_CommonDamageRedPer;
-	case Role_Attrib_LargeDamageRedPer:			return &m_LargeDamageRedPer;
-	case Role_Attrib_HugeDamageRedPer:			return &m_HugeDamageRedPer;
-	case Role_Attrib_ReducePlace:				return &m_ReducePlace;
-	case Role_Attrib_ReduceFloat:				return &m_ReduceFloat;
-	case Role_Attrib_ReduceCounter:				return &m_ReduceCounter;
-	case Role_Attrib_IncreaseCounter:			return &m_IncreaseCounter;
-	case Role_Attrib_FighterFlag:				return &m_iFlag;
-	case Role_Attrib_HpCombatInit:				return &m_HpCombatInit;
-
-	case Role_Attrib_MoraleAttack:				return &m_MoraleAttack;
-	case Role_Attrib_MoraleBeAttack:			return &m_MoraleBeAttack;
-	case Role_Attrib_MoraleRound:				return &m_MoraleRound;
-
 	default:	return NULL;
 	}
 	return NULL;
@@ -438,10 +381,11 @@ int* CFighter::_FindFieldInt(int i)
 
 int64* CFighter::_FindFieldI64(int i)
 {
-	/*switch(i)
+	switch(i)
 	{
+	case Role_Attrib_ID:	return &m_ObjID;
 	default:	return NULL;
-	}*/
+	}
 	return NULL;
 }
 
@@ -508,38 +452,34 @@ void CFighter::_ChangeRelatedField(int i, bool client, bool data)
 		}
 		break;
 	case Role_Attrib_BaseStrength:
-	case Role_Attrib_TrainStrength:
 	case Role_Attrib_StrengthAddons:
 	case Role_Attrib_StrengthPercent:
 		{
-			int value = (m_BaseStrength + this->GetFieldInt(Role_Attrib_TrainStrength) + m_Strength[Attrib_Addons]) * (100 + m_Strength[Attrib_Percent]) / 100;
+			int value = (m_BaseStrength + m_Strength[Attrib_Addons]) * (100 + m_Strength[Attrib_Percent]) / 100;
 			SetFieldInt(Role_Attrib_Strength, value, client);
 		}
 		break;
 	case Role_Attrib_BaseIntellect:
-	case Role_Attrib_TrainIntellect:
 	case Role_Attrib_IntellectAddons:
 	case Role_Attrib_IntellectPercent:
 		{
-			int value = (m_BaseIntellect + this->GetFieldInt(Role_Attrib_TrainIntellect) + m_Intellect[Attrib_Addons]) * (100 + m_Intellect[Attrib_Percent]) / 100;
+			int value = (m_BaseIntellect + m_Intellect[Attrib_Addons]) * (100 + m_Intellect[Attrib_Percent]) / 100;
 			SetFieldInt(Role_Attrib_Intellect, value, client);
 		}
 		break;
 	case Role_Attrib_BaseTechnique:
-	case Role_Attrib_TrainTechnique:
 	case Role_Attrib_TechniqueAddons:
 	case Role_Attrib_TechniquePercent:
 		{
-			int value = (m_BaseTechnique + this->GetFieldInt(Role_Attrib_TrainTechnique) + m_Technique[Attrib_Addons]) * (100 + m_Technique[Attrib_Percent]) / 100;
+			int value = (m_BaseTechnique + m_Technique[Attrib_Addons]) * (100 + m_Technique[Attrib_Percent]) / 100;
 			SetFieldInt(Role_Attrib_Technique, value, client);
 		}
 		break;
 	case Role_Attrib_BaseAgility:
-	case Role_Attrib_TrainAgility:
 	case Role_Attrib_AgilityAddons:
 	case Role_Attrib_AgilityPercent:
 		{
-			int value = (m_BaseAgility + this->GetFieldInt(Role_Attrib_TrainAgility) + m_Agility[Attrib_Addons]) * (100 + m_Agility[Attrib_Percent]) / 100;
+			int value = (m_BaseAgility + m_Agility[Attrib_Addons]) * (100 + m_Agility[Attrib_Percent]) / 100;
 			SetFieldInt(Role_Attrib_Agility, value, client);
 		}
 		break;
@@ -640,7 +580,7 @@ void CFighter::OnLevelup(int up)
 {
 	ChangeFieldInt(Role_Attrib_Level, up, true);
 	InitBaseAttr(true);
-	SyncFieldToData("attr");
+	//SyncFieldToData("attr");
 
 	if( this->IsPlayer() )
 	{

@@ -162,12 +162,12 @@ bool CBaseServer::onMessage(PACKET_COMMAND* pack)
 
 	switch (pack->Type())
 	{
-	case Message::MSG_SERVER_SYNCGATELOAD:	_HandlePacket_SyncLoadNumber(pack);	break;
-	case Message::MSG_SERVER_NET_CLOSE:		_HandlePacket_NetClose(pack);		break;
-	case Message::MSG_SERVER_NET_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
-	case Message::MSG_SERVER_REGISTER:		_HandlePacket_RegistServer(pack);	break;
-	case Message::MSG_SERVER_SYNCSERVER:	_HandlePacket_ConnectServer(pack);	break;
-	case Message::MSG_SERVER_NET_CONNECT:	_HandlePacket_RegistAsyncReturn(pack); break;
+	case Message::MSG_SERVER_SYNCGATELOAD:	_handlePacket_SyncLoadNumber(pack);	break;
+	case Message::MSG_SERVER_NET_CLOSE:		_handlePacket_NetClose(pack);		break;
+	case Message::MSG_SERVER_NET_ACCEPT:	_handlePacket_NetAccept(pack);		break;
+	case Message::MSG_SERVER_REGISTER:		_handlePacket_RegistServer(pack);	break;
+	case Message::MSG_SERVER_SYNCSERVER:	_handlePacket_ConnectServer(pack);	break;
+	case Message::MSG_SERVER_NET_CONNECT:	_handlePacket_RegistAsyncReturn(pack); break;
 	default:	return false;
 	}
 
@@ -287,6 +287,14 @@ CLinker* CBaseServer::createLinker(int type, int id, int port, const char* szip,
 	if (!linker)
 		return NULL;
 
+	return createLinker(linker, type, id, port, szip, extport, extip, world, host, sock);
+}
+
+CLinker* CBaseServer::createLinker(CLinker* linker, int type, int id, int port, const char* szip, int extport, const char* extip, int world, bool host, SOCKET sock)
+{
+	if (!linker)
+		return NULL;
+
 	linker->m_type = type;
 	linker->m_nID = id;
 	linker->m_nPort = port;
@@ -300,13 +308,17 @@ CLinker* CBaseServer::createLinker(int type, int id, int port, const char* szip,
 		strncpy(linker->m_extIP, extip, 32);
 	}
 
-	if (!connectLinker(linker))
+	if (INVALID_SOCKET == linker->m_Socket)
 	{
-		delete linker;
-		return NULL;
+		if (!regist(linker))
+		{
+			delete linker;
+			return NULL;
+		}
+		addLinker(linker);
 	}
 
-	addLinker(linker);
+	_onAddLinker(linker);
 
 	Log.Notice("[CBaseServer] Create Server %s:%d World:%d ID:%d Sock:%d", linker->m_szIP, linker->m_nPort, linker->m_worldID, linker->m_nID, linker->m_Socket);
 
@@ -317,17 +329,6 @@ bool CBaseServer::addLinker(CLinker* linker)
 {
 	m_linkerList.AddToTail(linker);
 	m_linkerMap.Insert(linker->m_Socket, linker);
-
-	return true;
-}
-
-bool CBaseServer::connectLinker(CLinker* linker)
-{
-	if (INVALID_SOCKET == linker->m_Socket && !regist(linker)) {
-		return false;
-	}
-
-	linker->m_bBreak = false;
 
 	return true;
 }
@@ -458,7 +459,7 @@ bool CBaseServer::loop_linkers()
 	return true;
 }
 
-bool CBaseServer::_HandlePacket_NetAccept(PACKET_COMMAND* pack)
+bool CBaseServer::_handlePacket_NetAccept(PACKET_COMMAND* pack)
 {
 	if (!pack)
 		return false;
@@ -476,7 +477,7 @@ bool CBaseServer::_HandlePacket_NetAccept(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CBaseServer::_HandlePacket_NetClose(PACKET_COMMAND* pack)
+bool CBaseServer::_handlePacket_NetClose(PACKET_COMMAND* pack)
 {
 	if (!pack)
 		return false;
@@ -489,7 +490,7 @@ bool CBaseServer::_HandlePacket_NetClose(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CBaseServer::_HandlePacket_RegistServer(PACKET_COMMAND* pack)
+bool CBaseServer::_handlePacket_RegistServer(PACKET_COMMAND* pack)
 {
 	if (!pack)
 		return false;
@@ -499,22 +500,13 @@ bool CBaseServer::_HandlePacket_RegistServer(PACKET_COMMAND* pack)
 
 	CLinker* linker = getLinker(pack->GetNetID());
 	if (linker) {
-		linker->m_type = msg.type();
-		linker->m_nID = msg.id();
-		linker->m_nPort = msg.port();
-		linker->m_worldID = msg.world();
-		linker->m_bHost = false;
-		linker->m_Socket = pack->GetNetID();
-		strncpy(linker->m_szIP, msg.ip().c_str(), 32);
-		linker->m_extPort = msg.extport();
-		strncpy(linker->m_extIP, msg.extip().c_str(), 32);
-		connectLinker(linker);
+		createLinker(linker, msg.type(), msg.id(), msg.port(), msg.ip().c_str(), msg.extport(), msg.extip().c_str(), msg.world(), false, pack->GetNetID());
 	}
 
 	return true;
 }
 
-bool CBaseServer::_HandlePacket_ConnectServer(PACKET_COMMAND* pack)
+bool CBaseServer::_handlePacket_ConnectServer(PACKET_COMMAND* pack)
 {
 	if (!pack)
 		return false;
@@ -527,7 +519,7 @@ bool CBaseServer::_HandlePacket_ConnectServer(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CBaseServer::_HandlePacket_RegistAsyncReturn(PACKET_COMMAND* pack)
+bool CBaseServer::_handlePacket_RegistAsyncReturn(PACKET_COMMAND* pack)
 {
 	if (!pack)
 		return false;
@@ -540,7 +532,7 @@ bool CBaseServer::_HandlePacket_RegistAsyncReturn(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CBaseServer::_HandlePacket_SyncLoadNumber(PACKET_COMMAND* pack)
+bool CBaseServer::_handlePacket_SyncLoadNumber(PACKET_COMMAND* pack)
 {
 	if (!pack)
 		return false;
@@ -591,7 +583,7 @@ bool CBaseServer::regist(CLinker* pObj)
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_SERVER_REGISTER);
 	GETSERVERNET(this)->sendMsg(pObj->m_Socket, &pack);
 
-	//pObj->m_bBreak = false;`
+	pObj->m_bBreak = false;
 
 	return true;
 }

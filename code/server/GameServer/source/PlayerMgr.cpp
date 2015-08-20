@@ -1,25 +1,36 @@
 #include "PlayerMgr.h"
-#include "DataModule.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessagePlayer.pb.h"
 #include "MessageGameobj.pb.h"
 
 
-CPlayer* CPlayerMgr::Create(int templateid, PersonID playerid)
+CPlayer* CPlayerMgr::Create(PersonID playerid)
 {
 	PersonID id = playerid;
-	if( id <= 0 )
+	if (id <= 0)
 	{
 		m_FactId = g_MakePlayerID(m_FactId);
 		id = m_FactId;
 	}
 
-	CPlayer* player = CObjMgr< CPlayer, PersonID >::Create( id );
-	if( !player )
+	CPlayer* player = CObjMgr< CPlayer, PersonID >::Create(id);
+	if (!player)
 		return NULL;
 
 	player->Init();
 	player->SetID(id);
+
+	return player;
+}
+
+CPlayer* CPlayerMgr::Create(int templateid, PersonID playerid)
+{
+	CPlayer* player = this->Create(playerid);
+	if (!player)
+	{
+		return NULL;
+	}
+
 	if( !player->OnCreate(templateid) )
 	{
 		CObjMgr< CPlayer, PersonID >::Delete( player->GetID() );
@@ -41,7 +52,7 @@ void CPlayerMgr::Delete(PersonID id)
 
 void CPlayerMgr::OnLogic()
 {
-	PersonID temp;
+	/*PersonID temp;
 	PersonID id = m_list.Head();
 	while( CPlayer* player = GetObj(temp=id) )
 	{
@@ -54,7 +65,7 @@ void CPlayerMgr::OnLogic()
 
 			Delete(temp);
 		}
-	}
+	}*/
 }
 
 bool CPlayerMgr::OnMsg(PACKET_COMMAND* pack)
@@ -79,14 +90,14 @@ bool CPlayerMgr::_HandlePacket_SyncAttrInt(PACKET_COMMAND* pack)
 	if( !pack )
 		return false;
 
-	Message::PlayerAttribInt msg;
+	/*Message::PlayerAttribInt msg;
 	PROTOBUF_CMD_PARSER( pack, msg );
 
 	CPlayer* player = GetObj( msg.pid() );
 	if( !player )
 		return false;
 
-	player->SetFieldInt( msg.attr(), msg.value() );
+	player->SetFieldInt( msg.attr(), msg.value() );*/
 
 	return true;
 }
@@ -96,14 +107,14 @@ bool CPlayerMgr::_HandlePacket_SyncAttrI64(PACKET_COMMAND* pack)
 	if( !pack )
 		return false;
 
-	Message::PlayerAttribI64 msg;
+	/*Message::PlayerAttribI64 msg;
 	PROTOBUF_CMD_PARSER( pack, msg );
 
 	CPlayer* player = GetObj( msg.pid() );
 	if( !player )
 		return false;
 
-	player->SetFieldI64( msg.attr(), msg.value() );
+	player->SetFieldI64( msg.attr(), msg.value() );*/
 
 	return true;
 }
@@ -181,9 +192,9 @@ void CPlayerMgr::eventPlayerLoadover(PersonID tarID)
 				CPlayer* tarPlayer = this->GetObj(tarID);
 				if( !tarPlayer )
 				{
-					CMetadata* json = DataModule.GetObj( tarID );
+					/*CMetadata* json = DataModule.GetObj( tarID );
 					if( json )
-						tarPlayer = this->Create( json->getFieldInt("template"), tarID );
+						tarPlayer = this->Create( json->getFieldInt("template"), tarID );*/
 				}
 				if( tarPlayer && tarPlayer->GetOnline() == Online_Flag_Off )
 				{
@@ -230,7 +241,7 @@ void CPlayerMgr::_HandleLoadCache(PersonID reqID, PersonID tarID, int module)
 	msg.set_key("playerid");
 	
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_REQUEST);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_LOAD_REQUEST);
 	GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), &pack);
 }
 
@@ -248,5 +259,5 @@ void CPlayerMgr::SyncObservePlayer(CPlayer* player, CPlayer* toPlayer)
 	if( !player || !toPlayer )
 		return;
 
-	player->SyncAttribute(false, toPlayer);
+	player->SyncAllAttrToClient(toPlayer);
 }

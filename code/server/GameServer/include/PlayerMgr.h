@@ -34,6 +34,7 @@ public:
 	CPlayerMgr()	{ m_FactId = 0; SetDefLessFunc(m_LoadMap);}
 	~CPlayerMgr()	{};
 
+	CPlayer* Create(PersonID playerid);
 	CPlayer* Create(int templateid, PersonID playerid = INVALID_VALUE);
 	void	Delete(PersonID id);
 

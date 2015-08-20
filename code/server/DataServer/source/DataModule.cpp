@@ -8,8 +8,19 @@
 
 void CDataModule::_setSaveType(CDataObj* obj, int type)
 {
-	if (obj->m_save != SAVE_INSERT || type != SAVE_UPDATE)
+	if (obj->m_save != SAVE_INSERT || type != SAVE_UPDATE) {
 		obj->m_save = type;
+	}
+}
+
+void CDataModule::_setStatusType(CDataObj* obj, int status)
+{
+	if (obj->m_status != STATUS_ONLINE || status != STATUS_LOAD) {
+		obj->m_status = status;
+	}
+	if (obj->m_status != STATUS_ONLINE) {
+		obj->m_stime = GetTimeSec();
+	}
 }
 
 CDataObj* CDataModule::create(std::string type, int64 id)
@@ -21,8 +32,8 @@ CDataObj* CDataModule::create(std::string type, int64 id)
 	obj->m_id = id;
 	obj->m_type = type;
 	obj->m_save = SAVE_NONE;
-	obj->m_online = true;
-	obj->m_offtime = 0;
+	obj->m_status = STATUS_NONE;
+	obj->m_stime = 0;
 
 	Log.Debug("[CDataModule] Create: (%s, "INT64_FMT")", type.c_str(), id);
 
@@ -42,7 +53,7 @@ CDataObj* CDataModule::loadBson(std::string type, mongo::BSONObj& bson, int64 id
 	return obj;
 }
 
-CDataObj* CDataModule::loadDb(std::string type, std::string key, int64 id)
+CDataObj* CDataModule::loadDb(int status, std::string type, std::string key, int64 id)
 {
 	mongo::Query query = QUERY(key<<id);
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
@@ -56,6 +67,7 @@ CDataObj* CDataModule::loadDb(std::string type, std::string key, int64 id)
 			return NULL;
 
 		obj->fromBson(p);
+		_setStatusType(obj, status);
 
 		Log.Debug("[CDataModule] loadDb: (%s, "INT64_FMT"): %s", type.c_str(), id, p.toString().c_str());
 
@@ -65,7 +77,7 @@ CDataObj* CDataModule::loadDb(std::string type, std::string key, int64 id)
 	return NULL;
 }
 
-bool CDataModule::loadDb(std::string type)
+bool CDataModule::loadDb(int status, std::string type)
 {
 	mongo::Query query;
 	mongo::auto_ptr<mongo::DBClientCursor> cursor;
@@ -85,6 +97,7 @@ bool CDataModule::loadDb(std::string type)
 			return false;
 
 		obj->fromBson(p);
+		_setStatusType(obj, status);
 
 		Log.Debug("[CDataModule] loadDb: (%s, "INT64_FMT"): %s", type.c_str(), id, p.toString().c_str());
 	}
@@ -345,16 +358,31 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case Message::MSG_GAMEOBJ_REQUEST:
+		case Message::MSG_GAMEOBJ_LOAD_REQUEST:
 			{
 				Message::ReqPlayerData msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.pid());
 				if (obj) {
+					_setStatusType(obj, STATUS_LOAD);
 					DataModule.syncObjSeparate(obj, pack->GetNetID());
 				} else {
-					LoadModule.addToLoad(msg.type(), msg.key(), msg.pid(), pack->GetNetID());
+					LoadModule.addToLoad(msg.type(), msg.key(), msg.pid(), pack->GetNetID(), STATUS_LOAD);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_LOGIN_REQUEST:
+			{
+			    Message::ReqPlayerData msg;
+				PROTOBUF_CMD_PARSER(pack, msg);
+
+				CDataObj* obj = this->GetObj(msg.pid());
+				if (obj) {
+					_setStatusType(obj, STATUS_ONLINE);
+				    DataModule.syncObjSeparate(obj, pack->GetNetID());
+				} else {
+					LoadModule.addToLoad(msg.type(), msg.key(), msg.pid(), pack->GetNetID(), STATUS_ONLINE);
 				}
 			}
 			break;
@@ -377,8 +405,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->m_online = false;
-					obj->m_offtime = GetTimeSec();
+					_setStatusType(obj, STATUS_OFFLINE);
 				}
 			}
 			break;
@@ -397,17 +424,16 @@ void CDataModule::onSave()
 		id = m_list.Next(id);
 
 		if (obj->m_save == SAVE_INSERT) {
-			std::string key = obj->m_type + "id";
-			saveDb(obj, key);
+			saveDb(obj, obj->m_type + "id");
 			obj->m_save = SAVE_NONE;
 		}
 		else if (obj->m_save == SAVE_UPDATE) {
-			std::string key = obj->m_type + "id";
-			updateDb(obj, key);
+			updateDb(obj, obj->m_type + "id");
 			obj->m_save = SAVE_NONE;
 		}
 
-		if (!obj->m_online && t - obj->m_offtime > 600) {
+		if ((obj->m_status == STATUS_OFFLINE || obj->m_status == STATUS_LOAD) && t - obj->m_stime > 5) {
+			updateDb(obj, obj->m_type + "id");
 			Log.Debug("[CDataModule] Delete: %s "INT64_FMT, obj->m_type.c_str(), obj->m_id);
 			Delete(obj->m_id);
 		}

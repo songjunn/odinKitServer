@@ -9,17 +9,8 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="manager">
-      <UniqueIdentifier>{89d20c6f-6774-4ace-9157-cc38e05ff30a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\DataModule.cpp">
-      <Filter>manager</Filter>
-    </ClCompile>
-    <ClCompile Include="source\LoadModule.cpp">
-      <Filter>manager</Filter>
-    </ClCompile>
     <ClCompile Include="source\DataServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -29,18 +20,24 @@
     <ClCompile Include="source\metadata.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="source\LoadModule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataModule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\DataModule.h">
-      <Filter>manager</Filter>
-    </ClInclude>
-    <ClInclude Include="include\LoadModule.h">
-      <Filter>manager</Filter>
-    </ClInclude>
     <ClInclude Include="include\DataServer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\metadata.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DataModule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LoadModule.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,8 +16,7 @@ public:
 	virtual bool onMessage(PACKET_COMMAND* pack);
 	virtual void onPrint(char* output);
 
-	virtual bool _HandlePacket_RegistServer(PACKET_COMMAND* pack);
-	virtual bool _OnAddServer(CLinker* pServer);
+	virtual bool _onAddLinker(CLinker* pServer);
 };
 
 #define CentralServer CCentralServer::getSingleton()

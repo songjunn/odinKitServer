@@ -33,7 +33,6 @@ bool CLoginModule::OnMsg(PACKET_COMMAND* pack)
 
 	switch( pack->Type() )
 	{
-	case Message::MSG_PLAYER_LOGIN_REQUEST:		_HandlePacket_PlayerLogin(pack);	break;
 	case Message::MSG_USER_lOGIN_REQUEST:		_HandlePacket_UserLogin(pack);		break;
 	case Message::MSG_PLAYER_LOGOUT_REQEUST:	_HandlePacket_PlayerLogout(pack);	break;
 	case Message::MSG_PLAYER_LOAD_COUNT:		_HandlePacket_PlayerCount(pack);	break;
@@ -66,7 +65,7 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 			PROTOBUF_CMD_PACKAGE(packKick, msgKick, Message::MSG_USER_DISPLACE);
 			pUser->SendGateMsg( &packKick );
 
-			Log.Notice("[Login] Displace Online User:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID));
+			Log.Notice("[Login] Displace Online User:"INT64_FMT, pUser->m_ID);
 		}
 
 		pUser->m_GateSocket = pack->GetNetID();
@@ -124,40 +123,6 @@ bool CLoginModule::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CLoginModule::_HandlePacket_PlayerLogin(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::PlayerLogin msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	CUser* pUser = UserMgr.GetObj( msg.uid() );
-	if( !pUser )
-		return false;
-
-	CPlayer* player = PlayerMgr.GetObj( msg.pid() );
-	if( !player )
-	{
-		player = PlayerMgr.Create( msg.templateid(), msg.pid() );
-		if( !player )
-		{
-			Log.Error("[Login] no player, User:"INT64_FMT" Player:"INT64_FMT, msg.uid(), msg.pid());
-			return NULL;
-		}
-	}
-
-	pUser->RelatePlayer( player->GetID() );
-	player->SetLoadTime(timeGetTime());
-	player->SetOnline(Online_Flag_Load);
-	player->SetFieldI64( Role_Attrib_UserID, msg.uid() );
-	player->SetGateSocket( pUser->m_GateSocket );
-
-	m_LoginMap.Insert(msg.pid(), msg.pid());
-
-	return true;
-}
-
 bool CLoginModule::_HandlePacket_PlayerLogout(PACKET_COMMAND* pack)
 {
 	if( !pack )
@@ -196,7 +161,7 @@ bool CLoginModule::_HandlePacket_PlayerCount(PACKET_COMMAND* pack)
 		msgData.set_key("playerid");
 		
 		PACKET_COMMAND packData;
-		PROTOBUF_CMD_PACKAGE(packData, msgData, Message::MSG_GAMEOBJ_REQUEST);
+		PROTOBUF_CMD_PACKAGE(packData, msgData, Message::MSG_GAMEOBJ_LOGIN_REQUEST);
 		GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), &packData);
 	}
 
@@ -224,15 +189,11 @@ bool CLoginModule::_HandlePacket_PlayerCreate(PACKET_COMMAND* pack)
 	if( !player )
 		return false;
 
-	player->m_GameObj->setFieldI64("playerid", player->GetID());
-	player->m_GameObj->setFieldI64("userid", msg.uid());
-	player->m_GameObj->setFieldString("name", msg.name().c_str());
-	player->m_GameObj->setFieldInt("template", msg.roletemplate());
-
 	player->SetLoadTime(timeGetTime());
 	player->SetOnline(Online_Flag_Load);
 	player->SetName( msg.name().c_str() );
 	player->SetFieldI64( Role_Attrib_UserID, msg.uid() );
+	player->SetFieldI64(Role_Attrib_CreateTime, GetTimeSec());
 	player->SetGateSocket( pack->GetNetID() );
 
 	//验证重名
@@ -276,8 +237,9 @@ bool CLoginModule::_HandlePacket_PlayerOnCreate(PACKET_COMMAND* pack)
 		PlayerMgr.Delete( player->GetID() );
 		return false;
 	}
+
 	//同步DataServer创建
-	DataModule.syncCreate(player->m_GameObj, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+	DataModule.syncCreate(player, "player", GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
 	CEvent* evnt = MakeEvent(Event_Player_Create, player->GetID(), player->GetFieldI64(Role_Attrib_UserID), NULL, true);
 	player->OnEvent(evnt);
@@ -307,6 +269,8 @@ bool CLoginModule::OnPlayerLogin(CPlayer* player)
 	if( !player )
 		return false;
 
+	_OnPlayerSync(player);
+
 	//执行脚本
 	LuaParam param[1];
 	param[0].SetDataNum(player->GetID());
@@ -314,8 +278,7 @@ bool CLoginModule::OnPlayerLogin(CPlayer* player)
 
 	player->SetOnline(Online_Flag_On);
 	player->SetFieldI64(Role_Attrib_LoginTime, GetTimeSec());
-
-	_OnPlayerSync(player);
+	player->SyncFieldI64ToData(Role_Attrib_LoginTime);
 
 	CEvent* evnt = MakeEvent(Event_Player_Login, player->GetID(), NULL, true);
 	player->OnEvent(evnt);
@@ -331,26 +294,20 @@ bool CLoginModule::_OnPlayerSync(CPlayer* player)
 		return false;
 
 	//同步客户端
-	{
-		Message::PlayerLogin msgLogin;
-		msgLogin.set_uid(player->GetFieldI64(Role_Attrib_UserID));
-		msgLogin.set_pid(player->GetID());
-		PACKET_COMMAND packLogin;
-		PROTOBUF_CMD_PACKAGE(packLogin, msgLogin, Message::MSG_PLAYER_LOGIN_REQUEST);
-		player->SendClientMsg(&packLogin);
+	Message::PlayerLogin msgLogin;
+	msgLogin.set_uid(player->GetFieldI64(Role_Attrib_UserID));
+	msgLogin.set_pid(player->GetID());
+	PACKET_COMMAND packLogin;
+	PROTOBUF_CMD_PACKAGE(packLogin, msgLogin, Message::MSG_PLAYER_LOGIN_REQUEST);
+	player->SendClientMsg(&packLogin);
+	
+	player->DataSync();
 
-		player->DataSync();
-
-		Message::PlayerLoadOver msg;
-		msg.set_pid(player->GetID());
-		PACKET_COMMAND pack;
-		PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_OVER);
-		player->SendClientMsg(&pack);
-	}
-
-	// 同步DataServer
-	player->SyncFieldToData("login");
-	player->SyncFieldToData("attr");
+	Message::PlayerLoadOver msg;
+	msg.set_pid(player->GetID());
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_OVER);
+	player->SendClientMsg(&pack);
 
 	return true;
 }
@@ -362,22 +319,14 @@ bool CLoginModule::OnPlayerLogout(PersonID id)
 		return false;
 
 	//下线前同步属性存盘
-	player->SetFieldI64(Role_Attrib_LogoutTime, GetTimeSec(), false);
-	player->SyncFieldToData("login");
+	player->SetFieldI64(Role_Attrib_LogoutTime, GetTimeSec(), false, true);
 
 	//登出事件
 	CEvent* evnt = MakeEvent(Event_Player_Logout, player->GetID(), NULL, true);
 	player->OnEvent(evnt);
 
-	//通知dataserver
-	Message::PlayerLogout msg;
-	msg.set_pid( id );
-
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOGOUT_REQEUST);
-	player->SendDataMsg( &pack );
-	//同步DataServer创建
-	DataModule.syncRemove(player->m_GameObj, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+	//同步DataServer退出
+	DataModule.syncRemove(player, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
 	Log.Notice("[Logout] Online User:"INT64_FMT" Player:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID), id);
 
@@ -397,13 +346,7 @@ void CLoginModule::eventPlayerLoadover(PersonID id)
 	CPlayer* player = PlayerMgr.GetObj(id);
 	if( !player )
 	{
-		CMetadata* json = DataModule.GetObj( id );
-		if( !json )
-			return;
-
-		player = PlayerMgr.Create( json->getFieldInt("template"), id );
-		if( !player )
-			return;
+		return;
 	}
 
 	CUser* pUser = UserMgr.GetObj( player->GetFieldI64(Role_Attrib_UserID) );

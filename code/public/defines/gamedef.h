@@ -430,15 +430,28 @@ const int g_ClearCDTimePerGold  = 3; //国战多少分钟需要1金币来清除CD
 enum Role_Attrib
 {
 	///////////////int属性/////////////////////////
-	Role_Attrib_Int = 0,
+	Role_Attrib_Null = 0,
 
-	//绝技消耗会使用该属性，枚举值不要变动
-	Role_Attrib_Morale,				//士气
-	Role_Attrib_Hp,					//当前生命值
-	
+	Role_Attrib_ID,					//角色id
+	Role_Attrib_UserID,				//账号ID
+	Role_Attrib_Parent,				//拥有者	
+	Role_Attrib_CreateTime,			//角色创建时间
+	Role_Attrib_LoginTime,			//上次登录时间
+	Role_Attrib_LogoutTime,			//上次下线时间
+	Role_Attrib_TemplateID,			//模板
+	Role_Attrib_Vocation,			//职业
+	Role_Attrib_Type,				//类型
+	Role_Attrib_Sex,				//性别
+	Role_Attrib_Camp,				//阵营
+	Role_Attrib_Level,				//等级
+	Role_Attrib_Vip,				//vip等级
+	Role_Attrib_GoldCoin,			//金币
+	Role_Attrib_SilverCoin,			//银币
+	Role_Attrib_Fighting,			//战斗力
 	Role_Attrib_SceneID,			//场景ID
 	Role_Attrib_Position,			//场景坐标
-	Role_Attrib_TeamPos,			//阵型坐标
+	Role_Attrib_Exp,				//当前经验
+	Role_Attrib_Hp,					//当前生命值
 
 	//属性：当前值
 	Role_Attrib_Strength,			//力量
@@ -515,38 +528,6 @@ enum Role_Attrib
 	Role_Attrib_MagicDefensePercent,	//魔法防御附加百分比
 	Role_Attrib_StuntDamagePercent,		//绝技攻击附加百分比
 	Role_Attrib_StuntDefensePercent,	//绝技防御附加百分比
-	
-	//特殊属性
-	Role_Attrib_Counter,			//反击
-
-	//本体属性
-	Role_Attrib_Sun,				//星宿属性：日
-	Role_Attrib_Moon,				//星宿属性：月
-	Role_Attrib_Stars,				//星宿属性：星
-
-	Role_Attrib_MoraleRevert,		//士气回复
-	Role_Attrib_HpRevert,			//生命回复
-
-	Role_Attrib_TemplateID,			//模板
-	Role_Attrib_Vocation,			//职业
-	Role_Attrib_Type,				//类型
-	Role_Attrib_Sex,				//性别
-	Role_Attrib_Camp,				//阵营
-	Role_Attrib_Level,				//等级
-	Role_Attrib_Body,				//体型
-	Role_Attrib_AttackSkill,		//普攻技能
-	Role_Attrib_UseStuntSkill,		//使用的绝技
-	Role_Attrib_UseFinalSkill,		//使用的终结技
-	Role_Attrib_Stamina,			//行动力
-	Role_Attrib_GoldCoin,			//金币
-	Role_Attrib_SilverCoin,			//银币
-	Role_Attrib_ColorCoin,			//第三种代币
-	Role_Attrib_Fighting,			//战斗力
-	Role_Attrib_Merit,				//战功
-	Role_Attrib_Credit,				//声望
-	Role_Attrib_HeroPos,			//英雄位置
-	Role_Attrib_Quality,			//品质
-	Role_Attrib_KnightState,		//骑士位阶
 
 	Role_Attrib_PhysiRealDamageIncr,		//物理增伤值
 	Role_Attrib_PhysiRealDamageIncrPer,		//物理增伤百分比
@@ -560,178 +541,13 @@ enum Role_Attrib
 	Role_Attrib_StuntRealDamageIncrPer,		//绝技增伤百分比
 	Role_Attrib_StuntRealDamageReducePer,	//绝技减伤百分比
 
-	
-	Role_Attrib_FloatProb,					//造成浮空几率
-
-	Role_Attrib_TrainStrength,				//训练的力量成长
-	Role_Attrib_TrainIntellect,				//训练的智力成长
-	Role_Attrib_TrainTechnique,				//训练的技巧成长
-	Role_Attrib_TrainAgility,				//训练的敏捷成长
-
-	Role_Attrib_StarsID,
-
-	//国战属性
-	Role_Attrib_BattleCamp,			//国战阵营
-	Role_Attrib_BattleWpID,			//国战路点ID
-	Role_Attrib_BattleActions,		//剩余战斗次数
-	Role_Attrib_BattleBuyActions,	//剩余购买战斗次数
-
-	//祭神属性
-	Role_Attrib_WorshipCount,		//祭神次数
-	Role_Attrib_StateGreen,
-	Role_Attrib_StateBlue,
-	Role_Attrib_StatePurple,
-	Role_Attrib_StateOrange,
-
-	//背包扩充
-	Role_Attrib_BagMaxCapacity,
-
 	//加成属性
 	Role_Attrib_ExpAddition,		//经验加成百分比
 	Role_Attrib_MeritAddition,		//战功加成百分比
 	Role_Attrib_SilverAddition,		//银币加成百分比
 	Role_Attrib_StateExpAddition,	//位阶经验加成百分比
 
-	Role_Attrib_Hotohori,			//星宿:日/月/星
-
-	//战斗时存储被动技能的作用效果(不存盘)
-	Role_Attrib_CombatAll,			//普攻时全攻的百分比
-	Role_Attrib_CombatCross,		//普攻时十字攻的百分比
-	Role_Attrib_CombatRow,			//普攻时行攻的百分比
-	Role_Attrib_CombatLine,			//普攻时列攻的百分比
-
-	Role_Attrib_BossInspire,		//世界Boss鼓舞等级
-
-	Role_Attrib_FreeCount,			//同一天中免费祭神次数
-
-	Role_Attrib_QualityProgress,	//品质提升进度
-
-	Role_Attrib_OnEffect,			//战斗中是否受到buff/debuff，不存盘
-	Role_Attrib_MoralCost,			//绝技技能是否消耗士气，不存盘
-	Role_Attrib_PlaceProb,			//造成部位伤害的百分比，不存盘
-
-	Role_Attrib_Flag,				//角色标记位
-
-	Role_Attrib_Revived,			//战斗中复活标志，不存盘
-
-	//战斗时存储被动技能的作用效果(不存盘)
-	Role_Attrib_HotohoriDamageIncPer,//所有属性克制增伤百分比
-	Role_Attrib_SunDamageIncPer,	 //日属性克制增伤百分比
-	Role_Attrib_MoonDamageIncPer,	 //月属性克制增伤百分比
-	Role_Attrib_StarDamageIncPer,	 //星属性克制增伤百分比
-	Role_Attrib_HotohoriDamageRedPer,//所有属性克制减伤百分比
-	Role_Attrib_SunDamageRedPer,	 //日属性克制减伤百分比
-	Role_Attrib_MoonDamageRedPer,	 //月属性克制减伤百分比
-	Role_Attrib_StarDamageRedPer,	 //星属性克制减伤百分比
-	Role_Attrib_BodyDamageIncPer,	 //所有体型克制增伤百分比
-	Role_Attrib_CommonDamageIncPer,	 //普通体克制增伤百分比
-	Role_Attrib_LargeDamageIncPer,	 //大型体克制增伤百分比
-	Role_Attrib_HugeDamageIncPer,	 //巨型体克制增伤百分比
-	Role_Attrib_BodyDamageRedPer,	 //所有体型克制减伤百分比
-	Role_Attrib_CommonDamageRedPer,	 //普通体克制减伤百分比
-	Role_Attrib_LargeDamageRedPer,	 //大型体克制减伤百分比
-	Role_Attrib_HugeDamageRedPer,	 //巨型体克制减伤百分比
-
-	Role_Attrib_Vip,				//vip等级
-
-	Role_Attrib_ShareDamage,		//伤害分配
-	Role_Attrib_Invincible,			//无敌状态
-	Role_Attrib_FixStuntDamage,		//绝技技能伤害修正
-
-	//充值相关活动
-	Role_Attrib_SingleDoStateA,		//单次充值反赠A的达成状态
-	Role_Attrib_SingleGetStateA,	//单次充值反赠A的领取状态
-	Role_Attrib_SingleDoStateB,		//单次充值反赠B的达成状态
-	Role_Attrib_SingleGetStateB,	//单次充值反赠B的领取状态
-	Role_Attrib_MultiDoState,		//累次充值反赠的达成状态
-	Role_Attrib_MultiGetState,		//累次充值反赠的领取状态
-
-	Role_Attrib_FixedKill,			//击杀目标后是否可复活(标志，不存盘)
-	Role_Attrib_NonRevive,			//是否可复活(标志，不存盘)
-
-	//反被率(暂存被动技能数值，不存盘)，越大越有利
-	Role_Attrib_ReducePlace,		//部位破坏
-	Role_Attrib_ReduceFloat,		//浮空倒地
-	Role_Attrib_ReduceCounter,		//反击
-
-	Role_Attrib_IncreaseCounter,	//被攻击者增加的反击率
-
-	Role_Attrib_InitStuntID,		//天生的绝技技能
-
-	Role_Attrib_RandHeroCount,		//斗酒次数
-
-	Role_Attrib_FighterFlag,		//被动属性作用标记
-
-	Role_Attrib_TeaseSilver,		//今日调教获得的银币
-	Role_Attrib_TeaseCount,			//花费金币调教次数
-	Role_Attrib_QueenMood,			//女王心情
-
-	Role_Attrib_Silent,				//是否沉默(不存盘)
-
-	Role_Attrib_ExtBagPage = 500,	//已购买的额背包页数
-	Role_Attrib_BuyStamina,			//每日购买行动力次数
-	Role_Attrib_BossInspireFree,	//世界boss免费鼓舞次数
-	Role_Attrib_BattleDoubleReward,	//国战单场奖励加倍次数
-	Role_Attrib_AdvancedTrain,		//每日高级训练免费次数
-	Role_Attrib_SignInFree,			//每日免费补签次数
-	Role_Attrib_SkillResetFree,		//每日免费洗特性次数
-	Role_Attrib_StaminaMax,			//最大行动力值
-    
-    Role_Attrib_CombatEntrance,     //战斗中入场时间
-
-	Role_Attrib_MoraleAttack,       //恢复士气值
-	Role_Attrib_MoraleBeAttack,
-	Role_Attrib_MoraleRound,
-
-	Role_Attrib_HpCombatInit,		//战斗开始时的血值
-
-	//屠戳秘境
-	Role_Attrib_CarnageSceneTop,	//已通过的最高关卡
-	Role_Attrib_CarnageAchiveMax,	//最高纪录
-	Role_Attrib_CarnageResetCnt,	//重置次数
-	Role_Attrib_CarnageChlgCnt,		//挑战次数
-
-	Role_Attrib_Int_End,
-
-
-	///////////////int64属性///////////////////////
-	Role_Attrib_I64		= 1000,
-	
-	Role_Attrib_Exp,				//当前经验
-	//Role_Attrib_ExpMax,				//最高经验
-	Role_Attrib_Parent,				//拥有者
-	Role_Attrib_LoginTime,			//上次登录时间
-	Role_Attrib_LogoutTime,			//上次下线时间
-	Role_Attrib_UserID,				//账号ID
-	Role_Attrib_KnightStateExp,		//骑士位阶经验
-	Role_Attrib_BattleActionTime,	//国战上次战斗时间
-	Role_Attrib_BattleActionCDTime,	//国战战斗cd时间
-	Role_Attrib_BattleRewardDialy,	//国战每日结算奖励
-	Role_Attrib_BattleRewardDialyWp,//国战每日结算奖励占领路点数
-
-	Role_Attrib_ChatPrivateTime,	// last chat request time
-	Role_Attrib_ChatWorldTime,		// last chat request time
-	Role_Attrib_ChatCampTime,		// last chat request time
-	Role_Attrib_ChatKnightsTime,	// last chat request time
-
-	Role_Attrib_RechargeSum,		//总充值
-
-	Role_Attrib_FirstChargeTime,	//首充时间
-
-	Role_Attrib_RandHeroLastTime,	//最近一次斗酒时间
-	Role_Attrib_RandHeroLeftTime,	//距下一次免费斗酒时长
-
-	Role_Attrib_FirstServerTime,	//首次开服时间
-
-	Role_Attrib_LastTeaseTime,		//最近一次免费调教时间
-	Role_Attrib_LeftTeaseLen,		//距下一次免费调教时长(不存盘)
-
-	Role_Attrib_I64_End,
-    
-    
-    /////////////////////////角色额外的附加值////////////////////
-    
-    Role_Extra_Destroy,     //额外的部位破坏概率
+	Role_Attrib_End,
 };
 
 //物品属性定义

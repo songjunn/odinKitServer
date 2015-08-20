@@ -188,12 +188,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\public\defines\gamedef.h" />
     <ClInclude Include="..\common\commdata.h" />
     <ClInclude Include="..\common\eventdef.h" />
     <ClInclude Include="..\common\ObjMgr.h" />
+    <ClInclude Include="include\attrs_defines.h" />
     <ClInclude Include="include\DataModule.h" />
     <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\GameServer.h" />
+    <ClInclude Include="include\attrs.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="include\ItemTemplate.h" />
@@ -215,6 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\attrs.cpp" />
     <ClCompile Include="source\DataModule.cpp" />
     <ClCompile Include="source\GameServer.cpp" />
     <ClCompile Include="source\NameText.cpp" />

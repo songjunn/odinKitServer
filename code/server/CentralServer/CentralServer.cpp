@@ -119,22 +119,7 @@ void CCentralServer::onShutdown()
 	CBaseServer::onShutdown();
 }
 
-bool CCentralServer::_HandlePacket_RegistServer(PACKET_COMMAND* pack)
-{
-	if (!pack)
-		return false;
-
-	Message::RegistServer msg;
-	PROTOBUF_CMD_PARSER(pack, msg);
-
-	CLinker* server = createLinker(msg.type(), msg.id(), msg.port(), msg.ip().c_str(), msg.extport(), msg.extip().c_str(), msg.world(), false, pack->GetNetID());
-	if (!server)
-		return false;
-
-	return _OnAddServer(server);
-}
-
-bool CCentralServer::_OnAddServer(CLinker* pServer)
+bool CCentralServer::_onAddLinker(CLinker* pServer)
 {
 	if (!pServer)
 		return false;

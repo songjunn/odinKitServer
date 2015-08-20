@@ -102,11 +102,20 @@
     <ClInclude Include="..\common\ObjMgr.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\DataModule.h">
-      <Filter>module</Filter>
-    </ClInclude>
     <ClInclude Include="include\GameServer.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\attrs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\attrs_defines.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\public\defines\gamedef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DataModule.h">
+      <Filter>module</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,14 +161,17 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\DataModule.cpp">
-      <Filter>module</Filter>
-    </ClCompile>
     <ClCompile Include="source\GameServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\attrs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataModule.cpp">
+      <Filter>module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

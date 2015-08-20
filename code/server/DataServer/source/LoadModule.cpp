@@ -40,13 +40,14 @@ void CLoadModule::onLogic()
 		{
 			if( loader->id > 0 )
 			{
-				CDataObj* obj = DataModule.loadDb(loader->type, loader->key, loader->id);
-				if( obj )
+				CDataObj* obj = DataModule.loadDb(loader->status, loader->type, loader->key, loader->id);
+				if (obj) {
 					DataModule.syncObjSeparate(obj, loader->sock);
+				}
 			}
 			else
 			{
-				if( DataModule.loadDb(loader->type) )
+				if (DataModule.loadDb(loader->status, loader->type))
 					DataModule.syncObj(loader->type, loader->sock);
 			}
 
@@ -150,7 +151,7 @@ bool CLoadModule::_handlePacket_LoadPlayerCount(PACKET_COMMAND* pack)
 	return true;
 }
 
-void CLoadModule::addToLoad(std::string type, std::string key, int64 id, int sock)
+void CLoadModule::addToLoad(std::string type, std::string key, int64 id, int sock, int status)
 {
 	CLoadObj* loader = NEW CLoadObj;
 	if (!loader) {
@@ -161,6 +162,7 @@ void CLoadModule::addToLoad(std::string type, std::string key, int64 id, int soc
 	loader->key = key;
 	loader->id = id;
 	loader->sock = sock;
+	loader->status = status;
 
 	m_LoadList.AddToTail(loader);
 }

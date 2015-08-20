@@ -20,7 +20,6 @@ public:
 
 protected:
 	bool	_HandlePacket_UserLogin(PACKET_COMMAND* pack);
-	bool	_HandlePacket_PlayerLogin(PACKET_COMMAND* pack);
 	bool	_HandlePacket_PlayerLogout(PACKET_COMMAND* pack);
 	bool	_HandlePacket_PlayerCount(PACKET_COMMAND* pack);
 	bool	_HandlePacket_PlayerCreate(PACKET_COMMAND* pack);

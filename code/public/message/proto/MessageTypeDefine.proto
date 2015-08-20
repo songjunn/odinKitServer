@@ -28,7 +28,8 @@ enum MsgDefine {
 	MSG_GAMEOBJ_SYNC_OBJFIELD = 210;
 	MSG_GAMEOBJ_SYNC_MAPFIELD = 211;
 	MSG_GAMEOBJ_SYNC_FINISH = 212;
-	MSG_GAMEOBJ_REQUEST = 213;          //向数据中心请求加载obj数据
+	MSG_GAMEOBJ_LOAD_REQUEST = 213;     //请求加载obj数据
+	MSG_GAMEOBJ_LOGIN_REQUEST = 214;    //请求登陆obj
 	
 	MSG_USER_PRLOGIN_REQUEST = 300;     //账号预登陆：账号ID，登陆session密钥
 	MSG_USER_lOGIN_REQUEST = 301;       //账号登陆：账号ID，账号名

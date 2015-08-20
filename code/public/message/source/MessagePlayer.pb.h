@@ -40,10 +40,10 @@ class DeletePlayer;
 class CheckNameRequest;
 class CheckNameResponse;
 class PlayerCount;
+class PlayerAttrSync;
+class PlayerAttrSync_Attr;
 class PlayerAttrib;
 class PlayerLoadOver;
-class PlayerAttribI64;
-class PlayerAttribInt;
 class ObservePlayerRequest;
 
 // ===================================================================
@@ -765,6 +765,250 @@ class PlayerCount : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class PlayerAttrSync_Attr : public ::google::protobuf::Message {
+ public:
+  PlayerAttrSync_Attr();
+  virtual ~PlayerAttrSync_Attr();
+
+  PlayerAttrSync_Attr(const PlayerAttrSync_Attr& from);
+
+  inline PlayerAttrSync_Attr& operator=(const PlayerAttrSync_Attr& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlayerAttrSync_Attr& default_instance();
+
+  void Swap(PlayerAttrSync_Attr* other);
+
+  // implements Message ----------------------------------------------
+
+  PlayerAttrSync_Attr* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PlayerAttrSync_Attr& from);
+  void MergeFrom(const PlayerAttrSync_Attr& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 type = 1;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 1;
+  inline ::google::protobuf::int32 type() const;
+  inline void set_type(::google::protobuf::int32 value);
+
+  // optional string group = 2;
+  inline bool has_group() const;
+  inline void clear_group();
+  static const int kGroupFieldNumber = 2;
+  inline const ::std::string& group() const;
+  inline void set_group(const ::std::string& value);
+  inline void set_group(const char* value);
+  inline void set_group(const char* value, size_t size);
+  inline ::std::string* mutable_group();
+  inline ::std::string* release_group();
+  inline void set_allocated_group(::std::string* group);
+
+  // optional string key = 3;
+  inline bool has_key() const;
+  inline void clear_key();
+  static const int kKeyFieldNumber = 3;
+  inline const ::std::string& key() const;
+  inline void set_key(const ::std::string& value);
+  inline void set_key(const char* value);
+  inline void set_key(const char* value, size_t size);
+  inline ::std::string* mutable_key();
+  inline ::std::string* release_key();
+  inline void set_allocated_key(::std::string* key);
+
+  // optional int32 val32 = 4;
+  inline bool has_val32() const;
+  inline void clear_val32();
+  static const int kVal32FieldNumber = 4;
+  inline ::google::protobuf::int32 val32() const;
+  inline void set_val32(::google::protobuf::int32 value);
+
+  // optional int64 val64 = 5;
+  inline bool has_val64() const;
+  inline void clear_val64();
+  static const int kVal64FieldNumber = 5;
+  inline ::google::protobuf::int64 val64() const;
+  inline void set_val64(::google::protobuf::int64 value);
+
+  // optional string valstr = 6;
+  inline bool has_valstr() const;
+  inline void clear_valstr();
+  static const int kValstrFieldNumber = 6;
+  inline const ::std::string& valstr() const;
+  inline void set_valstr(const ::std::string& value);
+  inline void set_valstr(const char* value);
+  inline void set_valstr(const char* value, size_t size);
+  inline ::std::string* mutable_valstr();
+  inline ::std::string* release_valstr();
+  inline void set_allocated_valstr(::std::string* valstr);
+
+  // @@protoc_insertion_point(class_scope:Message.PlayerAttrSync.Attr)
+ private:
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_group();
+  inline void clear_has_group();
+  inline void set_has_key();
+  inline void clear_has_key();
+  inline void set_has_val32();
+  inline void clear_has_val32();
+  inline void set_has_val64();
+  inline void clear_has_val64();
+  inline void set_has_valstr();
+  inline void clear_has_valstr();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* group_;
+  ::google::protobuf::int32 type_;
+  ::google::protobuf::int32 val32_;
+  ::std::string* key_;
+  ::google::protobuf::int64 val64_;
+  ::std::string* valstr_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+
+  friend void  protobuf_AddDesc_MessagePlayer_2eproto();
+  friend void protobuf_AssignDesc_MessagePlayer_2eproto();
+  friend void protobuf_ShutdownFile_MessagePlayer_2eproto();
+
+  void InitAsDefaultInstance();
+  static PlayerAttrSync_Attr* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class PlayerAttrSync : public ::google::protobuf::Message {
+ public:
+  PlayerAttrSync();
+  virtual ~PlayerAttrSync();
+
+  PlayerAttrSync(const PlayerAttrSync& from);
+
+  inline PlayerAttrSync& operator=(const PlayerAttrSync& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlayerAttrSync& default_instance();
+
+  void Swap(PlayerAttrSync* other);
+
+  // implements Message ----------------------------------------------
+
+  PlayerAttrSync* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PlayerAttrSync& from);
+  void MergeFrom(const PlayerAttrSync& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  typedef PlayerAttrSync_Attr Attr;
+
+  // accessors -------------------------------------------------------
+
+  // optional int64 pid = 1;
+  inline bool has_pid() const;
+  inline void clear_pid();
+  static const int kPidFieldNumber = 1;
+  inline ::google::protobuf::int64 pid() const;
+  inline void set_pid(::google::protobuf::int64 value);
+
+  // repeated .Message.PlayerAttrSync.Attr attr = 2;
+  inline int attr_size() const;
+  inline void clear_attr();
+  static const int kAttrFieldNumber = 2;
+  inline const ::Message::PlayerAttrSync_Attr& attr(int index) const;
+  inline ::Message::PlayerAttrSync_Attr* mutable_attr(int index);
+  inline ::Message::PlayerAttrSync_Attr* add_attr();
+  inline const ::google::protobuf::RepeatedPtrField< ::Message::PlayerAttrSync_Attr >&
+      attr() const;
+  inline ::google::protobuf::RepeatedPtrField< ::Message::PlayerAttrSync_Attr >*
+      mutable_attr();
+
+  // @@protoc_insertion_point(class_scope:Message.PlayerAttrSync)
+ private:
+  inline void set_has_pid();
+  inline void clear_has_pid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int64 pid_;
+  ::google::protobuf::RepeatedPtrField< ::Message::PlayerAttrSync_Attr > attr_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+
+  friend void  protobuf_AddDesc_MessagePlayer_2eproto();
+  friend void protobuf_AssignDesc_MessagePlayer_2eproto();
+  friend void protobuf_ShutdownFile_MessagePlayer_2eproto();
+
+  void InitAsDefaultInstance();
+  static PlayerAttrSync* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class PlayerAttrib : public ::google::protobuf::Message {
  public:
   PlayerAttrib();
@@ -1241,210 +1485,6 @@ class PlayerLoadOver : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static PlayerLoadOver* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class PlayerAttribI64 : public ::google::protobuf::Message {
- public:
-  PlayerAttribI64();
-  virtual ~PlayerAttribI64();
-
-  PlayerAttribI64(const PlayerAttribI64& from);
-
-  inline PlayerAttribI64& operator=(const PlayerAttribI64& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const PlayerAttribI64& default_instance();
-
-  void Swap(PlayerAttribI64* other);
-
-  // implements Message ----------------------------------------------
-
-  PlayerAttribI64* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const PlayerAttribI64& from);
-  void MergeFrom(const PlayerAttribI64& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // optional int64 pid = 1;
-  inline bool has_pid() const;
-  inline void clear_pid();
-  static const int kPidFieldNumber = 1;
-  inline ::google::protobuf::int64 pid() const;
-  inline void set_pid(::google::protobuf::int64 value);
-
-  // optional int32 attr = 2;
-  inline bool has_attr() const;
-  inline void clear_attr();
-  static const int kAttrFieldNumber = 2;
-  inline ::google::protobuf::int32 attr() const;
-  inline void set_attr(::google::protobuf::int32 value);
-
-  // optional int64 value = 3;
-  inline bool has_value() const;
-  inline void clear_value();
-  static const int kValueFieldNumber = 3;
-  inline ::google::protobuf::int64 value() const;
-  inline void set_value(::google::protobuf::int64 value);
-
-  // @@protoc_insertion_point(class_scope:Message.PlayerAttribI64)
- private:
-  inline void set_has_pid();
-  inline void clear_has_pid();
-  inline void set_has_attr();
-  inline void clear_has_attr();
-  inline void set_has_value();
-  inline void clear_has_value();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::google::protobuf::int64 pid_;
-  ::google::protobuf::int64 value_;
-  ::google::protobuf::int32 attr_;
-
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
-
-  friend void  protobuf_AddDesc_MessagePlayer_2eproto();
-  friend void protobuf_AssignDesc_MessagePlayer_2eproto();
-  friend void protobuf_ShutdownFile_MessagePlayer_2eproto();
-
-  void InitAsDefaultInstance();
-  static PlayerAttribI64* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class PlayerAttribInt : public ::google::protobuf::Message {
- public:
-  PlayerAttribInt();
-  virtual ~PlayerAttribInt();
-
-  PlayerAttribInt(const PlayerAttribInt& from);
-
-  inline PlayerAttribInt& operator=(const PlayerAttribInt& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const PlayerAttribInt& default_instance();
-
-  void Swap(PlayerAttribInt* other);
-
-  // implements Message ----------------------------------------------
-
-  PlayerAttribInt* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const PlayerAttribInt& from);
-  void MergeFrom(const PlayerAttribInt& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // optional int64 pid = 1;
-  inline bool has_pid() const;
-  inline void clear_pid();
-  static const int kPidFieldNumber = 1;
-  inline ::google::protobuf::int64 pid() const;
-  inline void set_pid(::google::protobuf::int64 value);
-
-  // optional int32 attr = 2;
-  inline bool has_attr() const;
-  inline void clear_attr();
-  static const int kAttrFieldNumber = 2;
-  inline ::google::protobuf::int32 attr() const;
-  inline void set_attr(::google::protobuf::int32 value);
-
-  // optional int32 value = 3;
-  inline bool has_value() const;
-  inline void clear_value();
-  static const int kValueFieldNumber = 3;
-  inline ::google::protobuf::int32 value() const;
-  inline void set_value(::google::protobuf::int32 value);
-
-  // @@protoc_insertion_point(class_scope:Message.PlayerAttribInt)
- private:
-  inline void set_has_pid();
-  inline void clear_has_pid();
-  inline void set_has_attr();
-  inline void clear_has_attr();
-  inline void set_has_value();
-  inline void clear_has_value();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::google::protobuf::int64 pid_;
-  ::google::protobuf::int32 attr_;
-  ::google::protobuf::int32 value_;
-
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
-
-  friend void  protobuf_AddDesc_MessagePlayer_2eproto();
-  friend void protobuf_AssignDesc_MessagePlayer_2eproto();
-  friend void protobuf_ShutdownFile_MessagePlayer_2eproto();
-
-  void InitAsDefaultInstance();
-  static PlayerAttribInt* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -2111,6 +2151,337 @@ PlayerCount::player() const {
 inline ::google::protobuf::RepeatedField< ::google::protobuf::int64 >*
 PlayerCount::mutable_player() {
   return &player_;
+}
+
+// -------------------------------------------------------------------
+
+// PlayerAttrSync_Attr
+
+// optional int32 type = 1;
+inline bool PlayerAttrSync_Attr::has_type() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PlayerAttrSync_Attr::set_has_type() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PlayerAttrSync_Attr::clear_has_type() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PlayerAttrSync_Attr::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::google::protobuf::int32 PlayerAttrSync_Attr::type() const {
+  return type_;
+}
+inline void PlayerAttrSync_Attr::set_type(::google::protobuf::int32 value) {
+  set_has_type();
+  type_ = value;
+}
+
+// optional string group = 2;
+inline bool PlayerAttrSync_Attr::has_group() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PlayerAttrSync_Attr::set_has_group() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PlayerAttrSync_Attr::clear_has_group() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PlayerAttrSync_Attr::clear_group() {
+  if (group_ != &::google::protobuf::internal::kEmptyString) {
+    group_->clear();
+  }
+  clear_has_group();
+}
+inline const ::std::string& PlayerAttrSync_Attr::group() const {
+  return *group_;
+}
+inline void PlayerAttrSync_Attr::set_group(const ::std::string& value) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  group_->assign(value);
+}
+inline void PlayerAttrSync_Attr::set_group(const char* value) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  group_->assign(value);
+}
+inline void PlayerAttrSync_Attr::set_group(const char* value, size_t size) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  group_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PlayerAttrSync_Attr::mutable_group() {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  return group_;
+}
+inline ::std::string* PlayerAttrSync_Attr::release_group() {
+  clear_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = group_;
+    group_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void PlayerAttrSync_Attr::set_allocated_group(::std::string* group) {
+  if (group_ != &::google::protobuf::internal::kEmptyString) {
+    delete group_;
+  }
+  if (group) {
+    set_has_group();
+    group_ = group;
+  } else {
+    clear_has_group();
+    group_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string key = 3;
+inline bool PlayerAttrSync_Attr::has_key() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void PlayerAttrSync_Attr::set_has_key() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void PlayerAttrSync_Attr::clear_has_key() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void PlayerAttrSync_Attr::clear_key() {
+  if (key_ != &::google::protobuf::internal::kEmptyString) {
+    key_->clear();
+  }
+  clear_has_key();
+}
+inline const ::std::string& PlayerAttrSync_Attr::key() const {
+  return *key_;
+}
+inline void PlayerAttrSync_Attr::set_key(const ::std::string& value) {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  key_->assign(value);
+}
+inline void PlayerAttrSync_Attr::set_key(const char* value) {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  key_->assign(value);
+}
+inline void PlayerAttrSync_Attr::set_key(const char* value, size_t size) {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  key_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PlayerAttrSync_Attr::mutable_key() {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  return key_;
+}
+inline ::std::string* PlayerAttrSync_Attr::release_key() {
+  clear_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = key_;
+    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void PlayerAttrSync_Attr::set_allocated_key(::std::string* key) {
+  if (key_ != &::google::protobuf::internal::kEmptyString) {
+    delete key_;
+  }
+  if (key) {
+    set_has_key();
+    key_ = key;
+  } else {
+    clear_has_key();
+    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional int32 val32 = 4;
+inline bool PlayerAttrSync_Attr::has_val32() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PlayerAttrSync_Attr::set_has_val32() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PlayerAttrSync_Attr::clear_has_val32() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PlayerAttrSync_Attr::clear_val32() {
+  val32_ = 0;
+  clear_has_val32();
+}
+inline ::google::protobuf::int32 PlayerAttrSync_Attr::val32() const {
+  return val32_;
+}
+inline void PlayerAttrSync_Attr::set_val32(::google::protobuf::int32 value) {
+  set_has_val32();
+  val32_ = value;
+}
+
+// optional int64 val64 = 5;
+inline bool PlayerAttrSync_Attr::has_val64() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PlayerAttrSync_Attr::set_has_val64() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PlayerAttrSync_Attr::clear_has_val64() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void PlayerAttrSync_Attr::clear_val64() {
+  val64_ = GOOGLE_LONGLONG(0);
+  clear_has_val64();
+}
+inline ::google::protobuf::int64 PlayerAttrSync_Attr::val64() const {
+  return val64_;
+}
+inline void PlayerAttrSync_Attr::set_val64(::google::protobuf::int64 value) {
+  set_has_val64();
+  val64_ = value;
+}
+
+// optional string valstr = 6;
+inline bool PlayerAttrSync_Attr::has_valstr() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void PlayerAttrSync_Attr::set_has_valstr() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void PlayerAttrSync_Attr::clear_has_valstr() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void PlayerAttrSync_Attr::clear_valstr() {
+  if (valstr_ != &::google::protobuf::internal::kEmptyString) {
+    valstr_->clear();
+  }
+  clear_has_valstr();
+}
+inline const ::std::string& PlayerAttrSync_Attr::valstr() const {
+  return *valstr_;
+}
+inline void PlayerAttrSync_Attr::set_valstr(const ::std::string& value) {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  valstr_->assign(value);
+}
+inline void PlayerAttrSync_Attr::set_valstr(const char* value) {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  valstr_->assign(value);
+}
+inline void PlayerAttrSync_Attr::set_valstr(const char* value, size_t size) {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  valstr_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PlayerAttrSync_Attr::mutable_valstr() {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  return valstr_;
+}
+inline ::std::string* PlayerAttrSync_Attr::release_valstr() {
+  clear_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = valstr_;
+    valstr_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void PlayerAttrSync_Attr::set_allocated_valstr(::std::string* valstr) {
+  if (valstr_ != &::google::protobuf::internal::kEmptyString) {
+    delete valstr_;
+  }
+  if (valstr) {
+    set_has_valstr();
+    valstr_ = valstr;
+  } else {
+    clear_has_valstr();
+    valstr_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// -------------------------------------------------------------------
+
+// PlayerAttrSync
+
+// optional int64 pid = 1;
+inline bool PlayerAttrSync::has_pid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PlayerAttrSync::set_has_pid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PlayerAttrSync::clear_has_pid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PlayerAttrSync::clear_pid() {
+  pid_ = GOOGLE_LONGLONG(0);
+  clear_has_pid();
+}
+inline ::google::protobuf::int64 PlayerAttrSync::pid() const {
+  return pid_;
+}
+inline void PlayerAttrSync::set_pid(::google::protobuf::int64 value) {
+  set_has_pid();
+  pid_ = value;
+}
+
+// repeated .Message.PlayerAttrSync.Attr attr = 2;
+inline int PlayerAttrSync::attr_size() const {
+  return attr_.size();
+}
+inline void PlayerAttrSync::clear_attr() {
+  attr_.Clear();
+}
+inline const ::Message::PlayerAttrSync_Attr& PlayerAttrSync::attr(int index) const {
+  return attr_.Get(index);
+}
+inline ::Message::PlayerAttrSync_Attr* PlayerAttrSync::mutable_attr(int index) {
+  return attr_.Mutable(index);
+}
+inline ::Message::PlayerAttrSync_Attr* PlayerAttrSync::add_attr() {
+  return attr_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Message::PlayerAttrSync_Attr >&
+PlayerAttrSync::attr() const {
+  return attr_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::Message::PlayerAttrSync_Attr >*
+PlayerAttrSync::mutable_attr() {
+  return &attr_;
 }
 
 // -------------------------------------------------------------------
@@ -2893,146 +3264,6 @@ inline ::google::protobuf::int64 PlayerLoadOver::pid() const {
 inline void PlayerLoadOver::set_pid(::google::protobuf::int64 value) {
   set_has_pid();
   pid_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// PlayerAttribI64
-
-// optional int64 pid = 1;
-inline bool PlayerAttribI64::has_pid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PlayerAttribI64::set_has_pid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PlayerAttribI64::clear_has_pid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void PlayerAttribI64::clear_pid() {
-  pid_ = GOOGLE_LONGLONG(0);
-  clear_has_pid();
-}
-inline ::google::protobuf::int64 PlayerAttribI64::pid() const {
-  return pid_;
-}
-inline void PlayerAttribI64::set_pid(::google::protobuf::int64 value) {
-  set_has_pid();
-  pid_ = value;
-}
-
-// optional int32 attr = 2;
-inline bool PlayerAttribI64::has_attr() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PlayerAttribI64::set_has_attr() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PlayerAttribI64::clear_has_attr() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void PlayerAttribI64::clear_attr() {
-  attr_ = 0;
-  clear_has_attr();
-}
-inline ::google::protobuf::int32 PlayerAttribI64::attr() const {
-  return attr_;
-}
-inline void PlayerAttribI64::set_attr(::google::protobuf::int32 value) {
-  set_has_attr();
-  attr_ = value;
-}
-
-// optional int64 value = 3;
-inline bool PlayerAttribI64::has_value() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PlayerAttribI64::set_has_value() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PlayerAttribI64::clear_has_value() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void PlayerAttribI64::clear_value() {
-  value_ = GOOGLE_LONGLONG(0);
-  clear_has_value();
-}
-inline ::google::protobuf::int64 PlayerAttribI64::value() const {
-  return value_;
-}
-inline void PlayerAttribI64::set_value(::google::protobuf::int64 value) {
-  set_has_value();
-  value_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// PlayerAttribInt
-
-// optional int64 pid = 1;
-inline bool PlayerAttribInt::has_pid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PlayerAttribInt::set_has_pid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PlayerAttribInt::clear_has_pid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void PlayerAttribInt::clear_pid() {
-  pid_ = GOOGLE_LONGLONG(0);
-  clear_has_pid();
-}
-inline ::google::protobuf::int64 PlayerAttribInt::pid() const {
-  return pid_;
-}
-inline void PlayerAttribInt::set_pid(::google::protobuf::int64 value) {
-  set_has_pid();
-  pid_ = value;
-}
-
-// optional int32 attr = 2;
-inline bool PlayerAttribInt::has_attr() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PlayerAttribInt::set_has_attr() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PlayerAttribInt::clear_has_attr() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void PlayerAttribInt::clear_attr() {
-  attr_ = 0;
-  clear_has_attr();
-}
-inline ::google::protobuf::int32 PlayerAttribInt::attr() const {
-  return attr_;
-}
-inline void PlayerAttribInt::set_attr(::google::protobuf::int32 value) {
-  set_has_attr();
-  attr_ = value;
-}
-
-// optional int32 value = 3;
-inline bool PlayerAttribInt::has_value() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PlayerAttribInt::set_has_value() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PlayerAttribInt::clear_has_value() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void PlayerAttribInt::clear_value() {
-  value_ = 0;
-  clear_has_value();
-}
-inline ::google::protobuf::int32 PlayerAttribInt::value() const {
-  return value_;
-}
-inline void PlayerAttribInt::set_value(::google::protobuf::int32 value) {
-  set_has_value();
-  value_ = value;
 }
 
 // -------------------------------------------------------------------

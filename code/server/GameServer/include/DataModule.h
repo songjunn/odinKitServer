@@ -3,38 +3,26 @@
 
 #include "platform.h"
 #include "Singleton.h"
-#include "tinyxml.h"   
-#include "tinystr.h"
-#include "ObjMgr.h"
-#include "metadata.h"
+#include <string>
 
-
+class IBaseObj;
 class PACKET_COMMAND;
-class CDataModule : public CObjMgr< CMetadata, int64 >, public Singleton< CDataModule >
+class CDataModule : public Singleton< CDataModule >
 {
 public:
-	CDataModule()	{objTemplate.SetObject();}
+	CDataModule()	{}
 	~CDataModule()	{}
 
 	bool onMessage(PACKET_COMMAND* pack);
-	bool onLoadConfig(const char* xmlFile);
 
-	CMetadata* create(const char* type, int64 id);
-	CMetadata* createMetadata(const char* type, int64 id);
-
-	void syncCreate(CMetadata* obj, int sock);
-	void syncRemove(CMetadata* obj, int sock);
-	void syncField(CMetadata* obj, int sock, const char* field);
+	void syncCreate(IBaseObj* obj, std::string type, int sock);
+	void syncRemove(IBaseObj* obj, int sock);
+	void syncFieldInt(IBaseObj* obj, const char* group, int i, int sock);
+	void syncFieldI64(IBaseObj* obj, const char* group, int i, int sock);
+	void syncGroupAll(IBaseObj* obj, const char* group, const char* json, int sock);
 	void syncAddMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr);
 	void syncSetMap(int64 id, int sock, const char* field, int64 mapkey, const char* jsonstr);
 	void syncDelMap(int64 id, int sock, const char* field, int64 mapkey);
-
-protected:
-	void _parseXmlNode(TiXmlElement* node, rapidjson::Value& json);
-	void _parseClildNode(TiXmlElement* node, rapidjson::Value& json);
-
-protected:
-	rapidjson::Document objTemplate;
 
 };
 

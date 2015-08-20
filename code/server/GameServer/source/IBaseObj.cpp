@@ -19,89 +19,83 @@ void IBaseObj::Copy(const IBaseObj& obj)
 int	IBaseObj::GetFieldInt(int i)
 {
 	int* field = _FindFieldInt(i);
-	if( field )
-		return *field;
-	else
-		return _GetXmlFieldInt(i);
+	if (!field)
+		return INVALID_VALUE;
+	return *field;
 }
 
-void IBaseObj::SetFieldInt(int i, int value, bool client)
+void IBaseObj::SetFieldInt(int i, int value, bool client, bool data)
 {
 	int* field = _FindFieldInt(i);
-	if( field )
-		*field = value;
-	else
-		_SetXmlFieldInt(i, value);
+	if (!field)
+		return;
+	*field = value;
 
-	if( client )
+	_ChangeRelatedField(i, client, data);
+
+	if (client)
 		SyncFieldIntToClient(i);
-
-	_ChangeRelatedField(i, client);
+	if (data)
+		SyncFieldIntToData(i);
 }
 
 int64 IBaseObj::GetFieldI64(int i)
 {
 	int64* field = _FindFieldI64(i);
-	if( field )
-		return *field;
-	else
-		return _GetXmlFieldI64(i);
+	if (!field)
+		return INVALID_VALUE;
+	return *field;
 }
 
-void IBaseObj::SetFieldI64(int i, int64 value, bool client)
+void IBaseObj::SetFieldI64(int i, int64 value, bool client, bool data)
 {
 	int64* field = _FindFieldI64(i);
-	if( field )
-		*field = value;
-	else
-		_SetXmlFieldI64(i, value);
+	if (!field)
+		return;
+	*field = value;
 
-	if( client )
+	_ChangeRelatedField(i, client, data);
+
+	if (client)
 		SyncFieldI64ToClient(i);
-
-	_ChangeRelatedField(i, client);
+	if (data)
+		SyncFieldI64ToData(i);
 }
 
-void IBaseObj::ChangeFieldInt(int i, int value, bool client)
+void IBaseObj::ChangeFieldInt(int i, int value, bool client, bool data)
 {
-	if( value == 0 )
+	if (value == 0)
 		return;
 
 	int* field = _FindFieldInt(i);
-	if( field )
-	{
-		*field += value;
-	}
-	else
-	{
-		int v = _GetXmlFieldInt(i);
-		_SetXmlFieldInt(i, v + value);
-	}
+	if (!field)
+		return;
+	*field += value;
 
-	if( client )
+	_ChangeRelatedField(i, client, data);
+
+	if (client)
 		SyncFieldIntToClient(i);
-
-	_ChangeRelatedField(i, client);
+	if (data)
+		SyncFieldIntToData(i);
 }
 
-void IBaseObj::ChangeFieldI64(int i, int64 value, bool client)
+void IBaseObj::ChangeFieldI64(int i, int64 value, bool client, bool data)
 {
-	if( value == 0 )
+	if (value == 0)
 		return;
 
 	int64* field = _FindFieldI64(i);
-	if( field )
-	{
-		*field += value;
-	}
-	else
-	{
-		int64 v = _GetXmlFieldI64(i);
-		_SetXmlFieldI64(i, v + value);
-	}
+	if (!field)
+		return;
+	*field += value;
+	*field = *field >= 0 ? *field : 0;
 
-	if( client )
+	_ChangeRelatedField(i, client, data);
+
+	if (client)
 		SyncFieldI64ToClient(i);
-
-	_ChangeRelatedField(i, client);
+	if (data)
+		SyncFieldI64ToData(i);
 }
+

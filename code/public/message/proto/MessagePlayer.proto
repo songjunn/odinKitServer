@@ -51,10 +51,12 @@ message PlayerCount {
 //同步角色属性
 message PlayerAttrSync {
     message Attr {
-        optional int32 key      = 1;    //属性ID
-        optional int32 val32    = 2;	//属性值
-        optional int64 val64    = 3;	//属性值
-        optional string valstr  = 4;    //属性值
+        optional int32  type    = 1;    //属性ID
+        optional string group   = 2;    //属性组
+        optional string key     = 3;    //属性键
+        optional int32  val32   = 4;	//属性值
+        optional int64  val64   = 5;	//属性值
+        optional string valstr  = 6;    //属性值
     }
 
     optional int64  pid         = 1;    //角色ID
@@ -100,20 +102,6 @@ message PlayerAttrib {
 //角色信息同步结束
 message PlayerLoadOver {
     optional int64  pid         = 1;    //角色ID
-} 
-
-//同步角色属性
-message PlayerAttribI64 { 
-    optional int64  pid         = 1;    //角色ID
-    optional int32  attr        = 2;	//属性ID
-    optional int64  value       = 3;	//属性值
-} 
-
-//同步角色属性
-message PlayerAttribInt { 
-    optional int64  pid 		= 1;    //角色ID
-    optional int32  attr		= 2;	//属性ID
-    optional int32  value		= 3;	//属性值
 } 
 
 //请求观察其他人

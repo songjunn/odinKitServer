@@ -16,6 +16,8 @@ public:
 	virtual bool onMessage(PACKET_COMMAND* pack);
 	virtual void onPrint(char* output);
 	virtual bool onLoadScript();
+
+	virtual bool _onAddLinker(CLinker* pServer);
 };
 
 #define GameServer CGameServer::getSingleton()

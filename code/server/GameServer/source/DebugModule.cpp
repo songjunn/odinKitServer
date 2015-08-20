@@ -57,13 +57,13 @@ void _setpro(Message::DebugRequest msg)
 		int index = atoi(msg.strings(1).c_str());
 		int value = atoi(msg.strings(2).c_str());	
 		player->ChangeFieldInt(index, value, true);
-		player->SyncFieldToData("attr");
+		//player->SyncFieldToData("attr");
 	} else {
 		_GETPLAYER(msg,1)
 		int index = atoi(msg.strings(2).c_str());
 		int value = atoi(msg.strings(3).c_str());	
 		player->ChangeFieldInt(index, value, true);
-		player->SyncFieldToData("attr");
+		//player->SyncFieldToData("attr");
 	}
 }
 

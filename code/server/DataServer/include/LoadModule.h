@@ -12,6 +12,7 @@ struct CLoadObj
 	std::string key;
 	std::string type;
 	int sock;
+	int status;
 };
 
 class PACKET_COMMAND;
@@ -24,7 +25,7 @@ public:
 	bool	onMessage(PACKET_COMMAND* pack);
 	void	onLogic();
 
-	void	addToLoad(std::string type, std::string key, int64 id, int sock);
+	void	addToLoad(std::string type, std::string key, int64 id, int sock, int status);
 
 protected:
 	bool	_handlePacket_LoadWorldData(PACKET_COMMAND* pack);
