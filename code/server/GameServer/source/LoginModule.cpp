@@ -193,8 +193,11 @@ bool CLoginModule::_HandlePacket_PlayerCreate(PACKET_COMMAND* pack)
 	player->SetOnline(Online_Flag_Load);
 	player->SetName( msg.name().c_str() );
 	player->SetFieldI64( Role_Attrib_UserID, msg.uid() );
-	player->SetFieldI64(Role_Attrib_CreateTime, GetTimeSec());
 	player->SetGateSocket( pack->GetNetID() );
+
+	char timestr[32] = { 0 };
+	DatatimeToString(timestr);
+	player->SetFieldStr(Role_Attrib_CreateTime, timestr);
 
 	//验证重名
 	Message::CheckNameRequest msg1;
@@ -223,7 +226,7 @@ bool CLoginModule::_HandlePacket_PlayerOnCreate(PACKET_COMMAND* pack)
 	if( !msg.result() )
 	{
 		NoticeModule.SendErrorMsg(player->GetGateSocket(), player->GetFieldI64(Role_Attrib_UserID), Error_Create_NameRepeat);
-		Log.Debug("[Login] Check Name Repeat:%s User:"INT64_FMT, player->GetName(), msg.uid());
+		Log.Debug("[Login] Check Name Repeat:%s User:"INT64_FMT, player->GetName().c_str(), msg.uid());
 		PlayerMgr.Delete( msg.pid() );
 		return false;
 	}
@@ -276,14 +279,41 @@ bool CLoginModule::OnPlayerLogin(CPlayer* player)
 	param[0].SetDataNum(player->GetID());
 	LuaEngine.RunLuaFunction("OnLogin", "Player", NULL, param, 1);
 
+	char timestr[32] = { 0 };
+	DatatimeToString(timestr);
+	player->SetFieldStr(Role_Attrib_LoginTime, timestr, false, true);
 	player->SetOnline(Online_Flag_On);
-	player->SetFieldI64(Role_Attrib_LoginTime, GetTimeSec());
-	player->SyncFieldI64ToData(Role_Attrib_LoginTime);
 
 	CEvent* evnt = MakeEvent(Event_Player_Login, player->GetID(), NULL, true);
 	player->OnEvent(evnt);
 
-	Log.Notice("[Login] Online User:"INT64_FMT" Player:"INT64_FMT" Name:%s", player->GetFieldI64(Role_Attrib_UserID), player->GetID(), player->GetName());
+	Log.Notice("[Login] Online User:"INT64_FMT" Player:"INT64_FMT" Name:%s", player->GetFieldI64(Role_Attrib_UserID), player->GetID(), player->GetName().c_str());
+
+	return true;
+}
+
+bool CLoginModule::OnPlayerLogout(PersonID id)
+{
+	CPlayer* player = PlayerMgr.GetObj(id);
+	if (!player)
+		return false;
+
+	//下线前同步属性存盘
+	char timestr[32] = { 0 };
+	DatatimeToString(timestr);
+	player->SetFieldStr(Role_Attrib_LogoutTime, timestr, false, true);
+
+	//登出事件
+	CEvent* evnt = MakeEvent(Event_Player_Logout, player->GetID(), NULL, true);
+	player->OnEvent(evnt);
+
+	//同步DataServer退出
+	DataModule.syncRemove(player, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+
+	Log.Notice("[Logout] Online User:"INT64_FMT" Player:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID), id);
+
+	UserMgr.Delete(player->GetFieldI64(Role_Attrib_UserID));
+	PlayerMgr.Delete(id);
 
 	return true;
 }
@@ -308,30 +338,6 @@ bool CLoginModule::_OnPlayerSync(CPlayer* player)
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_PLAYER_LOAD_OVER);
 	player->SendClientMsg(&pack);
-
-	return true;
-}
-
-bool CLoginModule::OnPlayerLogout(PersonID id)
-{
-	CPlayer* player = PlayerMgr.GetObj( id );
-	if( !player )
-		return false;
-
-	//下线前同步属性存盘
-	player->SetFieldI64(Role_Attrib_LogoutTime, GetTimeSec(), false, true);
-
-	//登出事件
-	CEvent* evnt = MakeEvent(Event_Player_Logout, player->GetID(), NULL, true);
-	player->OnEvent(evnt);
-
-	//同步DataServer退出
-	DataModule.syncRemove(player, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
-
-	Log.Notice("[Logout] Online User:"INT64_FMT" Player:"INT64_FMT, player->GetFieldI64(Role_Attrib_UserID), id);
-
-	UserMgr.Delete( player->GetFieldI64(Role_Attrib_UserID) );
-	PlayerMgr.Delete( id );
 
 	return true;
 }

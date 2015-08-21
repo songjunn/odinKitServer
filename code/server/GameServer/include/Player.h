@@ -46,17 +46,21 @@ public:
 
 	void	SerializeFieldInt(int i, rapidjson::Value& json, rapidjson::Document& root);
 	void	SerializeFieldI64(int i, rapidjson::Value& json, rapidjson::Document& root);
+	void	SerializeFieldStr(int i, rapidjson::Value& json, rapidjson::Document& root);
 
 	std::string GetFieldName(int i);
 	void	SyncFieldIntToData(int i);
 	void	SyncFieldI64ToData(int i);
+	void	SyncFieldStrToData(int i);
 	void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL);
 	void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL);
+	//void	SyncFieldStrToClient(int i, CPlayer* toPlayer = NULL);
 	void	SyncAllAttrToClient(CPlayer* toPlayer = NULL);
 
 protected:
 	int*	_FindFieldInt(int i);
 	int64*	_FindFieldI64(int i);
+	string*	_FindFieldStr(int i);
 
 	void	_PackageMsgAttr32(Message::PlayerAttrSync& msg, int i);
 	void	_PackageMsgAttr64(Message::PlayerAttrSync& msg, int i);
@@ -79,9 +83,9 @@ private:
 	int64		m_ExpMax;			//最大经验
 
 	//登陆相关
-	TMV			m_CreateTime;		//角色创建时间
-	TMV			m_LoginTime;		//上次登录时间
-	TMV			m_LogoutTime;		//上次下线时间
+	string		m_CreateTime;		//角色创建时间
+	string		m_LoginTime;		//上次登录时间
+	string		m_LogoutTime;		//上次下线时间
 
 	//战斗相关
 	int			m_Fighting;			//战斗力

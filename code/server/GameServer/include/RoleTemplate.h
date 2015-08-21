@@ -41,7 +41,6 @@ struct CRoleTemplate
 	SkillID	m_FinalID;		//终结技ID
 	SkillID	m_SpecSkill[ROLE_SPEC_SKILL];			//特性技能
 	SkillID	m_PrivateSkill;							//私有特性技能
-	int		m_Place[Combat_Place_Destory];			//部位破坏
 	int		m_MoraleAttack;	//恢复士气值
 	int		m_MoraleBeAttack;
 	int		m_MoraleRound;

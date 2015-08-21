@@ -10,6 +10,7 @@ static const attrs::CAttr player_attrs[] =
 	{ Role_Attrib_Null,			"Null" },
 	{ Role_Attrib_ID,			"playerid" },
 	{ Role_Attrib_UserID,		"userid" },
+	{ Role_Attrib_Name,			"name" },
 	{ Role_Attrib_SceneID,		"sceneID" },
 	{ Role_Attrib_Position,		"position" },
 	{ Role_Attrib_TemplateID,	"templateID" },

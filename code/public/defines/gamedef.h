@@ -439,6 +439,7 @@ enum Role_Attrib
 	Role_Attrib_LoginTime,			//上次登录时间
 	Role_Attrib_LogoutTime,			//上次下线时间
 	Role_Attrib_TemplateID,			//模板
+	Role_Attrib_Name,				//名字
 	Role_Attrib_Vocation,			//职业
 	Role_Attrib_Type,				//类型
 	Role_Attrib_Sex,				//性别

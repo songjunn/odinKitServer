@@ -30,9 +30,9 @@ void CPlayer::Init()
 	m_UserID = 0;
 	m_OnlineFlag = Online_Flag_Null;
 	m_LoadTime = 0;
-	m_CreateTime = 0;
-	m_LoginTime = 0;
-	m_LogoutTime = 0;
+	m_CreateTime = "";
+	m_LoginTime = "";
+	m_LogoutTime = "";
 	m_VipLevel = 0;
 
 	m_EventUnit.Initialize(this);
@@ -60,7 +60,6 @@ bool CPlayer::OnCreate(int templateid)
 		return false;
 	}
 
-	SetTemplateID(templateid);
 	SetFieldInt(Role_Attrib_TemplateID, templateid);
 	SetFieldInt(Role_Attrib_Vocation, temp->m_Career);
 	SetFieldInt(Role_Attrib_Sex, temp->m_Sex);
@@ -82,11 +81,6 @@ bool CPlayer::OnCreate(int templateid)
 	SetFieldInt(Role_Attrib_BaseTenacity, temp->m_Tenacity);
 	SetFieldInt(Role_Attrib_BaseParry, temp->m_Parry);
 	SetFieldInt(Role_Attrib_BaseTreat, temp->m_Treat);
-
-	for(int i=0; i<Combat_Place_Destory; ++i)
-	{
-		m_Place[i] = temp->m_Place[i];
-	}
 
 	return true;
 }
@@ -115,6 +109,21 @@ int64* CPlayer::_FindFieldI64(int i)
 	{
 	case Role_Attrib_Exp:			return &m_Exp;
 	case Role_Attrib_UserID:		return &m_UserID;
+	default:	return NULL;
+	}
+
+	return NULL;
+}
+
+string* CPlayer::_FindFieldStr(int i)
+{
+	string* field = CFighter::_FindFieldStr(i);
+	if (field)
+		return field;
+
+	switch (i)
+	{
+	case Role_Attrib_Name:			return &m_name;
 	case Role_Attrib_CreateTime:	return &m_CreateTime;
 	case Role_Attrib_LoginTime:		return &m_LoginTime;
 	case Role_Attrib_LogoutTime:	return &m_LogoutTime;
@@ -134,7 +143,7 @@ void CPlayer::SyncFieldIntToData(int i)
 	Message::SyncObjFieldItem msg;
 	msg.set_id(GetID());
 	msg.set_key("attrs");
-	msg.set_key2(attrs::player_attr_name(i));
+	msg.set_key2(GetFieldName(i));
 	msg.set_vali32(GetFieldInt(i));
 
 	PACKET_COMMAND pack;
@@ -147,11 +156,24 @@ void CPlayer::SyncFieldI64ToData(int i)
 	Message::SyncObjFieldItem msg;
 	msg.set_id(GetID());
 	msg.set_key("attrs");
-	msg.set_key2(attrs::player_attr_name(i));
+	msg.set_key2(GetFieldName(i));
 	msg.set_vali64(GetFieldI64(i));
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETI64);
+	SendDataMsg(&pack);
+}
+
+void CPlayer::SyncFieldStrToData(int i)
+{
+	Message::SyncObjFieldItem msg;
+	msg.set_id(GetID());
+	msg.set_key("attrs");
+	msg.set_key2(GetFieldName(i));
+	msg.set_valstr(GetFieldStr(i));
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETSTR);
 	SendDataMsg(&pack);
 }
 
@@ -254,7 +276,7 @@ void CPlayer::SerializeFieldInt(int i, rapidjson::Value& json, rapidjson::Docume
 	rapidjson::Value jsonName;
 	rapidjson::Value jsonValue;
 
-	jsonName.SetString(attrs::player_attr_name(i).c_str(), root.GetAllocator());
+	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
 	jsonValue.SetInt(GetFieldInt(i));
 
 	json.AddMember(jsonName, jsonValue, root.GetAllocator());
@@ -265,8 +287,19 @@ void CPlayer::SerializeFieldI64(int i, rapidjson::Value& json, rapidjson::Docume
 	rapidjson::Value jsonName;
 	rapidjson::Value jsonValue;
 
-	jsonName.SetString(attrs::player_attr_name(i).c_str(), root.GetAllocator());
+	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
 	jsonValue.SetInt64(GetFieldI64(i));
+
+	json.AddMember(jsonName, jsonValue, root.GetAllocator());
+}
+
+void CPlayer::SerializeFieldStr(int i, rapidjson::Value& json, rapidjson::Document& root)
+{
+	rapidjson::Value jsonName;
+	rapidjson::Value jsonValue;
+
+	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
+	jsonValue.SetString(GetFieldStr(i).c_str());
 
 	json.AddMember(jsonName, jsonValue, root.GetAllocator());
 }
@@ -282,14 +315,8 @@ void CPlayer::Serialize(std::string& jsonstr)
 	SerializeFieldI64(Role_Attrib_ID, root, root);
 	SerializeFieldI64(Role_Attrib_UserID, root, root);
 	SerializeFieldInt(Role_Attrib_TemplateID, root, root);
+	SerializeFieldStr(Role_Attrib_Name, root, root);
 
-	//name
-	rapidjson::Value jsonName;
-	rapidjson::Value jsonValue;
-	jsonName.SetString("name", root.GetAllocator());
-	jsonValue.SetString(GetName());
-	root.AddMember(jsonName, jsonValue, root.GetAllocator());
-	
 	SerializeFieldI64(Role_Attrib_SceneID, attrs, root);
 	SerializeFieldInt(Role_Attrib_Position, attrs, root);
 	SerializeFieldInt(Role_Attrib_Vocation, attrs, root);
@@ -299,9 +326,9 @@ void CPlayer::Serialize(std::string& jsonstr)
 	SerializeFieldInt(Role_Attrib_GoldCoin, attrs, root);
 	SerializeFieldInt(Role_Attrib_SilverCoin, attrs, root);
 	SerializeFieldInt(Role_Attrib_Fighting, attrs, root);
-	SerializeFieldI64(Role_Attrib_CreateTime, attrs, root);
-	SerializeFieldI64(Role_Attrib_LoginTime, attrs, root);
-	SerializeFieldI64(Role_Attrib_LogoutTime, attrs, root);
+	SerializeFieldStr(Role_Attrib_CreateTime, attrs, root);
+	SerializeFieldStr(Role_Attrib_LoginTime, attrs, root);
+	SerializeFieldStr(Role_Attrib_LogoutTime, attrs, root);
 
 	root.AddMember("attrs", attrs, root.GetAllocator());
 

@@ -5,7 +5,7 @@ void IBaseObj::Init()
 	m_ObjID = 0;
 	m_type = 0;
 	m_templateId = 0;
-	memset(m_name, 0, OBJ_NAME_LEN);
+	m_name = "";
 }
 
 void IBaseObj::Copy(const IBaseObj& obj)
@@ -13,7 +13,7 @@ void IBaseObj::Copy(const IBaseObj& obj)
 	m_ObjID = obj.m_ObjID;
 	m_type = obj.m_type;
 	m_templateId = obj.m_templateId;
-	strncpy(m_name, obj.m_name, OBJ_NAME_LEN);
+	m_name = obj.m_name;
 }
 
 int	IBaseObj::GetFieldInt(int i)
@@ -21,6 +21,22 @@ int	IBaseObj::GetFieldInt(int i)
 	int* field = _FindFieldInt(i);
 	if (!field)
 		return INVALID_VALUE;
+	return *field;
+}
+
+int64 IBaseObj::GetFieldI64(int i)
+{
+	int64* field = _FindFieldI64(i);
+	if (!field)
+		return INVALID_VALUE;
+	return *field;
+}
+
+string IBaseObj::GetFieldStr(int i)
+{
+	string* field = _FindFieldStr(i);
+	if (!field)
+		return "";
 	return *field;
 }
 
@@ -39,14 +55,6 @@ void IBaseObj::SetFieldInt(int i, int value, bool client, bool data)
 		SyncFieldIntToData(i);
 }
 
-int64 IBaseObj::GetFieldI64(int i)
-{
-	int64* field = _FindFieldI64(i);
-	if (!field)
-		return INVALID_VALUE;
-	return *field;
-}
-
 void IBaseObj::SetFieldI64(int i, int64 value, bool client, bool data)
 {
 	int64* field = _FindFieldI64(i);
@@ -60,6 +68,19 @@ void IBaseObj::SetFieldI64(int i, int64 value, bool client, bool data)
 		SyncFieldI64ToClient(i);
 	if (data)
 		SyncFieldI64ToData(i);
+}
+
+void IBaseObj::SetFieldStr(int i, string value, bool client, bool data)
+{
+	string* field = _FindFieldStr(i);
+	if (!field)
+		return;
+	*field = value;
+
+	if (client)
+		SyncFieldStrToClient(i);
+	if (data)
+		SyncFieldStrToData(i);
 }
 
 void IBaseObj::ChangeFieldInt(int i, int value, bool client, bool data)

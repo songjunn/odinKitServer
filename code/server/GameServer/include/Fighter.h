@@ -49,10 +49,6 @@ public:
 	inline	bool	IsConfusion()					{return m_Confusion;}
 	inline	void	SetConfusion(bool flag)			{m_Confusion = flag;}
 
-	inline	bool	CanDestroy(int i)				{if(i>=0 && i<Combat_Place_Destory) return m_Place[i]>0;return false; }
-	inline	bool	IsDestroy(int i)				{if(i>=0 && i<Combat_Place_Destory) return m_Destroy[i];return false; }
-	inline	void	SetDestroy(int i, bool flag)	{if(i>=0 && i<Combat_Place_Destory) m_Destroy[i] = flag;}
-
 	inline	bool	IsDead()						{return m_Dead; /*return GetFieldInt(Role_Attrib_Hp) <= 0;*/}
 	inline	void	Die()							{m_Dead = true;}
 	inline  void	Revive()						{m_Dead = false;}
@@ -166,7 +162,6 @@ protected:
 
 	bool	m_Dizzy;			//眩晕状态
 	bool	m_Confusion;		//混乱状态
-	bool	m_Destroy[Combat_Place_Destory];
 
 	int		m_Hotohori;			//星宿:日/月/星
 	bool	m_Dead;				//死亡标志
@@ -174,7 +169,6 @@ protected:
 	int		m_InitStuntID;		//天生的绝技技能
 
 	//战斗时存储被动技能的作用效果(不存盘，不读表)
-	int		m_PlaceProb;				//造成部位伤害的百分比
 	int		m_CombatAllPer;
 	int		m_CombatCrossPer;
 	int		m_CombatRowPer;
@@ -210,7 +204,6 @@ protected:
 
 public:
 	bool	m_bHit;						//是否击中敌人
-	int		m_Place[Combat_Place_Destory];
 
 	SkillID				m_Skills[ROLE_SKILL_MAX];
 	CUtlMap<int, int>	m_Buffs;	//战斗中buff

@@ -73,11 +73,6 @@ bool CRoleTemplateMgr::LoadCSVData(const char* csvfile)
 		}
 		file.GetAttribute(i, index++, role->m_PrivateSkill);
 
-		for(int x=0; x<Combat_Place_Destory; ++x)
-		{
-			file.GetAttribute(i, index++, role->m_Place[x]);
-		}
-
 		file.GetAttribute(i, index++, role->m_StarsID);
 		file.GetAttribute(i, index++, role->m_Hotohori);
 		file.GetAttribute(i, index++, role->m_MoraleAttack);

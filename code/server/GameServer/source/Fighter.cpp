@@ -100,16 +100,9 @@ void CFighter::Init()
 	m_Dizzy = false;;
 	m_Confusion = false;
 
-	for(int i=0; i<Combat_Place_Destory; ++i)
-	{
-		m_Place[i] = 0;
-		m_Destroy[i] = false;
-	}
-
 	m_Hotohori = 0;
 
 	m_bHit = true;
-	m_PlaceProb = 0;
 	m_CombatAllPer = 0;
 	m_CombatCrossPer = 0;
 	m_CombatRowPer = 0;
@@ -230,16 +223,10 @@ void CFighter::Copy(const CFighter& fighter)
 	m_Dead = fighter.m_Dead;
 	m_Dizzy = fighter.m_Dizzy;
 	m_Confusion = fighter.m_Confusion;
-	for(int i=0; i<Combat_Place_Destory; ++i)
-	{
-		m_Place[i] = fighter.m_Place[i];
-		m_Destroy[i] = fighter.m_Destroy[i];
-	}
 
 	m_Hotohori = fighter.m_Hotohori;
 
 	m_bHit = fighter.m_bHit;
-	m_PlaceProb = fighter.m_PlaceProb;
 	m_CombatAllPer = fighter.m_CombatAllPer;
 	m_CombatCrossPer = fighter.m_CombatCrossPer;
 	m_CombatRowPer = fighter.m_CombatRowPer;
