@@ -1,9 +1,10 @@
 #pragma once
 #include "shared.h"
+#include "attrs.h"
+#include "attrs_defines.h"
 #include "Fighter.h"
 #include "GameServer.h"
 #include "EventUnit.h"
-#include "rapidjson/document.h"
 #include "MessagePlayer.pb.h"
 
 //class CFriendsUnit;
@@ -44,11 +45,12 @@ public:
 	void	Serialize(std::string& jsonstr);
 	void	Deserialize(std::string jsonstr);
 
-	void	SerializeFieldInt(int i, rapidjson::Value& json, rapidjson::Document& root);
-	void	SerializeFieldI64(int i, rapidjson::Value& json, rapidjson::Document& root);
-	void	SerializeFieldStr(int i, rapidjson::Value& json, rapidjson::Document& root);
+	void	Serialize(string name, rapidjson::Document& root);
+	void	Deserialize(rapidjson::Value& json);
 
-	std::string GetFieldName(int i);
+	inline string GetFieldName(int i) { return attrs::get_attr_name(i, player_attrs, player_attr_type_table); }
+	inline int GetFieldType(string name) { return attrs::get_attr_type(name, player_attr_name_table); }
+
 	void	SyncFieldIntToData(int i);
 	void	SyncFieldI64ToData(int i);
 	void	SyncFieldStrToData(int i);

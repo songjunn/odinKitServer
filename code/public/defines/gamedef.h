@@ -554,7 +554,9 @@ enum Role_Attrib
 //物品属性定义
 enum Item_Attrib
 {
-	Item_Attrib_Type = 0,			//物品类型
+	Item_Attrib_Null = 0,
+	Item_Attrib_ID,					//实体ID
+	Item_Attrib_Type,				//物品类型
 	Item_Attrib_Career,				//职业限制
 	Item_Attrib_Sex,				//性别限制
 	Item_Attrib_MinLevel,			//最低等级限制
@@ -564,7 +566,7 @@ enum Item_Attrib
 	Item_Attrib_SellPrice,			//出售价格
 	Item_Attrib_Parent,				//拥有者ID
 	Item_Attrib_Position,			//装备位置
-	Item_Attrib_RoleId,			//英雄id，role_id
+	Item_Attrib_EquipID,			//英雄id，role_id
 	//基础属性
 	Item_Attrib_Strength,			//力量
 	Item_Attrib_Intellect,			//智力
@@ -589,7 +591,7 @@ enum Item_Attrib
 
 
 
-	Item_Attrib_Current_level,		//当前装备强化等级, 初始0
+	Item_Attrib_Intensify,			//当前装备强化等级
 	Item_Attrib_MaxLevelIntensify,	//装备强化上限
 	Item_Attrib_IntensifyPoints,	//从当前强化等级强化到下一级需求点数数组[9]
 
@@ -609,7 +611,7 @@ enum Item_Attrib
 	Item_Attrib_LayCharge,
     
     Item_Attrib_SceneId,
-    Item_Attrib_TemplateId,
+	Item_Attrib_TemplateID,
     Item_Attrib_Name,
     
     Item_Attrib_GroupId,

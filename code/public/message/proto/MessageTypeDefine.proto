@@ -46,6 +46,9 @@ enum MsgDefine {
 	MSG_PLAYER_LOAD_OVER = 406;         //角色数据加载完毕：角色ID
 	MSG_PLAYER_SYNC_ATTRINT = 407;      //同步角色属性int
 	MSG_PLAYER_SYNC_ATTRI64 = 408;      //同步角色属性int64
+	
+	MSG_ITEM_GAIN_SYNC = 500;           //同步获得道具
+	MSG_ITEM_DELETE_SYNC = 501;         //同步销毁道具
     
     MSG_SERVER_END = 29999;
 	MSG_CLIENT_BEGIN = 30000;           //client发起的消息
@@ -58,6 +61,12 @@ enum MsgDefine {
 	MSG_REQUEST_PLAYER_CREATE = 30006;  //创建角色：账号ID，角色名
 	MSG_REQUEST_PLAYER_DELETE = 30007;  //删除角色：角色ID
 	MSG_REQUEST_PLAYER_OBSERVE = 30008; //观察
+	
+	MSG_REUQEST_ITEM_USE = 30100;       //使用道具
+	MSG_REQUEST_ITEM_DELETE = 30101;    //销毁道具
+	MSG_REQUEST_ITEM_SELL = 30102;      //出售道具
+	MSG_REQUEST_ITEM_EQUIP = 30103;     //穿装备
+	MSG_REQUEST_ITEM_UNEQUIP = 30104;   //脱装备
 
 	MSG_REQUEST_DEBUG = 60000;	        //调试消息
 	MSG_REQUEST_NET_TEST = 60001;	    //net test

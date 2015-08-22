@@ -17,11 +17,12 @@ public:
 	bool	OnMsg(PACKET_COMMAND* pack);
 
 	//道具操作接口
-	bool	GainItem(CItem* item, ITEM_REASON reason, int num = 1);					//获得物品
+	bool	GainItem(CItem* item, ITEM_REASON reason);								//获得物品
 	bool	GainItem(int templateid, ITEM_REASON reason, int num = 1);				//获得物品
-	bool	DeleteItem(CItem* item, ITEM_REASON reason, int num = 1);				//销毁物品
+	bool	DeleteItem(CItem* item, ITEM_REASON reason);							//销毁物品
 	bool	DeleteItem(int templateid, ITEM_REASON reason, int num = 1);			//销毁物品
 	bool	DeleteItemByType(int type, ITEM_REASON reason, int num = 1);			//销毁物品
+	bool	CostItem(CItem* item, int num = 1);										//消耗物品
 	bool	UseItem(CItem* item, int num = 1);										//使用物品
 	bool	SellItem(CItem* item);													//出售物品
 
@@ -47,14 +48,13 @@ public:
 	//背包容量
 	int CanSpareSeat(int itemTempId, int itemNum);									//判断是否可容得下一定数量的道具
 	inline int GetSpareSeat() {	return GetMaxCapacity() - m_ItemList.Count(); }		//获取包裹剩余位置数量
-	void	SetMaxCapacity(bool sync = false);										//设置背包最大容量
 
 	//使用具体道具对外接口
 	bool	OpenItemBox(int boxid);													//打开宝箱获得道具
 
 protected:
 	bool	_AddItem(CItem* item, bool client = false, bool data = false);			//加入包裹
-	bool	_RemoveItem(CItem* item, int num = 1);									//移除包裹
+	bool	_RemoveItem(CItem* item);												//移除包裹
 	bool	_StackItem(CItem* item);												//堆叠处理
 
 	bool	_Equip(CItem* item, bool client = false, bool data = false);
@@ -72,7 +72,6 @@ protected:
 	bool	_HandlePacket_EquipItem(PACKET_COMMAND* pack);
 	bool	_HandlePacket_UnequipItem(PACKET_COMMAND* pack);
 	bool	_HandlePacket_LoadItem(PACKET_COMMAND* pack);
-	bool	_HandlePacket_ExpandBag(PACKET_COMMAND* pack);
 
 private:
 	void	SendResultFlag(int iflag, int i = 0, int64 l1 = 0, int64 l2 = 0);

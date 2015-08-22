@@ -4,21 +4,10 @@
 #include "PlayerMgr.h"
 #include "Event.h"
 #include "Packet.h"
-#include "PacketDefine.h"
-#include "MessageItemSellRequest.pb.h"
-#include "MessageItemUseRequest.pb.h"
-#include "MessageItemEquipRequest.pb.h"
-#include "MessageItemUnequipRequest.pb.h"
-#include "MessageItemGainResponse.pb.h"
-#include "MessageItemDeleteResponse.pb.h"
-#include "MessageItemSyncAttribInt.pb.h"
-#include "MessageItemEquipResponse.pb.h"
-#include "MessageItemUnequipResponse.pb.h"
-#include "MessageExpandBagRequest.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageItem.pb.h"
 #include "NoticeModule.h"
 #include "error.h"
-#include "VipTemplate.h"
-#include "ItemBoxTemplate.h"
 #include "gtime.h"
 
 
@@ -65,12 +54,11 @@ bool CItemUnit::OnMsg(PACKET_COMMAND* pack)
 
 	switch( pack->Type() )
 	{
-	case P2G_REQUEST_ITEM_USE:		_HandlePacket_UseItem(pack);	break;
-	case P2G_REQUEST_ITEM_SELL:		_HandlePacket_SellItem(pack);	break;
-	case P2G_REQUEST_ITEM_EQUIP:	_HandlePacket_EquipItem(pack);	break;
-	case P2G_REQUEST_ITEM_UNEQUIP:	_HandlePacket_UnequipItem(pack);break;
-	case G2P_NOTIFY_ITEM_GAIN:		_HandlePacket_LoadItem(pack);	break;
-	case P2G_REQUEST_BAG_EXPAND:	_HandlePacket_ExpandBag(pack);	break;
+	case MSG_REQUEST_ITEM_USE:		_HandlePacket_UseItem(pack);	break;
+	case MSG_REQUEST_ITEM_DELETE:	_HandlePacket_DeleteItem(pack);	break;
+	case MSG_REQUEST_ITEM_SELL:		_HandlePacket_SellItem(pack);	break;
+	case MSG_REQUEST_ITEM_EQUIP:	_HandlePacket_EquipItem(pack);	break;
+	case MSG_REQUEST_ITEM_UNEQUIP:	_HandlePacket_UnequipItem(pack);break;
 	default:	return false;
 	}
 
@@ -200,44 +188,6 @@ bool CItemUnit::_HandlePacket_LoadItem(PACKET_COMMAND* pack)
 	return true;
 }
 
-bool CItemUnit::_HandlePacket_ExpandBag(PACKET_COMMAND* pack)
-{
-	Message::ExpandBag msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	if(!m_parent) {
-		SendResultFlag(Error_ExpandBag_UnKnow);
-		return false;
-	}
-
-	if(m_parent->GetID() != msg.pid()) {
-		SendResultFlag(Error_ExpandBag_UnKnow);
-		Log.Error("[CItemUnit] m_parent->GetID() != msg.pid() Error:%s:%d, Player:"INT64_FMT"", __FILE__, __LINE__, m_parent->GetID());
-		return false;
-	}
-
-	if(m_parent->GetFieldInt(Role_Attrib_ExtBagPage) >= ITEMUNIT_BUG_PAGE) {
-		SendResultFlag(Error_ExpandBag_ToMax);
-		Log.Error("[CItemUnit] BugPage >= MAX Error:%s:%d, page:%d Player:"INT64_FMT"", __FILE__, __LINE__, m_parent->GetFieldInt(Role_Attrib_ExtBagPage), m_parent->GetID());
-		return false;
-	}
-
-	int expandCost = GetExpandBagCost(m_parent->GetFieldInt(Role_Attrib_ExtBagPage));
-	if (m_parent->GetFieldInt(Role_Attrib_GoldCoin) < expandCost) {
-		SendResultFlag(Error_ExpandBag_LackGold);
-		Log.Error("[CItemUnit] LackGold Error:%s:%d, Player:"INT64_FMT"", __FILE__, __LINE__, m_parent->GetID());
-		return false;
-	}
-
-	m_parent->GainGold(-expandCost, Gold_Reason_ExpandBag);
-	m_parent->ChangeFieldInt(Role_Attrib_ExtBagPage, 1, false, true);
-	SetMaxCapacity(true);
-
-	SendResultFlag(Error_ExpandBag_Success, GetMaxCapacity());
-
-	return true;
-}
-
 bool CItemUnit::GainItem(int templateid, ITEM_REASON reason, int num)
 {
 	do
@@ -256,7 +206,7 @@ bool CItemUnit::GainItem(int templateid, ITEM_REASON reason, int num)
 			item->SetFieldInt(Item_Attrib_StackSize, stack);
 		}
 
-		if( !GainItem(item, reason, stack) )
+		if( !GainItem(item, reason) )
 		{
 			Log.Error("[CItemUnit] Error:%s:%d, Player:"INT64_FMT" template:%d num:%d", __FILE__, __LINE__, m_parent->GetID(), templateid, num);
 			ItemMgr.Delete(item->GetID());
@@ -331,14 +281,10 @@ bool CItemUnit::DeleteItemByType(int type, ITEM_REASON reason, int num)
 	return true;
 }
 
-bool CItemUnit::GainItem(CItem* item, ITEM_REASON reason, int num)
+bool CItemUnit::GainItem(CItem* item, ITEM_REASON reason)
 {
 	if( !item )
 		return false;
-
-	if(item->IsStackable()) { //没考虑 num > MaxStackSize 的情况
-		item->SetFieldInt(Item_Attrib_StackSize, num);
-	}
 
 	//检查该物品是否已有拥有者
 	if( item->GetFieldI64(Item_Attrib_Parent) > 0 )
@@ -349,8 +295,7 @@ bool CItemUnit::GainItem(CItem* item, ITEM_REASON reason, int num)
 
 	//首先尝试堆叠
 	if( item->IsStackable() && !_StackItem(item) ) {
-		//日志统计 wenc 
-		CEvent *evLog = MakeEvent(Event_Item_Obtain, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)num, item->GetID(), reason, true);
+		CEvent *evLog = MakeEvent(Event_Item_Obtain, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize), item->GetID(), reason, true);
 		m_parent->OnEvent(evLog);
 		return true;
 	}
@@ -368,23 +313,16 @@ bool CItemUnit::GainItem(CItem* item, ITEM_REASON reason, int num)
 	msg.set_templateid( item->GetTemplateID() );
 	msg.set_stack( item->GetFieldInt(Item_Attrib_StackSize) );
 	msg.set_position( item->GetFieldInt(Item_Attrib_Position) );
-	msg.set_parent_id(item->GetFieldI64(Item_Attrib_Parent));
-	msg.set_equip_hero_id( item->GetFieldI64(Item_Attrib_RoleId) );
-
-	msg.set_current_intensify_level(item->GetFieldInt(Item_Attrib_Current_level));
-	for(int i=KongZero; i<KongThird+1; i++)
-	{
-		Message::ItemGainResponse::Soul * soul = msg.add_seconds();
-		soul->set_template_id(item->m_Souls[i]);
-	}
+	msg.set_parentid(item->GetFieldI64(Item_Attrib_Parent));
+	msg.set_equipid( item->GetFieldI64(Item_Attrib_RoleId) );
+	msg.set_intensify(item->GetFieldInt(Item_Attrib_Intensify));
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_ITEM_GAIN );
 	m_parent->SendClientMsg( &pack );
-	m_parent->SendDataMsg( &pack );
+	//m_parent->SendDataMsg( &pack );
 
-	//日志统计 wenc 
-	CEvent *evLog = MakeEvent(Event_Item_Obtain, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)num, item->GetID(), reason, true);
+	CEvent *evLog = MakeEvent(Event_Item_Obtain, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize), item->GetID(), reason, true);
 	m_parent->OnEvent(evLog);
 
 	return true;
@@ -439,20 +377,10 @@ bool CItemUnit::UseItem(CItem* item, int num)
 		return false;
 	}
 
-	bool bUse = false;
-	if(g_IsItemBox(item->GetFieldInt(Item_Attrib_Type))) {
-		bUse = OpenItemBox(item->GetUseEffect().effectValue);
-	}
-	else {
-		bUse = item->OnUse();
-		if(!bUse) {
-			SendResultFlag(Error_Box_UseFail);
-		}
-	}
-
-	if(bUse) {
-		SendResultFlag(Error_Box_UseSuccess);
-		DeleteItem(item, Item_Reason_Use, num);
+	bool bUse = item->OnUse();
+	if (bUse && item->GetFieldInt(Item_Attrib_StackSize) <= 0)
+	{
+		DeleteItem(item, Item_Reason_Use);
 	}
 
 	return bUse;
@@ -637,7 +565,7 @@ bool CItemUnit::DeleteItem(CItem* item, ITEM_REASON reason, int num)
 	if( !item )
 		return false;
 
-	if( !_RemoveItem(item, num) )
+	if( !_RemoveItem(item) )
 	{
 		Log.Error("[CItemUnit] Error:%s:%d, Player:"INT64_FMT" item:"INT64_FMT, __FILE__, __LINE__, m_parent->GetID(), item->GetID());
 		return false;
@@ -656,15 +584,11 @@ bool CItemUnit::DeleteItem(CItem* item, ITEM_REASON reason, int num)
 		m_parent->SendClientMsg( &pack );
 		m_parent->SendDataMsg( &pack );
 
-		CEvent* ev = MakeEvent(Event_Item_Delete, m_parent->GetID(), (int64)item->GetTemplateID(), (-1)*(int64)item->GetFieldInt(Item_Attrib_StackSize));
+		CEvent* ev = MakeEvent(Event_Item_Delete, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize));
 		m_parent->OnEvent(ev);
-
-		ItemMgr.Delete(item->GetID());
 	}
 
-	//日志统计 wenc 
-	CEvent *evLog = MakeEvent(Event_Item_Consume, m_parent->GetID(), m_parent->GetFieldI64(Role_Attrib_UserID), itid, tempId, num, reason, true);
-	m_parent->OnEvent(evLog);
+	ItemMgr.Delete(item->GetID());
 
 	return true;
 }
@@ -700,15 +624,15 @@ bool CItemUnit::_AddItem(CItem* item, bool client, bool data)
 	return true;
 }
 
-bool CItemUnit::_RemoveItem(CItem* item, int num)
+bool CItemUnit::_RemoveItem(CItem* item)
 {
 	if( !item )
 		return false;
 
-	if( item->IsStackable() && item->GetFieldInt(Item_Attrib_StackSize) <= num)
+	if( item->IsStackable())
 	{
 		int idx = m_StackList.Find( item->GetID() );
-		if( m_StackList.IsValidIndex(idx) )
+		if( !m_StackList.IsValidIndex(idx) )
 		{
 			m_StackList.Remove(idx);
 		}
@@ -724,13 +648,7 @@ bool CItemUnit::_RemoveItem(CItem* item, int num)
 		Log.Error("[CItemUnit] Error:%s:%d, Player:"INT64_FMT" item:"INT64_FMT, __FILE__, __LINE__, m_parent->GetID(), item->GetID());
 		return false;
 	}
-
-	if(num < item->GetFieldInt(Item_Attrib_StackSize)) {
-		item->ChangeFieldInt(Item_Attrib_StackSize, -num, true, true);
-	}
-	else {
-		m_ItemList.RemoveAt( idx );
-	}
+	m_ItemList.RemoveAt( idx );
 
 	return true;
 }
@@ -1004,9 +922,9 @@ bool CItemUnit::_EquipItemAttrib(CItem* item, bool client, bool data)
 	if(item->GetFieldInt(Item_Attrib_BaseStuntDefense)> 0)
 		m_parent->ChangeFieldInt(Role_Attrib_StuntDefenseAddons, item->GetFieldInt(Item_Attrib_BaseStuntDefense), client, data);
 	
-	//加上镶嵌属性加成...
-	m_parent->m_IntensifyItemUnit.InlayJadeOnAttr(item, true);
-	m_parent->m_IntensifyItemUnit.InlayCrystalOnAttr(item, true);
+	//加上强化的属性加成...
+	//m_parent->m_IntensifyItemUnit.InlayJadeOnAttr(item, true);
+	//m_parent->m_IntensifyItemUnit.InlayCrystalOnAttr(item, true);
 
 	return true;
 }
@@ -1052,9 +970,9 @@ bool CItemUnit::_UnEquipItemAttrib(CItem* item, bool client, bool data)
 	if(item->GetFieldInt(Item_Attrib_BaseStuntDefense)> 0)
 		m_parent->ChangeFieldInt(Role_Attrib_StuntDefenseAddons, -item->GetFieldInt(Item_Attrib_BaseStuntDefense), client, data);
 	
-	//减去镶嵌属性加成...
-	m_parent->m_IntensifyItemUnit.InlayJadeOnAttr(item, true, false);
-	m_parent->m_IntensifyItemUnit.InlayCrystalOnAttr(item, true, false);
+	//减去强化的属性加成...
+	//m_parent->m_IntensifyItemUnit.InlayJadeOnAttr(item, true, false);
+	//m_parent->m_IntensifyItemUnit.InlayCrystalOnAttr(item, true, false);
 
 	return true;
 }
@@ -1086,13 +1004,6 @@ int CItemUnit::GetExpandBagCost(int expandCnt)
 int CItemUnit::GetMaxCapacity()
 {
 	return m_parent->GetFieldInt(Role_Attrib_BagMaxCapacity);
-}
-
-void CItemUnit::SetMaxCapacity(bool sync)
-{
-	int vipExPage = VipTemplateMgr.GetVipExtBagPage(m_parent->GetFieldInt(Role_Attrib_Vip));
-	int page = ITEMUNIT_INIT_PAGE + m_parent->GetFieldInt(Role_Attrib_ExtBagPage) + vipExPage;
-	m_parent->SetFieldInt(Role_Attrib_BagMaxCapacity, page * ITEMUNIT_PER_PAGE, sync);
 }
 
 bool CItemUnit::OpenItemBox(int boxid)

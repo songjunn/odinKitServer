@@ -2,7 +2,6 @@
 #include "RoleTemplate.h"
 #include "gtime.h"
 #include "error.h"
-#include "attrs.h"
 #include "NoticeModule.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -131,11 +130,6 @@ string* CPlayer::_FindFieldStr(int i)
 	}
 
 	return NULL;
-}
-
-std::string CPlayer::GetFieldName(int i)
-{
-	return attrs::player_attr_name(i);
 }
 
 void CPlayer::SyncFieldIntToData(int i)
@@ -271,66 +265,12 @@ void CPlayer::DataSync()
 	this->SyncAllAttrToClient();
 }
 
-void CPlayer::SerializeFieldInt(int i, rapidjson::Value& json, rapidjson::Document& root)
-{
-	rapidjson::Value jsonName;
-	rapidjson::Value jsonValue;
-
-	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
-	jsonValue.SetInt(GetFieldInt(i));
-
-	json.AddMember(jsonName, jsonValue, root.GetAllocator());
-}
-
-void CPlayer::SerializeFieldI64(int i, rapidjson::Value& json, rapidjson::Document& root)
-{
-	rapidjson::Value jsonName;
-	rapidjson::Value jsonValue;
-
-	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
-	jsonValue.SetInt64(GetFieldI64(i));
-
-	json.AddMember(jsonName, jsonValue, root.GetAllocator());
-}
-
-void CPlayer::SerializeFieldStr(int i, rapidjson::Value& json, rapidjson::Document& root)
-{
-	rapidjson::Value jsonName;
-	rapidjson::Value jsonValue;
-
-	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
-	jsonValue.SetString(GetFieldStr(i).c_str());
-
-	json.AddMember(jsonName, jsonValue, root.GetAllocator());
-}
-
 void CPlayer::Serialize(std::string& jsonstr)
 {
 	rapidjson::Document root;
 	root.SetObject();
 
-	rapidjson::Value attrs;
-	attrs.SetObject();
-
-	SerializeFieldI64(Role_Attrib_ID, root, root);
-	SerializeFieldI64(Role_Attrib_UserID, root, root);
-	SerializeFieldInt(Role_Attrib_TemplateID, root, root);
-	SerializeFieldStr(Role_Attrib_Name, root, root);
-
-	SerializeFieldI64(Role_Attrib_SceneID, attrs, root);
-	SerializeFieldInt(Role_Attrib_Position, attrs, root);
-	SerializeFieldInt(Role_Attrib_Vocation, attrs, root);
-	SerializeFieldInt(Role_Attrib_Sex, attrs, root);
-	SerializeFieldInt(Role_Attrib_Level, attrs, root);
-	SerializeFieldI64(Role_Attrib_Exp, attrs, root);
-	SerializeFieldInt(Role_Attrib_GoldCoin, attrs, root);
-	SerializeFieldInt(Role_Attrib_SilverCoin, attrs, root);
-	SerializeFieldInt(Role_Attrib_Fighting, attrs, root);
-	SerializeFieldStr(Role_Attrib_CreateTime, attrs, root);
-	SerializeFieldStr(Role_Attrib_LoginTime, attrs, root);
-	SerializeFieldStr(Role_Attrib_LogoutTime, attrs, root);
-
-	root.AddMember("attrs", attrs, root.GetAllocator());
+	Serialize("attrs", root);
 
 	rapidjson::StringBuffer buffer;
 	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -338,21 +278,44 @@ void CPlayer::Serialize(std::string& jsonstr)
 	jsonstr.assign(buffer.GetString(), buffer.Size());
 }
 
-void CPlayer::Deserialize(std::string jsonstr)
+void CPlayer::Serialize(string name, rapidjson::Document& root)
 {
-	rapidjson::Document attrs;
-	attrs.Parse<0>(jsonstr.c_str());
+	rapidjson::Value json;
+	json.SetObject();
 
-	for (rapidjson::Value::MemberIterator it = attrs.MemberBegin(); it != attrs.MemberEnd(); ++it) {
+	_SerializeFieldI64(Role_Attrib_ID, root, root);
+	_SerializeFieldI64(Role_Attrib_UserID, root, root);
+	_SerializeFieldInt(Role_Attrib_TemplateID, root, root);
+	_SerializeFieldStr(Role_Attrib_Name, root, root);
+
+	_SerializeFieldI64(Role_Attrib_SceneID, json, root);
+	_SerializeFieldInt(Role_Attrib_Position, json, root);
+	_SerializeFieldInt(Role_Attrib_Vocation, json, root);
+	_SerializeFieldInt(Role_Attrib_Sex, json, root);
+	_SerializeFieldInt(Role_Attrib_Level, json, root);
+	_SerializeFieldI64(Role_Attrib_Exp, json, root);
+	_SerializeFieldInt(Role_Attrib_GoldCoin, json, root);
+	_SerializeFieldInt(Role_Attrib_SilverCoin, json, root);
+	_SerializeFieldInt(Role_Attrib_Fighting, json, root);
+	_SerializeFieldStr(Role_Attrib_CreateTime, json, root);
+	_SerializeFieldStr(Role_Attrib_LoginTime, json, root);
+	_SerializeFieldStr(Role_Attrib_LogoutTime, json, root);
+
+	root.AddMember(name.c_str(), json, root.GetAllocator());
+}
+
+void CPlayer::Deserialize(rapidjson::Value& json)
+{
+	for (rapidjson::Value::MemberIterator it = json.MemberBegin(); it != json.MemberEnd(); ++it) {
 
 		if (it->value.IsInt()) {
-			SetFieldInt(attrs::player_attr_type(it->name.GetString()), it->value.GetInt());
+			SetFieldInt(GetFieldType(it->name.GetString()), it->value.GetInt());
 		}
 		else if (it->value.IsInt64()) {
-			SetFieldI64(attrs::player_attr_type(it->name.GetString()), it->value.GetInt64());
+			SetFieldI64(GetFieldType(it->name.GetString()), it->value.GetInt64());
 		}
 		else if (it->value.IsString()) {
-			SetName(it->value.GetString()); //Ö±½ÓÐ´Ãû×Ö°É
+			SetFieldStr(GetFieldType(it->name.GetString()), it->value.GetString());
 		}
 		else if (it->value.IsArray()) {
 
@@ -361,4 +324,12 @@ void CPlayer::Deserialize(std::string jsonstr)
 
 		}
 	}
+}
+
+void CPlayer::Deserialize(std::string jsonstr)
+{
+	rapidjson::Document attrs;
+	attrs.Parse<0>(jsonstr.c_str());
+
+	Deserialize(attrs);
 }

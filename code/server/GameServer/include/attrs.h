@@ -12,9 +12,6 @@ namespace attrs {
 
 	bool init_all_attrs();
 
-	int player_attr_type(std::string name);
-	std::string player_attr_name(int type);
-
 	// interface
 	bool init_attrs(const CAttr _attr_array[], uint32 _array_len, CUtlMap<int, int>& _attr_type_table, CUtlMap<CUtlSymbol, int>& _attr_name_table);
 	int get_attr_type(std::string name, CUtlMap<CUtlSymbol, int>& _attr_name_table);

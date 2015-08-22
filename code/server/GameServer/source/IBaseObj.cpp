@@ -120,3 +120,35 @@ void IBaseObj::ChangeFieldI64(int i, int64 value, bool client, bool data)
 		SyncFieldI64ToData(i);
 }
 
+void IBaseObj::_SerializeFieldInt(int i, rapidjson::Value& json, rapidjson::Document& root)
+{
+	rapidjson::Value jsonName;
+	rapidjson::Value jsonValue;
+
+	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
+	jsonValue.SetInt(GetFieldInt(i));
+
+	json.AddMember(jsonName, jsonValue, root.GetAllocator());
+}
+
+void IBaseObj::_SerializeFieldI64(int i, rapidjson::Value& json, rapidjson::Document& root)
+{
+	rapidjson::Value jsonName;
+	rapidjson::Value jsonValue;
+
+	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
+	jsonValue.SetInt64(GetFieldI64(i));
+
+	json.AddMember(jsonName, jsonValue, root.GetAllocator());
+}
+
+void IBaseObj::_SerializeFieldStr(int i, rapidjson::Value& json, rapidjson::Document& root)
+{
+	rapidjson::Value jsonName;
+	rapidjson::Value jsonValue;
+
+	jsonName.SetString(GetFieldName(i).c_str(), root.GetAllocator());
+	jsonValue.SetString(GetFieldStr(i).c_str());
+
+	json.AddMember(jsonName, jsonValue, root.GetAllocator());
+}

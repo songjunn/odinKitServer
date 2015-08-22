@@ -1,7 +1,8 @@
 #pragma once
 #include "IBaseObj.h"
+#include "attrs.h"
+#include "attrs_defines.h"
 #include "ItemTemplate.h"
-
 
 class CPlayer;
 class CItem : public IBaseObj
@@ -20,6 +21,7 @@ public:
 
 	void	SedEffect(int index, CEffect eff);
 	bool	GetEffect(int index, CEffect& eff);
+	const CEffect &GetUseEffect() { return m_EffectUse; }
 
 	inline	bool	IsEquipable()	{return g_IsItemEquipment(m_Type);}		//是否可装备
 	inline	bool	IsUseble()		{return g_IsItemFunction(m_Type);}		//是否可使用
@@ -35,17 +37,23 @@ public:
 	void	SyncFieldInt(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
 	void	SyncFieldI64(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
 
-	const CEffect &GetUseEffect() { return m_EffectUse; }
+	void	Deserialize(string jsonstr);
+
+	void	Serialize(string name, rapidjson::Document& root);
+	void	Deserialize(rapidjson::Value& json);
+
+	inline string GetFieldName(int i) { return attrs::get_attr_name(i, item_attrs, item_attr_type_table); }
+	inline int GetFieldType(string name) { return attrs::get_attr_type(name, item_attr_name_table); }
+
+	void	SyncFieldIntToData(int i);
+	void	SyncFieldI64ToData(int i);
+	void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL);
+	void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL);
+	void	SyncAllAttrToClient(CPlayer* toPlayer = NULL);
 
 protected:
 	int*	_FindFieldInt(int i);
 	int64*	_FindFieldI64(int i);
-
-	void	_SetXmlFieldInt(int i, int value);
-	void	_SetXmlFieldI64(int i, int64 value);
-
-	int		_GetXmlFieldInt(int i);
-	int64	_GetXmlFieldI64(int i);
 
 private:
 	ItemID		m_ItemID;				//物品实体ID

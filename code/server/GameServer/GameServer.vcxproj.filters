@@ -117,6 +117,12 @@
     <ClInclude Include="include\DataModule.h">
       <Filter>module</Filter>
     </ClInclude>
+    <ClInclude Include="include\ItemUnit.h">
+      <Filter>unit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemMgr.h">
+      <Filter>manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\NameText.cpp">
@@ -172,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="source\DataModule.cpp">
       <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ItemUnit.cpp">
+      <Filter>unit</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Item.cpp">
+      <Filter>obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

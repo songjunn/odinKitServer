@@ -11,15 +11,6 @@ namespace attrs {
 		return true;
 	}
 
-	int player_attr_type(std::string name)
-	{
-		return get_attr_type(name, player_attr_name_table);
-	}
-	std::string player_attr_name(int type)
-	{
-		return get_attr_name(type, player_attrs, player_attr_type_table);
-	}
-
 	bool init_attrs(const CAttr _attr_array[], uint32 _array_len, CUtlMap<int, int>& _attr_type_table, CUtlMap<CUtlSymbol, int>& _attr_name_table)
 	{
 		SetDefLessFunc(_attr_type_table);
