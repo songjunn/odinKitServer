@@ -36,8 +36,8 @@ void CDataModule::syncFieldInt(IBaseObj* obj, const char* group, int i, int sock
 {
 	Message::SyncObjFieldItem msg;
 	msg.set_id(obj->GetID());
-	msg.set_key(group);
-	msg.set_key2(obj->GetFieldName(i));
+	msg.set_group(group);
+	msg.set_field(obj->GetFieldName(i));
 	msg.set_vali32(obj->GetFieldInt(i));
 
 	PACKET_COMMAND pack;
@@ -49,8 +49,8 @@ void CDataModule::syncFieldI64(IBaseObj* obj, const char* group, int i, int sock
 {
 	Message::SyncObjFieldItem msg;
 	msg.set_id(obj->GetID());
-	msg.set_key(group);
-	msg.set_key2(obj->GetFieldName(i));
+	msg.set_group(group);
+	msg.set_field(obj->GetFieldName(i));
 	msg.set_vali64(obj->GetFieldI64(i));
 
 	PACKET_COMMAND pack;
@@ -61,10 +61,10 @@ void CDataModule::syncFieldI64(IBaseObj* obj, const char* group, int i, int sock
 void CDataModule::syncFieldStr(IBaseObj* obj, const char* group, int i, int sock)
 {
 	Message::SyncObjFieldItem msg;
-	msg.set_id(GetID());
-	msg.set_key(group);
-	msg.set_key2(GetFieldName(i));
-	msg.set_valstr(GetFieldStr(i));
+	msg.set_id(obj->GetID());
+	msg.set_group(group);
+	msg.set_field(obj->GetFieldName(i));
+	msg.set_valstr(obj->GetFieldStr(i));
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETSTR);
@@ -83,37 +83,38 @@ void CDataModule::syncGroupAll(IBaseObj* obj, const char* group, const char* jso
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncAddMap(int64 id, int sock, const char* field, const char* jsonstr)
+void CDataModule::syncAddMap(IBaseObj* obj, const char* group, int sock)
 {
+	std::string json;
+	obj->Serialize(json);
+
 	Message::SyncObjField msg;
-	msg.set_id(id);
-	msg.set_key(field);
-	msg.set_mapkey(mapkey);
-	msg.set_jsonstr(jsonstr);
+	msg.set_id(obj->GetID());
+	msg.set_key(group);
+	msg.set_jsonstr(json);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_ADD);
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncDelMap(int64 id, int sock, const char* field)
+void CDataModule::syncDelMap(IBaseObj* obj, const char* group, int sock)
 {
 	Message::SyncObjField msg;
-	msg.set_id(id);
-	msg.set_key(field);
-	msg.set_mapkey(mapkey);
+	msg.set_id(obj->GetID());
+	msg.set_key(group);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_DEL);
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncSetMap(int64 id, int sock, const char* field, const char* item, int value)
+void CDataModule::syncSetMap(IBaseObj* obj, const char* group, const char* field, int value, int sock)
 {
 	Message::SyncMapFieldItem msg;
-	msg.set_id(id);
-	msg.set_key(field);
-	msg.set_item(item);
+	msg.set_id(obj->GetID());
+	msg.set_group(group);
+	msg.set_field(field);
 	msg.set_val32(value);
 
 	PACKET_COMMAND pack;
@@ -121,12 +122,12 @@ void CDataModule::syncSetMap(int64 id, int sock, const char* field, const char* 
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncSetMap(int64 id, int sock, const char* field, const char* item, int64 value)
+void CDataModule::syncSetMap(IBaseObj* obj, const char* group, const char* field, int64 value, int sock)
 {
 	Message::SyncMapFieldItem msg;
-	msg.set_id(id);
-	msg.set_key(field);
-	msg.set_item(item);
+	msg.set_id(obj->GetID());
+	msg.set_group(group);
+	msg.set_field(field);
 	msg.set_val64(value);
 
 	PACKET_COMMAND pack;
@@ -134,12 +135,12 @@ void CDataModule::syncSetMap(int64 id, int sock, const char* field, const char* 
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncSetMap(int64 id, int sock, const char* field, const char* item, const char* value)
+void CDataModule::syncSetMap(IBaseObj* obj, const char* group, const char* field, const char* value, int sock)
 {
 	Message::SyncMapFieldItem msg;
-	msg.set_id(id);
-	msg.set_key(field);
-	msg.set_item(item);
+	msg.set_id(obj->GetID());
+	msg.set_group(group);
+	msg.set_field(field);
 	msg.set_valstr(value);
 
 	PACKET_COMMAND pack;

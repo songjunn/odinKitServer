@@ -54,11 +54,11 @@ bool CItemUnit::OnMsg(PACKET_COMMAND* pack)
 
 	switch( pack->Type() )
 	{
-	case MSG_REQUEST_ITEM_USE:		_HandlePacket_UseItem(pack);	break;
-	//case MSG_REQUEST_ITEM_DELETE:	_HandlePacket_DeleteItem(pack);	break;
-	case MSG_REQUEST_ITEM_SELL:		_HandlePacket_SellItem(pack);	break;
-	case MSG_REQUEST_ITEM_EQUIP:	_HandlePacket_EquipItem(pack);	break;
-	case MSG_REQUEST_ITEM_UNEQUIP:	_HandlePacket_UnequipItem(pack);break;
+	case Message::MSG_REQUEST_ITEM_USE:		_HandlePacket_UseItem(pack);	break;
+	//case Message::MSG_REQUEST_ITEM_DELETE:	_HandlePacket_DeleteItem(pack);	break;
+	case Message::MSG_REQUEST_ITEM_SELL:		_HandlePacket_SellItem(pack);	break;
+	case Message::MSG_REQUEST_ITEM_EQUIP:	_HandlePacket_EquipItem(pack);	break;
+	case Message::MSG_REQUEST_ITEM_UNEQUIP:	_HandlePacket_UnequipItem(pack); break;
 	default:	return false;
 	}
 
@@ -231,7 +231,7 @@ bool CItemUnit::DeleteItem(int templateid, ITEM_REASON reason, int num)
 		int size = item->GetFieldInt(Item_Attrib_StackSize);
 		if( num >= size )
 		{
-			DeleteItem(item, reason, size);
+			DeleteItem(item, reason);
 			num -= size;
 		}
 		else
@@ -262,7 +262,7 @@ bool CItemUnit::DeleteItemByType(int type, ITEM_REASON reason, int num)
 		int size = item->GetFieldInt(Item_Attrib_StackSize);
 		if( num >= size )
 		{
-			DeleteItem(item, reason, size);
+			DeleteItem(item, reason);
 			num -= size;
 		}
 		else
@@ -304,19 +304,11 @@ bool CItemUnit::GainItem(CItem* item, ITEM_REASON reason)
 	if( !_AddItem(item) )
 		return false;
 
-	Message::ItemGainResponse msg;
-	msg.set_itemid( item->GetID() );
-	msg.set_templateid( item->GetTemplateID() );
-	msg.set_stack( item->GetFieldInt(Item_Attrib_StackSize) );
-	msg.set_position( item->GetFieldInt(Item_Attrib_Position) );
-	msg.set_parentid(item->GetFieldI64(Item_Attrib_Parent));
-	msg.set_equipid(item->GetFieldI64(Item_Attrib_EquipID));
-	msg.set_intensify(item->GetFieldInt(Item_Attrib_Intensify));
+	//同步客户端
+	item->SyncAllAttrToClient();
 
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_ITEM_GAIN );
-	m_parent->SendClientMsg( &pack );
-	//m_parent->SendDataMsg( &pack );
+	//同步服务器
+	DataModule.syncAddMap(item, "items", GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
 	CEvent *evLog = MakeEvent(Event_Item_Obtain, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize), item->GetID(), reason, true);
 	m_parent->OnEvent(evLog);
@@ -343,7 +335,7 @@ bool CItemUnit::SellItem(CItem* item)
 	int num = item->GetFieldInt(Item_Attrib_StackSize);
 
 	ItemID itid = item->GetID();
-	if(DeleteItem(item, Item_Reason_Sell, num)) {
+	if(DeleteItem(item, Item_Reason_Sell)) {
 		//收钱
 		m_parent->GainSilver(price * num, Silver_Reason_SellItem);
 		SendResultFlag(Error_ItemUnit_SellSuccess, 0, itid);
@@ -491,7 +483,7 @@ void CItemUnit::SyncBagItemsInfo()
 	{
 		CItem* item = m_ItemList[idx];
 		if (item)
-			item->SyncAllAttrToClient(toPlayer);
+			item->SyncAllAttrToClient();
 	}
 }
 
@@ -506,7 +498,7 @@ void CItemUnit::SyncEquipItemsInfo(CPlayer* toPlayer)
 	}
 }
 
-bool CItemUnit::DeleteItem(CItem* item, ITEM_REASON reason, int num)
+bool CItemUnit::DeleteItem(CItem* item, ITEM_REASON reason)
 {
 	if( !item )
 		return false;
@@ -517,22 +509,18 @@ bool CItemUnit::DeleteItem(CItem* item, ITEM_REASON reason, int num)
 		return false;
 	}
 
-	ItemID itid = item->GetID();
-	int tempId = item->GetTemplateID();
-	int idx = m_ItemList.Find( item->GetID() );
+	//同步客户端
+	Message::ItemDeleteSync msg;
+	msg.set_itemid( item->GetID() );
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_ITEM_DELETE_SYNC);
+	m_parent->SendClientMsg( &pack );
 
-	if(!m_ItemList.IsValidIndex(idx)) { // 删除道具实例
-		Message::ItemDeleteResponse msg;
-		msg.set_itemid( item->GetID() );
+	//同步DataServer
+	DataModule.syncDelMap(item, "items", GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
-		PACKET_COMMAND pack;
-		PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_ITEM_DELETE );
-		m_parent->SendClientMsg( &pack );
-		m_parent->SendDataMsg( &pack );
-
-		CEvent* ev = MakeEvent(Event_Item_Delete, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize));
-		m_parent->OnEvent(ev);
-	}
+	CEvent* ev = MakeEvent(Event_Item_Delete, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize));
+	m_parent->OnEvent(ev);
 
 	ItemMgr.Delete(item->GetID());
 
@@ -949,7 +937,7 @@ int CItemUnit::GetExpandBagCost(int expandCnt)
 
 int CItemUnit::GetMaxCapacity()
 {
-	return m_parent->GetFieldInt(Role_Attrib_BagMaxCapacity);
+	return 100;
 }
 
 int CItemUnit::CanSpareSeat(int itemTempId, int itemNum)

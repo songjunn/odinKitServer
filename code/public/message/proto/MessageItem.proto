@@ -48,6 +48,7 @@ message ItemUnequipRequest
 {
    optional int64	itemid 		= 1;	//道具实体ID
    optional int64	roleid 		= 2;	//角色ID
+   optional int32	position	= 3;	//装备位置
 } 
 
 //同步道具属性

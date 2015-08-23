@@ -67,7 +67,7 @@ enum MsgDefine {
     MSG_REQUEST_PLAYER_DELETE = 30007;  //删除角色：角色ID
     MSG_REQUEST_PLAYER_OBSERVE = 30008; //观察
 	
-    MSG_REUQEST_ITEM_USE = 30100;       //使用道具
+    MSG_REQUEST_ITEM_USE = 30100;       //使用道具
     MSG_REQUEST_ITEM_DELETE = 30101;    //销毁道具
     MSG_REQUEST_ITEM_SELL = 30102;      //出售道具
     MSG_REQUEST_ITEM_EQUIP = 30103;     //穿装备

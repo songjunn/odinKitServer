@@ -169,22 +169,23 @@ int64* CItem::_FindFieldI64(int i)
 	return NULL;
 }
 
-void CItem::Serialize(string name, rapidjson::Document& root)
+void CItem::Serialize(std::string& jsonstr)
 {
-	rapidjson::Value json;
-	json.SetObject();
+	rapidjson::Document root;
+	root.SetObject();
 
-	_SerializeFieldI64(Item_Attrib_ID, json, root);
-	_SerializeFieldI64(Item_Attrib_Parent, json, root);
-	_SerializeFieldInt(Item_Attrib_TemplateID, json, root);
-	_SerializeFieldInt(Item_Attrib_Position, json, root);
-	_SerializeFieldInt(Item_Attrib_StackSize, json, root);
-	_SerializeFieldI64(Item_Attrib_EquipID, json, root);
-	_SerializeFieldInt(Item_Attrib_Intensify, json, root);
+	_SerializeFieldI64(Item_Attrib_ID, root, root);
+	_SerializeFieldI64(Item_Attrib_Parent, root, root);
+	_SerializeFieldInt(Item_Attrib_TemplateID, root, root);
+	_SerializeFieldInt(Item_Attrib_Position, root, root);
+	_SerializeFieldInt(Item_Attrib_StackSize, root, root);
+	_SerializeFieldI64(Item_Attrib_EquipID, root, root);
+	_SerializeFieldInt(Item_Attrib_Intensify, root, root);
 
-	char idx[32] = { 0 };
-	sprintf(idx, INT64_FMT, GetFieldI64(Item_Attrib_ID));
-	root.AddMember(idx, json, root.GetAllocator());
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	root.Accept(writer);
+	jsonstr.assign(buffer.GetString(), buffer.Size());
 }
 
 void CItem::Deserialize(rapidjson::Value& json)

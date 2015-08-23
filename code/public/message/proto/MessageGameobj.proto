@@ -11,8 +11,8 @@ message SyncObjField {
 //同步GameObj属性
 message SyncObjFieldItem {
     optional int64  id      = 1;    //identify
-    optional string key     = 2;    //field key
-    optional string key2    = 3;    //second field key
+    optional string group   = 2;    //group key
+    optional string field   = 3;    //field key
     optional int32  vali32  = 4;    //int field
     optional int64  vali64  = 5;    //int64 field
     optional string valstr  = 6;    //string field
@@ -21,8 +21,8 @@ message SyncObjFieldItem {
 //同步GameObj属性
 message SyncMapFieldItem {
     optional int64  id      = 1;    //identify
-    optional string key     = 2;    //field key
-    optional string item    = 3;    //item field key
+    optional string group   = 2;    //group key
+    optional string field   = 3;    //field key
     optional int32  vali32  = 4;    //int field
     optional int64  vali64  = 5;    //int64 field
     optional string valstr  = 6;    //string field

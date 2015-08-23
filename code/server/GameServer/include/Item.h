@@ -31,7 +31,7 @@ public:
 	void	SendClientMsg(PACKET_COMMAND* pack);
 	void	SendDataMsg(PACKET_COMMAND* pack);
 
-	void	Serialize(string name, rapidjson::Document& root);
+	void	Serialize(std::string& jsonstr);
 	void	Deserialize(string jsonstr);
 	void	Deserialize(rapidjson::Value& json);
 
