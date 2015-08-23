@@ -123,6 +123,12 @@
     <ClInclude Include="include\ItemMgr.h">
       <Filter>manager</Filter>
     </ClInclude>
+    <ClInclude Include="include\HeroMgr.h">
+      <Filter>manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hero.h">
+      <Filter>obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\NameText.cpp">

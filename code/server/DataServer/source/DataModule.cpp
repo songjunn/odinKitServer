@@ -266,10 +266,10 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 
 				 CDataObj* obj = this->GetObj(msg.id());
 				 if (obj) {
-					 if (msg.key2() == "") {
-						 obj->setFieldInt(msg.key(), msg.vali32());
+					 if (msg.field() == "") {
+						 obj->setFieldInt(msg.group(), msg.vali32());
 					 } else {
-						 obj->setFieldObjInt(msg.key(), msg.key2(), msg.vali32());
+						 obj->setFieldObjInt(msg.group(), msg.field(), msg.vali32());
 					 }
 					 this->_setSaveType(obj, SAVE_UPDATE);
 				 }
@@ -282,10 +282,10 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 
 			    CDataObj* obj = this->GetObj(msg.id());
 			    if (obj) {
-				    if (msg.key2() == "") {
-					    obj->setFieldI64(msg.key(), msg.vali64());
+					if (msg.field() == "") {
+						obj->setFieldI64(msg.group(), msg.vali64());
 				    } else {
-					    obj->setFieldObjI64(msg.key(), msg.key2(), msg.vali64());
+						obj->setFieldObjI64(msg.group(), msg.field(), msg.vali64());
 				    }
 				    this->_setSaveType(obj, SAVE_UPDATE);
 				}
@@ -298,10 +298,10 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					if (msg.key2() == "") {
-						obj->setFieldString(msg.key(), msg.valstr());
+					if (msg.field() == "") {
+						obj->setFieldString(msg.group(), msg.valstr());
 					} else {
-						obj->setFieldObjString(msg.key(), msg.key2(), msg.valstr());
+						obj->setFieldObjString(msg.group(), msg.field(), msg.valstr());
 					}
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
@@ -314,7 +314,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->fromJsonstringCompletely(msg.jsonstr(), msg.key());
+					obj->fromJsonstringCompletely(msg.jsonstr(), msg.group());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
@@ -326,7 +326,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->setFieldMap(msg.key(), msg.id(), msg.item(), msg.vali32());
+					obj->setFieldMap(msg.group(), msg.id(), msg.field(), msg.vali32());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
@@ -338,7 +338,19 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->setFieldMap(msg.key(), msg.id(), msg.item(), msg.vali64());
+					obj->setFieldMap(msg.group(), msg.id(), msg.field(), msg.vali64());
+					this->_setSaveType(obj, SAVE_UPDATE);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_MAPFIELD_SETSTR:
+			{
+				Message::SyncMapFieldItem msg;
+				PROTOBUF_CMD_PARSER(pack, msg);
+
+				CDataObj* obj = this->GetObj(msg.id());
+				if (obj) {
+					obj->setFieldMap(msg.group(), msg.id(), msg.field(), msg.valstr());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
@@ -355,18 +367,6 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case Message::MSG_GAMEOBJ_MAPFIELD_SETSTR:
-			{
-				Message::SyncMapFieldItem msg;
-				PROTOBUF_CMD_PARSER(pack, msg);
-
-				CDataObj* obj = this->GetObj(msg.id());
-				if (obj) {
-					obj->setFieldMap(msg.key(), msg.id(), msg.item(), msg.valstr());
-					this->_setSaveType(obj, SAVE_UPDATE);
-				}
-			}
-			break;
 		case Message::MSG_GAMEOBJ_MAPFIELD_ADD:
 			{
 				Message::SyncObjField msg;
@@ -377,7 +377,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 					if (!obj->haveMember(msg.key())) {
 						obj->addFieldObj(msg.key());
 					}
-					obj->addFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());
+					obj->addFieldMap(msg.key(), msg.id(), msg.jsonstr());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}

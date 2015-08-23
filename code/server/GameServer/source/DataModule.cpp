@@ -179,6 +179,9 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 						if (msg.key() == "attr") {
 							player->Deserialize(msg.jsonstr());
 						}
+						else if (msg.key() == "items") {
+
+						}
 					}
 				}
 			}

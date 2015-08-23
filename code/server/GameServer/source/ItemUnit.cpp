@@ -7,6 +7,7 @@
 #include "MessageTypeDefine.pb.h"
 #include "MessageItem.pb.h"
 #include "NoticeModule.h"
+#include "DataModule.h"
 #include "error.h"
 #include "gtime.h"
 

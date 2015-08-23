@@ -197,6 +197,8 @@
     <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\GameServer.h" />
     <ClInclude Include="include\attrs.h" />
+    <ClInclude Include="include\Hero.h" />
+    <ClInclude Include="include\HeroMgr.h" />
     <ClInclude Include="include\ItemMgr.h" />
     <ClInclude Include="include\ItemUnit.h" />
     <ClInclude Include="stdafx.h" />
