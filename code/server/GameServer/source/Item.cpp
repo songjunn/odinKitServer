@@ -2,6 +2,7 @@
 #include "LuaEngine.h"
 #include "PlayerMgr.h"
 #include "Packet.h"
+#include "DataModule.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageItem.pb.h"
 

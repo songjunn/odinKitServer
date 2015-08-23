@@ -2,6 +2,7 @@
 #include "RoleTemplate.h"
 #include "gtime.h"
 #include "error.h"
+#include "DataModule.h"
 #include "NoticeModule.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
