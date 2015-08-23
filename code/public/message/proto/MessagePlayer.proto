@@ -61,42 +61,6 @@ message PlayerAttrSync {
     repeated Attr   attr        = 2;    //属性
 }
 
-//角色属性
-message PlayerAttrib {
-    optional int64  pid         = 1;	//角色ID
-    optional string name        = 2;	//名字
-    optional int32  level       = 3;	//等级
-    optional int32  templateid  = 4;	//角色模板
-    optional int32  hp          = 5;	//生命值
-    optional int64  exp         = 6;	//经验
-    optional int32  gold        = 7;	//金币
-    optional int32  silver      = 8;	//银币
-    optional int32  merit       = 9;	//战功
-    optional int32  fighting	= 10;	//战斗力
-    optional int32  stamina		= 11;	//行动力
-    optional int32  strength	= 12;	//力量
-    optional int32  intellect	= 13;	//智力
-    optional int32  technique	= 14;	//技巧
-    optional int32  agility		= 15;	//敏捷
-    optional int32  hit         = 16;	//命中值
-    optional int32  jouk        = 17;	//闪避值
-    optional int32  crit        = 18;	//暴击值
-    optional int32  tenacity    = 19;	//韧性
-    optional int32  parry       = 20;	//格挡
-    optional int32  treat       = 21;	//治疗
-    optional int32  physidamage     = 22;	//物理攻击
-    optional int32  physidefense	= 23;	//物理防御
-    optional int32  magicdamage		= 24;	//魔法攻击
-    optional int32  magicdefense	= 26;	//魔法防御
-    optional int32  stuntdamage		= 27;	//绝技攻击
-    optional int32  stuntdefense	= 28;	//绝技防御
-    optional int32  staminamax		= 29;	//最大行动力
-    optional int32  basestrength    = 30;	//基础力量
-    optional int32  baseintellect   = 31;   //基础智力
-    optional int32  basetechnique   = 32;	//基础技巧
-    optional int32  baseagility     = 33;	//基础敏捷
-} 
-
 //角色信息同步结束
 message PlayerLoadOver {
     optional int64  pid         = 1;    //角色ID

@@ -55,7 +55,7 @@ bool CItemUnit::OnMsg(PACKET_COMMAND* pack)
 	switch( pack->Type() )
 	{
 	case MSG_REQUEST_ITEM_USE:		_HandlePacket_UseItem(pack);	break;
-	case MSG_REQUEST_ITEM_DELETE:	_HandlePacket_DeleteItem(pack);	break;
+	//case MSG_REQUEST_ITEM_DELETE:	_HandlePacket_DeleteItem(pack);	break;
 	case MSG_REQUEST_ITEM_SELL:		_HandlePacket_SellItem(pack);	break;
 	case MSG_REQUEST_ITEM_EQUIP:	_HandlePacket_EquipItem(pack);	break;
 	case MSG_REQUEST_ITEM_UNEQUIP:	_HandlePacket_UnequipItem(pack);break;
@@ -159,7 +159,7 @@ bool CItemUnit::_HandlePacket_LoadItem(PACKET_COMMAND* pack)
 	item->SetFieldInt(Item_Attrib_StackSize, msg.stack());
 	item->SetFieldInt(Item_Attrib_Position, msg.position());
 	item->SetFieldI64(Item_Attrib_Parent, msg.parent_id());
-	item->SetFieldI64(Item_Attrib_RoleId, msg.equip_hero_id());
+	item->SetFieldI64(Item_Attrib_EquipID, msg.equip_hero_id());
 	item->SetFieldInt(Item_Attrib_Current_level, msg.current_intensify_level());
 
 	item->SetFieldInt(Item_Attrib_KongStoreZero, msg.mutable_seconds(KongZero)->template_id());
@@ -170,7 +170,6 @@ bool CItemUnit::_HandlePacket_LoadItem(PACKET_COMMAND* pack)
 	if( msg.position() < 0 )
 	{
 		_AddItem(item);
-		m_parent->m_IntensifyItemUnit.IntensifyItemOnAttr(item, false);
 	}
 	else
 	{
@@ -178,9 +177,6 @@ bool CItemUnit::_HandlePacket_LoadItem(PACKET_COMMAND* pack)
 		GET_FIGHTER( msg.equip_hero_id(), role )
 		if( role ) {
 			role->m_ItemUnit._Equip(item);
-			role->m_IntensifyItemUnit.IntensifyItemOnAttr(item);
-			role->m_IntensifyItemUnit.InlayJadeOnAttr(item, false);
-			//role->m_IntensifyItemUnit.InlayCrystalOnAttr(item, false);
 		}
 		_SetItemFactID(msg.itemid());
 	}
@@ -314,7 +310,7 @@ bool CItemUnit::GainItem(CItem* item, ITEM_REASON reason)
 	msg.set_stack( item->GetFieldInt(Item_Attrib_StackSize) );
 	msg.set_position( item->GetFieldInt(Item_Attrib_Position) );
 	msg.set_parentid(item->GetFieldI64(Item_Attrib_Parent));
-	msg.set_equipid( item->GetFieldI64(Item_Attrib_RoleId) );
+	msg.set_equipid(item->GetFieldI64(Item_Attrib_EquipID));
 	msg.set_intensify(item->GetFieldInt(Item_Attrib_Intensify));
 
 	PACKET_COMMAND pack;
@@ -404,10 +400,10 @@ bool CItemUnit::EquipItem(CItem* item, CFighter* role, bool flag)
 	}
 
 	//检查该装备是否已穿戴
-	if( item->GetFieldI64(Item_Attrib_RoleId) > 0 )
+	if( item->GetFieldI64(Item_Attrib_EquipID) > 0 )
 	{
 		SendResultFlag(Error_Equipment_HaveEquiped);
-		Log.Error("[CItemUnit] Error:%s:%d, Player:"INT64_FMT" item:"INT64_FMT" equiprole:"INT64_FMT, __FILE__, __LINE__, m_parent->GetID(), item->GetID(), item->GetFieldI64(Item_Attrib_RoleId));
+		Log.Error("[CItemUnit] Error:%s:%d, Player:"INT64_FMT" item:"INT64_FMT" equiprole:"INT64_FMT, __FILE__, __LINE__, m_parent->GetID(), item->GetID(), item->GetFieldI64(Item_Attrib_EquipID));
 		return false;
 	}
 
@@ -494,32 +490,8 @@ void CItemUnit::SyncBagItemsInfo()
 	FOR_EACH_MAP( m_ItemList, idx )
 	{
 		CItem* item = m_ItemList[idx];
-		if( !item )
-			continue;
-
-		Message::ItemGainResponse msg;
-		msg.set_itemid( item->GetID() );
-		msg.set_templateid( item->GetTemplateID() );
-		msg.set_stack( item->GetFieldInt(Item_Attrib_StackSize) );
-		msg.set_position( item->GetFieldInt(Item_Attrib_Position) );
-		msg.set_parent_id(item->GetFieldInt(Item_Attrib_Parent));
-		msg.set_equip_hero_id( item->GetFieldI64(Item_Attrib_RoleId) );
-
-		if(g_IsItemEquipment(item->GetFieldInt(Item_Attrib_Type)))
-		{	
-			msg.set_current_intensify_level(item->GetFieldInt(Item_Attrib_Current_level));
-			for(int i=KongZero; i<KongThird+1; i++)
-			{
-				Message::ItemGainResponse::Soul * soul = msg.add_seconds();
-				soul->set_template_id(item->m_Souls[i]);
-			}	
-		}
-
-		PACKET_COMMAND pack;
-		PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_ITEM_GAIN );
-		m_parent->SendClientMsg( &pack );
-
-		m_parent->m_IntensifyItemUnit.SyncItemAttr(item);
+		if (item)
+			item->SyncAllAttrToClient(toPlayer);
 	}
 }
 
@@ -529,34 +501,8 @@ void CItemUnit::SyncEquipItemsInfo(CPlayer* toPlayer)
 	for(int i=0; i<Equip_Position_End; ++i)
 	{
 		CItem* item = m_EquipList[i];
-		if( !item )
-			continue;
-
-		Message::ItemGainResponse msg;
-		msg.set_itemid( item->GetID() );
-		msg.set_templateid( item->GetTemplateID() );
-		msg.set_stack( item->GetFieldInt(Item_Attrib_StackSize) );
-		msg.set_position( item->GetFieldInt(Item_Attrib_Position) );
-		msg.set_parent_id(item->GetFieldInt(Item_Attrib_Parent));
-		msg.set_equip_hero_id( item->GetFieldI64(Item_Attrib_RoleId) );
-
-		msg.set_current_intensify_level(item->GetFieldInt(Item_Attrib_Current_level));
-		for(int i=KongZero; i<KongThird+1; i++)
-		{
-			Message::ItemGainResponse::Soul * soul = msg.add_seconds();
-			soul->set_template_id(item->m_Souls[i]);
-		}
-
-		PACKET_COMMAND pack;
-		PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_ITEM_GAIN );
-
-		if( toPlayer )
-			m_parent->SendObserveMsg( &pack, toPlayer );
-		else
-			m_parent->SendClientMsg( &pack );
-
-		m_parent->m_IntensifyItemUnit.SyncItemAttr(item, toPlayer);
-		m_parent->m_IntensifyItemUnit.InlayCrystalOnAttr(item, true);
+		if( item )
+			item->SyncAllAttrToClient(toPlayer);
 	}
 }
 
@@ -731,7 +677,7 @@ bool CItemUnit::_Equip(CItem* item, bool client, bool data)
 	_SetItemFactID(item->GetID());
 
 	//同步装备位置
-	item->SetFieldI64(Item_Attrib_RoleId, m_parent->GetID(), client, data);
+	item->SetFieldI64(Item_Attrib_EquipID, m_parent->GetID(), client, data);
 	item->SetFieldInt(Item_Attrib_Position, idx, client, data);
 
 	//同步穿装属性
@@ -757,7 +703,7 @@ bool CItemUnit::_UnEquip(int idx, ItemID &oldId, bool client, bool data)
 	}
 
 	//同步装备属性
-	m_EquipList[idx]->SetFieldI64(Item_Attrib_RoleId, INVALID_VALUE, client, data);
+	m_EquipList[idx]->SetFieldI64(Item_Attrib_EquipID, INVALID_VALUE, client, data);
 	m_EquipList[idx]->SetFieldInt(Item_Attrib_Position, INVALID_VALUE, client, data);
 
 	//同步卸装属性
@@ -1004,36 +950,6 @@ int CItemUnit::GetExpandBagCost(int expandCnt)
 int CItemUnit::GetMaxCapacity()
 {
 	return m_parent->GetFieldInt(Role_Attrib_BagMaxCapacity);
-}
-
-bool CItemUnit::OpenItemBox(int boxid)
-{
-	if(!m_parent) {
-		SendResultFlag(Error_Box_UnKnow);
-		return false;
-	}
-
-	int itemtempid[BOX_GROUP_NUM] = {0};
-	int itemstack[BOX_GROUP_NUM] = {0};
-	int itemnum = 0;
-
-	int carrer = m_parent->GetFieldInt(Role_Attrib_Vocation);
-	int sex = m_parent->GetFieldInt(Role_Attrib_Sex);
-	if(!ItemBoxTemplateMgr.GetBoxItems(boxid, sex, carrer, itemtempid, itemstack, itemnum)) {
-		SendResultFlag(Error_Box_UnKnow);
-		return false;
-	}
-
-	if(itemnum > GetSpareSeat()) {
-		SendResultFlag(Error_Box_UnEnoughBag);
-		return false;
-	}
-
-	for(int i = 0; i < itemnum; i++) {
-		GainItem(itemtempid[i], Item_Reason_OpenBox, itemstack[i]);
-	}
-
-	return true;
 }
 
 int CItemUnit::CanSpareSeat(int itemTempId, int itemNum)

@@ -2,6 +2,7 @@
 #include "IBaseObj.h"
 #include "utlmap.h"
 #include "eventdef.h"
+#include "ItemUnit.h"
 
 #define FIGHTER_LEVEL_MAX	99
 #define ROLE_SKILL_MAX		10
@@ -208,5 +209,9 @@ public:
 	SkillID				m_Skills[ROLE_SKILL_MAX];
 	CUtlMap<int, int>	m_Buffs;	//战斗中buff
 	CUtlMap<int, int>	m_ExBuffs;  //非战斗中添加的buff
+
+public:
+	CItemUnit	m_ItemUnit;
+
 };
 

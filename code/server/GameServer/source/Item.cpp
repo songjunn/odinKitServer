@@ -341,10 +341,9 @@ void CItem::SyncFieldI64ToData(int i)
 
 void CItem::SyncFieldIntToClient(int i, CPlayer* toPlayer)
 {
-	Message::ItemAttrIntSync msg;
-	msg.set_itemid( GetID() );
-	msg.set_attr( i );
-	msg.set_value( GetFieldInt(i) );
+	Message::ItemAttrSync msg;
+	msg.set_pid(GetID());
+	_PackageMsgAttr32(msg, i);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, MSG_ITEM_ATTRINT_SYNC);
@@ -357,10 +356,9 @@ void CItem::SyncFieldIntToClient(int i, CPlayer* toPlayer)
 
 void CItem::SyncFieldI64ToClient(int i, CPlayer* toPlayer)
 {
-	Message::ItemAttrI64Sync msg;
-	msg.set_itemid( GetID() );
-	msg.set_attr( i );
-	msg.set_value( GetFieldI64(i) );
+	Message::ItemAttrSync msg;
+	msg.set_pid(GetID());
+	_PackageMsgAttr64(msg, i);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, MSG_ITEM_ATTRI64_SYNC);

@@ -6,7 +6,7 @@
 
 CFighter::CFighter()
 {
-
+	
 }
 
 CFighter::~CFighter()
@@ -15,7 +15,7 @@ CFighter::~CFighter()
 
 void CFighter::Release()
 {
-
+	m_ItemUnit.Release();
 }
 
 void CFighter::Init()
@@ -136,6 +136,8 @@ void CFighter::Init()
 	m_MoraleAttack = 0;
 	m_MoraleBeAttack = 0;
 	m_MoraleRound = 0;
+
+	m_ItemUnit.Initialize(this);
 }
 
 void CFighter::Copy(const CFighter& fighter)

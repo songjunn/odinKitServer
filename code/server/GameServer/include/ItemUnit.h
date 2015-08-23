@@ -49,9 +49,6 @@ public:
 	int CanSpareSeat(int itemTempId, int itemNum);									//判断是否可容得下一定数量的道具
 	inline int GetSpareSeat() {	return GetMaxCapacity() - m_ItemList.Count(); }		//获取包裹剩余位置数量
 
-	//使用具体道具对外接口
-	bool	OpenItemBox(int boxid);													//打开宝箱获得道具
-
 protected:
 	bool	_AddItem(CItem* item, bool client = false, bool data = false);			//加入包裹
 	bool	_RemoveItem(CItem* item);												//移除包裹
