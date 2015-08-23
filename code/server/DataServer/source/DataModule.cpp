@@ -319,14 +319,50 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				}
 			}
 			break;
-		case Message::MSG_GAMEOBJ_MAPFIELD_SET:
+		case Message::MSG_GAMEOBJ_MAPFIELD_SETI32:
+			{
+				Message::SyncMapFieldItem msg;
+				PROTOBUF_CMD_PARSER(pack, msg);
+
+				CDataObj* obj = this->GetObj(msg.id());
+				if (obj) {
+					obj->setFieldMap(msg.key(), msg.id(), msg.item(), msg.vali32());
+					this->_setSaveType(obj, SAVE_UPDATE);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_MAPFIELD_SETI64:
+			{
+				Message::SyncMapFieldItem msg;
+				PROTOBUF_CMD_PARSER(pack, msg);
+
+				CDataObj* obj = this->GetObj(msg.id());
+				if (obj) {
+					obj->setFieldMap(msg.key(), msg.id(), msg.item(), msg.vali64());
+					this->_setSaveType(obj, SAVE_UPDATE);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_MAPFIELD_SETALL:
 			{
 				Message::SyncObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->setFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());
+					obj->setFieldMap(msg.key(), msg.id(), msg.jsonstr());
+					this->_setSaveType(obj, SAVE_UPDATE);
+				}
+			}
+			break;
+		case Message::MSG_GAMEOBJ_MAPFIELD_SETSTR:
+			{
+				Message::SyncMapFieldItem msg;
+				PROTOBUF_CMD_PARSER(pack, msg);
+
+				CDataObj* obj = this->GetObj(msg.id());
+				if (obj) {
+					obj->setFieldMap(msg.key(), msg.id(), msg.item(), msg.valstr());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}

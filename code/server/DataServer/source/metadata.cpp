@@ -96,16 +96,12 @@ void CMetadata::addFieldMap(std::string key, int64 id, std::string jsonstring)
 {
 	rapidjson::Document document(&m_members.GetAllocator());
 	document.Parse<0>(jsonstring.c_str());
-	this->addFieldMap(key, id, document);
-}
 
-void CMetadata::addFieldMap(std::string key, int64 id, rapidjson::Value& value)
-{
-	char idx[32] = {0};
+	char idx[32] = { 0 };
 	sprintf(idx, INT64_FMT, id);
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	if (this->isFieldObj(member) && !this->_hasMember(member, idx)) {
-		this->_addFiledVal(member, idx, value);
+		this->_addFiledVal(member, idx, document);
 	}
 }
 
@@ -113,17 +109,49 @@ void CMetadata::setFieldMap(std::string key, int64 id, std::string jsonstring)
 {
 	rapidjson::Document document(&m_members.GetAllocator());
 	document.Parse<0>(jsonstring.c_str());
-	this->setFieldMap(key, id, document);
+
+	rapidjson::Value& member = this->getFieldVal(m_members, key);
+	if (this->isFieldObj(member)) {
+		char idx[32] = { 0 };
+		sprintf(idx, INT64_FMT, id);
+		rapidjson::Value& node = this->getFieldVal(member, idx);
+		this->_setFieldVal(node, document);
+	}
 }
 
-void CMetadata::setFieldMap(std::string key, int64 id, rapidjson::Value& value)
+void CMetadata::setFieldMap(std::string key, int64 id, std::string field, int value)
 {
 	rapidjson::Value& member = this->getFieldVal(m_members, key);
 	if (this->isFieldObj(member)) {
-		char idx[32] = {0};
+		char idx[32] = { 0 };
+		sprintf(idx, INT64_FMT, id);
+		rapidjson::Value& _node = this->getFieldVal(member, idx);
+		rapidjson::Value& _field = this->getFieldVal(_node, field);
+		this->_setFieldInt(_field, value);
+	}
+}
+
+void CMetadata::setFieldMap(std::string key, int64 id, std::string field, int64 value)
+{
+	rapidjson::Value& member = this->getFieldVal(m_members, key);
+	if (this->isFieldObj(member)) {
+		char idx[32] = { 0 };
 		sprintf(idx, INT64_FMT, id);
 		rapidjson::Value& node = this->getFieldVal(member, idx);
-		this->_setFieldVal(node, value);
+		rapidjson::Value& _field = this->getFieldVal(_node, field);
+		this->_setFieldI64(_field, value);
+	}
+}
+
+void CMetadata::setFieldMap(std::string key, int64 id, std::string field, std::string value)
+{
+	rapidjson::Value& member = this->getFieldVal(m_members, key);
+	if (this->isFieldObj(member)) {
+		char idx[32] = { 0 };
+		sprintf(idx, INT64_FMT, id);
+		rapidjson::Value& node = this->getFieldVal(member, idx);
+		rapidjson::Value& _field = this->getFieldVal(_node, field);
+		this->_setFieldStr(_field, value);
 	}
 }
 

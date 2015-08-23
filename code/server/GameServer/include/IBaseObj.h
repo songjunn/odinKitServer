@@ -48,9 +48,8 @@ public:
 	virtual	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player)	{return;}
 
 	virtual void	Serialize(string& jsonstr) { return; }
-	virtual void	Deserialize(string jsonstr) { return; }
-
 	virtual void	Serialize(string name, rapidjson::Document& root) { return; }
+	virtual void	Deserialize(string jsonstr) { return; }
 	virtual void	Deserialize(rapidjson::Value& json) { return; }
 
 	virtual string	GetFieldName(int i)			{ return ""; }

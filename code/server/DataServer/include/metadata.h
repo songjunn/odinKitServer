@@ -75,10 +75,11 @@ public:
 	}
 
 	void addFieldMap(std::string key, int64 id, std::string jsonstring);
-	void addFieldMap(std::string key, int64 id, rapidjson::Value& value);
-	void setFieldMap(std::string key, int64 id, std::string jsonstring);
-	void setFieldMap(std::string key, int64 id, rapidjson::Value& value);
 	void delFieldMap(std::string key, int64 id);
+	void setFieldMap(std::string key, int64 id, std::string jsonstring);
+	void setFieldMap(std::string key, int64 id, std::string field, int value);
+	void setFieldMap(std::string key, int64 id, std::string field, int64 value);
+	void setFieldMap(std::string key, int64 id, std::string field, std::string value);
 
 	void addFieldObj(std::string key);
 	rapidjson::Value& getFieldObj(std::string key);

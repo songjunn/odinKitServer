@@ -60,7 +60,7 @@ public:
 	int			m_BaseStuntDamage;		//基础绝技攻击
 	int			m_BaseStuntDefense;		//基础绝技防御
 
-	int 		m_Current_level;		//当前装备强化等级, 初始0
+	int 		m_Intensify;			//当前装备强化等级, 初始0
 	int 		m_MaxLevel_intensify;	//装备强化上限
 	//int 		m_Intensify_points[Intensify_Points_ENDS];		//从当前强化等级强化到下一级需求点数
 

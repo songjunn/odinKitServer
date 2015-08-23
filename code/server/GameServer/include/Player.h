@@ -43,9 +43,8 @@ public:
 	void	DataSync();
 
 	void	Serialize(std::string& jsonstr);
-	void	Deserialize(std::string jsonstr);
-
 	void	Serialize(string name, rapidjson::Document& root);
+	void	Deserialize(std::string jsonstr);
 	void	Deserialize(rapidjson::Value& json);
 
 	inline string GetFieldName(int i) { return attrs::get_attr_name(i, player_attrs, player_attr_type_table); }

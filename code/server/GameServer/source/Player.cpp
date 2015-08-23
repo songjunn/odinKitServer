@@ -134,41 +134,17 @@ string* CPlayer::_FindFieldStr(int i)
 
 void CPlayer::SyncFieldIntToData(int i)
 {
-	Message::SyncObjFieldItem msg;
-	msg.set_id(GetID());
-	msg.set_key("attrs");
-	msg.set_key2(GetFieldName(i));
-	msg.set_vali32(GetFieldInt(i));
-
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETI32);
-	SendDataMsg(&pack);
+	DataModule.syncFieldInt(this, "attrs", i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CPlayer::SyncFieldI64ToData(int i)
 {
-	Message::SyncObjFieldItem msg;
-	msg.set_id(GetID());
-	msg.set_key("attrs");
-	msg.set_key2(GetFieldName(i));
-	msg.set_vali64(GetFieldI64(i));
-
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETI64);
-	SendDataMsg(&pack);
+	DataModule.syncFieldI64(this, "attrs", i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CPlayer::SyncFieldStrToData(int i)
 {
-	Message::SyncObjFieldItem msg;
-	msg.set_id(GetID());
-	msg.set_key("attrs");
-	msg.set_key2(GetFieldName(i));
-	msg.set_valstr(GetFieldStr(i));
-
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_OBJFIELD_SETSTR);
-	SendDataMsg(&pack);
+	DataModule.syncFieldStr(this, "attrs", i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CPlayer::SyncFieldIntToClient(int i, CPlayer* toPlayer)

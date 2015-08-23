@@ -52,11 +52,9 @@ message PlayerCount {
 message PlayerAttrSync {
     message Attr {
         optional int32  type    = 1;    //属性ID
-        optional string group   = 2;    //属性组
-        optional string key     = 3;    //属性键
-        optional int32  val32   = 4;	//属性值
-        optional int64  val64   = 5;	//属性值
-        optional string valstr  = 6;    //属性值
+        optional int32  val32   = 2;	  //属性值
+        optional int64  val64   = 3;	  //属性值
+        optional string valstr  = 4;    //属性值
     }
 
     optional int64  pid         = 1;    //角色ID

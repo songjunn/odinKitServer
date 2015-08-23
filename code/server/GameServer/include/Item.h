@@ -3,6 +3,7 @@
 #include "attrs.h"
 #include "attrs_defines.h"
 #include "ItemTemplate.h"
+#include "MessageItem.pb.h"
 
 class CPlayer;
 class CItem : public IBaseObj
@@ -30,16 +31,8 @@ public:
 	void	SendClientMsg(PACKET_COMMAND* pack);
 	void	SendDataMsg(PACKET_COMMAND* pack);
 
-	void	SyncFieldToData(const char* field = NULL);
-	void	SyncFieldIntToClient(int i, CPlayer* toPlayer = NULL);
-	void	SyncFieldI64ToClient(int i, CPlayer* toPlayer = NULL);
-
-	void	SyncFieldInt(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
-	void	SyncFieldI64(int i, bool client = false, bool data = false, CPlayer* toPlayer = NULL);
-
-	void	Deserialize(string jsonstr);
-
 	void	Serialize(string name, rapidjson::Document& root);
+	void	Deserialize(string jsonstr);
 	void	Deserialize(rapidjson::Value& json);
 
 	inline string GetFieldName(int i) { return attrs::get_attr_name(i, item_attrs, item_attr_type_table); }
@@ -55,8 +48,10 @@ protected:
 	int*	_FindFieldInt(int i);
 	int64*	_FindFieldI64(int i);
 
+	void	_PackageMsgAttr32(Message::ItemAttrSync& msg, int i);
+	void	_PackageMsgAttr64(Message::ItemAttrSync& msg, int i);
+
 private:
-	ItemID		m_ItemID;				//物品实体ID
 	PersonID	m_ParentID;				//拥有者ID
 	int			m_Type;					//类型
 	int			m_Career;				//职业限制
@@ -65,6 +60,7 @@ private:
 	int			m_Quatily;				//品质
 	int			m_StackMax;				//最大堆叠数量
 	int			m_SellPrice;			//出售价格
+	int 		m_Intensify;			//当前装备强化等级, 初始0
 	CEffect		m_EffectUse;			//使用效果
 	CEffect		m_EffectEquip[EQUIP_EFFECT_MAX];	//装备效果
 
@@ -91,26 +87,5 @@ private:
 	int 		m_BaseMagicDefense;		//基础魔法防御
 	int			m_BaseStuntDamage;		//基础绝技攻击
 	int			m_BaseStuntDefense;		//基础绝技防御
-
-	int 		m_Current_level;		//当前装备强化等级, 初始0
-	int 		m_MaxLevel_intensify;   //装备强化上限
-	int			m_NextGradeTemplateId;  //装备升级,下一等级模板id
-	int			m_UpGradeCharge;       // 装备升级手续费
-
-	int 		m_IntensifyJadePoints;
-	int 		m_IntensifyJadeBasePoints;	
-	int 		m_LayCharge;
-public:	
-	//int 		m_Intensify_points[CHARGE];		//从当前强化等级强化到下一级需求点数
-	//int 		m_Charge[CHARGE];				//手续费
-	
-	int			m_Souls[ITEM_KONG];//已镶嵌魂晶魂玉 列表，模板id
-//魂晶
-	SoulCrystal m_crystal[ITEM_ARRTU];
-
-	UpGradeNeeds m_UpGrade[ARR_LENS];	//升级需要
-private: 
-	int			m_SoulType;				//魂玉种类, 日1， 月2， 星3， -1
-	int			m_SoulPoints;				//魂玉点数
 
 };

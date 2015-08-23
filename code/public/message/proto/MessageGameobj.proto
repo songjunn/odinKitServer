@@ -2,18 +2,27 @@ package Message;
 
 //同步GameObj属性
 message SyncObjField {
-    optional int64  id      = 1;	//identify
-    optional string type    = 2;	//obj type
-    optional string key     = 3;	//field key
-    optional int64  mapkey  = 4;	//field map identify
-    optional string jsonstr = 5;	//field json string
+    optional int64  id      = 1;    //identify
+    optional string type    = 2;    //obj type
+    optional string key     = 3;    //field key
+    optional string jsonstr = 4;    //field json string
 } 
 
 //同步GameObj属性
 message SyncObjFieldItem {
-    optional int64  id      = 1;	//identify
-    optional string key     = 2;	//field key
+    optional int64  id      = 1;    //identify
+    optional string key     = 2;    //field key
     optional string key2    = 3;    //second field key
+    optional int32  vali32  = 4;    //int field
+    optional int64  vali64  = 5;    //int64 field
+    optional string valstr  = 6;    //string field
+} 
+
+//同步GameObj属性
+message SyncMapFieldItem {
+    optional int64  id      = 1;    //identify
+    optional string key     = 2;    //field key
+    optional string item    = 3;    //item field key
     optional int32  vali32  = 4;    //int field
     optional int64  vali64  = 5;    //int64 field
     optional string valstr  = 6;    //string field

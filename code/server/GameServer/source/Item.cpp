@@ -2,9 +2,8 @@
 #include "LuaEngine.h"
 #include "PlayerMgr.h"
 #include "Packet.h"
-#include "PacketDefine.h"
-#include "MessageItemSyncAttribInt.pb.h"
-#include "MessageItemSyncAttribI64.pb.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageItem.pb.h"
 
 
 void CItem::Release()
@@ -14,7 +13,8 @@ void CItem::Release()
 
 void CItem::Init()
 {
-	m_ItemID = INVALID_VALUE;
+	IBaseObj::Init();
+
 	m_ParentID = INVALID_VALUE;
 	m_Type = INVALID_VALUE;
 	m_Career = INVALID_VALUE;
@@ -26,7 +26,7 @@ void CItem::Init()
 	m_SellPrice = 0;
 	m_Position = INVALID_VALUE;
 	m_RoleId = INVALID_VALUE;
-	memset(m_name, 0, OBJ_NAME_LEN);
+	m_Intensify = 0;
 
 	m_EffectUse.effectID = INVALID_VALUE;	
 	m_EffectUse.effectValue = INVALID_VALUE;	
@@ -60,45 +60,6 @@ void CItem::Init()
 	m_BaseMagicDefense = 0;		//基础魔法防御
 	m_BaseStuntDamage = 0;		//基础绝技攻击
 	m_BaseStuntDefense = 0;		//基础绝技防御
-
-	m_Current_level = 0;
-	m_MaxLevel_intensify = 0;
-	
-	//for(int i=0; i<Intensify_Points_ENDS; i++)
-	//	m_Intensify_points[i] = 0;
-	m_SoulType = 0;
-	m_SoulPoints = 0;
-
-	//for(int i=0; i<CHARGE; i++)
-	//	m_Charge[i] = 0;		//手续费
-
-	m_Current_level = 0;
-	for(int i=0; i<ITEM_KONG-1; i++)
-		m_Souls[i] = 0;			//已镶嵌魂晶魂玉 列表
-	m_Souls[ITEM_KONG-1] = -1;		//0已开启, -1未开启,  >0 已镶嵌
-
-//魂晶
-	for(int k=0; k<ITEM_ARRTU; k++)
-	{
-		m_crystal[k].soulEffectID = INVALID_VALUE;
-		m_crystal[k].soulEffectValue = INVALID_VALUE;
-		m_crystal[k].soulEffectProbability = INVALID_VALUE;
-		m_crystal[k].soulEffectAttr = INVALID_VALUE;
-		m_crystal[k].soulInspirType = INVALID_VALUE;
-		m_crystal[k].soulInspirGradeCounts = INVALID_VALUE;	
-		m_crystal[k].isSpir = false;	 //默认魂晶三天属性，都没有激活
-	}
-
-	for(int k=0; k<ARR_LENS; k++)  //装备升级材料
-	{
-		m_UpGrade[k].templateId = 0;
-		m_UpGrade[k].nums  = 0; 		
-	}
-	m_NextGradeTemplateId = 0; //下一等级模板id
-	m_UpGradeCharge = 0;	//装备升级 手续费
-
-	m_IntensifyJadePoints = 0;
-	m_IntensifyJadeBasePoints = 0;	
 }
 
 bool CItem::OnCreate(int templateid)
@@ -110,7 +71,7 @@ bool CItem::OnCreate(int templateid)
 		return false;
 	}
 
-	SetTemplateID(temp->m_Id);
+	SetFieldInt(Item_Attrib_TemplateID, temp->m_Id);
 	SetFieldInt(Item_Attrib_Type, temp->m_Type);
 	SetFieldInt(Item_Attrib_Career, temp->m_Career);
 	SetFieldInt(Item_Attrib_Sex, temp->m_Sex);
@@ -119,6 +80,7 @@ bool CItem::OnCreate(int templateid)
 	SetFieldInt(Item_Attrib_StackMax, temp->m_StackMax);
 	SetFieldInt(Item_Attrib_SellPrice, temp->m_SellPrice);
 	SetFieldInt(Item_Attrib_StackSize, 1);
+	SetFieldInt(Item_Attrib_Intensify, temp->m_Intensify);
 
 	m_EffectUse.effectID = temp->m_EffectUse.effectID;
 	m_EffectUse.effectValue = temp->m_EffectUse.effectValue;
@@ -147,49 +109,6 @@ bool CItem::OnCreate(int templateid)
 	SetFieldInt(Item_Attrib_BaseStuntDamage, temp->m_BaseStuntDamage);
 	SetFieldInt(Item_Attrib_BaseStuntDefense, temp->m_BaseStuntDefense);
 
-	SetFieldInt(Item_Attrib_Current_level, temp->m_Current_level);
-	SetFieldInt(Item_Attrib_MaxLevelIntensify, temp->m_MaxLevel_intensify);
-	
-	//for(int i=0; i<Intensify_Points_ENDS; i++)
-	//	m_Intensify_points[i] = temp->m_Intensify_points[i];
-	
-	SetFieldInt(Item_Attrib_SoulType, temp->m_SoulType);
-	SetFieldInt(Item_Attrib_SoulPoints, temp->m_SoulPoints);
-	
-	//for(int i=0; i<CHARGE; i++)
-	//	m_Charge[i] = temp->m_charge[i];
-
-
-	if(g_IsItemEquipment(temp->m_Type))
-	{
-		m_Current_level = 0;
-		for(int i=0; i<ITEM_KONG-1; i++)
-			m_Souls[i] = 0; 		//已镶嵌魂晶魂玉 列表
-		m_Souls[ITEM_KONG-1] = -1;		//0已开启, -1未开启,  >0 已镶嵌
-	}
-
-	//魂晶
-	for(int k=0; k<ITEM_ARRTU; k++)
-	{
-		m_crystal[k].soulEffectID = temp->m_crystal[k].soulEffectID;
-		m_crystal[k].soulEffectValue = temp->m_crystal[k].soulEffectValue;
-		m_crystal[k].soulEffectProbability = temp->m_crystal[k].soulEffectProbability;
-		m_crystal[k].soulEffectAttr = temp->m_crystal[k].soulEffectAttr;
-		m_crystal[k].soulInspirType = temp->m_crystal[k].soulInspirType;
-		m_crystal[k].soulInspirGradeCounts = temp->m_crystal[k].soulInspirGradeCounts;		
-	}
-
-	for(int k=0; k<ARR_LENS; k++)  				//装备升级材料
-	{
-		m_UpGrade[k].templateId = temp->m_UpGrade[k].templateId;
-		m_UpGrade[k].nums  = temp->m_UpGrade[k].nums;	
-	}
-	SetFieldInt(Item_Attrib_NextGradeTemplateId, temp->m_NextGradeTemplateId); 	//下一等级模板id
-	SetFieldInt(Item_Attrib_UpGradeCharge, temp->m_UpGradeCharge);				//装备升级 手续费
-
-	SetFieldInt(Item_Attrib_IntensifyJadePoints, temp->m_IntensifyJadePoints);
-	SetFieldInt(Item_Attrib_IntensifyJadeBasePoints, temp->m_IntensifyJadeBasePoints);
-	SetFieldInt(Item_Attrib_LayCharge, temp->m_LayCharge);
 	return true;
 }
 
@@ -207,6 +126,7 @@ int* CItem::_FindFieldInt(int i)
 	case Item_Attrib_StackSize:	return &m_StackSize;
 	case Item_Attrib_SellPrice:	return &m_SellPrice;
 	case Item_Attrib_Position:	return &m_Position;
+	case Item_Attrib_Intensify: return &m_Intensify;
 
 	case Item_Attrib_Strength:	return &m_Strength;
 	case Item_Attrib_Intellect:	return &m_Intellect;
@@ -228,24 +148,6 @@ int* CItem::_FindFieldInt(int i)
 	case Item_Attrib_BaseStuntDamage: 	return &m_BaseStuntDamage;
 	case Item_Attrib_BaseStuntDefense:	return &m_BaseStuntDefense;
 
-	case Item_Attrib_Intensify: 		return &m_Current_level;//当前强化等级
-	case Item_Attrib_MaxLevelIntensify:	return &m_MaxLevel_intensify;
-	case Item_Attrib_SoulType:			return &m_SoulType;
-	case Item_Attrib_SoulPoints:		return &m_SoulPoints;
-
-	//孔 存储
-	case Item_Attrib_KongStoreZero:		return &m_Souls[KongZero];
-	case Item_Attrib_KongStoreFirst:	return &m_Souls[KongFirst];
-	case Item_Attrib_KongStoreSecond:	return &m_Souls[KongSecond];
-	case Item_Attrib_KongStoreThird:	return &m_Souls[KongThird];
-
-
-	case Item_Attrib_NextGradeTemplateId:	return &m_NextGradeTemplateId;//下一等级模板id
-	case Item_Attrib_UpGradeCharge:			return &m_UpGradeCharge;	// 装备升级手续费
-
-	case Item_Attrib_IntensifyJadePoints:			return &m_IntensifyJadePoints;
-	case Item_Attrib_IntensifyJadeBasePoints:		return &m_IntensifyJadeBasePoints;
-	case Item_Attrib_LayCharge:						return &m_LayCharge;
 	default:	return NULL;
 	}
 
@@ -350,13 +252,6 @@ bool CItem::OnCost(int num)
 
 bool CItem::OnUse()
 {
-	//if( !OnCost() )
-	//	return false;
-
-	if( GetFieldInt(Item_Attrib_StackSize) < 1 ) { // 不会出现啊
-		return false;
-	}
-
 	//脚本输入参数
 	int index = 0;
 	LuaParam param[3];
@@ -368,7 +263,19 @@ bool CItem::OnUse()
 	char szLuaTable[128] = {0};
 	sprintf(szLuaTable, "Effect_%d", m_EffectUse.effectID);
 	
-	return LuaEngine.RunLuaFunction("OnEffect", szLuaTable, NULL, param, index);
+	if (!LuaEngine.RunLuaFunction("OnEffect", szLuaTable, NULL, param, index))
+	{
+		Log.Error("[CItem] OnUse Failed: %d", m_templateId);
+		return false;
+	}
+
+	if (!OnCost())
+	{
+		Log.Error("[CItem] OnCost Failed: %d", m_templateId);
+		return false;
+	}
+	
+	return true;
 }
 
 bool CItem::OnStack(CItem* item)
@@ -421,44 +328,78 @@ void CItem::SendDataMsg(PACKET_COMMAND* pack)
 	player->SendDataMsg( pack );
 }
 
-void CItem::SyncFieldInt(int i, bool client, bool data, CPlayer* toPlayer)
+void CItem::SyncFieldIntToData(int i)
 {
-	if( !client && !data && !toPlayer )
-		return;
+	DataModule.syncSetMap(GetID(), GameServer.getServerSock(CBaseServer::Linker_Server_Data), "items", GetFieldName(i), GetFieldInt(i));
+}
 
-	Message::ItemSyncAttribInt msg;
+void CItem::SyncFieldI64ToData(int i)
+{
+	DataModule.syncSetMap(GetID(), GameServer.getServerSock(CBaseServer::Linker_Server_Data), "items", GetFieldName(i), GetFieldI64(i));
+}
+
+void CItem::SyncFieldIntToClient(int i, CPlayer* toPlayer)
+{
+	Message::ItemAttrIntSync msg;
 	msg.set_itemid( GetID() );
 	msg.set_attr( i );
 	msg.set_value( GetFieldInt(i) );
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_ITEM_ATTRINT );
+	PROTOBUF_CMD_PACKAGE(pack, msg, MSG_ITEM_ATTRINT_SYNC);
 
-	if( client )
-		SendClientMsg( &pack );
-	if( data )
-		SendDataMsg( &pack );
 	if( toPlayer )
-		SendObserveMsg( &pack, toPlayer );
+		SendObserveMsg(&pack, toPlayer);
+	else
+		SendClientMsg(&pack);
 }
 
-void CItem::SyncFieldI64(int i, bool client, bool data, CPlayer* toPlayer)
+void CItem::SyncFieldI64ToClient(int i, CPlayer* toPlayer)
 {
-	if( !client && !data && !toPlayer )
-		return;
-
-	Message::ItemSyncAttribI64 msg;
+	Message::ItemAttrI64Sync msg;
 	msg.set_itemid( GetID() );
 	msg.set_attr( i );
 	msg.set_value( GetFieldI64(i) );
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE( pack, msg, G2P_NOTIFY_ITEM_ATTRI64 );
+	PROTOBUF_CMD_PACKAGE(pack, msg, MSG_ITEM_ATTRI64_SYNC);
 
-	if( client )
-		SendClientMsg( &pack );
-	if( data )
-		SendDataMsg( &pack );
-	if( toPlayer )
-		SendObserveMsg( &pack, toPlayer );
+	if (toPlayer)
+		SendObserveMsg(&pack, toPlayer);
+	else
+		SendClientMsg(&pack);
+}
+
+void CItem::_PackageMsgAttr32(Message::ItemAttrSync& msg, int i)
+{
+	Message::ItemAttrSync::Attr * attr = msg.add_attr();
+	attr->set_type(i);
+	attr->set_val32(GetFieldInt(i));
+}
+
+void CItem::_PackageMsgAttr64(Message::ItemAttrSync& msg, int i)
+{
+	Message::ItemAttrSync::Attr * attr = msg.add_attr();
+	attr->set_type(i);
+	attr->set_val64(GetFieldI64(i));
+}
+
+void CItem::SyncAllAttrToClient(CPlayer* toPlayer)
+{
+	Message::ItemAttrSync msg;
+	msg.set_pid(GetID());
+	_PackageMsgAttr64(msg, Item_Attrib_Parent);
+	_PackageMsgAttr32(msg, Item_Attrib_TemplateID);
+	_PackageMsgAttr32(msg, Item_Attrib_Position);
+	_PackageMsgAttr32(msg, Item_Attrib_StackSize);
+	_PackageMsgAttr64(msg, Item_Attrib_EquipID);
+	_PackageMsgAttr32(msg, Item_Attrib_Intensify);
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_ITEM_DATA_SYNC);
+
+	if (toPlayer)
+		SendObserveMsg(&pack, toPlayer);
+	else
+		SendClientMsg(&pack);
 }

@@ -49,3 +49,34 @@ message ItemUnequipRequest
    optional int64	itemid 		= 1;	//道具实体ID
    optional int64	roleid 		= 2;	//角色ID
 } 
+
+//同步道具属性
+message ItemAttrSync {
+    message Attr {
+        optional int32  type    = 1;    //属性ID
+        optional string group   = 2;    //属性组
+        optional string key     = 3;    //属性键
+        optional int32  val32   = 4;		//属性值
+        optional int64  val64   = 5;		//属性值
+        optional string valstr  = 6;    //属性值
+    }
+
+    optional int64  itemid      = 1;    //道具实体ID
+    repeated Attr   attr        = 2;    //属性
+}
+
+//同步道具单属性
+message ItemAttrIntSync
+{
+   optional int64 itemid		= 1;	//道具实体ID
+   optional int32 attr			= 2;	//属性类型
+   optional int32 value			= 3;	//属性值
+}
+
+//同步道具单属性
+message ItemAttrI64Sync
+{
+   optional int64 itemid		= 1;	//道具实体ID
+   optional int32 attr			= 2;	//属性类型
+   optional int64 value			= 3;	//属性值
+}
