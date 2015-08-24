@@ -191,6 +191,9 @@
     <ClCompile Include="source\Item.cpp">
       <Filter>obj</Filter>
     </ClCompile>
+    <ClCompile Include="source\ItemTemplate.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

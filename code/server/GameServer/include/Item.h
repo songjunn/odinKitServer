@@ -1,8 +1,8 @@
 #pragma once
 #include "IBaseObj.h"
-#include "attrs.h"
-#include "attrs_defines.h"
 #include "ItemTemplate.h"
+#include "attrs.h"
+#include "gamedef.h"
 #include "MessageItem.pb.h"
 
 class CPlayer;
@@ -35,8 +35,8 @@ public:
 	void	Deserialize(string jsonstr);
 	void	Deserialize(rapidjson::Value& json);
 
-	inline string GetFieldName(int i) { return attrs::get_attr_name(i, item_attrs, item_attr_type_table); }
-	inline int GetFieldType(string name) { return attrs::get_attr_type(name, item_attr_name_table); }
+	inline string GetFieldName(int i) { return attrs::get_item_field_name(i); }
+	inline int GetFieldType(string name) { return attrs::get_item_field_type(name); }
 
 	void	SyncFieldIntToData(int i);
 	void	SyncFieldI64ToData(int i);

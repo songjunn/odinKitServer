@@ -3,6 +3,10 @@
 #include "PlayerMgr.h"
 #include "Packet.h"
 #include "DataModule.h"
+#include "attrs_defines.h"
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageItem.pb.h"
 
@@ -332,22 +336,22 @@ void CItem::SendDataMsg(PACKET_COMMAND* pack)
 
 void CItem::SyncFieldIntToData(int i)
 {
-	DataModule.syncSetMap(GetID(), GameServer.getServerSock(CBaseServer::Linker_Server_Data), "items", GetFieldName(i), GetFieldInt(i));
+	DataModule.syncSetMap(GetFieldI64(Item_Attrib_Parent), this, GROUP_ITEMS, GetFieldName(i), GetFieldInt(i), GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CItem::SyncFieldI64ToData(int i)
 {
-	DataModule.syncSetMap(GetID(), GameServer.getServerSock(CBaseServer::Linker_Server_Data), "items", GetFieldName(i), GetFieldI64(i));
+	DataModule.syncSetMap(GetFieldI64(Item_Attrib_Parent), this, GROUP_ITEMS, GetFieldName(i), GetFieldI64(i), GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CItem::SyncFieldIntToClient(int i, CPlayer* toPlayer)
 {
 	Message::ItemAttrSync msg;
-	msg.set_pid(GetID());
+	msg.set_itemid(GetID());
 	_PackageMsgAttr32(msg, i);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, MSG_ITEM_ATTRINT_SYNC);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_ITEM_ATTRINT_SYNC);
 
 	if( toPlayer )
 		SendObserveMsg(&pack, toPlayer);
@@ -358,11 +362,11 @@ void CItem::SyncFieldIntToClient(int i, CPlayer* toPlayer)
 void CItem::SyncFieldI64ToClient(int i, CPlayer* toPlayer)
 {
 	Message::ItemAttrSync msg;
-	msg.set_pid(GetID());
+	msg.set_itemid(GetID());
 	_PackageMsgAttr64(msg, i);
 
 	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, MSG_ITEM_ATTRI64_SYNC);
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_ITEM_ATTRI64_SYNC);
 
 	if (toPlayer)
 		SendObserveMsg(&pack, toPlayer);
@@ -387,7 +391,7 @@ void CItem::_PackageMsgAttr64(Message::ItemAttrSync& msg, int i)
 void CItem::SyncAllAttrToClient(CPlayer* toPlayer)
 {
 	Message::ItemAttrSync msg;
-	msg.set_pid(GetID());
+	msg.set_itemid(GetID());
 	_PackageMsgAttr64(msg, Item_Attrib_Parent);
 	_PackageMsgAttr32(msg, Item_Attrib_TemplateID);
 	_PackageMsgAttr32(msg, Item_Attrib_Position);

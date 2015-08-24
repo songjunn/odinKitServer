@@ -1,8 +1,7 @@
 #pragma once
 #include "shared.h"
-#include "attrs.h"
-#include "attrs_defines.h"
 #include "Fighter.h"
+#include "attrs.h"
 #include "GameServer.h"
 #include "EventUnit.h"
 #include "MessagePlayer.pb.h"
@@ -47,8 +46,8 @@ public:
 	void	Deserialize(std::string jsonstr);
 	void	Deserialize(rapidjson::Value& json);
 
-	inline string GetFieldName(int i) { return attrs::get_attr_name(i, player_attrs, player_attr_type_table); }
-	inline int GetFieldType(string name) { return attrs::get_attr_type(name, player_attr_name_table); }
+	inline string GetFieldName(int i) { return attrs::get_player_field_name(i); }
+	inline int GetFieldType(string name) { return attrs::get_player_field_type(name); }
 
 	void	SyncFieldIntToData(int i);
 	void	SyncFieldI64ToData(int i);

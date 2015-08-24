@@ -1,7 +1,5 @@
 #pragma once
 #include "Fighter.h"
-#include "attrs.h"
-#include "attrs_defines.h"
 
 class CHero : public CFighter
 {

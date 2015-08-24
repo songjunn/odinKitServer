@@ -47,9 +47,6 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* PlayerAttrSync_Attr_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PlayerAttrSync_Attr_reflection_ = NULL;
-const ::google::protobuf::Descriptor* PlayerAttrib_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  PlayerAttrib_reflection_ = NULL;
 const ::google::protobuf::Descriptor* PlayerLoadOver_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PlayerLoadOver_reflection_ = NULL;
@@ -201,10 +198,8 @@ void protobuf_AssignDesc_MessagePlayer_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerAttrSync));
   PlayerAttrSync_Attr_descriptor_ = PlayerAttrSync_descriptor_->nested_type(0);
-  static const int PlayerAttrSync_Attr_offsets_[6] = {
+  static const int PlayerAttrSync_Attr_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrSync_Attr, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrSync_Attr, group_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrSync_Attr, key_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrSync_Attr, val32_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrSync_Attr, val64_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrSync_Attr, valstr_),
@@ -220,53 +215,7 @@ void protobuf_AssignDesc_MessagePlayer_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerAttrSync_Attr));
-  PlayerAttrib_descriptor_ = file->message_type(8);
-  static const int PlayerAttrib_offsets_[32] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, pid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, name_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, level_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, templateid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, hp_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, exp_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, gold_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, silver_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, merit_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, fighting_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, stamina_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, strength_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, intellect_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, technique_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, agility_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, hit_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, jouk_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, crit_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, tenacity_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, parry_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, treat_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, physidamage_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, physidefense_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, magicdamage_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, magicdefense_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, stuntdamage_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, stuntdefense_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, staminamax_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, basestrength_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, baseintellect_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, basetechnique_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, baseagility_),
-  };
-  PlayerAttrib_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      PlayerAttrib_descriptor_,
-      PlayerAttrib::default_instance_,
-      PlayerAttrib_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerAttrib, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(PlayerAttrib));
-  PlayerLoadOver_descriptor_ = file->message_type(9);
+  PlayerLoadOver_descriptor_ = file->message_type(8);
   static const int PlayerLoadOver_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerLoadOver, pid_),
   };
@@ -281,7 +230,7 @@ void protobuf_AssignDesc_MessagePlayer_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerLoadOver));
-  ObservePlayerRequest_descriptor_ = file->message_type(10);
+  ObservePlayerRequest_descriptor_ = file->message_type(9);
   static const int ObservePlayerRequest_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ObservePlayerRequest, playerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ObservePlayerRequest, playername_),
@@ -328,8 +277,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     PlayerAttrSync_Attr_descriptor_, &PlayerAttrSync_Attr::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    PlayerAttrib_descriptor_, &PlayerAttrib::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     PlayerLoadOver_descriptor_, &PlayerLoadOver::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ObservePlayerRequest_descriptor_, &ObservePlayerRequest::default_instance());
@@ -356,8 +303,6 @@ void protobuf_ShutdownFile_MessagePlayer_2eproto() {
   delete PlayerAttrSync_reflection_;
   delete PlayerAttrSync_Attr::default_instance_;
   delete PlayerAttrSync_Attr_reflection_;
-  delete PlayerAttrib::default_instance_;
-  delete PlayerAttrib_reflection_;
   delete PlayerLoadOver::default_instance_;
   delete PlayerLoadOver_reflection_;
   delete ObservePlayerRequest::default_instance_;
@@ -382,28 +327,12 @@ void protobuf_AddDesc_MessagePlayer_2eproto() {
     "\003\022\014\n\004name\030\003 \001(\t\"=\n\021CheckNameResponse\022\013\n\003"
     "uid\030\001 \001(\003\022\013\n\003pid\030\002 \001(\003\022\016\n\006result\030\003 \001(\010\"*"
     "\n\013PlayerCount\022\013\n\003uid\030\001 \001(\003\022\016\n\006player\030\002 \003"
-    "(\003\"\251\001\n\016PlayerAttrSync\022\013\n\003pid\030\001 \001(\003\022*\n\004at"
-    "tr\030\002 \003(\0132\034.Message.PlayerAttrSync.Attr\032^"
-    "\n\004Attr\022\014\n\004type\030\001 \001(\005\022\r\n\005group\030\002 \001(\t\022\013\n\003k"
-    "ey\030\003 \001(\t\022\r\n\005val32\030\004 \001(\005\022\r\n\005val64\030\005 \001(\003\022\016"
-    "\n\006valstr\030\006 \001(\t\"\305\004\n\014PlayerAttrib\022\013\n\003pid\030\001"
-    " \001(\003\022\014\n\004name\030\002 \001(\t\022\r\n\005level\030\003 \001(\005\022\022\n\ntem"
-    "plateid\030\004 \001(\005\022\n\n\002hp\030\005 \001(\005\022\013\n\003exp\030\006 \001(\003\022\014"
-    "\n\004gold\030\007 \001(\005\022\016\n\006silver\030\010 \001(\005\022\r\n\005merit\030\t "
-    "\001(\005\022\020\n\010fighting\030\n \001(\005\022\017\n\007stamina\030\013 \001(\005\022\020"
-    "\n\010strength\030\014 \001(\005\022\021\n\tintellect\030\r \001(\005\022\021\n\tt"
-    "echnique\030\016 \001(\005\022\017\n\007agility\030\017 \001(\005\022\013\n\003hit\030\020"
-    " \001(\005\022\014\n\004jouk\030\021 \001(\005\022\014\n\004crit\030\022 \001(\005\022\020\n\010tena"
-    "city\030\023 \001(\005\022\r\n\005parry\030\024 \001(\005\022\r\n\005treat\030\025 \001(\005"
-    "\022\023\n\013physidamage\030\026 \001(\005\022\024\n\014physidefense\030\027 "
-    "\001(\005\022\023\n\013magicdamage\030\030 \001(\005\022\024\n\014magicdefense"
-    "\030\032 \001(\005\022\023\n\013stuntdamage\030\033 \001(\005\022\024\n\014stuntdefe"
-    "nse\030\034 \001(\005\022\022\n\nstaminamax\030\035 \001(\005\022\024\n\014basestr"
-    "ength\030\036 \001(\005\022\025\n\rbaseintellect\030\037 \001(\005\022\025\n\rba"
-    "setechnique\030  \001(\005\022\023\n\013baseagility\030! \001(\005\"\035"
-    "\n\016PlayerLoadOver\022\013\n\003pid\030\001 \001(\003\"<\n\024Observe"
-    "PlayerRequest\022\020\n\010playerid\030\001 \001(\003\022\022\n\nplaye"
-    "rname\030\002 \001(\t", 1291);
+    "(\003\"\215\001\n\016PlayerAttrSync\022\013\n\003pid\030\001 \001(\003\022*\n\004at"
+    "tr\030\002 \003(\0132\034.Message.PlayerAttrSync.Attr\032B"
+    "\n\004Attr\022\014\n\004type\030\001 \001(\005\022\r\n\005val32\030\002 \001(\005\022\r\n\005v"
+    "al64\030\003 \001(\003\022\016\n\006valstr\030\004 \001(\t\"\035\n\016PlayerLoad"
+    "Over\022\013\n\003pid\030\001 \001(\003\"<\n\024ObservePlayerReques"
+    "t\022\020\n\010playerid\030\001 \001(\003\022\022\n\nplayername\030\002 \001(\t", 679);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "MessagePlayer.proto", &protobuf_RegisterTypes);
   PlayerLogin::default_instance_ = new PlayerLogin();
@@ -415,7 +344,6 @@ void protobuf_AddDesc_MessagePlayer_2eproto() {
   PlayerCount::default_instance_ = new PlayerCount();
   PlayerAttrSync::default_instance_ = new PlayerAttrSync();
   PlayerAttrSync_Attr::default_instance_ = new PlayerAttrSync_Attr();
-  PlayerAttrib::default_instance_ = new PlayerAttrib();
   PlayerLoadOver::default_instance_ = new PlayerLoadOver();
   ObservePlayerRequest::default_instance_ = new ObservePlayerRequest();
   PlayerLogin::default_instance_->InitAsDefaultInstance();
@@ -427,7 +355,6 @@ void protobuf_AddDesc_MessagePlayer_2eproto() {
   PlayerCount::default_instance_->InitAsDefaultInstance();
   PlayerAttrSync::default_instance_->InitAsDefaultInstance();
   PlayerAttrSync_Attr::default_instance_->InitAsDefaultInstance();
-  PlayerAttrib::default_instance_->InitAsDefaultInstance();
   PlayerLoadOver::default_instance_->InitAsDefaultInstance();
   ObservePlayerRequest::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_MessagePlayer_2eproto);
@@ -2460,8 +2387,6 @@ void PlayerCount::Swap(PlayerCount* other) {
 
 #ifndef _MSC_VER
 const int PlayerAttrSync_Attr::kTypeFieldNumber;
-const int PlayerAttrSync_Attr::kGroupFieldNumber;
-const int PlayerAttrSync_Attr::kKeyFieldNumber;
 const int PlayerAttrSync_Attr::kVal32FieldNumber;
 const int PlayerAttrSync_Attr::kVal64FieldNumber;
 const int PlayerAttrSync_Attr::kValstrFieldNumber;
@@ -2484,8 +2409,6 @@ PlayerAttrSync_Attr::PlayerAttrSync_Attr(const PlayerAttrSync_Attr& from)
 void PlayerAttrSync_Attr::SharedCtor() {
   _cached_size_ = 0;
   type_ = 0;
-  group_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   val32_ = 0;
   val64_ = GOOGLE_LONGLONG(0);
   valstr_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -2497,12 +2420,6 @@ PlayerAttrSync_Attr::~PlayerAttrSync_Attr() {
 }
 
 void PlayerAttrSync_Attr::SharedDtor() {
-  if (group_ != &::google::protobuf::internal::kEmptyString) {
-    delete group_;
-  }
-  if (key_ != &::google::protobuf::internal::kEmptyString) {
-    delete key_;
-  }
   if (valstr_ != &::google::protobuf::internal::kEmptyString) {
     delete valstr_;
   }
@@ -2534,16 +2451,6 @@ PlayerAttrSync_Attr* PlayerAttrSync_Attr::New() const {
 void PlayerAttrSync_Attr::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 0;
-    if (has_group()) {
-      if (group_ != &::google::protobuf::internal::kEmptyString) {
-        group_->clear();
-      }
-    }
-    if (has_key()) {
-      if (key_ != &::google::protobuf::internal::kEmptyString) {
-        key_->clear();
-      }
-    }
     val32_ = 0;
     val64_ = GOOGLE_LONGLONG(0);
     if (has_valstr()) {
@@ -2573,46 +2480,12 @@ bool PlayerAttrSync_Attr::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_group;
+        if (input->ExpectTag(16)) goto parse_val32;
         break;
       }
 
-      // optional string group = 2;
+      // optional int32 val32 = 2;
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_group:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_group()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->group().data(), this->group().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(26)) goto parse_key;
-        break;
-      }
-
-      // optional string key = 3;
-      case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_key:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_key()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->key().data(), this->key().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(32)) goto parse_val32;
-        break;
-      }
-
-      // optional int32 val32 = 4;
-      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_val32:
@@ -2623,12 +2496,12 @@ bool PlayerAttrSync_Attr::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_val64;
+        if (input->ExpectTag(24)) goto parse_val64;
         break;
       }
 
-      // optional int64 val64 = 5;
-      case 5: {
+      // optional int64 val64 = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_val64:
@@ -2639,12 +2512,12 @@ bool PlayerAttrSync_Attr::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_valstr;
+        if (input->ExpectTag(34)) goto parse_valstr;
         break;
       }
 
-      // optional string valstr = 6;
-      case 6: {
+      // optional string valstr = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_valstr:
@@ -2683,41 +2556,23 @@ void PlayerAttrSync_Attr::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->type(), output);
   }
 
-  // optional string group = 2;
-  if (has_group()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->group().data(), this->group().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->group(), output);
-  }
-
-  // optional string key = 3;
-  if (has_key()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->key().data(), this->key().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->key(), output);
-  }
-
-  // optional int32 val32 = 4;
+  // optional int32 val32 = 2;
   if (has_val32()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->val32(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->val32(), output);
   }
 
-  // optional int64 val64 = 5;
+  // optional int64 val64 = 3;
   if (has_val64()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(5, this->val64(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->val64(), output);
   }
 
-  // optional string valstr = 6;
+  // optional string valstr = 4;
   if (has_valstr()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->valstr().data(), this->valstr().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      6, this->valstr(), output);
+      4, this->valstr(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -2733,44 +2588,24 @@ void PlayerAttrSync_Attr::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->type(), target);
   }
 
-  // optional string group = 2;
-  if (has_group()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->group().data(), this->group().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->group(), target);
-  }
-
-  // optional string key = 3;
-  if (has_key()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->key().data(), this->key().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->key(), target);
-  }
-
-  // optional int32 val32 = 4;
+  // optional int32 val32 = 2;
   if (has_val32()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->val32(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->val32(), target);
   }
 
-  // optional int64 val64 = 5;
+  // optional int64 val64 = 3;
   if (has_val64()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(5, this->val64(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->val64(), target);
   }
 
-  // optional string valstr = 6;
+  // optional string valstr = 4;
   if (has_valstr()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->valstr().data(), this->valstr().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->valstr(), target);
+        4, this->valstr(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -2791,35 +2626,21 @@ int PlayerAttrSync_Attr::ByteSize() const {
           this->type());
     }
 
-    // optional string group = 2;
-    if (has_group()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->group());
-    }
-
-    // optional string key = 3;
-    if (has_key()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->key());
-    }
-
-    // optional int32 val32 = 4;
+    // optional int32 val32 = 2;
     if (has_val32()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->val32());
     }
 
-    // optional int64 val64 = 5;
+    // optional int64 val64 = 3;
     if (has_val64()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int64Size(
           this->val64());
     }
 
-    // optional string valstr = 6;
+    // optional string valstr = 4;
     if (has_valstr()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2856,12 +2677,6 @@ void PlayerAttrSync_Attr::MergeFrom(const PlayerAttrSync_Attr& from) {
     if (from.has_type()) {
       set_type(from.type());
     }
-    if (from.has_group()) {
-      set_group(from.group());
-    }
-    if (from.has_key()) {
-      set_key(from.key());
-    }
     if (from.has_val32()) {
       set_val32(from.val32());
     }
@@ -2895,8 +2710,6 @@ bool PlayerAttrSync_Attr::IsInitialized() const {
 void PlayerAttrSync_Attr::Swap(PlayerAttrSync_Attr* other) {
   if (other != this) {
     std::swap(type_, other->type_);
-    std::swap(group_, other->group_);
-    std::swap(key_, other->key_);
     std::swap(val32_, other->val32_);
     std::swap(val64_, other->val64_);
     std::swap(valstr_, other->valstr_);
@@ -3159,1489 +2972,6 @@ void PlayerAttrSync::Swap(PlayerAttrSync* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = PlayerAttrSync_descriptor_;
   metadata.reflection = PlayerAttrSync_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int PlayerAttrib::kPidFieldNumber;
-const int PlayerAttrib::kNameFieldNumber;
-const int PlayerAttrib::kLevelFieldNumber;
-const int PlayerAttrib::kTemplateidFieldNumber;
-const int PlayerAttrib::kHpFieldNumber;
-const int PlayerAttrib::kExpFieldNumber;
-const int PlayerAttrib::kGoldFieldNumber;
-const int PlayerAttrib::kSilverFieldNumber;
-const int PlayerAttrib::kMeritFieldNumber;
-const int PlayerAttrib::kFightingFieldNumber;
-const int PlayerAttrib::kStaminaFieldNumber;
-const int PlayerAttrib::kStrengthFieldNumber;
-const int PlayerAttrib::kIntellectFieldNumber;
-const int PlayerAttrib::kTechniqueFieldNumber;
-const int PlayerAttrib::kAgilityFieldNumber;
-const int PlayerAttrib::kHitFieldNumber;
-const int PlayerAttrib::kJoukFieldNumber;
-const int PlayerAttrib::kCritFieldNumber;
-const int PlayerAttrib::kTenacityFieldNumber;
-const int PlayerAttrib::kParryFieldNumber;
-const int PlayerAttrib::kTreatFieldNumber;
-const int PlayerAttrib::kPhysidamageFieldNumber;
-const int PlayerAttrib::kPhysidefenseFieldNumber;
-const int PlayerAttrib::kMagicdamageFieldNumber;
-const int PlayerAttrib::kMagicdefenseFieldNumber;
-const int PlayerAttrib::kStuntdamageFieldNumber;
-const int PlayerAttrib::kStuntdefenseFieldNumber;
-const int PlayerAttrib::kStaminamaxFieldNumber;
-const int PlayerAttrib::kBasestrengthFieldNumber;
-const int PlayerAttrib::kBaseintellectFieldNumber;
-const int PlayerAttrib::kBasetechniqueFieldNumber;
-const int PlayerAttrib::kBaseagilityFieldNumber;
-#endif  // !_MSC_VER
-
-PlayerAttrib::PlayerAttrib()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void PlayerAttrib::InitAsDefaultInstance() {
-}
-
-PlayerAttrib::PlayerAttrib(const PlayerAttrib& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void PlayerAttrib::SharedCtor() {
-  _cached_size_ = 0;
-  pid_ = GOOGLE_LONGLONG(0);
-  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  level_ = 0;
-  templateid_ = 0;
-  hp_ = 0;
-  exp_ = GOOGLE_LONGLONG(0);
-  gold_ = 0;
-  silver_ = 0;
-  merit_ = 0;
-  fighting_ = 0;
-  stamina_ = 0;
-  strength_ = 0;
-  intellect_ = 0;
-  technique_ = 0;
-  agility_ = 0;
-  hit_ = 0;
-  jouk_ = 0;
-  crit_ = 0;
-  tenacity_ = 0;
-  parry_ = 0;
-  treat_ = 0;
-  physidamage_ = 0;
-  physidefense_ = 0;
-  magicdamage_ = 0;
-  magicdefense_ = 0;
-  stuntdamage_ = 0;
-  stuntdefense_ = 0;
-  staminamax_ = 0;
-  basestrength_ = 0;
-  baseintellect_ = 0;
-  basetechnique_ = 0;
-  baseagility_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-PlayerAttrib::~PlayerAttrib() {
-  SharedDtor();
-}
-
-void PlayerAttrib::SharedDtor() {
-  if (name_ != &::google::protobuf::internal::kEmptyString) {
-    delete name_;
-  }
-  if (this != default_instance_) {
-  }
-}
-
-void PlayerAttrib::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* PlayerAttrib::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return PlayerAttrib_descriptor_;
-}
-
-const PlayerAttrib& PlayerAttrib::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_MessagePlayer_2eproto();
-  return *default_instance_;
-}
-
-PlayerAttrib* PlayerAttrib::default_instance_ = NULL;
-
-PlayerAttrib* PlayerAttrib::New() const {
-  return new PlayerAttrib;
-}
-
-void PlayerAttrib::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    pid_ = GOOGLE_LONGLONG(0);
-    if (has_name()) {
-      if (name_ != &::google::protobuf::internal::kEmptyString) {
-        name_->clear();
-      }
-    }
-    level_ = 0;
-    templateid_ = 0;
-    hp_ = 0;
-    exp_ = GOOGLE_LONGLONG(0);
-    gold_ = 0;
-    silver_ = 0;
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    merit_ = 0;
-    fighting_ = 0;
-    stamina_ = 0;
-    strength_ = 0;
-    intellect_ = 0;
-    technique_ = 0;
-    agility_ = 0;
-    hit_ = 0;
-  }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    jouk_ = 0;
-    crit_ = 0;
-    tenacity_ = 0;
-    parry_ = 0;
-    treat_ = 0;
-    physidamage_ = 0;
-    physidefense_ = 0;
-    magicdamage_ = 0;
-  }
-  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
-    magicdefense_ = 0;
-    stuntdamage_ = 0;
-    stuntdefense_ = 0;
-    staminamax_ = 0;
-    basestrength_ = 0;
-    baseintellect_ = 0;
-    basetechnique_ = 0;
-    baseagility_ = 0;
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool PlayerAttrib::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int64 pid = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &pid_)));
-          set_has_pid();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_name;
-        break;
-      }
-
-      // optional string name = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_name:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->name().data(), this->name().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(24)) goto parse_level;
-        break;
-      }
-
-      // optional int32 level = 3;
-      case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_level:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &level_)));
-          set_has_level();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(32)) goto parse_templateid;
-        break;
-      }
-
-      // optional int32 templateid = 4;
-      case 4: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_templateid:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &templateid_)));
-          set_has_templateid();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(40)) goto parse_hp;
-        break;
-      }
-
-      // optional int32 hp = 5;
-      case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_hp:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &hp_)));
-          set_has_hp();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(48)) goto parse_exp;
-        break;
-      }
-
-      // optional int64 exp = 6;
-      case 6: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_exp:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &exp_)));
-          set_has_exp();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(56)) goto parse_gold;
-        break;
-      }
-
-      // optional int32 gold = 7;
-      case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_gold:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &gold_)));
-          set_has_gold();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(64)) goto parse_silver;
-        break;
-      }
-
-      // optional int32 silver = 8;
-      case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_silver:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &silver_)));
-          set_has_silver();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(72)) goto parse_merit;
-        break;
-      }
-
-      // optional int32 merit = 9;
-      case 9: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_merit:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &merit_)));
-          set_has_merit();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(80)) goto parse_fighting;
-        break;
-      }
-
-      // optional int32 fighting = 10;
-      case 10: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_fighting:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &fighting_)));
-          set_has_fighting();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(88)) goto parse_stamina;
-        break;
-      }
-
-      // optional int32 stamina = 11;
-      case 11: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_stamina:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &stamina_)));
-          set_has_stamina();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(96)) goto parse_strength;
-        break;
-      }
-
-      // optional int32 strength = 12;
-      case 12: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_strength:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &strength_)));
-          set_has_strength();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(104)) goto parse_intellect;
-        break;
-      }
-
-      // optional int32 intellect = 13;
-      case 13: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_intellect:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &intellect_)));
-          set_has_intellect();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(112)) goto parse_technique;
-        break;
-      }
-
-      // optional int32 technique = 14;
-      case 14: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_technique:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &technique_)));
-          set_has_technique();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(120)) goto parse_agility;
-        break;
-      }
-
-      // optional int32 agility = 15;
-      case 15: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_agility:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &agility_)));
-          set_has_agility();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(128)) goto parse_hit;
-        break;
-      }
-
-      // optional int32 hit = 16;
-      case 16: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_hit:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &hit_)));
-          set_has_hit();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(136)) goto parse_jouk;
-        break;
-      }
-
-      // optional int32 jouk = 17;
-      case 17: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_jouk:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &jouk_)));
-          set_has_jouk();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(144)) goto parse_crit;
-        break;
-      }
-
-      // optional int32 crit = 18;
-      case 18: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_crit:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &crit_)));
-          set_has_crit();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(152)) goto parse_tenacity;
-        break;
-      }
-
-      // optional int32 tenacity = 19;
-      case 19: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_tenacity:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &tenacity_)));
-          set_has_tenacity();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(160)) goto parse_parry;
-        break;
-      }
-
-      // optional int32 parry = 20;
-      case 20: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_parry:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &parry_)));
-          set_has_parry();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(168)) goto parse_treat;
-        break;
-      }
-
-      // optional int32 treat = 21;
-      case 21: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_treat:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &treat_)));
-          set_has_treat();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(176)) goto parse_physidamage;
-        break;
-      }
-
-      // optional int32 physidamage = 22;
-      case 22: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_physidamage:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &physidamage_)));
-          set_has_physidamage();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(184)) goto parse_physidefense;
-        break;
-      }
-
-      // optional int32 physidefense = 23;
-      case 23: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_physidefense:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &physidefense_)));
-          set_has_physidefense();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(192)) goto parse_magicdamage;
-        break;
-      }
-
-      // optional int32 magicdamage = 24;
-      case 24: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_magicdamage:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &magicdamage_)));
-          set_has_magicdamage();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(208)) goto parse_magicdefense;
-        break;
-      }
-
-      // optional int32 magicdefense = 26;
-      case 26: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_magicdefense:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &magicdefense_)));
-          set_has_magicdefense();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(216)) goto parse_stuntdamage;
-        break;
-      }
-
-      // optional int32 stuntdamage = 27;
-      case 27: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_stuntdamage:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &stuntdamage_)));
-          set_has_stuntdamage();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(224)) goto parse_stuntdefense;
-        break;
-      }
-
-      // optional int32 stuntdefense = 28;
-      case 28: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_stuntdefense:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &stuntdefense_)));
-          set_has_stuntdefense();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(232)) goto parse_staminamax;
-        break;
-      }
-
-      // optional int32 staminamax = 29;
-      case 29: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_staminamax:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &staminamax_)));
-          set_has_staminamax();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(240)) goto parse_basestrength;
-        break;
-      }
-
-      // optional int32 basestrength = 30;
-      case 30: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_basestrength:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &basestrength_)));
-          set_has_basestrength();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(248)) goto parse_baseintellect;
-        break;
-      }
-
-      // optional int32 baseintellect = 31;
-      case 31: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_baseintellect:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &baseintellect_)));
-          set_has_baseintellect();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(256)) goto parse_basetechnique;
-        break;
-      }
-
-      // optional int32 basetechnique = 32;
-      case 32: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_basetechnique:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &basetechnique_)));
-          set_has_basetechnique();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(264)) goto parse_baseagility;
-        break;
-      }
-
-      // optional int32 baseagility = 33;
-      case 33: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_baseagility:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &baseagility_)));
-          set_has_baseagility();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void PlayerAttrib::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional int64 pid = 1;
-  if (has_pid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->pid(), output);
-  }
-
-  // optional string name = 2;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->name(), output);
-  }
-
-  // optional int32 level = 3;
-  if (has_level()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->level(), output);
-  }
-
-  // optional int32 templateid = 4;
-  if (has_templateid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->templateid(), output);
-  }
-
-  // optional int32 hp = 5;
-  if (has_hp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->hp(), output);
-  }
-
-  // optional int64 exp = 6;
-  if (has_exp()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->exp(), output);
-  }
-
-  // optional int32 gold = 7;
-  if (has_gold()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->gold(), output);
-  }
-
-  // optional int32 silver = 8;
-  if (has_silver()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->silver(), output);
-  }
-
-  // optional int32 merit = 9;
-  if (has_merit()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->merit(), output);
-  }
-
-  // optional int32 fighting = 10;
-  if (has_fighting()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->fighting(), output);
-  }
-
-  // optional int32 stamina = 11;
-  if (has_stamina()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->stamina(), output);
-  }
-
-  // optional int32 strength = 12;
-  if (has_strength()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->strength(), output);
-  }
-
-  // optional int32 intellect = 13;
-  if (has_intellect()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->intellect(), output);
-  }
-
-  // optional int32 technique = 14;
-  if (has_technique()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(14, this->technique(), output);
-  }
-
-  // optional int32 agility = 15;
-  if (has_agility()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(15, this->agility(), output);
-  }
-
-  // optional int32 hit = 16;
-  if (has_hit()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(16, this->hit(), output);
-  }
-
-  // optional int32 jouk = 17;
-  if (has_jouk()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(17, this->jouk(), output);
-  }
-
-  // optional int32 crit = 18;
-  if (has_crit()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(18, this->crit(), output);
-  }
-
-  // optional int32 tenacity = 19;
-  if (has_tenacity()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(19, this->tenacity(), output);
-  }
-
-  // optional int32 parry = 20;
-  if (has_parry()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(20, this->parry(), output);
-  }
-
-  // optional int32 treat = 21;
-  if (has_treat()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(21, this->treat(), output);
-  }
-
-  // optional int32 physidamage = 22;
-  if (has_physidamage()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(22, this->physidamage(), output);
-  }
-
-  // optional int32 physidefense = 23;
-  if (has_physidefense()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(23, this->physidefense(), output);
-  }
-
-  // optional int32 magicdamage = 24;
-  if (has_magicdamage()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(24, this->magicdamage(), output);
-  }
-
-  // optional int32 magicdefense = 26;
-  if (has_magicdefense()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(26, this->magicdefense(), output);
-  }
-
-  // optional int32 stuntdamage = 27;
-  if (has_stuntdamage()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(27, this->stuntdamage(), output);
-  }
-
-  // optional int32 stuntdefense = 28;
-  if (has_stuntdefense()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(28, this->stuntdefense(), output);
-  }
-
-  // optional int32 staminamax = 29;
-  if (has_staminamax()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(29, this->staminamax(), output);
-  }
-
-  // optional int32 basestrength = 30;
-  if (has_basestrength()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(30, this->basestrength(), output);
-  }
-
-  // optional int32 baseintellect = 31;
-  if (has_baseintellect()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(31, this->baseintellect(), output);
-  }
-
-  // optional int32 basetechnique = 32;
-  if (has_basetechnique()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(32, this->basetechnique(), output);
-  }
-
-  // optional int32 baseagility = 33;
-  if (has_baseagility()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(33, this->baseagility(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* PlayerAttrib::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional int64 pid = 1;
-  if (has_pid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->pid(), target);
-  }
-
-  // optional string name = 2;
-  if (has_name()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->name().data(), this->name().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->name(), target);
-  }
-
-  // optional int32 level = 3;
-  if (has_level()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->level(), target);
-  }
-
-  // optional int32 templateid = 4;
-  if (has_templateid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->templateid(), target);
-  }
-
-  // optional int32 hp = 5;
-  if (has_hp()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->hp(), target);
-  }
-
-  // optional int64 exp = 6;
-  if (has_exp()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(6, this->exp(), target);
-  }
-
-  // optional int32 gold = 7;
-  if (has_gold()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->gold(), target);
-  }
-
-  // optional int32 silver = 8;
-  if (has_silver()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->silver(), target);
-  }
-
-  // optional int32 merit = 9;
-  if (has_merit()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->merit(), target);
-  }
-
-  // optional int32 fighting = 10;
-  if (has_fighting()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->fighting(), target);
-  }
-
-  // optional int32 stamina = 11;
-  if (has_stamina()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->stamina(), target);
-  }
-
-  // optional int32 strength = 12;
-  if (has_strength()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->strength(), target);
-  }
-
-  // optional int32 intellect = 13;
-  if (has_intellect()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->intellect(), target);
-  }
-
-  // optional int32 technique = 14;
-  if (has_technique()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(14, this->technique(), target);
-  }
-
-  // optional int32 agility = 15;
-  if (has_agility()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(15, this->agility(), target);
-  }
-
-  // optional int32 hit = 16;
-  if (has_hit()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(16, this->hit(), target);
-  }
-
-  // optional int32 jouk = 17;
-  if (has_jouk()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(17, this->jouk(), target);
-  }
-
-  // optional int32 crit = 18;
-  if (has_crit()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(18, this->crit(), target);
-  }
-
-  // optional int32 tenacity = 19;
-  if (has_tenacity()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(19, this->tenacity(), target);
-  }
-
-  // optional int32 parry = 20;
-  if (has_parry()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(20, this->parry(), target);
-  }
-
-  // optional int32 treat = 21;
-  if (has_treat()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(21, this->treat(), target);
-  }
-
-  // optional int32 physidamage = 22;
-  if (has_physidamage()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(22, this->physidamage(), target);
-  }
-
-  // optional int32 physidefense = 23;
-  if (has_physidefense()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(23, this->physidefense(), target);
-  }
-
-  // optional int32 magicdamage = 24;
-  if (has_magicdamage()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(24, this->magicdamage(), target);
-  }
-
-  // optional int32 magicdefense = 26;
-  if (has_magicdefense()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(26, this->magicdefense(), target);
-  }
-
-  // optional int32 stuntdamage = 27;
-  if (has_stuntdamage()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(27, this->stuntdamage(), target);
-  }
-
-  // optional int32 stuntdefense = 28;
-  if (has_stuntdefense()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(28, this->stuntdefense(), target);
-  }
-
-  // optional int32 staminamax = 29;
-  if (has_staminamax()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(29, this->staminamax(), target);
-  }
-
-  // optional int32 basestrength = 30;
-  if (has_basestrength()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(30, this->basestrength(), target);
-  }
-
-  // optional int32 baseintellect = 31;
-  if (has_baseintellect()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(31, this->baseintellect(), target);
-  }
-
-  // optional int32 basetechnique = 32;
-  if (has_basetechnique()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(32, this->basetechnique(), target);
-  }
-
-  // optional int32 baseagility = 33;
-  if (has_baseagility()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(33, this->baseagility(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int PlayerAttrib::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int64 pid = 1;
-    if (has_pid()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->pid());
-    }
-
-    // optional string name = 2;
-    if (has_name()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->name());
-    }
-
-    // optional int32 level = 3;
-    if (has_level()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->level());
-    }
-
-    // optional int32 templateid = 4;
-    if (has_templateid()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->templateid());
-    }
-
-    // optional int32 hp = 5;
-    if (has_hp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->hp());
-    }
-
-    // optional int64 exp = 6;
-    if (has_exp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->exp());
-    }
-
-    // optional int32 gold = 7;
-    if (has_gold()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->gold());
-    }
-
-    // optional int32 silver = 8;
-    if (has_silver()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->silver());
-    }
-
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional int32 merit = 9;
-    if (has_merit()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->merit());
-    }
-
-    // optional int32 fighting = 10;
-    if (has_fighting()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->fighting());
-    }
-
-    // optional int32 stamina = 11;
-    if (has_stamina()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->stamina());
-    }
-
-    // optional int32 strength = 12;
-    if (has_strength()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->strength());
-    }
-
-    // optional int32 intellect = 13;
-    if (has_intellect()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->intellect());
-    }
-
-    // optional int32 technique = 14;
-    if (has_technique()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->technique());
-    }
-
-    // optional int32 agility = 15;
-    if (has_agility()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->agility());
-    }
-
-    // optional int32 hit = 16;
-    if (has_hit()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->hit());
-    }
-
-  }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    // optional int32 jouk = 17;
-    if (has_jouk()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->jouk());
-    }
-
-    // optional int32 crit = 18;
-    if (has_crit()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->crit());
-    }
-
-    // optional int32 tenacity = 19;
-    if (has_tenacity()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->tenacity());
-    }
-
-    // optional int32 parry = 20;
-    if (has_parry()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->parry());
-    }
-
-    // optional int32 treat = 21;
-    if (has_treat()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->treat());
-    }
-
-    // optional int32 physidamage = 22;
-    if (has_physidamage()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->physidamage());
-    }
-
-    // optional int32 physidefense = 23;
-    if (has_physidefense()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->physidefense());
-    }
-
-    // optional int32 magicdamage = 24;
-    if (has_magicdamage()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->magicdamage());
-    }
-
-  }
-  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
-    // optional int32 magicdefense = 26;
-    if (has_magicdefense()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->magicdefense());
-    }
-
-    // optional int32 stuntdamage = 27;
-    if (has_stuntdamage()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->stuntdamage());
-    }
-
-    // optional int32 stuntdefense = 28;
-    if (has_stuntdefense()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->stuntdefense());
-    }
-
-    // optional int32 staminamax = 29;
-    if (has_staminamax()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->staminamax());
-    }
-
-    // optional int32 basestrength = 30;
-    if (has_basestrength()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->basestrength());
-    }
-
-    // optional int32 baseintellect = 31;
-    if (has_baseintellect()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->baseintellect());
-    }
-
-    // optional int32 basetechnique = 32;
-    if (has_basetechnique()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->basetechnique());
-    }
-
-    // optional int32 baseagility = 33;
-    if (has_baseagility()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->baseagility());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void PlayerAttrib::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const PlayerAttrib* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const PlayerAttrib*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void PlayerAttrib::MergeFrom(const PlayerAttrib& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_pid()) {
-      set_pid(from.pid());
-    }
-    if (from.has_name()) {
-      set_name(from.name());
-    }
-    if (from.has_level()) {
-      set_level(from.level());
-    }
-    if (from.has_templateid()) {
-      set_templateid(from.templateid());
-    }
-    if (from.has_hp()) {
-      set_hp(from.hp());
-    }
-    if (from.has_exp()) {
-      set_exp(from.exp());
-    }
-    if (from.has_gold()) {
-      set_gold(from.gold());
-    }
-    if (from.has_silver()) {
-      set_silver(from.silver());
-    }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_merit()) {
-      set_merit(from.merit());
-    }
-    if (from.has_fighting()) {
-      set_fighting(from.fighting());
-    }
-    if (from.has_stamina()) {
-      set_stamina(from.stamina());
-    }
-    if (from.has_strength()) {
-      set_strength(from.strength());
-    }
-    if (from.has_intellect()) {
-      set_intellect(from.intellect());
-    }
-    if (from.has_technique()) {
-      set_technique(from.technique());
-    }
-    if (from.has_agility()) {
-      set_agility(from.agility());
-    }
-    if (from.has_hit()) {
-      set_hit(from.hit());
-    }
-  }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    if (from.has_jouk()) {
-      set_jouk(from.jouk());
-    }
-    if (from.has_crit()) {
-      set_crit(from.crit());
-    }
-    if (from.has_tenacity()) {
-      set_tenacity(from.tenacity());
-    }
-    if (from.has_parry()) {
-      set_parry(from.parry());
-    }
-    if (from.has_treat()) {
-      set_treat(from.treat());
-    }
-    if (from.has_physidamage()) {
-      set_physidamage(from.physidamage());
-    }
-    if (from.has_physidefense()) {
-      set_physidefense(from.physidefense());
-    }
-    if (from.has_magicdamage()) {
-      set_magicdamage(from.magicdamage());
-    }
-  }
-  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
-    if (from.has_magicdefense()) {
-      set_magicdefense(from.magicdefense());
-    }
-    if (from.has_stuntdamage()) {
-      set_stuntdamage(from.stuntdamage());
-    }
-    if (from.has_stuntdefense()) {
-      set_stuntdefense(from.stuntdefense());
-    }
-    if (from.has_staminamax()) {
-      set_staminamax(from.staminamax());
-    }
-    if (from.has_basestrength()) {
-      set_basestrength(from.basestrength());
-    }
-    if (from.has_baseintellect()) {
-      set_baseintellect(from.baseintellect());
-    }
-    if (from.has_basetechnique()) {
-      set_basetechnique(from.basetechnique());
-    }
-    if (from.has_baseagility()) {
-      set_baseagility(from.baseagility());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void PlayerAttrib::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void PlayerAttrib::CopyFrom(const PlayerAttrib& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool PlayerAttrib::IsInitialized() const {
-
-  return true;
-}
-
-void PlayerAttrib::Swap(PlayerAttrib* other) {
-  if (other != this) {
-    std::swap(pid_, other->pid_);
-    std::swap(name_, other->name_);
-    std::swap(level_, other->level_);
-    std::swap(templateid_, other->templateid_);
-    std::swap(hp_, other->hp_);
-    std::swap(exp_, other->exp_);
-    std::swap(gold_, other->gold_);
-    std::swap(silver_, other->silver_);
-    std::swap(merit_, other->merit_);
-    std::swap(fighting_, other->fighting_);
-    std::swap(stamina_, other->stamina_);
-    std::swap(strength_, other->strength_);
-    std::swap(intellect_, other->intellect_);
-    std::swap(technique_, other->technique_);
-    std::swap(agility_, other->agility_);
-    std::swap(hit_, other->hit_);
-    std::swap(jouk_, other->jouk_);
-    std::swap(crit_, other->crit_);
-    std::swap(tenacity_, other->tenacity_);
-    std::swap(parry_, other->parry_);
-    std::swap(treat_, other->treat_);
-    std::swap(physidamage_, other->physidamage_);
-    std::swap(physidefense_, other->physidefense_);
-    std::swap(magicdamage_, other->magicdamage_);
-    std::swap(magicdefense_, other->magicdefense_);
-    std::swap(stuntdamage_, other->stuntdamage_);
-    std::swap(stuntdefense_, other->stuntdefense_);
-    std::swap(staminamax_, other->staminamax_);
-    std::swap(basestrength_, other->basestrength_);
-    std::swap(baseintellect_, other->baseintellect_);
-    std::swap(basetechnique_, other->basetechnique_);
-    std::swap(baseagility_, other->baseagility_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata PlayerAttrib::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = PlayerAttrib_descriptor_;
-  metadata.reflection = PlayerAttrib_reflection_;
   return metadata;
 }
 

@@ -41,7 +41,6 @@ public:
 	bool onMessage(PACKET_COMMAND* pack);
 
 	CDataObj* create(std::string type, int64 id);
-
 	CDataObj* loadBson(std::string type, mongo::BSONObj& bson, int64 id);
 	CDataObj* loadDb(int status, std::string type, std::string key, int64 id);
 	bool loadDb(int status, std::string type);
@@ -49,12 +48,12 @@ public:
 	void updateDb(CDataObj* obj, std::string key);
 	void updateDb(int64 id, std::string key);
 
-	void syncObj(CDataObj* obj, int sock);
-	void syncObj(CDataObj* obj, std::string key, int sock);
-	void syncObj(std::string type, int sock);
-	void syncObjSeparate(CDataObj* obj, int sock);
-	void syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string key, int64 mapkey, int sock);
-	void syncObjFinish(int sock, std::string type, int64 id = 0);
+	void syncData(CDataObj* obj, int sock);
+	void syncData(std::string type, int sock);
+	void syncDataSeparate(CDataObj* obj, int sock);
+	void syncDataObj(CDataObj* obj, std::string key, int sock);
+	void syncDataMap(CDataObj* obj, rapidjson::Value& json, std::string key, std::string mapkey, int sock);
+	void syncDataFinish(int sock, std::string type, int64 id = 0);
 
 protected:
 	void _setSaveType(CDataObj* obj, int type);

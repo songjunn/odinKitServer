@@ -5,8 +5,11 @@
 #include "PathFunc.h"
 #include "User.h"
 #include "attrs.h"
+#include "ItemMgr.h"
+#include "HeroMgr.h"
 #include "PlayerMgr.h"
 #include "RoleTemplate.h"
+#include "ItemTemplate.h"
 #include "PlayerMgr.h"
 #include "UserMgr.h"
 #include "NameText.h"
@@ -28,7 +31,10 @@ createFileSingleton(CLoginModule);
 createFileSingleton(CEventPool);
 createFileSingleton(CPlayerMgr);
 createFileSingleton(CUserMgr);
+createFileSingleton(CHeroMgr);
+createFileSingleton(CItemMgr);
 createFileSingleton(CRoleTemplateMgr);
+createFileSingleton(CItemTemplateMgr);
 createFileSingleton(CDebugModule);
 createFileSingleton(CNameTextMgr);
 createFileSingleton(CTimerModule);
@@ -92,6 +98,8 @@ bool CGameServer::onStartup()
 		return false;
 	if (!PlayerMgr.Initialize("player", playercnt))
 		return false;
+	if (!ItemMgr.Initialize("item", itemcnt))
+		return false;
 	if (!EventPool.Create(1000))
 		return false;
 
@@ -110,6 +118,10 @@ bool CGameServer::onStartup()
 	char roleFile[256] = { 0 };
 	sprintf(roleFile, "%s/data/role.csv", g_szExePath);
 	if (!RoleTemplateMgr.LoadCSVData(roleFile))
+		return false;
+	char itemFile[256] = { 0 };
+	sprintf(itemFile, "%s/data/item.csv", g_szExePath);
+	if (!ItemTemplateMgr.LoadCSVData(itemFile))
 		return false;
 	char nameFile[256] = { 0 };
 	sprintf(nameFile, "%s/data/blacklist.csv", g_szExePath);

@@ -42,13 +42,13 @@ void CLoadModule::onLogic()
 			{
 				CDataObj* obj = DataModule.loadDb(loader->status, loader->type, loader->key, loader->id);
 				if (obj) {
-					DataModule.syncObjSeparate(obj, loader->sock);
+					DataModule.syncDataSeparate(obj, loader->sock);
 				}
 			}
 			else
 			{
 				if (DataModule.loadDb(loader->status, loader->type))
-					DataModule.syncObj(loader->type, loader->sock);
+					DataModule.syncData(loader->type, loader->sock);
 			}
 
 			SAFE_DELETE(loader);

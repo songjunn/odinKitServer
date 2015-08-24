@@ -134,12 +134,12 @@ void CDataModule::updateDb(int64 id, std::string key)
 		this->updateDb(obj, key);
 }
 
-void CDataModule::syncObj(CDataObj* obj, int sock)
+void CDataModule::syncData(CDataObj* obj, int sock)
 {
 	std::string json;
 	obj->toJsonstring(json);
 
-	Message::SyncObjField msg;
+	Message::SyncAttrs msg;
 	msg.set_id(obj->m_id);
 	msg.set_type(obj->m_type);
 	msg.set_jsonstr(json);
@@ -149,12 +149,12 @@ void CDataModule::syncObj(CDataObj* obj, int sock)
 	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncObj(CDataObj* obj, std::string key, int sock)
+void CDataModule::syncDataObj(CDataObj* obj, std::string key, int sock)
 {
 	std::string json;
 	obj->toJsonstring(json, key);
 
-	Message::SyncObjField msg;
+	Message::SyncAttrs msg;
 	msg.set_id(obj->m_id);
 	msg.set_type(obj->m_type);
 	msg.set_key(key);
@@ -165,24 +165,14 @@ void CDataModule::syncObj(CDataObj* obj, std::string key, int sock)
 	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncObjFinish(int sock, std::string type, int64 id)
-{
-	Message::SyncObjField msg;
-	msg.set_id(id);
-	msg.set_type(type);
-
-	PACKET_COMMAND pack;
-	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_FINISH);
-	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
-}
-
-void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string key, int64 mapkey, int sock)
+void CDataModule::syncDataMap(CDataObj* obj, rapidjson::Value& json, std::string key, std::string mapkey, int sock)
 {
 	std::string jsonstr;
 	CMetadata::toJsonstring(json, jsonstr);
 
-	Message::SyncObjField msg;
+	Message::SyncAttrs msg;
 	msg.set_id(obj->m_id);
+	msg.set_type(obj->m_type);
 	msg.set_key(key);
 	msg.set_mapkey(mapkey);
 	msg.set_jsonstr(jsonstr);
@@ -192,7 +182,18 @@ void CDataModule::syncObjMap(CDataObj* obj, rapidjson::Value& json, std::string 
 	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncObjSeparate(CDataObj* obj, int sock)
+void CDataModule::syncDataFinish(int sock, std::string type, int64 id)
+{
+	Message::SyncAttrs msg;
+	msg.set_id(id);
+	msg.set_type(type);
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_SYNC_FINISH);
+	GETSERVERNET(&DataServer)->sendMsg(sock, &pack);
+}
+
+void CDataModule::syncDataSeparate(CDataObj* obj, int sock)
 {
 	CDataObj gameObj;
 	gameObj.m_id = obj->m_id;
@@ -217,40 +218,40 @@ void CDataModule::syncObjSeparate(CDataObj* obj, int sock)
 			gameObj.m_members.AddMember(it->name.GetString(), jsonValue, gameObj.m_members.GetAllocator());
 		}
 	}
-	this->syncObj(&gameObj, sock);
+	this->syncData(&gameObj, sock);
 
 	for (rapidjson::Value::MemberIterator it = obj->m_members.MemberBegin(); it != obj->m_members.MemberEnd(); ++it) {
 		rapidjson::Value& member = obj->getFieldObj(it->name.GetString());
 		if (CMetadata::isFieldVec(member)) {
-			this->syncObj(obj, it->name.GetString(), sock);
+			this->syncDataObj(obj, it->name.GetString(), sock);
 		}
 		else if (CMetadata::isFieldObj(member)) {
 			rapidjson::Value::MemberIterator child = member.MemberBegin();
 			if (child != member.MemberEnd() && CMetadata::isFieldObj(CMetadata::getFieldVal(member, child->name.GetString()))) {
 				do {
 					rapidjson::Value& childjson = CMetadata::getFieldVal(member, child->name.GetString());
-					this->syncObjMap(obj, childjson, it->name.GetString(), atoll(child->name.GetString()), sock);
+					this->syncDataMap(obj, childjson, it->name.GetString(), child->name.GetString(), sock);
 				} while (++child != member.MemberEnd());
 			} else {
-				this->syncObj(obj, it->name.GetString(), sock);
+				this->syncDataObj(obj, it->name.GetString(), sock);
 			}
 		}
 	}
 
-	syncObjFinish(sock, obj->m_type, obj->m_id);
+	syncDataFinish(sock, obj->m_type, obj->m_id);
 }
 
-void CDataModule::syncObj(std::string type, int sock)
+void CDataModule::syncData(std::string type, int sock)
 {
 	int64 id = m_list.Head();
 	while (CDataObj* obj = GetObj(id)) {
 		id = m_list.Next(id);
 	
 		if (type == obj->m_type)
-			syncObj(obj, sock);
+			syncData(obj, sock);
 	}
 
-	syncObjFinish(sock, type);
+	syncDataFinish(sock, type);
 }
 
 bool CDataModule::onMessage(PACKET_COMMAND* pack)
@@ -261,7 +262,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 	switch(pack->Type()) {
 		case Message::MSG_GAMEOBJ_OBJFIELD_SETI32:
 			{
-				 Message::SyncObjFieldItem msg;
+				 Message::SyncAttrsObjField msg;
 				 PROTOBUF_CMD_PARSER(pack, msg);
 
 				 CDataObj* obj = this->GetObj(msg.id());
@@ -277,7 +278,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 			break;
 		case Message::MSG_GAMEOBJ_OBJFIELD_SETI64:
 			{
-			    Message::SyncObjFieldItem msg;
+				Message::SyncAttrsObjField msg;
 			    PROTOBUF_CMD_PARSER(pack, msg);
 
 			    CDataObj* obj = this->GetObj(msg.id());
@@ -293,7 +294,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 			break;
 		case Message::MSG_GAMEOBJ_OBJFIELD_SETSTR:
 			{
-				Message::SyncObjFieldItem msg;
+				Message::SyncAttrsObjField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 				
 				CDataObj* obj = this->GetObj(msg.id());
@@ -309,67 +310,67 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 			break;
 		case Message::MSG_GAMEOBJ_OBJFIELD_SETALL:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->fromJsonstringCompletely(msg.jsonstr(), msg.group());
+					obj->fromJsonstringCompletely(msg.jsonstr(), msg.key());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_MAPFIELD_SETI32:
 			{
-				Message::SyncMapFieldItem msg;
+				Message::SyncAttrsMapField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->setFieldMap(msg.group(), msg.id(), msg.field(), msg.vali32());
+					obj->setFieldMap(msg.group(), msg.mapkey(), msg.field(), msg.vali32());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_MAPFIELD_SETI64:
 			{
-				Message::SyncMapFieldItem msg;
+				Message::SyncAttrsMapField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->setFieldMap(msg.group(), msg.id(), msg.field(), msg.vali64());
+					obj->setFieldMap(msg.group(), msg.mapkey(), msg.field(), (int64)msg.vali64());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_MAPFIELD_SETSTR:
 			{
-				Message::SyncMapFieldItem msg;
+				Message::SyncAttrsMapField msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->setFieldMap(msg.group(), msg.id(), msg.field(), msg.valstr());
+					obj->setFieldMap(msg.group(), msg.mapkey(), msg.field(), msg.valstr());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_MAPFIELD_SETALL:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
 				if (obj) {
-					obj->setFieldMap(msg.key(), msg.id(), msg.jsonstr());
+					obj->setFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_MAPFIELD_ADD:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
@@ -377,14 +378,14 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 					if (!obj->haveMember(msg.key())) {
 						obj->addFieldObj(msg.key());
 					}
-					obj->addFieldMap(msg.key(), msg.id(), msg.jsonstr());
+					obj->addFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());
 					this->_setSaveType(obj, SAVE_UPDATE);
 				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_MAPFIELD_DEL:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());
@@ -402,7 +403,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				CDataObj* obj = this->GetObj(msg.pid());
 				if (obj) {
 					_setStatusType(obj, STATUS_LOAD);
-					DataModule.syncObjSeparate(obj, pack->GetNetID());
+					DataModule.syncDataSeparate(obj, pack->GetNetID());
 				} else {
 					LoadModule.addToLoad(msg.type(), msg.key(), msg.pid(), pack->GetNetID(), STATUS_LOAD);
 				}
@@ -416,7 +417,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 				CDataObj* obj = this->GetObj(msg.pid());
 				if (obj) {
 					_setStatusType(obj, STATUS_ONLINE);
-				    DataModule.syncObjSeparate(obj, pack->GetNetID());
+					DataModule.syncDataSeparate(obj, pack->GetNetID());
 				} else {
 					LoadModule.addToLoad(msg.type(), msg.key(), msg.pid(), pack->GetNetID(), STATUS_ONLINE);
 				}
@@ -424,7 +425,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 			break;
 		case Message::MSG_GAMEOBJ_CREATE:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = create(msg.type().c_str(), msg.id());
@@ -436,7 +437,7 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 			break;
 		case Message::MSG_GAMEOBJ_REMOVE:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				CDataObj* obj = this->GetObj(msg.id());

@@ -226,6 +226,7 @@
     <ClCompile Include="source\DataModule.cpp" />
     <ClCompile Include="source\GameServer.cpp" />
     <ClCompile Include="source\Item.cpp" />
+    <ClCompile Include="source\ItemTemplate.cpp" />
     <ClCompile Include="source\ItemUnit.cpp" />
     <ClCompile Include="source\NameText.cpp" />
     <ClCompile Include="source\RoleTemplate.cpp" />

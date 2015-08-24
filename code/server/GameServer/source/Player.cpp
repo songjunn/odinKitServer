@@ -2,6 +2,7 @@
 #include "RoleTemplate.h"
 #include "gtime.h"
 #include "error.h"
+#include "attrs_defines.h"
 #include "DataModule.h"
 #include "NoticeModule.h"
 #include "rapidjson/document.h"
@@ -135,17 +136,17 @@ string* CPlayer::_FindFieldStr(int i)
 
 void CPlayer::SyncFieldIntToData(int i)
 {
-	DataModule.syncFieldInt(this, "attrs", i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+	DataModule.syncFieldInt(this, GROUP_ATTRS, i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CPlayer::SyncFieldI64ToData(int i)
 {
-	DataModule.syncFieldI64(this, "attrs", i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+	DataModule.syncFieldI64(this, GROUP_ATTRS, i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CPlayer::SyncFieldStrToData(int i)
 {
-	DataModule.syncFieldStr(this, "attrs", i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+	DataModule.syncFieldStr(this, GROUP_ATTRS, i, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 }
 
 void CPlayer::SyncFieldIntToClient(int i, CPlayer* toPlayer)
@@ -247,7 +248,7 @@ void CPlayer::Serialize(std::string& jsonstr)
 	rapidjson::Document root;
 	root.SetObject();
 
-	Serialize("attrs", root);
+	Serialize(GROUP_ATTRS, root);
 
 	rapidjson::StringBuffer buffer;
 	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -278,7 +279,7 @@ void CPlayer::Serialize(string name, rapidjson::Document& root)
 	_SerializeFieldStr(Role_Attrib_LoginTime, json, root);
 	_SerializeFieldStr(Role_Attrib_LogoutTime, json, root);
 
-	root.AddMember(name.c_str(), json, root.GetAllocator());
+	root.AddMember(name.c_str(), root.GetAllocator(), json, root.GetAllocator());
 }
 
 void CPlayer::Deserialize(rapidjson::Value& json)

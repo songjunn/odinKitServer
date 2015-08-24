@@ -31,6 +31,10 @@ public:
 	void	Init();
 	void	Release();
 
+	inline	bool	IsPlayer()						{ return m_type == Role_Type_Player; }
+	inline	bool	IsHero()						{ return m_type == Role_Type_Hero; }
+	inline	bool	IsMonster()						{ return m_type == Role_Type_Monster; }
+
 	inline	bool	IsBerserker()					{return Role_Vocation_Berserker == m_Vocation;}
 	inline	bool	IsMage()						{return Role_Vocation_Mage == m_Vocation;}
 	inline	bool	IsRobbers()						{return Role_Vocation_Robbers == m_Vocation;}

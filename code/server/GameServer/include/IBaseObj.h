@@ -39,10 +39,6 @@ public:
 	inline	string	GetName()					{ return m_name; }
 	inline	void	SetName(const char* value)	{ m_name = value; }
 
-	inline	bool	IsPlayer()	{ return m_type == Role_Type_Player; }
-	inline	bool	IsHero()	{ return m_type == Role_Type_Hero; }
-	inline	bool	IsMonster()	{ return m_type == Role_Type_Monster; }
-
 	virtual void	SendClientMsg(PACKET_COMMAND* pack)	{return;}
 	virtual	void	SendDataMsg(PACKET_COMMAND* pack)	{return;}
 	virtual	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player)	{return;}

@@ -2,13 +2,38 @@
 #include "attrs_defines.h"
 #include "Log.h"
 
+static CUtlMap<int, int>		 player_attr_type_table;
+static CUtlMap<CUtlSymbol, int>	 player_attr_name_table;
+
+static CUtlMap<int, int>		 item_attr_type_table;
+static CUtlMap<CUtlSymbol, int>	 item_attr_name_table;
+
 namespace attrs {
 
 	bool init_all_attrs()
 	{
 		init_attrs(player_attrs, sizeof(player_attrs)/sizeof(CAttr), player_attr_type_table, player_attr_name_table);
+		init_attrs(item_attrs, sizeof(item_attrs) / sizeof(CAttr), item_attr_type_table, item_attr_name_table);
 
 		return true;
+	}
+
+	std::string get_player_field_name(int i)
+	{
+		return get_attr_name(i, player_attrs, player_attr_type_table);
+	}
+	int	get_player_field_type(std::string name)
+	{
+		return get_attr_type(name, player_attr_name_table);
+	}
+
+	std::string get_item_field_name(int i)
+	{
+		return get_attr_name(i, item_attrs, item_attr_type_table);
+	}
+	int	get_item_field_type(std::string name)
+	{
+		return get_attr_type(name, item_attr_name_table);
 	}
 
 	bool init_attrs(const CAttr _attr_array[], uint32 _array_len, CUtlMap<int, int>& _attr_type_table, CUtlMap<CUtlSymbol, int>& _attr_name_table)

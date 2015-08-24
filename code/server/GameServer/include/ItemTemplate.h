@@ -36,10 +36,9 @@ public:
 	int		m_Quatily;		//品质
 	int		m_StackMax;		//堆叠上限
 	int		m_SellPrice;	//出售价格
-	//CEffect	m_EffectUse;	//使用效果
-	//CEffect	m_EffectEquip[EQUIP_EFFECT_MAX];	//装备效果
+	CEffect	m_EffectUse;	//使用效果
+	CEffect	m_EffectEquip[EQUIP_EFFECT_MAX];	//装备效果
 
-	
 	int 		m_Strength;             //力量
 	int 		m_Intellect;            //智力
 	int 		m_Technique;			//技巧

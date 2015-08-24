@@ -284,6 +284,8 @@ bool CLoginModule::OnPlayerLogin(CPlayer* player)
 	player->SetFieldStr(Role_Attrib_LoginTime, timestr, false, true);
 	player->SetOnline(Online_Flag_On);
 
+	player->m_ItemUnit.GainItem(10001001, Item_Reason_UnKonw);
+
 	CEvent* evnt = MakeEvent(Event_Player_Login, player->GetID(), NULL, true);
 	player->OnEvent(evnt);
 

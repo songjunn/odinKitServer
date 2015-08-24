@@ -3,6 +3,7 @@
 #include "PlayerMgr.h"
 #include "GameServer.h"
 #include "LoginModule.h"
+#include "attrs_defines.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageGameobj.pb.h"
 
@@ -12,7 +13,7 @@ void CDataModule::syncCreate(IBaseObj* obj, std::string type, int sock)
 	std::string json;
 	obj->Serialize(json);
 
-	Message::SyncObjField msg;
+	Message::SyncAttrs msg;
 	msg.set_id(obj->GetID());
 	msg.set_type(type);
 	msg.set_jsonstr(json);
@@ -24,7 +25,7 @@ void CDataModule::syncCreate(IBaseObj* obj, std::string type, int sock)
 
 void CDataModule::syncRemove(IBaseObj* obj, int sock)
 {
-	Message::SyncObjField msg;
+	Message::SyncAttrs msg;
 	msg.set_id(obj->GetID());
 
 	PACKET_COMMAND pack;
@@ -32,9 +33,9 @@ void CDataModule::syncRemove(IBaseObj* obj, int sock)
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncFieldInt(IBaseObj* obj, const char* group, int i, int sock)
+void CDataModule::syncFieldInt(IBaseObj* obj, std::string group, int i, int sock)
 {
-	Message::SyncObjFieldItem msg;
+	Message::SyncAttrsObjField msg;
 	msg.set_id(obj->GetID());
 	msg.set_group(group);
 	msg.set_field(obj->GetFieldName(i));
@@ -45,9 +46,9 @@ void CDataModule::syncFieldInt(IBaseObj* obj, const char* group, int i, int sock
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncFieldI64(IBaseObj* obj, const char* group, int i, int sock)
+void CDataModule::syncFieldI64(IBaseObj* obj, std::string group, int i, int sock)
 {
-	Message::SyncObjFieldItem msg;
+	Message::SyncAttrsObjField msg;
 	msg.set_id(obj->GetID());
 	msg.set_group(group);
 	msg.set_field(obj->GetFieldName(i));
@@ -58,9 +59,9 @@ void CDataModule::syncFieldI64(IBaseObj* obj, const char* group, int i, int sock
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncFieldStr(IBaseObj* obj, const char* group, int i, int sock)
+void CDataModule::syncFieldStr(IBaseObj* obj, std::string group, int i, int sock)
 {
-	Message::SyncObjFieldItem msg;
+	Message::SyncAttrsObjField msg;
 	msg.set_id(obj->GetID());
 	msg.set_group(group);
 	msg.set_field(obj->GetFieldName(i));
@@ -71,9 +72,9 @@ void CDataModule::syncFieldStr(IBaseObj* obj, const char* group, int i, int sock
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncGroupAll(IBaseObj* obj, const char* group, const char* json, int sock)
+void CDataModule::syncGroupAll(IBaseObj* obj, std::string group, std::string json, int sock)
 {
-	Message::SyncObjField msg;
+	Message::SyncAttrs msg;
 	msg.set_id(obj->GetID());
 	msg.set_key(group);
 	msg.set_jsonstr(json);
@@ -83,14 +84,18 @@ void CDataModule::syncGroupAll(IBaseObj* obj, const char* group, const char* jso
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncAddMap(IBaseObj* obj, const char* group, int sock)
+void CDataModule::syncAddMap(int64 id, IBaseObj* obj, std::string group, int sock)
 {
 	std::string json;
 	obj->Serialize(json);
 
-	Message::SyncObjField msg;
-	msg.set_id(obj->GetID());
+	char mapkey[32] = { 0 };
+	sprintf(mapkey, INT64_FMT, obj->GetID());
+
+	Message::SyncAttrs msg;
+	msg.set_id(id);
 	msg.set_key(group);
+	msg.set_mapkey(mapkey);
 	msg.set_jsonstr(json);
 
 	PACKET_COMMAND pack;
@@ -98,48 +103,64 @@ void CDataModule::syncAddMap(IBaseObj* obj, const char* group, int sock)
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncDelMap(IBaseObj* obj, const char* group, int sock)
+void CDataModule::syncDelMap(int64 id, IBaseObj* obj, std::string group, int sock)
 {
-	Message::SyncObjField msg;
-	msg.set_id(obj->GetID());
+	char mapkey[32] = { 0 };
+	sprintf(mapkey, INT64_FMT, obj->GetID());
+
+	Message::SyncAttrs msg;
+	msg.set_id(id);
 	msg.set_key(group);
+	msg.set_mapkey(mapkey);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_DEL);
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncSetMap(IBaseObj* obj, const char* group, const char* field, int value, int sock)
+void CDataModule::syncSetMap(int64 id, IBaseObj* obj, std::string group, std::string field, int value, int sock)
 {
-	Message::SyncMapFieldItem msg;
-	msg.set_id(obj->GetID());
+	char mapkey[32] = { 0 };
+	sprintf(mapkey, INT64_FMT, obj->GetID());
+
+	Message::SyncAttrsMapField msg;
+	msg.set_id(id);
 	msg.set_group(group);
+	msg.set_mapkey(mapkey);
 	msg.set_field(field);
-	msg.set_val32(value);
+	msg.set_vali32(value);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_SETI32);
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncSetMap(IBaseObj* obj, const char* group, const char* field, int64 value, int sock)
+void CDataModule::syncSetMap(int64 id, IBaseObj* obj, std::string group, std::string field, int64 value, int sock)
 {
-	Message::SyncMapFieldItem msg;
-	msg.set_id(obj->GetID());
+	char mapkey[32] = { 0 };
+	sprintf(mapkey, INT64_FMT, obj->GetID());
+
+	Message::SyncAttrsMapField msg;
+	msg.set_id(id);
 	msg.set_group(group);
+	msg.set_mapkey(mapkey);
 	msg.set_field(field);
-	msg.set_val64(value);
+	msg.set_vali64(value);
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_GAMEOBJ_MAPFIELD_SETI64);
 	GETSERVERNET(&GameServer)->sendMsg(sock, &pack);
 }
 
-void CDataModule::syncSetMap(IBaseObj* obj, const char* group, const char* field, const char* value, int sock)
+void CDataModule::syncSetMap(int64 id, IBaseObj* obj, std::string group, std::string field, string value, int sock)
 {
-	Message::SyncMapFieldItem msg;
-	msg.set_id(obj->GetID());
+	char mapkey[32] = { 0 };
+	sprintf(mapkey, INT64_FMT, obj->GetID());
+
+	Message::SyncAttrsMapField msg;
+	msg.set_id(id);
 	msg.set_group(group);
+	msg.set_mapkey(mapkey);
 	msg.set_field(field);
 	msg.set_valstr(value);
 
@@ -156,31 +177,29 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 	switch(pack->Type()) {
 		case Message::MSG_GAMEOBJ_SYNC:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				if (msg.type() == "player") {
-					CPlayer* player = PlayerMgr.Create(msg.id());
+					rapidjson::Document obj;
+					obj.Parse<0>(msg.jsonstr().c_str());
+					CPlayer* player = PlayerMgr.Create(obj["templateid"].GetInt(), msg.id());
 					if (player) {
-						player->Deserialize(msg.jsonstr());
-						player->OnCreate(player->GetFieldInt(Role_Attrib_TemplateID));
+						player->Deserialize(obj);
 					}
 				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_SYNC_OBJFIELD:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				if (msg.type() == "player") {
 					CPlayer* player = PlayerMgr.GetObj(msg.id());
 					if (player) {
-						if (msg.key() == "attr") {
+						if (msg.key() == GROUP_ATTRS) {
 							player->Deserialize(msg.jsonstr());
-						}
-						else if (msg.key() == "items") {
-
 						}
 					}
 				}
@@ -188,18 +207,22 @@ bool CDataModule::onMessage(PACKET_COMMAND* pack)
 			break;
 		case Message::MSG_GAMEOBJ_SYNC_MAPFIELD:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
-				/*CMetadata* obj = this->GetObj(msg.id());
-				if (obj && obj->haveMember(msg.key())) {
-					obj->addFieldMap(msg.key(), msg.mapkey(), msg.jsonstr());
-				}*/
+				if (msg.type() == "player") {
+					CPlayer* player = PlayerMgr.GetObj(msg.id());
+					if (player) {
+						if (msg.key() == GROUP_ITEMS) {
+							player->m_ItemUnit.LoadItem(atoll(msg.mapkey().c_str()), msg.jsonstr());
+						}
+					}
+				}
 			}
 			break;
 		case Message::MSG_GAMEOBJ_SYNC_FINISH:
 			{
-				Message::SyncObjField msg;
+				Message::SyncAttrs msg;
 				PROTOBUF_CMD_PARSER(pack, msg);
 
 				if (msg.type() == "player") {

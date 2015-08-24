@@ -33,20 +33,21 @@ void  protobuf_AddDesc_MessageGameobj_2eproto();
 void protobuf_AssignDesc_MessageGameobj_2eproto();
 void protobuf_ShutdownFile_MessageGameobj_2eproto();
 
-class SyncObjField;
-class SyncObjFieldItem;
+class SyncAttrs;
+class SyncAttrsObjField;
+class SyncAttrsMapField;
 class ReqPlayerData;
 
 // ===================================================================
 
-class SyncObjField : public ::google::protobuf::Message {
+class SyncAttrs : public ::google::protobuf::Message {
  public:
-  SyncObjField();
-  virtual ~SyncObjField();
+  SyncAttrs();
+  virtual ~SyncAttrs();
 
-  SyncObjField(const SyncObjField& from);
+  SyncAttrs(const SyncAttrs& from);
 
-  inline SyncObjField& operator=(const SyncObjField& from) {
+  inline SyncAttrs& operator=(const SyncAttrs& from) {
     CopyFrom(from);
     return *this;
   }
@@ -60,17 +61,17 @@ class SyncObjField : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const SyncObjField& default_instance();
+  static const SyncAttrs& default_instance();
 
-  void Swap(SyncObjField* other);
+  void Swap(SyncAttrs* other);
 
   // implements Message ----------------------------------------------
 
-  SyncObjField* New() const;
+  SyncAttrs* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const SyncObjField& from);
-  void MergeFrom(const SyncObjField& from);
+  void CopyFrom(const SyncAttrs& from);
+  void MergeFrom(const SyncAttrs& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -124,12 +125,17 @@ class SyncObjField : public ::google::protobuf::Message {
   inline ::std::string* release_key();
   inline void set_allocated_key(::std::string* key);
 
-  // optional int64 mapkey = 4;
+  // optional string mapkey = 4;
   inline bool has_mapkey() const;
   inline void clear_mapkey();
   static const int kMapkeyFieldNumber = 4;
-  inline ::google::protobuf::int64 mapkey() const;
-  inline void set_mapkey(::google::protobuf::int64 value);
+  inline const ::std::string& mapkey() const;
+  inline void set_mapkey(const ::std::string& value);
+  inline void set_mapkey(const char* value);
+  inline void set_mapkey(const char* value, size_t size);
+  inline ::std::string* mutable_mapkey();
+  inline ::std::string* release_mapkey();
+  inline void set_allocated_mapkey(::std::string* mapkey);
 
   // optional string jsonstr = 5;
   inline bool has_jsonstr() const;
@@ -143,7 +149,7 @@ class SyncObjField : public ::google::protobuf::Message {
   inline ::std::string* release_jsonstr();
   inline void set_allocated_jsonstr(::std::string* jsonstr);
 
-  // @@protoc_insertion_point(class_scope:Message.SyncObjField)
+  // @@protoc_insertion_point(class_scope:Message.SyncAttrs)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -161,7 +167,7 @@ class SyncObjField : public ::google::protobuf::Message {
   ::google::protobuf::int64 id_;
   ::std::string* type_;
   ::std::string* key_;
-  ::google::protobuf::int64 mapkey_;
+  ::std::string* mapkey_;
   ::std::string* jsonstr_;
 
   mutable int _cached_size_;
@@ -172,18 +178,18 @@ class SyncObjField : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_MessageGameobj_2eproto();
 
   void InitAsDefaultInstance();
-  static SyncObjField* default_instance_;
+  static SyncAttrs* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class SyncObjFieldItem : public ::google::protobuf::Message {
+class SyncAttrsObjField : public ::google::protobuf::Message {
  public:
-  SyncObjFieldItem();
-  virtual ~SyncObjFieldItem();
+  SyncAttrsObjField();
+  virtual ~SyncAttrsObjField();
 
-  SyncObjFieldItem(const SyncObjFieldItem& from);
+  SyncAttrsObjField(const SyncAttrsObjField& from);
 
-  inline SyncObjFieldItem& operator=(const SyncObjFieldItem& from) {
+  inline SyncAttrsObjField& operator=(const SyncAttrsObjField& from) {
     CopyFrom(from);
     return *this;
   }
@@ -197,17 +203,17 @@ class SyncObjFieldItem : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const SyncObjFieldItem& default_instance();
+  static const SyncAttrsObjField& default_instance();
 
-  void Swap(SyncObjFieldItem* other);
+  void Swap(SyncAttrsObjField* other);
 
   // implements Message ----------------------------------------------
 
-  SyncObjFieldItem* New() const;
+  SyncAttrsObjField* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const SyncObjFieldItem& from);
-  void MergeFrom(const SyncObjFieldItem& from);
+  void CopyFrom(const SyncAttrsObjField& from);
+  void MergeFrom(const SyncAttrsObjField& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -237,48 +243,60 @@ class SyncObjFieldItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int64 id() const;
   inline void set_id(::google::protobuf::int64 value);
 
-  // optional string key = 2;
-  inline bool has_key() const;
-  inline void clear_key();
-  static const int kKeyFieldNumber = 2;
-  inline const ::std::string& key() const;
-  inline void set_key(const ::std::string& value);
-  inline void set_key(const char* value);
-  inline void set_key(const char* value, size_t size);
-  inline ::std::string* mutable_key();
-  inline ::std::string* release_key();
-  inline void set_allocated_key(::std::string* key);
+  // optional string type = 2;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 2;
+  inline const ::std::string& type() const;
+  inline void set_type(const ::std::string& value);
+  inline void set_type(const char* value);
+  inline void set_type(const char* value, size_t size);
+  inline ::std::string* mutable_type();
+  inline ::std::string* release_type();
+  inline void set_allocated_type(::std::string* type);
 
-  // optional string key2 = 3;
-  inline bool has_key2() const;
-  inline void clear_key2();
-  static const int kKey2FieldNumber = 3;
-  inline const ::std::string& key2() const;
-  inline void set_key2(const ::std::string& value);
-  inline void set_key2(const char* value);
-  inline void set_key2(const char* value, size_t size);
-  inline ::std::string* mutable_key2();
-  inline ::std::string* release_key2();
-  inline void set_allocated_key2(::std::string* key2);
+  // optional string group = 3;
+  inline bool has_group() const;
+  inline void clear_group();
+  static const int kGroupFieldNumber = 3;
+  inline const ::std::string& group() const;
+  inline void set_group(const ::std::string& value);
+  inline void set_group(const char* value);
+  inline void set_group(const char* value, size_t size);
+  inline ::std::string* mutable_group();
+  inline ::std::string* release_group();
+  inline void set_allocated_group(::std::string* group);
 
-  // optional int32 vali32 = 4;
+  // optional string field = 4;
+  inline bool has_field() const;
+  inline void clear_field();
+  static const int kFieldFieldNumber = 4;
+  inline const ::std::string& field() const;
+  inline void set_field(const ::std::string& value);
+  inline void set_field(const char* value);
+  inline void set_field(const char* value, size_t size);
+  inline ::std::string* mutable_field();
+  inline ::std::string* release_field();
+  inline void set_allocated_field(::std::string* field);
+
+  // optional int32 vali32 = 5;
   inline bool has_vali32() const;
   inline void clear_vali32();
-  static const int kVali32FieldNumber = 4;
+  static const int kVali32FieldNumber = 5;
   inline ::google::protobuf::int32 vali32() const;
   inline void set_vali32(::google::protobuf::int32 value);
 
-  // optional int64 vali64 = 5;
+  // optional int64 vali64 = 6;
   inline bool has_vali64() const;
   inline void clear_vali64();
-  static const int kVali64FieldNumber = 5;
+  static const int kVali64FieldNumber = 6;
   inline ::google::protobuf::int64 vali64() const;
   inline void set_vali64(::google::protobuf::int64 value);
 
-  // optional string valstr = 6;
+  // optional string valstr = 7;
   inline bool has_valstr() const;
   inline void clear_valstr();
-  static const int kValstrFieldNumber = 6;
+  static const int kValstrFieldNumber = 7;
   inline const ::std::string& valstr() const;
   inline void set_valstr(const ::std::string& value);
   inline void set_valstr(const char* value);
@@ -287,14 +305,16 @@ class SyncObjFieldItem : public ::google::protobuf::Message {
   inline ::std::string* release_valstr();
   inline void set_allocated_valstr(::std::string* valstr);
 
-  // @@protoc_insertion_point(class_scope:Message.SyncObjFieldItem)
+  // @@protoc_insertion_point(class_scope:Message.SyncAttrsObjField)
  private:
   inline void set_has_id();
   inline void clear_has_id();
-  inline void set_has_key();
-  inline void clear_has_key();
-  inline void set_has_key2();
-  inline void clear_has_key2();
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_group();
+  inline void clear_has_group();
+  inline void set_has_field();
+  inline void clear_has_field();
   inline void set_has_vali32();
   inline void clear_has_vali32();
   inline void set_has_vali64();
@@ -305,21 +325,199 @@ class SyncObjFieldItem : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::int64 id_;
-  ::std::string* key_;
-  ::std::string* key2_;
+  ::std::string* type_;
+  ::std::string* group_;
+  ::std::string* field_;
   ::google::protobuf::int64 vali64_;
   ::std::string* valstr_;
   ::google::protobuf::int32 vali32_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
 
   friend void  protobuf_AddDesc_MessageGameobj_2eproto();
   friend void protobuf_AssignDesc_MessageGameobj_2eproto();
   friend void protobuf_ShutdownFile_MessageGameobj_2eproto();
 
   void InitAsDefaultInstance();
-  static SyncObjFieldItem* default_instance_;
+  static SyncAttrsObjField* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SyncAttrsMapField : public ::google::protobuf::Message {
+ public:
+  SyncAttrsMapField();
+  virtual ~SyncAttrsMapField();
+
+  SyncAttrsMapField(const SyncAttrsMapField& from);
+
+  inline SyncAttrsMapField& operator=(const SyncAttrsMapField& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SyncAttrsMapField& default_instance();
+
+  void Swap(SyncAttrsMapField* other);
+
+  // implements Message ----------------------------------------------
+
+  SyncAttrsMapField* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SyncAttrsMapField& from);
+  void MergeFrom(const SyncAttrsMapField& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int64 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int64 id() const;
+  inline void set_id(::google::protobuf::int64 value);
+
+  // optional string type = 2;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 2;
+  inline const ::std::string& type() const;
+  inline void set_type(const ::std::string& value);
+  inline void set_type(const char* value);
+  inline void set_type(const char* value, size_t size);
+  inline ::std::string* mutable_type();
+  inline ::std::string* release_type();
+  inline void set_allocated_type(::std::string* type);
+
+  // optional string group = 3;
+  inline bool has_group() const;
+  inline void clear_group();
+  static const int kGroupFieldNumber = 3;
+  inline const ::std::string& group() const;
+  inline void set_group(const ::std::string& value);
+  inline void set_group(const char* value);
+  inline void set_group(const char* value, size_t size);
+  inline ::std::string* mutable_group();
+  inline ::std::string* release_group();
+  inline void set_allocated_group(::std::string* group);
+
+  // optional string mapkey = 4;
+  inline bool has_mapkey() const;
+  inline void clear_mapkey();
+  static const int kMapkeyFieldNumber = 4;
+  inline const ::std::string& mapkey() const;
+  inline void set_mapkey(const ::std::string& value);
+  inline void set_mapkey(const char* value);
+  inline void set_mapkey(const char* value, size_t size);
+  inline ::std::string* mutable_mapkey();
+  inline ::std::string* release_mapkey();
+  inline void set_allocated_mapkey(::std::string* mapkey);
+
+  // optional string field = 5;
+  inline bool has_field() const;
+  inline void clear_field();
+  static const int kFieldFieldNumber = 5;
+  inline const ::std::string& field() const;
+  inline void set_field(const ::std::string& value);
+  inline void set_field(const char* value);
+  inline void set_field(const char* value, size_t size);
+  inline ::std::string* mutable_field();
+  inline ::std::string* release_field();
+  inline void set_allocated_field(::std::string* field);
+
+  // optional int32 vali32 = 6;
+  inline bool has_vali32() const;
+  inline void clear_vali32();
+  static const int kVali32FieldNumber = 6;
+  inline ::google::protobuf::int32 vali32() const;
+  inline void set_vali32(::google::protobuf::int32 value);
+
+  // optional int64 vali64 = 7;
+  inline bool has_vali64() const;
+  inline void clear_vali64();
+  static const int kVali64FieldNumber = 7;
+  inline ::google::protobuf::int64 vali64() const;
+  inline void set_vali64(::google::protobuf::int64 value);
+
+  // optional string valstr = 8;
+  inline bool has_valstr() const;
+  inline void clear_valstr();
+  static const int kValstrFieldNumber = 8;
+  inline const ::std::string& valstr() const;
+  inline void set_valstr(const ::std::string& value);
+  inline void set_valstr(const char* value);
+  inline void set_valstr(const char* value, size_t size);
+  inline ::std::string* mutable_valstr();
+  inline ::std::string* release_valstr();
+  inline void set_allocated_valstr(::std::string* valstr);
+
+  // @@protoc_insertion_point(class_scope:Message.SyncAttrsMapField)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_group();
+  inline void clear_has_group();
+  inline void set_has_mapkey();
+  inline void clear_has_mapkey();
+  inline void set_has_field();
+  inline void clear_has_field();
+  inline void set_has_vali32();
+  inline void clear_has_vali32();
+  inline void set_has_vali64();
+  inline void clear_has_vali64();
+  inline void set_has_valstr();
+  inline void clear_has_valstr();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int64 id_;
+  ::std::string* type_;
+  ::std::string* group_;
+  ::std::string* mapkey_;
+  ::std::string* field_;
+  ::google::protobuf::int64 vali64_;
+  ::std::string* valstr_;
+  ::google::protobuf::int32 vali32_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+
+  friend void  protobuf_AddDesc_MessageGameobj_2eproto();
+  friend void protobuf_AssignDesc_MessageGameobj_2eproto();
+  friend void protobuf_ShutdownFile_MessageGameobj_2eproto();
+
+  void InitAsDefaultInstance();
+  static SyncAttrsMapField* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -438,78 +636,78 @@ class ReqPlayerData : public ::google::protobuf::Message {
 
 // ===================================================================
 
-// SyncObjField
+// SyncAttrs
 
 // optional int64 id = 1;
-inline bool SyncObjField::has_id() const {
+inline bool SyncAttrs::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SyncObjField::set_has_id() {
+inline void SyncAttrs::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SyncObjField::clear_has_id() {
+inline void SyncAttrs::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SyncObjField::clear_id() {
+inline void SyncAttrs::clear_id() {
   id_ = GOOGLE_LONGLONG(0);
   clear_has_id();
 }
-inline ::google::protobuf::int64 SyncObjField::id() const {
+inline ::google::protobuf::int64 SyncAttrs::id() const {
   return id_;
 }
-inline void SyncObjField::set_id(::google::protobuf::int64 value) {
+inline void SyncAttrs::set_id(::google::protobuf::int64 value) {
   set_has_id();
   id_ = value;
 }
 
 // optional string type = 2;
-inline bool SyncObjField::has_type() const {
+inline bool SyncAttrs::has_type() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void SyncObjField::set_has_type() {
+inline void SyncAttrs::set_has_type() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void SyncObjField::clear_has_type() {
+inline void SyncAttrs::clear_has_type() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void SyncObjField::clear_type() {
+inline void SyncAttrs::clear_type() {
   if (type_ != &::google::protobuf::internal::kEmptyString) {
     type_->clear();
   }
   clear_has_type();
 }
-inline const ::std::string& SyncObjField::type() const {
+inline const ::std::string& SyncAttrs::type() const {
   return *type_;
 }
-inline void SyncObjField::set_type(const ::std::string& value) {
+inline void SyncAttrs::set_type(const ::std::string& value) {
   set_has_type();
   if (type_ == &::google::protobuf::internal::kEmptyString) {
     type_ = new ::std::string;
   }
   type_->assign(value);
 }
-inline void SyncObjField::set_type(const char* value) {
+inline void SyncAttrs::set_type(const char* value) {
   set_has_type();
   if (type_ == &::google::protobuf::internal::kEmptyString) {
     type_ = new ::std::string;
   }
   type_->assign(value);
 }
-inline void SyncObjField::set_type(const char* value, size_t size) {
+inline void SyncAttrs::set_type(const char* value, size_t size) {
   set_has_type();
   if (type_ == &::google::protobuf::internal::kEmptyString) {
     type_ = new ::std::string;
   }
   type_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SyncObjField::mutable_type() {
+inline ::std::string* SyncAttrs::mutable_type() {
   set_has_type();
   if (type_ == &::google::protobuf::internal::kEmptyString) {
     type_ = new ::std::string;
   }
   return type_;
 }
-inline ::std::string* SyncObjField::release_type() {
+inline ::std::string* SyncAttrs::release_type() {
   clear_has_type();
   if (type_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -519,7 +717,7 @@ inline ::std::string* SyncObjField::release_type() {
     return temp;
   }
 }
-inline void SyncObjField::set_allocated_type(::std::string* type) {
+inline void SyncAttrs::set_allocated_type(::std::string* type) {
   if (type_ != &::google::protobuf::internal::kEmptyString) {
     delete type_;
   }
@@ -533,53 +731,53 @@ inline void SyncObjField::set_allocated_type(::std::string* type) {
 }
 
 // optional string key = 3;
-inline bool SyncObjField::has_key() const {
+inline bool SyncAttrs::has_key() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void SyncObjField::set_has_key() {
+inline void SyncAttrs::set_has_key() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void SyncObjField::clear_has_key() {
+inline void SyncAttrs::clear_has_key() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void SyncObjField::clear_key() {
+inline void SyncAttrs::clear_key() {
   if (key_ != &::google::protobuf::internal::kEmptyString) {
     key_->clear();
   }
   clear_has_key();
 }
-inline const ::std::string& SyncObjField::key() const {
+inline const ::std::string& SyncAttrs::key() const {
   return *key_;
 }
-inline void SyncObjField::set_key(const ::std::string& value) {
+inline void SyncAttrs::set_key(const ::std::string& value) {
   set_has_key();
   if (key_ == &::google::protobuf::internal::kEmptyString) {
     key_ = new ::std::string;
   }
   key_->assign(value);
 }
-inline void SyncObjField::set_key(const char* value) {
+inline void SyncAttrs::set_key(const char* value) {
   set_has_key();
   if (key_ == &::google::protobuf::internal::kEmptyString) {
     key_ = new ::std::string;
   }
   key_->assign(value);
 }
-inline void SyncObjField::set_key(const char* value, size_t size) {
+inline void SyncAttrs::set_key(const char* value, size_t size) {
   set_has_key();
   if (key_ == &::google::protobuf::internal::kEmptyString) {
     key_ = new ::std::string;
   }
   key_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SyncObjField::mutable_key() {
+inline ::std::string* SyncAttrs::mutable_key() {
   set_has_key();
   if (key_ == &::google::protobuf::internal::kEmptyString) {
     key_ = new ::std::string;
   }
   return key_;
 }
-inline ::std::string* SyncObjField::release_key() {
+inline ::std::string* SyncAttrs::release_key() {
   clear_has_key();
   if (key_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -589,7 +787,7 @@ inline ::std::string* SyncObjField::release_key() {
     return temp;
   }
 }
-inline void SyncObjField::set_allocated_key(::std::string* key) {
+inline void SyncAttrs::set_allocated_key(::std::string* key) {
   if (key_ != &::google::protobuf::internal::kEmptyString) {
     delete key_;
   }
@@ -602,76 +800,124 @@ inline void SyncObjField::set_allocated_key(::std::string* key) {
   }
 }
 
-// optional int64 mapkey = 4;
-inline bool SyncObjField::has_mapkey() const {
+// optional string mapkey = 4;
+inline bool SyncAttrs::has_mapkey() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void SyncObjField::set_has_mapkey() {
+inline void SyncAttrs::set_has_mapkey() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void SyncObjField::clear_has_mapkey() {
+inline void SyncAttrs::clear_has_mapkey() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void SyncObjField::clear_mapkey() {
-  mapkey_ = GOOGLE_LONGLONG(0);
+inline void SyncAttrs::clear_mapkey() {
+  if (mapkey_ != &::google::protobuf::internal::kEmptyString) {
+    mapkey_->clear();
+  }
   clear_has_mapkey();
 }
-inline ::google::protobuf::int64 SyncObjField::mapkey() const {
+inline const ::std::string& SyncAttrs::mapkey() const {
+  return *mapkey_;
+}
+inline void SyncAttrs::set_mapkey(const ::std::string& value) {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
+  mapkey_->assign(value);
+}
+inline void SyncAttrs::set_mapkey(const char* value) {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
+  mapkey_->assign(value);
+}
+inline void SyncAttrs::set_mapkey(const char* value, size_t size) {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
+  mapkey_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SyncAttrs::mutable_mapkey() {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
   return mapkey_;
 }
-inline void SyncObjField::set_mapkey(::google::protobuf::int64 value) {
-  set_has_mapkey();
-  mapkey_ = value;
+inline ::std::string* SyncAttrs::release_mapkey() {
+  clear_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = mapkey_;
+    mapkey_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SyncAttrs::set_allocated_mapkey(::std::string* mapkey) {
+  if (mapkey_ != &::google::protobuf::internal::kEmptyString) {
+    delete mapkey_;
+  }
+  if (mapkey) {
+    set_has_mapkey();
+    mapkey_ = mapkey;
+  } else {
+    clear_has_mapkey();
+    mapkey_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
 // optional string jsonstr = 5;
-inline bool SyncObjField::has_jsonstr() const {
+inline bool SyncAttrs::has_jsonstr() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void SyncObjField::set_has_jsonstr() {
+inline void SyncAttrs::set_has_jsonstr() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void SyncObjField::clear_has_jsonstr() {
+inline void SyncAttrs::clear_has_jsonstr() {
   _has_bits_[0] &= ~0x00000010u;
 }
-inline void SyncObjField::clear_jsonstr() {
+inline void SyncAttrs::clear_jsonstr() {
   if (jsonstr_ != &::google::protobuf::internal::kEmptyString) {
     jsonstr_->clear();
   }
   clear_has_jsonstr();
 }
-inline const ::std::string& SyncObjField::jsonstr() const {
+inline const ::std::string& SyncAttrs::jsonstr() const {
   return *jsonstr_;
 }
-inline void SyncObjField::set_jsonstr(const ::std::string& value) {
+inline void SyncAttrs::set_jsonstr(const ::std::string& value) {
   set_has_jsonstr();
   if (jsonstr_ == &::google::protobuf::internal::kEmptyString) {
     jsonstr_ = new ::std::string;
   }
   jsonstr_->assign(value);
 }
-inline void SyncObjField::set_jsonstr(const char* value) {
+inline void SyncAttrs::set_jsonstr(const char* value) {
   set_has_jsonstr();
   if (jsonstr_ == &::google::protobuf::internal::kEmptyString) {
     jsonstr_ = new ::std::string;
   }
   jsonstr_->assign(value);
 }
-inline void SyncObjField::set_jsonstr(const char* value, size_t size) {
+inline void SyncAttrs::set_jsonstr(const char* value, size_t size) {
   set_has_jsonstr();
   if (jsonstr_ == &::google::protobuf::internal::kEmptyString) {
     jsonstr_ = new ::std::string;
   }
   jsonstr_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SyncObjField::mutable_jsonstr() {
+inline ::std::string* SyncAttrs::mutable_jsonstr() {
   set_has_jsonstr();
   if (jsonstr_ == &::google::protobuf::internal::kEmptyString) {
     jsonstr_ = new ::std::string;
   }
   return jsonstr_;
 }
-inline ::std::string* SyncObjField::release_jsonstr() {
+inline ::std::string* SyncAttrs::release_jsonstr() {
   clear_has_jsonstr();
   if (jsonstr_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -681,7 +927,7 @@ inline ::std::string* SyncObjField::release_jsonstr() {
     return temp;
   }
 }
-inline void SyncObjField::set_allocated_jsonstr(::std::string* jsonstr) {
+inline void SyncAttrs::set_allocated_jsonstr(::std::string* jsonstr) {
   if (jsonstr_ != &::google::protobuf::internal::kEmptyString) {
     delete jsonstr_;
   }
@@ -696,262 +942,332 @@ inline void SyncObjField::set_allocated_jsonstr(::std::string* jsonstr) {
 
 // -------------------------------------------------------------------
 
-// SyncObjFieldItem
+// SyncAttrsObjField
 
 // optional int64 id = 1;
-inline bool SyncObjFieldItem::has_id() const {
+inline bool SyncAttrsObjField::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SyncObjFieldItem::set_has_id() {
+inline void SyncAttrsObjField::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SyncObjFieldItem::clear_has_id() {
+inline void SyncAttrsObjField::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SyncObjFieldItem::clear_id() {
+inline void SyncAttrsObjField::clear_id() {
   id_ = GOOGLE_LONGLONG(0);
   clear_has_id();
 }
-inline ::google::protobuf::int64 SyncObjFieldItem::id() const {
+inline ::google::protobuf::int64 SyncAttrsObjField::id() const {
   return id_;
 }
-inline void SyncObjFieldItem::set_id(::google::protobuf::int64 value) {
+inline void SyncAttrsObjField::set_id(::google::protobuf::int64 value) {
   set_has_id();
   id_ = value;
 }
 
-// optional string key = 2;
-inline bool SyncObjFieldItem::has_key() const {
+// optional string type = 2;
+inline bool SyncAttrsObjField::has_type() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void SyncObjFieldItem::set_has_key() {
+inline void SyncAttrsObjField::set_has_type() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void SyncObjFieldItem::clear_has_key() {
+inline void SyncAttrsObjField::clear_has_type() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void SyncObjFieldItem::clear_key() {
-  if (key_ != &::google::protobuf::internal::kEmptyString) {
-    key_->clear();
+inline void SyncAttrsObjField::clear_type() {
+  if (type_ != &::google::protobuf::internal::kEmptyString) {
+    type_->clear();
   }
-  clear_has_key();
+  clear_has_type();
 }
-inline const ::std::string& SyncObjFieldItem::key() const {
-  return *key_;
+inline const ::std::string& SyncAttrsObjField::type() const {
+  return *type_;
 }
-inline void SyncObjFieldItem::set_key(const ::std::string& value) {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::kEmptyString) {
-    key_ = new ::std::string;
+inline void SyncAttrsObjField::set_type(const ::std::string& value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
   }
-  key_->assign(value);
+  type_->assign(value);
 }
-inline void SyncObjFieldItem::set_key(const char* value) {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::kEmptyString) {
-    key_ = new ::std::string;
+inline void SyncAttrsObjField::set_type(const char* value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
   }
-  key_->assign(value);
+  type_->assign(value);
 }
-inline void SyncObjFieldItem::set_key(const char* value, size_t size) {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::kEmptyString) {
-    key_ = new ::std::string;
+inline void SyncAttrsObjField::set_type(const char* value, size_t size) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
   }
-  key_->assign(reinterpret_cast<const char*>(value), size);
+  type_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SyncObjFieldItem::mutable_key() {
-  set_has_key();
-  if (key_ == &::google::protobuf::internal::kEmptyString) {
-    key_ = new ::std::string;
+inline ::std::string* SyncAttrsObjField::mutable_type() {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
   }
-  return key_;
+  return type_;
 }
-inline ::std::string* SyncObjFieldItem::release_key() {
-  clear_has_key();
-  if (key_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* SyncAttrsObjField::release_type() {
+  clear_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = key_;
-    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = type_;
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void SyncObjFieldItem::set_allocated_key(::std::string* key) {
-  if (key_ != &::google::protobuf::internal::kEmptyString) {
-    delete key_;
+inline void SyncAttrsObjField::set_allocated_type(::std::string* type) {
+  if (type_ != &::google::protobuf::internal::kEmptyString) {
+    delete type_;
   }
-  if (key) {
-    set_has_key();
-    key_ = key;
+  if (type) {
+    set_has_type();
+    type_ = type;
   } else {
-    clear_has_key();
-    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_type();
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
-// optional string key2 = 3;
-inline bool SyncObjFieldItem::has_key2() const {
+// optional string group = 3;
+inline bool SyncAttrsObjField::has_group() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void SyncObjFieldItem::set_has_key2() {
+inline void SyncAttrsObjField::set_has_group() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void SyncObjFieldItem::clear_has_key2() {
+inline void SyncAttrsObjField::clear_has_group() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void SyncObjFieldItem::clear_key2() {
-  if (key2_ != &::google::protobuf::internal::kEmptyString) {
-    key2_->clear();
+inline void SyncAttrsObjField::clear_group() {
+  if (group_ != &::google::protobuf::internal::kEmptyString) {
+    group_->clear();
   }
-  clear_has_key2();
+  clear_has_group();
 }
-inline const ::std::string& SyncObjFieldItem::key2() const {
-  return *key2_;
+inline const ::std::string& SyncAttrsObjField::group() const {
+  return *group_;
 }
-inline void SyncObjFieldItem::set_key2(const ::std::string& value) {
-  set_has_key2();
-  if (key2_ == &::google::protobuf::internal::kEmptyString) {
-    key2_ = new ::std::string;
+inline void SyncAttrsObjField::set_group(const ::std::string& value) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
   }
-  key2_->assign(value);
+  group_->assign(value);
 }
-inline void SyncObjFieldItem::set_key2(const char* value) {
-  set_has_key2();
-  if (key2_ == &::google::protobuf::internal::kEmptyString) {
-    key2_ = new ::std::string;
+inline void SyncAttrsObjField::set_group(const char* value) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
   }
-  key2_->assign(value);
+  group_->assign(value);
 }
-inline void SyncObjFieldItem::set_key2(const char* value, size_t size) {
-  set_has_key2();
-  if (key2_ == &::google::protobuf::internal::kEmptyString) {
-    key2_ = new ::std::string;
+inline void SyncAttrsObjField::set_group(const char* value, size_t size) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
   }
-  key2_->assign(reinterpret_cast<const char*>(value), size);
+  group_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SyncObjFieldItem::mutable_key2() {
-  set_has_key2();
-  if (key2_ == &::google::protobuf::internal::kEmptyString) {
-    key2_ = new ::std::string;
+inline ::std::string* SyncAttrsObjField::mutable_group() {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
   }
-  return key2_;
+  return group_;
 }
-inline ::std::string* SyncObjFieldItem::release_key2() {
-  clear_has_key2();
-  if (key2_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* SyncAttrsObjField::release_group() {
+  clear_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = key2_;
-    key2_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = group_;
+    group_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void SyncObjFieldItem::set_allocated_key2(::std::string* key2) {
-  if (key2_ != &::google::protobuf::internal::kEmptyString) {
-    delete key2_;
+inline void SyncAttrsObjField::set_allocated_group(::std::string* group) {
+  if (group_ != &::google::protobuf::internal::kEmptyString) {
+    delete group_;
   }
-  if (key2) {
-    set_has_key2();
-    key2_ = key2;
+  if (group) {
+    set_has_group();
+    group_ = group;
   } else {
-    clear_has_key2();
-    key2_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    clear_has_group();
+    group_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
 }
 
-// optional int32 vali32 = 4;
-inline bool SyncObjFieldItem::has_vali32() const {
+// optional string field = 4;
+inline bool SyncAttrsObjField::has_field() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void SyncObjFieldItem::set_has_vali32() {
+inline void SyncAttrsObjField::set_has_field() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void SyncObjFieldItem::clear_has_vali32() {
+inline void SyncAttrsObjField::clear_has_field() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void SyncObjFieldItem::clear_vali32() {
+inline void SyncAttrsObjField::clear_field() {
+  if (field_ != &::google::protobuf::internal::kEmptyString) {
+    field_->clear();
+  }
+  clear_has_field();
+}
+inline const ::std::string& SyncAttrsObjField::field() const {
+  return *field_;
+}
+inline void SyncAttrsObjField::set_field(const ::std::string& value) {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  field_->assign(value);
+}
+inline void SyncAttrsObjField::set_field(const char* value) {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  field_->assign(value);
+}
+inline void SyncAttrsObjField::set_field(const char* value, size_t size) {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  field_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SyncAttrsObjField::mutable_field() {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  return field_;
+}
+inline ::std::string* SyncAttrsObjField::release_field() {
+  clear_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = field_;
+    field_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SyncAttrsObjField::set_allocated_field(::std::string* field) {
+  if (field_ != &::google::protobuf::internal::kEmptyString) {
+    delete field_;
+  }
+  if (field) {
+    set_has_field();
+    field_ = field;
+  } else {
+    clear_has_field();
+    field_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional int32 vali32 = 5;
+inline bool SyncAttrsObjField::has_vali32() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SyncAttrsObjField::set_has_vali32() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SyncAttrsObjField::clear_has_vali32() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void SyncAttrsObjField::clear_vali32() {
   vali32_ = 0;
   clear_has_vali32();
 }
-inline ::google::protobuf::int32 SyncObjFieldItem::vali32() const {
+inline ::google::protobuf::int32 SyncAttrsObjField::vali32() const {
   return vali32_;
 }
-inline void SyncObjFieldItem::set_vali32(::google::protobuf::int32 value) {
+inline void SyncAttrsObjField::set_vali32(::google::protobuf::int32 value) {
   set_has_vali32();
   vali32_ = value;
 }
 
-// optional int64 vali64 = 5;
-inline bool SyncObjFieldItem::has_vali64() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+// optional int64 vali64 = 6;
+inline bool SyncAttrsObjField::has_vali64() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void SyncObjFieldItem::set_has_vali64() {
-  _has_bits_[0] |= 0x00000010u;
+inline void SyncAttrsObjField::set_has_vali64() {
+  _has_bits_[0] |= 0x00000020u;
 }
-inline void SyncObjFieldItem::clear_has_vali64() {
-  _has_bits_[0] &= ~0x00000010u;
+inline void SyncAttrsObjField::clear_has_vali64() {
+  _has_bits_[0] &= ~0x00000020u;
 }
-inline void SyncObjFieldItem::clear_vali64() {
+inline void SyncAttrsObjField::clear_vali64() {
   vali64_ = GOOGLE_LONGLONG(0);
   clear_has_vali64();
 }
-inline ::google::protobuf::int64 SyncObjFieldItem::vali64() const {
+inline ::google::protobuf::int64 SyncAttrsObjField::vali64() const {
   return vali64_;
 }
-inline void SyncObjFieldItem::set_vali64(::google::protobuf::int64 value) {
+inline void SyncAttrsObjField::set_vali64(::google::protobuf::int64 value) {
   set_has_vali64();
   vali64_ = value;
 }
 
-// optional string valstr = 6;
-inline bool SyncObjFieldItem::has_valstr() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+// optional string valstr = 7;
+inline bool SyncAttrsObjField::has_valstr() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
-inline void SyncObjFieldItem::set_has_valstr() {
-  _has_bits_[0] |= 0x00000020u;
+inline void SyncAttrsObjField::set_has_valstr() {
+  _has_bits_[0] |= 0x00000040u;
 }
-inline void SyncObjFieldItem::clear_has_valstr() {
-  _has_bits_[0] &= ~0x00000020u;
+inline void SyncAttrsObjField::clear_has_valstr() {
+  _has_bits_[0] &= ~0x00000040u;
 }
-inline void SyncObjFieldItem::clear_valstr() {
+inline void SyncAttrsObjField::clear_valstr() {
   if (valstr_ != &::google::protobuf::internal::kEmptyString) {
     valstr_->clear();
   }
   clear_has_valstr();
 }
-inline const ::std::string& SyncObjFieldItem::valstr() const {
+inline const ::std::string& SyncAttrsObjField::valstr() const {
   return *valstr_;
 }
-inline void SyncObjFieldItem::set_valstr(const ::std::string& value) {
+inline void SyncAttrsObjField::set_valstr(const ::std::string& value) {
   set_has_valstr();
   if (valstr_ == &::google::protobuf::internal::kEmptyString) {
     valstr_ = new ::std::string;
   }
   valstr_->assign(value);
 }
-inline void SyncObjFieldItem::set_valstr(const char* value) {
+inline void SyncAttrsObjField::set_valstr(const char* value) {
   set_has_valstr();
   if (valstr_ == &::google::protobuf::internal::kEmptyString) {
     valstr_ = new ::std::string;
   }
   valstr_->assign(value);
 }
-inline void SyncObjFieldItem::set_valstr(const char* value, size_t size) {
+inline void SyncAttrsObjField::set_valstr(const char* value, size_t size) {
   set_has_valstr();
   if (valstr_ == &::google::protobuf::internal::kEmptyString) {
     valstr_ = new ::std::string;
   }
   valstr_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SyncObjFieldItem::mutable_valstr() {
+inline ::std::string* SyncAttrsObjField::mutable_valstr() {
   set_has_valstr();
   if (valstr_ == &::google::protobuf::internal::kEmptyString) {
     valstr_ = new ::std::string;
   }
   return valstr_;
 }
-inline ::std::string* SyncObjFieldItem::release_valstr() {
+inline ::std::string* SyncAttrsObjField::release_valstr() {
   clear_has_valstr();
   if (valstr_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -961,7 +1277,427 @@ inline ::std::string* SyncObjFieldItem::release_valstr() {
     return temp;
   }
 }
-inline void SyncObjFieldItem::set_allocated_valstr(::std::string* valstr) {
+inline void SyncAttrsObjField::set_allocated_valstr(::std::string* valstr) {
+  if (valstr_ != &::google::protobuf::internal::kEmptyString) {
+    delete valstr_;
+  }
+  if (valstr) {
+    set_has_valstr();
+    valstr_ = valstr;
+  } else {
+    clear_has_valstr();
+    valstr_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// -------------------------------------------------------------------
+
+// SyncAttrsMapField
+
+// optional int64 id = 1;
+inline bool SyncAttrsMapField::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SyncAttrsMapField::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SyncAttrsMapField::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SyncAttrsMapField::clear_id() {
+  id_ = GOOGLE_LONGLONG(0);
+  clear_has_id();
+}
+inline ::google::protobuf::int64 SyncAttrsMapField::id() const {
+  return id_;
+}
+inline void SyncAttrsMapField::set_id(::google::protobuf::int64 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// optional string type = 2;
+inline bool SyncAttrsMapField::has_type() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SyncAttrsMapField::set_has_type() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SyncAttrsMapField::clear_has_type() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SyncAttrsMapField::clear_type() {
+  if (type_ != &::google::protobuf::internal::kEmptyString) {
+    type_->clear();
+  }
+  clear_has_type();
+}
+inline const ::std::string& SyncAttrsMapField::type() const {
+  return *type_;
+}
+inline void SyncAttrsMapField::set_type(const ::std::string& value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
+  }
+  type_->assign(value);
+}
+inline void SyncAttrsMapField::set_type(const char* value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
+  }
+  type_->assign(value);
+}
+inline void SyncAttrsMapField::set_type(const char* value, size_t size) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
+  }
+  type_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SyncAttrsMapField::mutable_type() {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    type_ = new ::std::string;
+  }
+  return type_;
+}
+inline ::std::string* SyncAttrsMapField::release_type() {
+  clear_has_type();
+  if (type_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = type_;
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SyncAttrsMapField::set_allocated_type(::std::string* type) {
+  if (type_ != &::google::protobuf::internal::kEmptyString) {
+    delete type_;
+  }
+  if (type) {
+    set_has_type();
+    type_ = type;
+  } else {
+    clear_has_type();
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string group = 3;
+inline bool SyncAttrsMapField::has_group() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void SyncAttrsMapField::set_has_group() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void SyncAttrsMapField::clear_has_group() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void SyncAttrsMapField::clear_group() {
+  if (group_ != &::google::protobuf::internal::kEmptyString) {
+    group_->clear();
+  }
+  clear_has_group();
+}
+inline const ::std::string& SyncAttrsMapField::group() const {
+  return *group_;
+}
+inline void SyncAttrsMapField::set_group(const ::std::string& value) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  group_->assign(value);
+}
+inline void SyncAttrsMapField::set_group(const char* value) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  group_->assign(value);
+}
+inline void SyncAttrsMapField::set_group(const char* value, size_t size) {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  group_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SyncAttrsMapField::mutable_group() {
+  set_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    group_ = new ::std::string;
+  }
+  return group_;
+}
+inline ::std::string* SyncAttrsMapField::release_group() {
+  clear_has_group();
+  if (group_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = group_;
+    group_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SyncAttrsMapField::set_allocated_group(::std::string* group) {
+  if (group_ != &::google::protobuf::internal::kEmptyString) {
+    delete group_;
+  }
+  if (group) {
+    set_has_group();
+    group_ = group;
+  } else {
+    clear_has_group();
+    group_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string mapkey = 4;
+inline bool SyncAttrsMapField::has_mapkey() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SyncAttrsMapField::set_has_mapkey() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SyncAttrsMapField::clear_has_mapkey() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SyncAttrsMapField::clear_mapkey() {
+  if (mapkey_ != &::google::protobuf::internal::kEmptyString) {
+    mapkey_->clear();
+  }
+  clear_has_mapkey();
+}
+inline const ::std::string& SyncAttrsMapField::mapkey() const {
+  return *mapkey_;
+}
+inline void SyncAttrsMapField::set_mapkey(const ::std::string& value) {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
+  mapkey_->assign(value);
+}
+inline void SyncAttrsMapField::set_mapkey(const char* value) {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
+  mapkey_->assign(value);
+}
+inline void SyncAttrsMapField::set_mapkey(const char* value, size_t size) {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
+  mapkey_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SyncAttrsMapField::mutable_mapkey() {
+  set_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    mapkey_ = new ::std::string;
+  }
+  return mapkey_;
+}
+inline ::std::string* SyncAttrsMapField::release_mapkey() {
+  clear_has_mapkey();
+  if (mapkey_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = mapkey_;
+    mapkey_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SyncAttrsMapField::set_allocated_mapkey(::std::string* mapkey) {
+  if (mapkey_ != &::google::protobuf::internal::kEmptyString) {
+    delete mapkey_;
+  }
+  if (mapkey) {
+    set_has_mapkey();
+    mapkey_ = mapkey;
+  } else {
+    clear_has_mapkey();
+    mapkey_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string field = 5;
+inline bool SyncAttrsMapField::has_field() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SyncAttrsMapField::set_has_field() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SyncAttrsMapField::clear_has_field() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void SyncAttrsMapField::clear_field() {
+  if (field_ != &::google::protobuf::internal::kEmptyString) {
+    field_->clear();
+  }
+  clear_has_field();
+}
+inline const ::std::string& SyncAttrsMapField::field() const {
+  return *field_;
+}
+inline void SyncAttrsMapField::set_field(const ::std::string& value) {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  field_->assign(value);
+}
+inline void SyncAttrsMapField::set_field(const char* value) {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  field_->assign(value);
+}
+inline void SyncAttrsMapField::set_field(const char* value, size_t size) {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  field_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SyncAttrsMapField::mutable_field() {
+  set_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    field_ = new ::std::string;
+  }
+  return field_;
+}
+inline ::std::string* SyncAttrsMapField::release_field() {
+  clear_has_field();
+  if (field_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = field_;
+    field_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SyncAttrsMapField::set_allocated_field(::std::string* field) {
+  if (field_ != &::google::protobuf::internal::kEmptyString) {
+    delete field_;
+  }
+  if (field) {
+    set_has_field();
+    field_ = field;
+  } else {
+    clear_has_field();
+    field_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional int32 vali32 = 6;
+inline bool SyncAttrsMapField::has_vali32() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void SyncAttrsMapField::set_has_vali32() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void SyncAttrsMapField::clear_has_vali32() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void SyncAttrsMapField::clear_vali32() {
+  vali32_ = 0;
+  clear_has_vali32();
+}
+inline ::google::protobuf::int32 SyncAttrsMapField::vali32() const {
+  return vali32_;
+}
+inline void SyncAttrsMapField::set_vali32(::google::protobuf::int32 value) {
+  set_has_vali32();
+  vali32_ = value;
+}
+
+// optional int64 vali64 = 7;
+inline bool SyncAttrsMapField::has_vali64() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void SyncAttrsMapField::set_has_vali64() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void SyncAttrsMapField::clear_has_vali64() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void SyncAttrsMapField::clear_vali64() {
+  vali64_ = GOOGLE_LONGLONG(0);
+  clear_has_vali64();
+}
+inline ::google::protobuf::int64 SyncAttrsMapField::vali64() const {
+  return vali64_;
+}
+inline void SyncAttrsMapField::set_vali64(::google::protobuf::int64 value) {
+  set_has_vali64();
+  vali64_ = value;
+}
+
+// optional string valstr = 8;
+inline bool SyncAttrsMapField::has_valstr() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void SyncAttrsMapField::set_has_valstr() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void SyncAttrsMapField::clear_has_valstr() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void SyncAttrsMapField::clear_valstr() {
+  if (valstr_ != &::google::protobuf::internal::kEmptyString) {
+    valstr_->clear();
+  }
+  clear_has_valstr();
+}
+inline const ::std::string& SyncAttrsMapField::valstr() const {
+  return *valstr_;
+}
+inline void SyncAttrsMapField::set_valstr(const ::std::string& value) {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  valstr_->assign(value);
+}
+inline void SyncAttrsMapField::set_valstr(const char* value) {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  valstr_->assign(value);
+}
+inline void SyncAttrsMapField::set_valstr(const char* value, size_t size) {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  valstr_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SyncAttrsMapField::mutable_valstr() {
+  set_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    valstr_ = new ::std::string;
+  }
+  return valstr_;
+}
+inline ::std::string* SyncAttrsMapField::release_valstr() {
+  clear_has_valstr();
+  if (valstr_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = valstr_;
+    valstr_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SyncAttrsMapField::set_allocated_valstr(::std::string* valstr) {
   if (valstr_ != &::google::protobuf::internal::kEmptyString) {
     delete valstr_;
   }

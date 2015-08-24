@@ -25,6 +25,7 @@ public:
 	bool	CostItem(CItem* item, int num = 1);										//消耗物品
 	bool	UseItem(CItem* item, int num = 1);										//使用物品
 	bool	SellItem(CItem* item);													//出售物品
+	bool	LoadItem(ItemID itemid, string jsonstr);								//加载道具
 
 	//穿装/脱装
 	bool	EquipItem(CItem* item, CFighter* role, bool flag);						//穿装
@@ -68,7 +69,6 @@ protected:
 	bool	_HandlePacket_SellItem(PACKET_COMMAND* pack);
 	bool	_HandlePacket_EquipItem(PACKET_COMMAND* pack);
 	bool	_HandlePacket_UnequipItem(PACKET_COMMAND* pack);
-	bool	_HandlePacket_LoadItem(PACKET_COMMAND* pack);
 
 private:
 	void	SendResultFlag(int iflag, int i = 0, int64 l1 = 0, int64 l2 = 0);

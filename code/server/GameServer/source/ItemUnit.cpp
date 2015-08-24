@@ -4,6 +4,7 @@
 #include "PlayerMgr.h"
 #include "Event.h"
 #include "Packet.h"
+#include "attrs_defines.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageItem.pb.h"
 #include "NoticeModule.h"
@@ -142,49 +143,6 @@ bool CItemUnit::_HandlePacket_UnequipItem(PACKET_COMMAND* pack)
 	return UnEquipItem(msg.position(), role);
 }
 
-bool CItemUnit::_HandlePacket_LoadItem(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::ItemGainResponse msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	CItem* item = ItemMgr.Create( msg.templateid(), msg.itemid() );
-	if( !item )
-	{
-		Log.Error("[CItemUnit] Error:%s:%d, Player:"INT64_FMT" id:"INT64_FMT" template:%d", __FILE__, __LINE__, m_parent->GetID(), msg.itemid(), msg.templateid());
-		return false;
-	}
-
-	item->SetFieldInt(Item_Attrib_StackSize, msg.stack());
-	item->SetFieldInt(Item_Attrib_Position, msg.position());
-	item->SetFieldI64(Item_Attrib_Parent, msg.parent_id());
-	item->SetFieldI64(Item_Attrib_EquipID, msg.equip_hero_id());
-	item->SetFieldInt(Item_Attrib_Current_level, msg.current_intensify_level());
-
-	item->SetFieldInt(Item_Attrib_KongStoreZero, msg.mutable_seconds(KongZero)->template_id());
-	item->SetFieldInt(Item_Attrib_KongStoreFirst, msg.mutable_seconds(KongFirst)->template_id());
-	item->SetFieldInt(Item_Attrib_KongStoreSecond, msg.mutable_seconds(KongSecond)->template_id());
-	item->SetFieldInt(Item_Attrib_KongStoreThird, msg.mutable_seconds(KongThird)->template_id());
-
-	if( msg.position() < 0 )
-	{
-		_AddItem(item);
-	}
-	else
-	{
-		CFighter* role = NULL;
-		GET_FIGHTER( msg.equip_hero_id(), role )
-		if( role ) {
-			role->m_ItemUnit._Equip(item);
-		}
-		_SetItemFactID(msg.itemid());
-	}
-
-	return true;
-}
-
 bool CItemUnit::GainItem(int templateid, ITEM_REASON reason, int num)
 {
 	do
@@ -309,7 +267,7 @@ bool CItemUnit::GainItem(CItem* item, ITEM_REASON reason)
 	item->SyncAllAttrToClient();
 
 	//同步服务器
-	DataModule.syncAddMap(item, "items", GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+	DataModule.syncAddMap(m_parent->GetID(), item, GROUP_ITEMS, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
 	CEvent *evLog = MakeEvent(Event_Item_Obtain, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize), item->GetID(), reason, true);
 	m_parent->OnEvent(evLog);
@@ -518,7 +476,7 @@ bool CItemUnit::DeleteItem(CItem* item, ITEM_REASON reason)
 	m_parent->SendClientMsg( &pack );
 
 	//同步DataServer
-	DataModule.syncDelMap(item, "items", GameServer.getServerSock(CBaseServer::Linker_Server_Data));
+	DataModule.syncDelMap(m_parent->GetID(), item, GROUP_ITEMS, GameServer.getServerSock(CBaseServer::Linker_Server_Data));
 
 	CEvent* ev = MakeEvent(Event_Item_Delete, m_parent->GetID(), (int64)item->GetTemplateID(), (int64)item->GetFieldInt(Item_Attrib_StackSize));
 	m_parent->OnEvent(ev);
@@ -532,6 +490,38 @@ ItemID CItemUnit::MakeItemID()
 {
 	m_FactID = m_FactID > 0 ? m_FactID : g_MakeInitItemID(m_parent->GetID()); 
 	return ++m_FactID;
+}
+
+bool CItemUnit::LoadItem(ItemID itemid, string jsonstr)
+{
+	rapidjson::Document obj;
+	obj.Parse<0>(jsonstr.c_str());
+	int templateid = obj["templateid"].GetInt();
+
+	CItem* item = ItemMgr.Create(templateid, itemid);
+	if (!item)
+	{
+		Log.Error("[CItemUnit] Error:%s:%d, Player:"INT64_FMT" id:"INT64_FMT" template:%d", __FILE__, __LINE__, m_parent->GetID(), itemid, templateid);
+		return false;
+	}
+
+	item->Deserialize(obj);
+
+	if (item->GetFieldInt(Item_Attrib_Position) < 0)
+	{
+		_AddItem(item);
+	}
+	else
+	{
+		CFighter* role = NULL;
+		GET_FIGHTER(item->GetFieldI64(Item_Attrib_EquipID), role)
+		if (role) {
+			role->m_ItemUnit._Equip(item);
+		}
+		_SetItemFactID(itemid);
+	}
+
+	return true;
 }
 
 bool CItemUnit::_AddItem(CItem* item, bool client, bool data)
