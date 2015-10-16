@@ -20,9 +20,6 @@ namespace Message {
 
 namespace {
 
-const ::google::protobuf::Descriptor* LoginSession_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  LoginSession_reflection_ = NULL;
 const ::google::protobuf::Descriptor* UserLogin_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   UserLogin_reflection_ = NULL;
@@ -60,23 +57,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "MessageUser.proto");
   GOOGLE_CHECK(file != NULL);
-  LoginSession_descriptor_ = file->message_type(0);
-  static const int LoginSession_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginSession, uid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginSession, key_),
-  };
-  LoginSession_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      LoginSession_descriptor_,
-      LoginSession::default_instance_,
-      LoginSession_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginSession, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginSession, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(LoginSession));
-  UserLogin_descriptor_ = file->message_type(1);
+  UserLogin_descriptor_ = file->message_type(0);
   static const int UserLogin_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserLogin, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserLogin, world_),
@@ -95,7 +76,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(UserLogin));
-  UserDisplace_descriptor_ = file->message_type(2);
+  UserDisplace_descriptor_ = file->message_type(1);
   static const int UserDisplace_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserDisplace, uid_),
   };
@@ -110,7 +91,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(UserDisplace));
-  ConnectGate_descriptor_ = file->message_type(3);
+  ConnectGate_descriptor_ = file->message_type(2);
   static const int ConnectGate_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectGate, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectGate, key_),
@@ -129,7 +110,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ConnectGate));
-  UserHeartResponse_descriptor_ = file->message_type(4);
+  UserHeartResponse_descriptor_ = file->message_type(3);
   static const int UserHeartResponse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserHeartResponse, stime_),
   };
@@ -144,7 +125,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(UserHeartResponse));
-  UserCheck_descriptor_ = file->message_type(5);
+  UserCheck_descriptor_ = file->message_type(4);
   static const int UserCheck_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserCheck, server_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserCheck, userid_),
@@ -162,7 +143,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(UserCheck));
-  GuestCheck_descriptor_ = file->message_type(6);
+  GuestCheck_descriptor_ = file->message_type(5);
   static const int GuestCheck_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GuestCheck, device_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GuestCheck, server_),
@@ -178,7 +159,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GuestCheck));
-  ClientLogin_descriptor_ = file->message_type(7);
+  ClientLogin_descriptor_ = file->message_type(6);
   static const int ClientLogin_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientLogin, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientLogin, key_),
@@ -195,7 +176,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ClientLogin));
-  UserLogout_descriptor_ = file->message_type(8);
+  UserLogout_descriptor_ = file->message_type(7);
   static const int UserLogout_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserLogout, uid_),
   };
@@ -210,7 +191,7 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(UserLogout));
-  UserHeartRequest_descriptor_ = file->message_type(9);
+  UserHeartRequest_descriptor_ = file->message_type(8);
   static const int UserHeartRequest_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserHeartRequest, pid_),
   };
@@ -238,8 +219,6 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    LoginSession_descriptor_, &LoginSession::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     UserLogin_descriptor_, &UserLogin::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     UserDisplace_descriptor_, &UserDisplace::default_instance());
@@ -262,8 +241,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_MessageUser_2eproto() {
-  delete LoginSession::default_instance_;
-  delete LoginSession_reflection_;
   delete UserLogin::default_instance_;
   delete UserLogin_reflection_;
   delete UserDisplace::default_instance_;
@@ -291,23 +268,21 @@ void protobuf_AddDesc_MessageUser_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\021MessageUser.proto\022\007Message\"(\n\014LoginSes"
-    "sion\022\013\n\003uid\030\001 \001(\003\022\013\n\003key\030\002 \001(\003\"R\n\tUserLo"
-    "gin\022\013\n\003uid\030\001 \001(\003\022\r\n\005world\030\002 \001(\005\022\016\n\006serve"
-    "r\030\003 \001(\005\022\014\n\004type\030\004 \001(\t\022\013\n\003key\030\005 \001(\t\"\033\n\014Us"
-    "erDisplace\022\013\n\003uid\030\001 \001(\003\"Q\n\013ConnectGate\022\013"
-    "\n\003uid\030\001 \001(\003\022\013\n\003key\030\002 \001(\003\022\n\n\002ip\030\003 \001(\t\022\014\n\004"
-    "port\030\004 \001(\005\022\016\n\006server\030\005 \001(\005\"\"\n\021UserHeartR"
-    "esponse\022\r\n\005stime\030\001 \001(\003\"K\n\tUserCheck\022\016\n\006s"
-    "erver\030\001 \001(\005\022\016\n\006userid\030\002 \001(\t\022\016\n\006ticket\030\003 "
-    "\001(\t\022\016\n\006client\030\004 \001(\005\",\n\nGuestCheck\022\016\n\006dev"
-    "ice\030\001 \001(\t\022\016\n\006server\030\002 \001(\005\"7\n\013ClientLogin"
-    "\022\013\n\003uid\030\001 \001(\003\022\013\n\003key\030\002 \001(\003\022\016\n\006server\030\003 \001"
-    "(\005\"\031\n\nUserLogout\022\013\n\003uid\030\001 \001(\003\"\037\n\020UserHea"
-    "rtRequest\022\013\n\003pid\030\001 \001(\003", 542);
+    "\n\021MessageUser.proto\022\007Message\"R\n\tUserLogi"
+    "n\022\013\n\003uid\030\001 \001(\003\022\r\n\005world\030\002 \001(\005\022\016\n\006server\030"
+    "\003 \001(\005\022\014\n\004type\030\004 \001(\t\022\013\n\003key\030\005 \001(\t\"\033\n\014User"
+    "Displace\022\013\n\003uid\030\001 \001(\003\"Q\n\013ConnectGate\022\013\n\003"
+    "uid\030\001 \001(\003\022\013\n\003key\030\002 \001(\003\022\n\n\002ip\030\003 \001(\t\022\014\n\004po"
+    "rt\030\004 \001(\005\022\016\n\006server\030\005 \001(\005\"\"\n\021UserHeartRes"
+    "ponse\022\r\n\005stime\030\001 \001(\003\"K\n\tUserCheck\022\016\n\006ser"
+    "ver\030\001 \001(\005\022\016\n\006userid\030\002 \001(\t\022\016\n\006ticket\030\003 \001("
+    "\t\022\016\n\006client\030\004 \001(\005\",\n\nGuestCheck\022\016\n\006devic"
+    "e\030\001 \001(\t\022\016\n\006server\030\002 \001(\005\"7\n\013ClientLogin\022\013"
+    "\n\003uid\030\001 \001(\003\022\013\n\003key\030\002 \001(\003\022\016\n\006server\030\003 \001(\005"
+    "\"\031\n\nUserLogout\022\013\n\003uid\030\001 \001(\003\"\037\n\020UserHeart"
+    "Request\022\013\n\003pid\030\001 \001(\003", 500);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "MessageUser.proto", &protobuf_RegisterTypes);
-  LoginSession::default_instance_ = new LoginSession();
   UserLogin::default_instance_ = new UserLogin();
   UserDisplace::default_instance_ = new UserDisplace();
   ConnectGate::default_instance_ = new ConnectGate();
@@ -317,7 +292,6 @@ void protobuf_AddDesc_MessageUser_2eproto() {
   ClientLogin::default_instance_ = new ClientLogin();
   UserLogout::default_instance_ = new UserLogout();
   UserHeartRequest::default_instance_ = new UserHeartRequest();
-  LoginSession::default_instance_->InitAsDefaultInstance();
   UserLogin::default_instance_->InitAsDefaultInstance();
   UserDisplace::default_instance_->InitAsDefaultInstance();
   ConnectGate::default_instance_->InitAsDefaultInstance();
@@ -336,254 +310,6 @@ struct StaticDescriptorInitializer_MessageUser_2eproto {
     protobuf_AddDesc_MessageUser_2eproto();
   }
 } static_descriptor_initializer_MessageUser_2eproto_;
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int LoginSession::kUidFieldNumber;
-const int LoginSession::kKeyFieldNumber;
-#endif  // !_MSC_VER
-
-LoginSession::LoginSession()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void LoginSession::InitAsDefaultInstance() {
-}
-
-LoginSession::LoginSession(const LoginSession& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void LoginSession::SharedCtor() {
-  _cached_size_ = 0;
-  uid_ = GOOGLE_LONGLONG(0);
-  key_ = GOOGLE_LONGLONG(0);
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-LoginSession::~LoginSession() {
-  SharedDtor();
-}
-
-void LoginSession::SharedDtor() {
-  if (this != default_instance_) {
-  }
-}
-
-void LoginSession::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* LoginSession::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return LoginSession_descriptor_;
-}
-
-const LoginSession& LoginSession::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_MessageUser_2eproto();
-  return *default_instance_;
-}
-
-LoginSession* LoginSession::default_instance_ = NULL;
-
-LoginSession* LoginSession::New() const {
-  return new LoginSession;
-}
-
-void LoginSession::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    uid_ = GOOGLE_LONGLONG(0);
-    key_ = GOOGLE_LONGLONG(0);
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool LoginSession::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int64 uid = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &uid_)));
-          set_has_uid();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(16)) goto parse_key;
-        break;
-      }
-
-      // optional int64 key = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_key:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &key_)));
-          set_has_key();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void LoginSession::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional int64 uid = 1;
-  if (has_uid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->uid(), output);
-  }
-
-  // optional int64 key = 2;
-  if (has_key()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->key(), output);
-  }
-
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* LoginSession::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional int64 uid = 1;
-  if (has_uid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->uid(), target);
-  }
-
-  // optional int64 key = 2;
-  if (has_key()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->key(), target);
-  }
-
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int LoginSession::ByteSize() const {
-  int total_size = 0;
-
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int64 uid = 1;
-    if (has_uid()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->uid());
-    }
-
-    // optional int64 key = 2;
-    if (has_key()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->key());
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void LoginSession::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const LoginSession* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const LoginSession*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void LoginSession::MergeFrom(const LoginSession& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_uid()) {
-      set_uid(from.uid());
-    }
-    if (from.has_key()) {
-      set_key(from.key());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void LoginSession::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void LoginSession::CopyFrom(const LoginSession& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool LoginSession::IsInitialized() const {
-
-  return true;
-}
-
-void LoginSession::Swap(LoginSession* other) {
-  if (other != this) {
-    std::swap(uid_, other->uid_);
-    std::swap(key_, other->key_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata LoginSession::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = LoginSession_descriptor_;
-  metadata.reflection = LoginSession_reflection_;
-  return metadata;
-}
-
 
 // ===================================================================
 

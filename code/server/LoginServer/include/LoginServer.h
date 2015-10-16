@@ -16,7 +16,6 @@ public:
 	virtual bool onMessage(PACKET_COMMAND* pack);
 	virtual void onPrint(char* output);
 
-	CLinker* getLowerGate(int world);
 };
 
 #define LoginServer CLoginServer::getSingleton()

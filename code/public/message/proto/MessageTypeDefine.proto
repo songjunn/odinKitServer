@@ -34,7 +34,6 @@ enum MsgDefine {
     MSG_GAMEOBJ_LOAD_REQUEST = 216;     //请求加载obj数据
     MSG_GAMEOBJ_LOGIN_REQUEST = 217;    //请求登陆obj
 	
-    MSG_USER_PRLOGIN_REQUEST = 300;     //账号预登陆：账号ID，登陆session密钥
     MSG_USER_lOGIN_REQUEST = 301;       //账号登陆：账号ID，账号名
     MSG_USER_DISPLACE = 302;            //顶号
     MSG_USER_GET_GATESVR = 303;         //通知客户端连接网关：账号ID，session，ip，端口

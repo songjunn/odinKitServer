@@ -33,7 +33,6 @@ void  protobuf_AddDesc_MessageUser_2eproto();
 void protobuf_AssignDesc_MessageUser_2eproto();
 void protobuf_ShutdownFile_MessageUser_2eproto();
 
-class LoginSession;
 class UserLogin;
 class UserDisplace;
 class ConnectGate;
@@ -45,98 +44,6 @@ class UserLogout;
 class UserHeartRequest;
 
 // ===================================================================
-
-class LoginSession : public ::google::protobuf::Message {
- public:
-  LoginSession();
-  virtual ~LoginSession();
-
-  LoginSession(const LoginSession& from);
-
-  inline LoginSession& operator=(const LoginSession& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const LoginSession& default_instance();
-
-  void Swap(LoginSession* other);
-
-  // implements Message ----------------------------------------------
-
-  LoginSession* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const LoginSession& from);
-  void MergeFrom(const LoginSession& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // optional int64 uid = 1;
-  inline bool has_uid() const;
-  inline void clear_uid();
-  static const int kUidFieldNumber = 1;
-  inline ::google::protobuf::int64 uid() const;
-  inline void set_uid(::google::protobuf::int64 value);
-
-  // optional int64 key = 2;
-  inline bool has_key() const;
-  inline void clear_key();
-  static const int kKeyFieldNumber = 2;
-  inline ::google::protobuf::int64 key() const;
-  inline void set_key(::google::protobuf::int64 value);
-
-  // @@protoc_insertion_point(class_scope:Message.LoginSession)
- private:
-  inline void set_has_uid();
-  inline void clear_has_uid();
-  inline void set_has_key();
-  inline void clear_has_key();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::google::protobuf::int64 uid_;
-  ::google::protobuf::int64 key_;
-
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
-
-  friend void  protobuf_AddDesc_MessageUser_2eproto();
-  friend void protobuf_AssignDesc_MessageUser_2eproto();
-  friend void protobuf_ShutdownFile_MessageUser_2eproto();
-
-  void InitAsDefaultInstance();
-  static LoginSession* default_instance_;
-};
-// -------------------------------------------------------------------
 
 class UserLogin : public ::google::protobuf::Message {
  public:
@@ -1048,54 +955,6 @@ class UserHeartRequest : public ::google::protobuf::Message {
 
 
 // ===================================================================
-
-// LoginSession
-
-// optional int64 uid = 1;
-inline bool LoginSession::has_uid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void LoginSession::set_has_uid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void LoginSession::clear_has_uid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void LoginSession::clear_uid() {
-  uid_ = GOOGLE_LONGLONG(0);
-  clear_has_uid();
-}
-inline ::google::protobuf::int64 LoginSession::uid() const {
-  return uid_;
-}
-inline void LoginSession::set_uid(::google::protobuf::int64 value) {
-  set_has_uid();
-  uid_ = value;
-}
-
-// optional int64 key = 2;
-inline bool LoginSession::has_key() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void LoginSession::set_has_key() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void LoginSession::clear_has_key() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void LoginSession::clear_key() {
-  key_ = GOOGLE_LONGLONG(0);
-  clear_has_key();
-}
-inline ::google::protobuf::int64 LoginSession::key() const {
-  return key_;
-}
-inline void LoginSession::set_key(::google::protobuf::int64 value) {
-  set_has_key();
-  key_ = value;
-}
-
-// -------------------------------------------------------------------
 
 // UserLogin
 

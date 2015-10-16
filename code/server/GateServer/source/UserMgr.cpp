@@ -14,137 +14,120 @@ static int g_PacketLimitCount = 0;
 
 CUserMgr::CUserMgr()
 {
-	memset(m_paySvr, 0, sizeof(m_paySvr));
-	m_payPort = 0;
+    memset(m_paySvr, 0, sizeof(m_paySvr));
+    m_payPort = 0;
 
-	curl_global_init(CURL_GLOBAL_ALL);
+    curl_global_init(CURL_GLOBAL_ALL);
 }
 
 CUserMgr::~CUserMgr()
 {
-	curl_global_cleanup();
+    curl_global_cleanup();
 }
 
 void CUserMgr::InitConfig(int keytime, int hearttime, int packlimit)
 {
-	m_KeyTimeout = keytime;
-	m_HeartTimeout = hearttime;
+    m_KeyTimeout = keytime;
+    m_HeartTimeout = hearttime;
+    g_PacketLimitCount = packlimit * g_PacketLimitTime;
 
-	g_PacketLimitCount = packlimit * g_PacketLimitTime;
-
-	m_KeysList.Purge(1000);
+    m_KeysList.Purge(1000);
 }
 
 bool CUserMgr::OnLogic()
 {
-	VPROF("CUserMgr::OnLogic");
+    VPROF("CUserMgr::OnLogic");
+    _UserKeyLogic();
+    _UserHeartLogic();
 
-	_UserKeyLogic();
-
-	_UserHeartLogic();
-
-	return true;
+    return true;
 }
 
 void CUserMgr::_UserKeyLogic()
 {
-	//VPROF("_UserKeyLogic");
+    //VPROF("_UserKeyLogic");
 
-	TMV t = time(NULL);
+    TMV t = time(NULL);
 
-	UserID uid = m_KeysList.Head();
-	while( uid > 0 )
-	{
-		UserID temp = uid;
-		uid = m_KeysList.Next( uid );
+    UserID uid = m_KeysList.Head();
+    while( uid > 0 ) {
+	UserID temp = uid;
+	uid = m_KeysList.Next( uid );
 
-		UserKey* ukey = m_KeysList.Find( temp );
-		if( !ukey )
-		{
-			m_KeysList.Remove( temp );
-		}
-		else if( t - ukey->m_time > m_KeyTimeout )
-		{
-			Log.Notice("[Login] User Key Timeout ("INT64_FMT":"INT64_FMT")", ukey->m_id, ukey->m_key);
-
-			m_KeysList.Remove( temp );
-			
-			SAFE_DELETE( ukey );
-		}
+	UserKey* ukey = m_KeysList.Find( temp );
+	if( !ukey ) {
+	    m_KeysList.Remove( temp );
 	}
+	else if( t - ukey->m_time > m_KeyTimeout ) {
+	    Log.Notice("[Login] User Key Timeout ("INT64_FMT":"INT64_FMT")", ukey->m_id, ukey->m_key);
+	    m_KeysList.Remove( temp );
+	    SAFE_DELETE( ukey );
+	}
+    }
 }
 
 void CUserMgr::_UserHeartLogic()
 {
-	//VPROF("_UserHeartLogic");
+    //VPROF("_UserHeartLogic");
 
-	TMV t = time(NULL);
+    TMV t = time(NULL);
+    SOCKET sock = m_list.Head();
+    while(CUser* user = GetObj(sock)) {
+	sock = m_list.Next(sock);
 
-	SOCKET sock = m_list.Head();
-	while( CUser* user = GetObj(sock) )
-	{
-		sock = m_list.Next(sock);
-
-		if( m_HeartTimeout > 0 && t - user->m_HeartTime > m_HeartTimeout )
-		{
-			Log.Notice("[Heart] Heart Timeout, User:"INT64_FMT, user->m_id);
-
-			Exit( user );
-		}
+	if( m_HeartTimeout > 0 && t - user->m_HeartTime > m_HeartTimeout ) {
+	    Log.Notice("[Heart] Heart Timeout, User:"INT64_FMT, user->m_id);
+	    Exit( user );
 	}
+    }
 }
 
 bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 {
-	if( !pack )
-		return false;
+    if( !pack )
+	return false;
 
-	switch(pack->Type())
-	{
-	case Message::MSG_REQUEST_USER_HEART:	_HandlePacket_UserHeart(pack);		break;
-	case Message::MSG_REQUEST_USER_LOGIN:	_HandlePacket_UserLogin(pack);		break;
-	case Message::MSG_REQUEST_USER_LOGOUT:	_HandlePacket_UserLogout(pack);		break;
-	case Message::MSG_USER_PRLOGIN_REQUEST:	_HandlePacket_UserPreLogin(pack);	break;
-	case Message::MSG_PLAYER_LOGIN_REQUEST:	_HandlePacket_PlayerLogin(pack); break;
-	case Message::MSG_REQUEST_PLAYER_CREATE:	_HandlePacket_PlayerCreate(pack);	break;
-	case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);	break;
-	case N2S_NOTIFY_CONTROL_CLOSE:	_HandlePacket_NetClose(pack);		break;
-	case N2S_NOTIFY_CONTROL_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
-	case Message::MSG_COMMON_ERROR:		_HandlePacket_GameError(pack);		break;
-	case Message::MSG_USER_DISPLACE:	_HandlePacket_UserDisplace(pack);	break;
-	case S2S_NOTIFY_SWCHARGE:		_HandlePacket_SWCharge(pack);		break;
-	case D2G_NOTIFY_USER_FORBID:	_HandlePacket_UserForbidden(pack);	break;
-	case L2A_RESPONSE_AUTH_CHECKER:	_HandlePacket_AuthSuccess(pack);	break;
-	default:	return false;
-	}
+    switch(pack->Type()) {
+        case Message::MSG_REQUEST_USER_HEART:	_HandlePacket_UserHeart(pack);    break;
+	case Message::MSG_REQUEST_USER_LOGIN:	_HandlePacket_UserLogin(pack);    break;
+	case Message::MSG_REQUEST_USER_LOGOUT:	_HandlePacket_UserLogout(pack);   break;
+        case Message::MSG_REQUEST_PLAYER_CREATE:_HandlePacket_PlayerCreate(pack); break;
+        case Message::MSG_PLAYER_LOGIN_REQUEST:	_HandlePacket_PlayerLogin(pack);  break;
+	case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);  break;
+        case Message::MSG_SERVER_NET_CLOSE:     _HandlePacket_NetClose(pack);     break;
+        case Message::MSG_SERVER_NET_ACCEPT:    _HandlePacket_NetAccept(pack);    break;
+	case Message::MSG_COMMON_ERROR:		_HandlePacket_GameError(pack);    break;
+	case Message::MSG_USER_DISPLACE:	_HandlePacket_UserDisplace(pack); break;
+        case Message::L2A_RESPONSE_AUTH_CHECKER:_HandlePacket_AuthSuccess(pack);  break;
+	default: return false;
+    }
 
-	return true;
+    return true;
 }
 
 bool CUserMgr::_HandlePacket_UserHeart(PACKET_COMMAND* pack)
 {
-	if( !pack )
-		return false;
+    if( !pack )
+	return false;
 
-	/*Message::UserHeartRequest msg;
-	PROTOBUF_CMD_PARSER( pack, msg );*/
+    /*Message::UserHeartRequest msg;
+      PROTOBUF_CMD_PARSER( pack, msg );*/
 
-	SendHeartResponse(GetObj(pack->GetNetID()));
+    SendHeartResponse(GetObj(pack->GetNetID()));
 
-	return true;
+    return true;
 }
 
 bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 {
-	/*
-	if( !pack )
-		return false;
+    /*if( !pack )
+      return false;
 
-	Message::ClientLogin msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
+      Message::ClientLogin msg;
+      PROTOBUF_CMD_PARSER( pack, msg );
 
-	//验证md5密钥
-	if( _CheckUserKey(msg.uid(), msg.key(), pack->GetNetID()) )
+      //验证md5密钥
+      if( _CheckUserKey(msg.uid(), msg.key(), pack->GetNetID()) )
 	{
 		CUser* user = GetObj(pack->GetNetID());
 		if( user )
@@ -261,19 +244,6 @@ bool CUserMgr::_HandlePacket_UserDisplace(PACKET_COMMAND* pack)
 	CUser* user = /*GetObj( msg.uid() )*/ GetUserByUID(msg.uid());
 	if( user )
 		Displace( user );
-
-	return true;
-}
-
-bool CUserMgr::_HandlePacket_UserPreLogin(PACKET_COMMAND* pack)
-{
-	if( !pack )
-		return false;
-
-	Message::LoginSession msg;
-	PROTOBUF_CMD_PARSER( pack, msg );
-
-	_CreateUserKey( msg.uid(), msg.key() );
 
 	return true;
 }

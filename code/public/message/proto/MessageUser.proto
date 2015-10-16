@@ -1,18 +1,12 @@
 package Message; 
 
-//同步账号登录密钥
-message LoginSession { 
-    optional int64  uid     = 1;    //账号ID
-    optional int64  key     = 2;    //密钥
-} 
-
 //账号登录
 message UserLogin { 
     optional int64  uid     = 1;    //账号ID
     optional int32  world   = 2;    //区服号
-    optional int32  server	= 3;    //登陆的GameServer
-    optional string type    = 4;	//obj类型
-    optional string key     = 5;	//索引
+    optional int32  server  = 3;    //登陆的GameServer
+    optional string type    = 4;    //obj类型
+    optional string key     = 5;    //索引
 } 
 
 //账号被顶出
@@ -26,7 +20,7 @@ message ConnectGate {
     optional int64  key     = 2;    //密钥
     optional string ip      = 3;    //ip
     optional int32  port    = 4;    //端口
-    optional int32  server	= 5;    //选择的区服号
+    optional int32  server  = 5;    //选择的区服号
 } 
 
 //心跳响应
@@ -36,16 +30,16 @@ message UserHeartResponse {
 
 //账号密码验证
 message UserCheck { 
-    optional int32  server	= 1;    //选择的区服号
-    optional string userid 	= 2;    //用户ID
-    optional string ticket 	= 3;    //票据
-    optional int32  client	= 4;    //1:IOS	2:Android
+    optional int32  server  = 1;    //选择的区服号
+    optional string userid  = 2;    //用户ID
+    optional string ticket  = 3;    //票据
+    optional int32  client  = 4;    //1:IOS 2:Android
 }
 
 //游客验证
 message GuestCheck { 
-    optional string device	= 1;    //设备号
-    optional int32  server	= 2;    //选择的区服号
+    optional string device  = 1;    //设备号
+    optional int32  server  = 2;    //选择的区服号
 } 
 
 //客户端连接网关

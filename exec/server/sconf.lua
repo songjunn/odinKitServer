@@ -7,16 +7,16 @@ Sconf = {}
 Sconf.WorldID                  = 99
 
 --//服务进程ip设置
-Sconf.CentralServer_ip         = "192.168.0.146"
-Sconf.DataServer_ip            = "192.168.0.146"
-Sconf.GateServer_ip            = "192.168.0.146"
-Sconf.GateServer_inetip        = "192.168.0.146"
-Sconf.LoginServer_ip           = "192.168.0.146"
-Sconf.LoginServer_inetip       = "192.168.0.146"
-Sconf.BIServer_ip              = "192.168.0.146"
-Sconf.GameServer_ip            = "192.168.0.146"
-Sconf.PaymentServer_ip         = "192.168.0.146"
-Sconf.PaymentServer_inetip     = "192.168.0.146"
+Sconf.CentralServer_ip         = "10.104.16.193"
+Sconf.DataServer_ip            = "10.104.16.193"
+Sconf.GateServer_ip            = "10.104.16.193"
+Sconf.GateServer_inetip        = "119.29.22.222"
+Sconf.LoginServer_ip           = "10.104.16.193"
+Sconf.LoginServer_inetip       = "119.29.22.222"
+Sconf.BIServer_ip              = "10.104.16.193"
+Sconf.GameServer_ip            = "10.104.16.193"
+Sconf.PaymentServer_ip         = "10.104.16.193"
+Sconf.PaymentServer_inetip     = "119.29.22.222"
 
 --//服务进程id设置
 Sconf.CentralServer_id         = Sconf.WorldID * 1000 + 1
@@ -45,11 +45,11 @@ Sconf.PaymentServer_Client_port= 8080
 Sconf.Version                  = "1.0.0"
 
 --//数据库参数
-Sconf.db_game_ip               = "192.168.0.146"
-Sconf.db_game_port			       = "27017"
+Sconf.db_game_ip               = "10.104.16.193"
+Sconf.db_game_port             = "27017"
 Sconf.db_game_name             = "odin_gamedb_099"
-Sconf.db_event_ip              = "192.168.0.146"
-Sconf.db_event_port			       = "27017"
+Sconf.db_event_ip              = "10.104.16.193"
+Sconf.db_event_port            = "27017"
 Sconf.db_event_name            = "odin_gamedb_099"
 
 
