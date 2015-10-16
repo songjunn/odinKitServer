@@ -27,7 +27,7 @@ protected:
 protected:
 	int		m_OnlinePlayer;
 	int        m_CreatePlayerCount; //创建角色总数
-	int64    m_GoldCount; //购买金币总数
+	int64       m_GoldCount; //购买金币总数
 };
 
 #define AnalysisModule CAnalysisModule::getSingleton()

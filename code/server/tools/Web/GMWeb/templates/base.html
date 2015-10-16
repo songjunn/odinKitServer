@@ -1,62 +1,45 @@
 $def with()
-<html>
-    <head>
-    	<style>
-        	  html{background: #f9f9f9;overflow-x:hidden;border-left-style:outset;border-right-style:outset;margin-left: 2cm;margin-bottom: 0cm;margin-right: 2cm; padding-left: 1%; padding-right: 1%;}
-        	  div.leftmenu{background-color:#bebebe; height:1000px; width:135px; float:left;}
-        	  div.rightcontent{background-color:#f9f9f9; height:1000px; width:auto;float:left;}
-        	  h3.title{text-align:center; font-weight:bold; padding:6px;}
-        	  div.backColor{display: block; width: 120px; background-color: #bebebe;}
-        	  ul.leftMenu{float:None; list-style-type:none; margin:0; padding-left:5%; overflow:hidden;}
-            li.leftMenu{float:None}
-            ul.topMenu{list-style-type:none; margin:0; padding:0; overflow:hidden;}
-            li.topMenu{float:left}
-            a:link,a:visited
-            {display:block; width:120px; font-weight:bold; color:#FFFFFF; background-color:#bebebe; text-align:center;
-            padding:4px; text-decoration:none; text-transform:uppercase;}
-            a:hover,a:active
-            {background-color:#cc0000;}
-            
-            #menu{width: 100px;float: right;}
-      </style>
-    </head>
-    $def test():
-        $for i in range(len(secs)):  
-            <option value = $secs[i]>$(confDic[secs[i]][0][1])</option>
+<head>
+<link rel = "stylesheet" type = "text/css" href = "/static/GMWebStyle.css"/>
+<script type = "text/javascript" src = "/static/js/jquery.js"></script>
+<script type = "text/javascript">
+$$(document).ready(function()
+{ 
+     $$("p.leftMenuHead").click(function()
+     {
+       $$(this).next("div.leftMenuBody").slideToggle().siblings("div.leftMenuBody").slideUp();
+     });
+     $$("#selectServerName").click(function()
+     {
+       $$("ul.selectListView").slideToggle();
+     });
+     $$("ul.selectListView").children().click(function(){
+       var liText = $$(this).text();
+       $$("#selectServerName").val(liText);
+       $$("ul.selectListView").hide();
+     });     
+     $$("#selectType").click(function()
+     {
+       $$("ul.selectTypeListView").slideToggle();
+     })
+     $$("ul.selectTypeListView").children().click(function(){
+       var liText = $$(this).text();
+       $$("#selectType").val(liText);
+       $$("ul.selectTypeListView").hide();
+     }); 
+});            
+</script>
+</head>
 
     <title>后台管理</title>
     
-    <h1>后台管理系统</h1>
-
-    <body class = "html">
-        <ul id = "menu">
+    <h1 class = "view">后台管理系统</h1>
+<!--
+        <ul class = topMenu>
             <li><a href = "/" mce_href = "">注销</a></li>
             $if cookie().get('username'):
                 <li><a href = "/new" mce_href = "new">切换用户</a></li>
         </ul>
-        
-        <ul class = topMenu>
-            $ hrefServers = '%s%s'%("/playerInfos/", secs[0])
-            $ hrefAnalyse = '%s%s%s'%("/userAnalyse/", secs[0], "/logInInfo")
-            <li class = topMenu><a href = "/index">服务器总览</a></li>
-            <li class = topMenu><a href = $hrefServers>玩家信息</a></li>
-            <li class = topMenu><a href = "#home2">禁止登录</a></li>
-            <li class = topMenu><a href = "#home3">全服公告</a></li>
-            <li class = topMenu><a href = "#home4">系统邮件</a></li>
-            <li class = topMenu><a href = $hrefAnalyse>用户分析</a></li>
-        </ul>
-<!--
-        <form>
-        	服务器列表：
-        	<select name = "Server">
-$#                        $:test()
-                    
-$#        		<option value = "Server1">服务器1</option>
-$#        		<option value = "Server2">服务器2</option>
-$#        		<option value = "Server3">服务器3</option>
-        	</select>
-        </form>
--->
-    </body>
+-->        
 
-</html>
+

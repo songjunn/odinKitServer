@@ -110,10 +110,10 @@ namespace ThreadLib
 	// ========================================================================
 	inline void CreateByPool(ThreadFunc p_func, void* p_param)
 	{
-		#ifdef _WIN
 			Create(p_func, p_param);
-		#else
-			if (g_threadpool == NULL && (g_threadpool = threadpool_create(THREAD, QUEUE, 0)) == NULL) {
+
+			// 使用线程池似乎会出现内存错误
+			/*if (g_threadpool == NULL && (g_threadpool = threadpool_create(THREAD, QUEUE, 0)) == NULL) {
 				throw Exception(CreationFailure);
 				return;
 			}
@@ -121,8 +121,7 @@ namespace ThreadLib
 			if (threadpool_add(g_threadpool, p_func, p_param, 0) != 0) {
 				throw Exception(CreationFailure);
 				return;
-			}
-		#endif
+			}*/
 	}
 
 	// ========================================================================

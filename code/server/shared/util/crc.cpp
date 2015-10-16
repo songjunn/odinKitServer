@@ -44,8 +44,6 @@ void make_crc32_table()
 
 uint32_t make_crc32(char *string, uint32_t size)
 {
-	make_crc32_table();
-
 	uint32_t crc = 0xffffffff;
 	while (size--)
 		crc = (crc >> 8) ^ (crc32_table[(crc ^ *string++) & 0xff]);

@@ -1,44 +1,55 @@
-﻿$def with(serverID, payInfoDic)
+﻿$def with(serverID, payInfos)
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-        	  html{background: #f9f9f9;overflow-x:hidden;border-left-style:outset;border-right-style:outset;margin-left: 2cm;margin-bottom: 0cm;margin-right: 2cm; padding-left: 1%; padding-right: 1%;}
-        	  div.leftmenu{background-color:#bebebe; height:1000px; width:135px; float:left;}
-        	  div.rightcontent{background-color:#f9f9f9; height:1000px; width:auto;float:left;}
-        	  h3.title{text-align:center; font-weight:bold; padding:6px;}
-        	  div.backColor{display: block; width: 120px; background-color: #bebebe;}
-        	  ul.leftMenu{float:None; list-style-type:none; margin:0; padding-left:5%; overflow:hidden;}
-            li.leftMenu{float:None}
-            ul.topMenu{list-style-type:none; margin:0; padding:0; overflow:hidden;}
-            li.topMenu{float:left}
-            a:link,a:visited
-            {display:block; width:120px; font-weight:bold; color:#FFFFFF; background-color:#bebebe; text-align:center;
-            padding:4px; text-decoration:none; text-transform:uppercase;}
-            a:hover,a:active
-            {background-color:#cc0000;}
-        </style>
-    </head>
-    $:render.base()
-    $:render.leftAnalyseMenu(serverID)
-    <body>    
-        <div class = rightcontent>
-        	<table border="1">
-						<caption>本日充值统计</caption>
-							<tr>
-                                                          <th>付费率</th>
-							  <th>Arpu</th>
-                                                          <th>Arppu</th>
-							</tr>
-                                                        <tr>
-                                                          <td>$payInfoDic['payRate']</td>
-                                                          <td>$payInfoDic['Arpu']</td>
-                                                          <td>$payInfoDic['Arppu']</td>
-                                                        </tr>
-					</table>
-        </div>
-        
-        
-    </body>
+<head>
+<script type = "text/javascript" src = "/static/js/jquery.js"></script>
+<script type = "text/javascript" src = "/static/js/GMWebQuery.js"></script>
+<script type = "text/javascript">
 
+$$(document).ready(function()
+{ 
+     $$("p#index").next("div.leftMenuBody").show();
+     $$("a#rechargeInfo").css("color","#AFEEEE");
+});
+</script>
+</head>
+    $def tr(payInfos):
+        <table id = customers>
+        <tr>
+        <th>日期</th>
+        <th>登录用户数</th>
+        <th>付费用户数</th>
+        <th>付费次数</th>
+        <th>付费总金额</th>
+        <th>付费率</th>
+        <th>Arpu</th>
+        <th>Arppu</th>
+        </tr>
+        $if(0 != payInfos):
+            $for payInfo in payInfos:
+                <tr>
+                <td>$payInfo['date']</td>
+                <td>$payInfo['loginCount']</td>
+                <td>$payInfo['rechargeUserCount']</td>
+                <td>$payInfo['rechargeTimes']</td>
+                <td>$payInfo['currRechargeCount']</td>
+                <td>$payInfo['rechargeRate']</td>
+                <td>$payInfo['ARPU']</td>
+                <td>$payInfo['ARPPU']</td>
+                </tr>
+
+    $ tableTitle = "%s%s%s"%("付费统计(服务器:", confDic[serverID][0][1], ")")
+    <body> 
+       $:render.base() 
+        <div class = contentView>
+            $:render.leftMenu(0, 0, serverID)
+          <div class = rightContentView>
+            $:render.analyseOption(confDic[serverID][0][1])
+            <div>
+            <h2 class = rightTableTitle>$tableTitle</h2>
+          $:tr(payInfos)  
+          </div>
+          </div>
+        </div>
+    </body>
 </html>

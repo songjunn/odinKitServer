@@ -4,6 +4,18 @@
 #include "commdata.h"
 #include "Net.h"
 #include "ObjMgr.h"
+#include "utllinkedlist.h"
+
+#include "HttpServer.h"
+
+#define	 AUTH_VAR_LEN			128
+#define  AUTH_USER_ID			"userid"
+#define  AUTH_ACCESS_TOKEN		"accesstoken"
+
+#define  AUTO_ACCESS_LEFT		0x0000
+#define  AUTO_ACCESS_RIGHT		0xffff
+
+#define	 PLATFORM_PERIOD_MAX	10
 
 enum CLIENT_PLATFORM
 {
@@ -16,58 +28,72 @@ struct CUser
 	SOCKET		m_sock;
 	int			m_server;
 	UserID		m_id;
-	OpUserID	m_opid;
-	GuestID		m_guestid;
-	std::string m_device;
 	TMV			m_HeartTime;
-	std::string m_ticket;
 	int			m_client;
+	std::string m_ticket;
 	std::string m_guid;
 	std::string m_accessToken;
+	std::string m_refreshToken;
+	bool		m_auto;
+
+	CUser()
+	{
+		_Init();
+	}
+
+	~CUser()
+	{
+		_Init();
+
+		m_ticket.clear();
+		m_guid.clear();
+		m_accessToken.clear();
+		m_refreshToken.clear();
+	}
+
+	void _Init()
+	{
+		m_sock = INVALID_SOCKET;
+		m_server = 0;
+		m_id = 0;
+		m_HeartTime = 0;
+		m_client = 0;
+		m_auto = false;
+	}
 };
 
-class CUserMgr : public CObjMgr< CUser, SOCKET >, public Singleton< CUserMgr >
+class CUserMgr : public CObjMgr< CUser, UserID >, public Singleton< CUserMgr >
 {
 public:
 	CUserMgr();
 	~CUserMgr();
 
 	bool	OnMsg(PACKET_COMMAND* pack);
-	
-	void	UserHeartLogic();
+	bool	OnGateAuth(struct mg_connection *conn);
 
-	bool	LoadFactId(int worldID);
-	void	SetUserTimeout(TMV t);
-	static void	SendErrorMsg(CUser* user, int errid);
+	void	UserHeartLogic();
 
 protected:
 	bool	_HandlePacket_UserCheck(PACKET_COMMAND* pack);
-	bool	_HandlePacket_GuestCheck(PACKET_COMMAND* pack);
-	bool 	_HandlePacket_NetAccept(PACKET_COMMAND* pack);
-	bool	_HandlePacket_NetClose(PACKET_COMMAND* pack);
+	bool	_HandlePacket_ConnectSuccess(PACKET_COMMAND* pack);
+	bool	_HandlePacket_GateAuth(PACKET_COMMAND* pack);
 
-	bool	_CheckSuccess(CUser* pUser);
-	void	_Shutdown(CUser* pUser);
+	bool	checkFromThirdPlatform(CUser *pUser);
+	static  void httpCheckUserThread(void *pParam);
+	static  string generatePostField(CUser *pUser);
+	static  size_t recvBackData(void *buffer, size_t nsize, size_t nmemb, void *userp);
+	
+	void    sendSWChecker(CUser *pUser);
+	void	SendErrorMsg(CUser* user, int errid);
 
-	bool	_CheckGuest(CUser* pUser, bool& exit);
-	bool	_CreateGuest(CUser* pUser);
-	bool	_MakeKeys(int64& key);
-
-	inline GuestID	_MakeGuestID()	{return ++m_GuestIdMax;}
-
-	static void httpCheckUserThread(void *pParam);
-	static string generatePostField(CUser *pUser);
-	static size_t recvBackData(void *buffer, size_t nsize, size_t nmemb, void *userp);
-	void   sendSWChecker(CUser *pUser);
-
-public:
-	static char paysrv_addr[32];
-	static int	paysrv_port;
+	CUser	*_AddUser(UserID userid);
+	CUser	*_GetUser(UserID userid);
+	void	_DelUser(UserID userid);
 
 private:
-	GuestID	m_GuestIdMax;
-	TMV		m_HeartTimeout;
-	
+	Mutex	m_UserLock;
+
+	CUtlLinkedList<UserID> m_UncheckedUserList;
 };
 
 #define UserMgr CUserMgr::getSingleton()

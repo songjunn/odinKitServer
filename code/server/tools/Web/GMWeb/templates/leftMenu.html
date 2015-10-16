@@ -1,69 +1,58 @@
-$def with(playerID, serverID)
+$def with(selectType, playerValue, serverID)
 <html>
-    <head>
-    	<style>
-        	  html{background: #f9f9f9;overflow-x:hidden;border-left-style:outset;border-right-style:outset;margin-left: 2cm;margin-bottom: 0cm;margin-right: 2cm; padding-left: 1%; padding-right: 1%;}
-        	  div.leftmenu{background-color:#bebebe; height:1000px; width:135px; float:left;}
-        	  div.rightcontent{background-color:#f9f9f9; height:1000px; width:auto;float:left;}
-        	  h3.title{text-align:center; font-weight:bold; padding:6px;}
-        	  div.backColor{display: block; width: 120px; background-color: #bebebe;}
-        	  ul.leftMenu{float:None; list-style-type:none; margin:0; padding-left:5%; overflow:hidden;}
-            li.leftMenu{float:None}
-            ul.topMenu{list-style-type:none; margin:0; padding:0; overflow:hidden;}
-            li.topMenu{float:left}
-            a:link,a:visited
-            {display:block; width:120px; font-weight:bold; color:#FFFFFF; background-color:#bebebe; text-align:center;
-            padding:4px; text-decoration:none; text-transform:uppercase;}
-            a:hover,a:active
-            {background-color:#cc0000;}
-            
-            #menu{width: 100px;float: right;}
-      </style>
-    </head>
-
-    <body class = "html">
-        
-        <div class = leftmenu>
-        	<div class = backColor>
-        		<h3 class = title>账号信息</h3>
-		        	<ul class = leftMenu>
-                                        $ hrefPlayerInfo = '%s%s%s%s'%("/playerInfo/", playerID, "/", serverID)
-                                        $ hrefCurrItem = '%s%s%s%s'%("/currItem/", playerID, "/", serverID)
-                                        $ hrefMyheroes = '%s%s%s%s'%("/myHeroes/", playerID, "/", serverID)
-                                        $ hrefHeroesItem = '%s%s%s%s'%("/heroesItem/", playerID, "/", serverID)
-                                        $ hrefpackageInfo = '%s%s%s%s'%("/packageInfo/", playerID, "/", serverID)
-                                        $ hrefFormationInfo = '%s%s%s%s'%("/formationInfo/", playerID, "/", serverID)
-		        		<li><a href = $hrefPlayerInfo>角色基本信息</a></li>
-		        		<li><a href = $hrefCurrItem>角色当前装备</a></li>
-		        		<li><a href = $hrefMyheroes>角色拥有英雄</a></li>
-		        		<li><a href = $hrefHeroesItem>英雄穿着装备</a></li>
-		        		<li><a href = $hrefpackageInfo>角色背包信息</a></li>
-		        		<li><a href = $hrefFormationInfo>角色阵形信息</a></li>
-		        	</ul>
-		        	
-		        	<h3 class = title>行为数据</h3>
-		        	<ul class = leftMenu>
-		        		<li class = leftMenu><a href = "action0">登录信息</a></li>
-		        		<li class = leftMenu><a href = "action1">充值信息</a></li>
-		        		<li class = leftMenu><a href = "action2">金币获取</a></li>
-		        		<li class = leftMenu><a href = "action3">金币消耗</a></li>
-		        		<li class = leftMenu><a href = "action4">道具获取</a></li>
-		        		<li class = leftMenu><a href = "action5">道具消耗</a></li>
-		        		<li class = leftMenu><a href = "action6">曜石合成</a></li>
-		        		<li class = leftMenu><a href = "action7">角色训练</a></li>
-		        		<li class = leftMenu><a href = "action8">特性重置</a></li>
-		        		<li class = leftMenu><a href = "action9">任务信息</a></li>
-		        		<li class = leftMenu><a href = "action10">斗酒</a></li>
-		        		<li class = leftMenu><a href = "action11">试炼之祠</a></li>
-		        		<li class = leftMenu><a href = "action12">试炼之祠重置</a></li>
-		        		<li class = leftMenu><a href = "action13">祭神</a></li>
-		        		<li class = leftMenu><a href = "action14">半场次数购买</a></li>
-		        		<li class = leftMenu><a href = "action15">国战奖励翻倍</a></li>
-		        		<li class = leftMenu><a href = "action16">国战次数购买</a></li>
-		        	</ul>
-	        </div>
+     $ hrefPlayerInfo = '%s%s%s%s%s%s'%("/playerInfo/", selectType, "/", playerValue, "/", serverID)
+     $ hrefCurrItem = '%s%s%s%s%s%s'%("/currItem/", selectType, "/", playerValue, "/", serverID)
+     $ hrefMyheroes = '%s%s%s%s%s%s'%("/myHeroes/", selectType, "/", playerValue, "/", serverID)
+     $ hrefHeroesItem = '%s%s%s%s%s%s'%("/heroesItem/", selectType, "/", playerValue, "/", serverID)
+     $ hrefpackageInfo = '%s%s%s%s%s%s'%("/packageInfo/", selectType, "/", playerValue, "/", serverID)
+     $ hrefFormationInfo = '%s%s%s%s%s%s'%("/formationInfo/", selectType, "/", playerValue, "/", serverID)
+     $ hrefLogInInfo = '%s%s%s'%("/userAnalyse/", serverID, "/logInInfo")
+     $ hrefRechargeUserInfo = '%s%s%s'%("/userAnalyse/", serverID, "/rechargeUserInfo")
+     $ hrefRechargeInfo = '%s%s%s'%("/userAnalyse/", serverID, "/rechargeInfo")
+     $ hrefSaveInfo = '%s%s%s'%("/userAnalyse/", serverID, "/saveInfo")
+     $ hrefBlacklist = '%s%s'%("/blacklist/", serverID)
+     $ hrefBroadcast = '%s%s'%("/broadcast/", serverID)
+     $ hrefMail = '%s%s'%("/mail/", serverID)
+     <div class = leftMenuView>
+            <p class = leftMenuHead id = index>服务器信息</a></p>
+            <div class = leftMenuBody>
+                <a id = serversInfo href = "/index">服务器总览</a>
+                <a id = logInInfo href = $hrefLogInInfo>登录用户统计</a>
+                <a id = rechargeUserInfo href = $hrefRechargeUserInfo>充值用户统计</a>
+                <a id = rechargeInfo href = $hrefRechargeInfo>付费统计</a> 
+                <a id = saveInfo href = $hrefSaveInfo>留存统计</a>
+            </div>
+            <p class = leftMenuHead id = playerInfo>帐号信息</p>
+            <div class = leftMenuBody>
+                <a id = baseInfo href = $hrefPlayerInfo>角色基本信息</a>
+                <a id = currItem href = $hrefCurrItem>角色当前装备</a>
+                <a id = myHeroes href = $hrefMyheroes>角色当前英雄</a>
+                <a id = heroesItem href = $hrefHeroesItem>角色穿着装备</a>
+                <a id = packageInfo href = $hrefpackageInfo>角色背包信息</a>
+                <a id = formationInfo href = $hrefFormationInfo>角色阵型信息</a>
+            </div>
+            <p class = leftMenuHead id = actInfo>行为数据</p>
+            <div class = leftMenuBody>
+                <a href = "">上下线时间</a>
+                <a href = "">登录IP</a>
+                <a href = "">人民币充值</a>
+                <a href = "">获得金币</a>
+                <a href = "">消耗金币</a>
+                <a href = "">道具获得</a>
+                <a href = "">道具消耗</a>
+            </div>
+            <p class = leftMenuHead id = GMServer>GM服务</p>
+            <div class = leftMenuBody>
+                <a id = forbidLogin href = $hrefBlacklist>禁止登录</a>
+                <a id = globalBroadcast href = $hrefBroadcast>全服公告</a>
+                <a id = mail href = $hrefMail>系统邮件</a>
+            </div>
+<!--
+            <p class = leftMenuHead id = UserAnalyse>用户分析</p>
+            <div class = leftMenuBody>
+                <a id = saveInfo href = $hrefSaveInfo>留存统计</a>
+            </div>
+-->
+            <p class = leftMenuHead id = "download"><a href = "/downloadFiles">文件下载</a></p>
         </div>
-
-    </body>
-
 </html>

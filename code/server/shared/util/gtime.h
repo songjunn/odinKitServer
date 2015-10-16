@@ -30,6 +30,9 @@ uint64 CoverGtimeToSec(const GTime &gtm);
 int64 StringToDatetime(const char *str);
 void DatatimeToString(char* timestr);
 
+const char *ConvertSecToString(uint64 sec);
+int64 ConvertStringToSec(const char *str);
+
 bool SecSameDay(uint64 sec1, uint64 sec2);
 bool SecSameMonth(uint64 sec1, uint64 sec2);
 int  SecDayInterval(uint64 sec1, uint64 sec2);

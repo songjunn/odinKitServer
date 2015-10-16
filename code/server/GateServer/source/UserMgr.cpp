@@ -2,6 +2,7 @@
 #include "GateServer.h"
 #include "Packet.h"
 #include "error.h"
+#include "curl/curl.h"
 #include "MessageTypeDefine.pb.h"
 #include "MessageCommon.pb.h"
 #include "MessageUser.pb.h"
@@ -13,12 +14,15 @@ static int g_PacketLimitCount = 0;
 
 CUserMgr::CUserMgr()
 {
+	memset(m_paySvr, 0, sizeof(m_paySvr));
+	m_payPort = 0;
 
+	curl_global_init(CURL_GLOBAL_ALL);
 }
 
 CUserMgr::~CUserMgr()
 {
-
+	curl_global_cleanup();
 }
 
 void CUserMgr::InitConfig(int keytime, int hearttime, int packlimit)
@@ -83,7 +87,7 @@ void CUserMgr::_UserHeartLogic()
 
 		if( m_HeartTimeout > 0 && t - user->m_HeartTime > m_HeartTimeout )
 		{
-			Log.Error("[Heart] Heart Timeout, User:"INT64_FMT, user->m_id);
+			Log.Notice("[Heart] Heart Timeout, User:"INT64_FMT, user->m_id);
 
 			Exit( user );
 		}
@@ -104,9 +108,13 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 	case Message::MSG_PLAYER_LOGIN_REQUEST:	_HandlePacket_PlayerLogin(pack); break;
 	case Message::MSG_REQUEST_PLAYER_CREATE:	_HandlePacket_PlayerCreate(pack);	break;
 	case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);	break;
+	case N2S_NOTIFY_CONTROL_CLOSE:	_HandlePacket_NetClose(pack);		break;
+	case N2S_NOTIFY_CONTROL_ACCEPT:	_HandlePacket_NetAccept(pack);		break;
 	case Message::MSG_COMMON_ERROR:		_HandlePacket_GameError(pack);		break;
 	case Message::MSG_USER_DISPLACE:	_HandlePacket_UserDisplace(pack);	break;
-	case Message::MSG_SERVER_NET_CLOSE:	_HandlePacket_NetClose(pack);		break;
+	case S2S_NOTIFY_SWCHARGE:		_HandlePacket_SWCharge(pack);		break;
+	case D2G_NOTIFY_USER_FORBID:	_HandlePacket_UserForbidden(pack);	break;
+	case L2A_RESPONSE_AUTH_CHECKER:	_HandlePacket_AuthSuccess(pack);	break;
 	default:	return false;
 	}
 
@@ -128,68 +136,103 @@ bool CUserMgr::_HandlePacket_UserHeart(PACKET_COMMAND* pack)
 
 bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 {
+	/*
 	if( !pack )
 		return false;
 
 	Message::ClientLogin msg;
-	PROTOBUF_CMD_PARSER( pack, msg ); 
-
-	CUser* user = UserMgr.Create(pack->GetNetID());
-	if (!user)
-		return false;
-
-	TMV t = time(NULL);
-	user->m_ClientSock = pack->GetNetID();
-	user->m_HeartTime = t;
-	user->m_CanCreate = false;
-	user->m_PackCount = 0;
-	user->m_PackTime = t;
+	PROTOBUF_CMD_PARSER( pack, msg );
 
 	//验证md5密钥
 	if( _CheckUserKey(msg.uid(), msg.key(), pack->GetNetID()) )
 	{
-		CLinker* server = GateServer.getLowerGame();
-		if( server )
+		CUser* user = GetObj(pack->GetNetID());
+		if( user )
 		{
-			CUser* oldUser = GetUserByUID(msg.uid());
-			if( oldUser )
-				Displace( oldUser );
-			
-			user->m_id = msg.uid();
-			user->m_ClientSock = pack->GetNetID();
-			user->m_GameSock = server->m_Socket;
-			user->m_HeartTime = time(NULL);
+			CServerObj* server = ServerMgr.GetLowerGame();
+			if( server )
+			{
+				CUser* oldUser = GetUserByUID(msg.uid());
+				if( oldUser )
+					Displace( oldUser );
 
-			m_UserLock.LOCK();
-			m_UserList.Insert( user->m_id, user );
-			m_UserLock.UNLOCK();
-			
-			//验证通过，登入游戏
-			Message::UserLogin message;
-			message.set_uid( user->m_id );
-			message.set_world( server->m_worldID );
-			message.set_server( server->m_nID );
-			
-			PACKET_COMMAND packet;
-			PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
-			GETSERVERNET(&GateServer)->sendMsg(server->m_Socket, &packet);
+				user->m_id = msg.uid();
+				user->m_ClientSock = pack->GetNetID();
+				user->m_GameSock = server->m_Socket;
+				user->m_HeartTime = time(NULL);
 
-			//同步服务器时间
-			SendHeartResponse(user);
-			
-			return true;
-		}
-		else
-		{
-			Log.Error("[Login] Get GameServer Failed, Socket:%d User:"INT64_FMT, pack->GetNetID(), msg.uid());
+				m_UserLock.LOCK();
+				m_UserList.Insert( user->m_id, user );
+				m_UserLock.UNLOCK();
+
+				//验证通过，登入游戏
+				Message::UserLogin message;
+				message.set_uid( user->m_id );
+				message.set_world( server->m_worldID );
+				message.set_server( server->m_nID );
+
+				PACKET_COMMAND packet;
+				PROTOBUF_CMD_PACKAGE( packet, message, A2D_REQUEST_USER_LOGIN );
+				MainServer.SendMsgToServer(server->m_Socket, &packet);
+
+				//同步服务器时间
+				SendHeartResponse(user);
+
+				return true;
+			}
+			else
+			{
+				Log.Error("[Login] Get GameServer Failed, Socket:%d User:"INT64_FMT, pack->GetNetID(), msg.uid());
+			}
 		}
 	}
 
 	SendErrorMsg( pack->GetNetID(), Error_Login_CheckFailed );
 
-	GETCLIENTNET(&GateServer)->shutdown( pack->GetNetID() );
+	GateNet.Shutdown( pack->GetNetID() );
 
 	return false;
+	*/
+
+	Message::ClientLogin msg;
+	PROTOBUF_CMD_PARSER(pack, msg);
+
+	CUser *user = GetObj(pack->GetNetID());
+	CServerObj* server = ServerMgr.GetLowerGame();
+	if (!user || !server) {
+		Log.Error("User login failed.Cannot find user or gameserver: packe %d, user %lld", pack->GetNetID(), msg.uid());
+		SendErrorMsg(pack->GetNetID(), Error_Login_CheckFailed);
+		GateNet.Shutdown(pack->GetNetID());
+		return false;
+	}
+
+	CUser* oldUser = GetUserByUID(msg.uid());
+	if (oldUser) {
+		Displace(oldUser);
+		Log.Warning("user %lld relogin, displace the older.", msg.uid());
+	}
+
+	user->m_id = msg.uid();
+	user->m_worldID = server->m_worldID;
+	user->m_svrID = server->m_nID;
+	user->m_ClientSock = pack->GetNetID();
+	user->m_GameSock = server->m_Socket;
+	user->m_HeartTime = time(NULL);
+	user->m_AccessToken = msg.accesstoken();
+	user->m_AuthAddress = msg.authaddress();
+
+	ThreadLib::CreateByPool(httpCheckUserThread, user);
+
+	/*Message::ClientLogin msg2;
+	msg2.set_uid(user->m_id);
+	msg2.set_accesstoken(user->m_AccessToken);
+	msg2.set_key(user->m_ClientSock);
+
+	PACKET_COMMAND pack2;
+	PROTOBUF_CMD_PACKAGE(pack2, msg2, A2L_REQUEST_AUTH_CHECKER);
+	MainServer.SendMsgToServer(ServerMgr.getLoginSock(), &pack2);*/
+
+	return true;
 }
 
 bool CUserMgr::_HandlePacket_UserLogout(PACKET_COMMAND* pack)
@@ -215,25 +258,9 @@ bool CUserMgr::_HandlePacket_UserDisplace(PACKET_COMMAND* pack)
 	Message::UserDisplace msg;
 	PROTOBUF_CMD_PARSER( pack, msg );
 
-	CUser* user = GetObj( msg.uid() );
+	CUser* user = /*GetObj( msg.uid() )*/ GetUserByUID(msg.uid());
 	if( user )
 		Displace( user );
-
-	return true;
-}
-
-bool CUserMgr::_HandlePacket_NetClose(PACKET_COMMAND* pack)
-{
-	if (!pack)
-		return false;
-
-	Message::NetControl msg;
-	PROTOBUF_CMD_PARSER(pack, msg);
-
-	CUser* user = UserMgr.GetObj(msg.sock());
-	if (user) {
-		UserMgr.RemoveUser(user);
-	}
 
 	return true;
 }
@@ -335,6 +362,132 @@ bool CUserMgr::_HandlePacket_GameError(PACKET_COMMAND* pack)
 	}
 
 	return true;
+}
+
+bool CUserMgr::_HandlePacket_NetAccept(PACKET_COMMAND* pack)
+{
+	if( !pack )
+		return false;
+
+	Message::NetControl msg;
+	PROTOBUF_CMD_PARSER( pack, msg );
+
+	SOCKET sock = msg.sock();
+	CUser* user = UserMgr.Create(sock);
+	if( !user )
+		return false;
+	
+	TMV t = time(NULL);
+	user->m_ClientSock = sock;
+	user->m_HeartTime = t;
+	user->m_CanCreate = false;
+	user->m_PackCount = 0;
+	user->m_PackTime = t;
+
+	return true;
+}
+
+bool CUserMgr::_HandlePacket_NetClose(PACKET_COMMAND* pack)
+{
+	if( !pack )
+		return false;
+
+	Message::NetControl msg;
+	PROTOBUF_CMD_PARSER( pack, msg );
+
+	SOCKET sock = msg.sock();
+
+	CUser* user = UserMgr.GetObj(sock);
+	if( user )
+		UserMgr.RemoveUser(user);
+
+	return true;
+}
+
+bool CUserMgr::_HandlePacket_SWCharge(PACKET_COMMAND* pack)
+{
+	Message::SWChargeChecker msg;
+	PROTOBUF_CMD_PARSER(pack, msg);
+
+	CUser *pUser = GetUserByUID(msg.userid());
+	if (!pUser) {
+		Log.Error("_HandlePacket_SWCharge !pUser. user: %lld, money: %d", msg.userid(), msg.money());
+		return false;
+	}
+
+	Message::SWChargeChecker msg2;
+	msg2.set_playerid(pUser->m_LogonPlayer);
+	msg2.set_money(msg.money());
+
+	PACKET_COMMAND pack2;
+	PROTOBUF_CMD_PACKAGE(pack2, msg2, S2S_NOTIFY_SWCHARGE);
+	MainServer.SendMsgToServer(pUser->m_GameSock, &pack2);
+
+	Log.Notice("SWCharge. user: %lld, player: %lld, money: %d", pUser->m_id, pUser->m_LogonPlayer, msg.money());
+
+	return true;
+}
+
+bool CUserMgr::_HandlePacket_UserForbidden(PACKET_COMMAND* pack)
+{
+	Message::ManageResponse msg;
+	PROTOBUF_CMD_PARSER(pack, msg);
+
+	UserID uid = msg.userid();
+	CUser *pUser = GetUserByUID(uid);
+	if (!pUser) {
+		Log.Error("The forbidden user %lld is not online.", uid);
+		return false;
+	}
+
+	SendErrorMsg(pUser->m_ClientSock, Error_User_Forbid);
+
+	GateNet.Shutdown(pUser->m_ClientSock);
+
+	return true;
+}
+
+bool CUserMgr::_HandlePacket_AuthSuccess(PACKET_COMMAND* pack)
+{
+	Message::ClientLogin msg;
+	PROTOBUF_CMD_PARSER(pack, msg);
+
+	CUser *user = GetObj((SOCKET)msg.key());
+	if (!user) {
+		Log.Error("Auth success but user %lld not exist.", msg.uid());
+		return false;
+	}
+
+	if (user->m_id == msg.uid() && user->m_AccessToken == msg.accesstoken()) {
+		UserMgr.m_UserLock.LOCK();
+		UserMgr.m_UserList.Insert(user->m_id, user);
+		UserMgr.m_UserLock.UNLOCK();
+
+		//验证通过，登入游戏
+		Message::UserLogin message;
+		message.set_uid(user->m_id);
+		message.set_world(user->m_worldID);
+		message.set_server(user->m_svrID);
+		PACKET_COMMAND packet;
+		PROTOBUF_CMD_PACKAGE(packet, message, A2D_REQUEST_USER_LOGIN);
+		MainServer.SendMsgToServer(user->m_GameSock, &packet);
+
+		//验证成功，回应客户端
+		Message::AuthSuccess message2;
+		message2.set_paysvr(UserMgr.m_paySvr);
+		message2.set_payport(UserMgr.m_payPort);
+		PACKET_COMMAND packet2;
+		PROTOBUF_CMD_PACKAGE(packet2, message2, A2P_RESPONSE_AUTH_SUCCESS);
+		GateNet.SendMsg(user->m_ClientSock, &packet2);
+
+		//同步服务器时间
+		UserMgr.SendHeartResponse(user);
+	}
+	else {
+		UserMgr.SendErrorMsg(user->m_ClientSock, Error_Login_CheckFailed);
+		GateNet.Shutdown(user->m_ClientSock);
+		Log.Error("auth user failed: %lld.", user->m_id);
+	}
 }
 
 bool CUserMgr::_CheckUserKey(UserID id, int64 key, SOCKET sock)
@@ -464,8 +617,6 @@ bool CUserMgr::UserPacketLimit(CUser* user)
 	if( curtime - user->m_PackTime < g_PacketLimitTime )
 	{
 		user->m_PackCount++;
-		Log.Debug("[CUserMgr] Receive packet count:%d Time:%d User:"INT64_FMT" Sock:%d", user->m_PackCount, curtime - user->m_PackTime, user->m_id, user->m_ClientSock);
-
 		if( user->m_PackCount >= g_PacketLimitCount )
 		{
 			Log.Error("[CUserMgr] Receive packet too much:%d Time:%d User:"INT64_FMT" Sock:%d", user->m_PackCount, curtime - user->m_PackTime, user->m_id, user->m_ClientSock);
@@ -481,3 +632,98 @@ bool CUserMgr::UserPacketLimit(CUser* user)
 
 	return true;
 }
+
+void CUserMgr::httpCheckUserThread(void *pParam)
+{
+	CURL *pUrl = curl_easy_init();
+	if (!pUrl) {
+		Log.Error("!pUrl. Unknow Error.");
+		return;
+	}
+
+	CUser *pUser = (CUser *)pParam;
+	Log.Debug("httpCheckUser: userid:%lld, address:%s, token:%s", pUser->m_id, pUser->m_AuthAddress.c_str(), pUser->m_AccessToken.c_str());
+
+	if (pUser->m_AuthAddress == "") {
+		Log.Error("pUser->m_AuthAddress = '', user: %lld", pUser->m_id);
+		return;
+	}
+
+	char postStr[128] = { 0 };
+	sprintf(postStr, "userid=%lld&accesstoken=%s", pUser->m_id, pUser->m_AccessToken.c_str());
+	string authUrl = pUser->m_AuthAddress + ":1313";
+
+	curl_easy_setopt(pUrl, CURLOPT_URL, authUrl.c_str());
+	curl_easy_setopt(pUrl, CURLOPT_POSTFIELDS, postStr);
+	curl_easy_setopt(pUrl, CURLOPT_WRITEFUNCTION, recvBackData);
+	curl_easy_setopt(pUrl, CURLOPT_WRITEDATA, pUser);
+	curl_easy_setopt(pUrl, CURLOPT_POST, 1);
+	curl_easy_setopt(pUrl, CURLOPT_NOSIGNAL, 1);
+	//curl_easy_setopt(pUrl, CURLOPT_VERBOSE, 1);
+	//curl_easy_setopt(pUrl, CURLOPT_HEADER, 1);
+	//curl_easy_setopt(pUrl, CURLOPT_FOLLOWLOCATION, 1);
+	curl_easy_setopt(pUrl, CURLOPT_COOKIEFILE, "curlauth.cookie");
+	CURLcode res = curl_easy_perform(pUrl);
+	curl_easy_cleanup(pUrl);
+
+	if (res != 0) {
+		UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
+		GateNet.Shutdown(pUser->m_ClientSock);
+		Log.Error("curl curl_easy_perform error: %s", curl_easy_strerror(res));
+		Log.Error("[CUserMgr]Authentication Failed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, pUser->m_AuthAddress.c_str(), pUser->m_AccessToken.c_str());
+		return;
+	}
+
+	Log.Debug("[CUserMgr]Authentication Successed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, pUser->m_AuthAddress.c_str(), pUser->m_AccessToken.c_str());
+}
+
+size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *userp)
+{
+	CUser *pUser = (CUser *)userp;
+	char *recvdata = (char *)buffer;
+	if (recvdata && recvdata[0] && recvdata[0] == '0') {
+		UserMgr.m_UserLock.LOCK();
+		UserMgr.m_UserList.Insert(pUser->m_id, pUser);
+		UserMgr.m_UserLock.UNLOCK();
+
+		//验证通过，登入游戏
+		Message::UserLogin message;
+		message.set_uid(pUser->m_id);
+		message.set_world(pUser->m_worldID);
+		message.set_server(pUser->m_svrID);
+		PACKET_COMMAND packet;
+		PROTOBUF_CMD_PACKAGE(packet, message, A2D_REQUEST_USER_LOGIN);
+		MainServer.SendMsgToServer(pUser->m_GameSock, &packet);
+
+		//验证成功，回应客户端
+		Message::AuthSuccess message2;
+		message2.set_paysvr(UserMgr.m_paySvr);
+		message2.set_payport(UserMgr.m_payPort);
+		PACKET_COMMAND packet2;
+		PROTOBUF_CMD_PACKAGE(packet2, message2, A2P_RESPONSE_AUTH_SUCCESS);
+		GateNet.SendMsg(pUser->m_ClientSock, &packet2);
+
+		//同步服务器时间
+		UserMgr.SendHeartResponse(pUser);
+	}
+	else {
+		UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
+		GateNet.Shutdown(pUser->m_ClientSock);
+		Log.Error("auth user failed: %lld. return content: %s", pUser->m_id, recvdata);
+	}
+
+	return nsize * nmemb;
+}
+
+bool CUserMgr::SetPayAddress(const char *paySvr, int payPort)
+{
+	if (!paySvr || strlen(paySvr) >= 32 || payPort < 1) {
+		return false;
+	}
+
+	strcpy(m_paySvr, paySvr);
+	m_payPort = payPort;
+
+	return true;
+}
+

@@ -16,4 +16,5 @@ uint16_t make_crc16(char * buff, uint32_t size);
 void make_crc32_table();
 uint32_t make_crc32(char *string, uint32_t size);
 
+
 #endif	//SHARED_CRC_H

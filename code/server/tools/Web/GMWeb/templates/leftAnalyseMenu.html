@@ -1,45 +1,16 @@
 $def with(serverID)
 <html>
-    <head>
-    	<style>
-        	  html{background: #f9f9f9;overflow-x:hidden;border-left-style:outset;border-right-style:outset;margin-left: 2cm;margin-bottom: 0cm;margin-right: 2cm; padding-left: 1%; padding-right: 1%;}
-        	  div.leftmenu{background-color:#bebebe; height:1000px; width:140px; float:left;}
-        	  div.rightcontent{background-color:#f9f9f9; height:1000px; width:auto;float:left;}
-        	  h3.title{text-align:center; font-weight:bold; padding:6px;}
-        	  div.backColor{display: block; width: 120px; background-color: #bebebe;}
-        	  ul.leftMenu{float:None; list-style-type:none; margin:0; padding-left:5%; overflow:hidden;}
-            li.leftMenu{float:None}
-            ul.topMenu{list-style-type:none; margin:0; padding:0; overflow:hidden;}
-            li.topMenu{float:left}
-            a:link,a:visited
-            {display:block; width:120px; font-weight:bold; color:#FFFFFF; background-color:#bebebe; text-align:center;
-            padding:4px; text-decoration:none; text-transform:uppercase;}
-            a:hover,a:active
-            {background-color:#cc0000;}
-            
-            #menu{width: 100px;float: right;}
-      </style>
-    </head>
-
-    <body class = "html">
-        
-        <div class = leftmenu>
-        	<div class = backColor>
-        		<h3 class = title>用户分析</h3>
-		        	<ul class = leftMenu>
-                                        $ hrefLogInInfo = '%s%s%s'%("/userAnalyse/", serverID, "/logInInfo")
-                                        $ hrefRechargeUserInfo = '%s%s%s'%("/userAnalyse/", serverID, "/rechargeUserInfo")
-                                        $ hrefRechargeInfo = '%s%s%s'%("/userAnalyse/", serverID, "/rechargeInfo")
-                                        $ hrefSaveInfo = '%s%s%s'%("/userAnalyse/", serverID, "/saveInfo")
-		        		<li><a href = $hrefLogInInfo>本日用户登录</a></li>
-		        		<li><a href = $hrefRechargeUserInfo>本日充值用户</a></li>
-		        		<li><a href = $hrefRechargeInfo>本日付费统计</a></li>
-                                        <li><a href = $hrefSaveInfo>留存统计</a></li>
-                                        <li><a></a></li>
-		        	</ul>
-	        </div>
-        </div>
-
-    </body>
-
+     $ hrefLogInInfo = '%s%s%s'%("/userAnalyse/", serverID, "/logInInfo")
+     $ hrefRechargeUserInfo = '%s%s%s'%("/userAnalyse/", serverID, "/rechargeUserInfo")
+     $ hrefRechargeInfo = '%s%s%s'%("/userAnalyse/", serverID, "/rechargeInfo")
+     $ hrefSaveInfo = '%s%s%s'%("/userAnalyse/", serverID, "/saveInfo")      
+     <div class = leftMenuView>
+         <p class = leftMenuHead>用户分析</p>
+             <div class = leftMenuBody>
+                <a id = logInInfo href = $hrefLogInInfo>本日用户登录</a>
+		<a id = rechargeUserInfo href = $hrefRechargeUserInfo>本日充值用户</a>
+		<a id = rechargeInfo href = $hrefRechargeInfo>本日付费统计</a>
+                <a id = saveInfo href = $hrefSaveInfo>留存统计</a>
+	     </div>
+      </div>
 </html>

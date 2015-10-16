@@ -1,53 +1,45 @@
-﻿$def with(playerInfos, serverID)
+﻿$def with()
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-        	  html{background: #f9f9f9;overflow-x:hidden;border-left-style:outset;border-right-style:outset;margin-left: 2cm;margin-bottom: 0cm;margin-right: 2cm; padding-left: 1%; padding-right: 1%;}
-        	  div.leftmenu{background-color:#bebebe; height:1000px; width:135px; float:left;}
-        	  div.rightcontent{background-color:#f9f9f9; height:1000px; width:auto;float:left;}
-        	  h3.title{text-align:center; font-weight:bold; padding:6px;}
-        	  div.backColor{display: block; width: 120px; background-color: #bebebe;}
-        	  ul.leftMenu{float:None; list-style-type:none; margin:0; padding-left:5%; overflow:hidden;}
-            li.leftMenu{float:None}
-            ul.topMenu{list-style-type:none; margin:0; padding:0; overflow:hidden;}
-            li.topMenu{float:left}
-            a:link,a:visited
-            {display:block; width:120px; font-weight:bold; color:#FFFFFF; background-color:#bebebe; text-align:center;
-            padding:4px; text-decoration:none; text-transform:uppercase;}
-            a:hover,a:active
-            {background-color:#cc0000;}
-        </style>
-    </head>
-    $:render.base()
-    $:render.leftServersMenu()
-    <body>    
-        <div class = rightcontent>
-        	<table border="1">
-						<caption>角色基本信息</caption>
-							<tr>
-                                                          <th>角色ID</th>
-							  <th>角色名称</th>
-							  <th>角色等级</th>
-							  <th>角色战力</th>
-							  <th>角色品质</th>
-							  <th>角色星等</th>
-							  <th>角色特性</th>
-							</tr>
-                                                        $for playerInfo in playerInfos:
-                                                        <tr>
-                                                          <td><a href = "/playerInfo/$playerInfo['playerid']/$serverID" target = "_blank">$playerInfo['playerid']</a></td>
-                                                          <td>$playerInfo['name']</td>
-                                                          <td>$playerInfo['level']</td>
-                                                          <td>$playerInfo['fighting']</td>
-                                                          <td>400</td>
-                                                          <td>500</td>
-                                                          <td>600</td>
-                                                        </tr>
-					</table>
-        </div>
-        
-        
-    </body>
+<head>
+<script type = "text/javascript" src = "/static/js/jquery.js"></script>
+<script type = "text/javascript" src = "/static/js/GMWebQuery.js"></script>
+<script type = "text/javascript">
 
+$$(document).ready(function()
+{ 
+     $$("p.leftMenuHead").click(function()
+     {
+       $$(this).next("div.leftMenuBody").slideToggle().siblings("div.leftMenuBody").slideUp();
+     });
+     $$("#selectServerName").click(function()
+     {
+       $$("ul.selectListView").slideToggle();
+     });
+     $$("ul.selectListView").children().click(function(){
+       var liText = $$(this).text();
+       $$("#selectServerName").val(liText);
+       $$("ul.selectListView").hide();
+     });     
+     $$("#selectType").click(function()
+     {
+       $$("ul.selectTypeListView").slideToggle();
+     })
+     $$("ul.selectTypeListView").children().click(function(){
+       var liText = $$(this).text();
+       $$("#selectType").val(liText);
+       $$("ul.selectTypeListView").hide();
+     }); 
+});
+</script>
+</head>
+    <body> 
+       $:render.base() 
+        <div class = contentView>
+            $:render.leftMenu(0, 0, secs[0])
+        <div class = rightContentView>
+            $:render.rightContentOption()
+        </div>
+        </div>
+    </body>
 </html>

@@ -18,7 +18,8 @@ struct UserKey
 struct CUser
 {
 	UserID		m_id;
-	int			m_server;
+	int			m_worldID;
+	int			m_svrID;
 	SOCKET		m_ClientSock;
 	SOCKET		m_GameSock;
 	PersonID	m_LogonPlayer;
@@ -26,6 +27,14 @@ struct CUser
 	bool		m_CanCreate;
 	int			m_PackCount;
 	TMV			m_PackTime;
+	std::string m_AuthAddress;
+	std::string m_AccessToken;
+
+	~CUser()
+	{
+		m_AuthAddress.clear();
+		m_AccessToken.clear();
+	}
 };
 
 class CUserMgr : public CObjMgr< CUser, SOCKET >, public Singleton< CUserMgr >
@@ -47,6 +56,8 @@ public:
 	void	SendHeartResponse(CUser* user);
 	void	SendErrorMsg(SOCKET sock, int errid);
 
+	bool	SetPayAddress(const char *paySvr, int payPort);
+
 	inline CUser*	GetUserByUID(UserID uid)
 	{
 		CUser* user = NULL;
@@ -64,6 +75,14 @@ public:
 		return INVALID_SOCKET;
 	}
 
+	inline SOCKET	GetGameSockByPID(PersonID pid)
+	{
+		CUser* user = m_PlayerList.Find(pid);
+		if (user)
+			return user->m_GameSock;
+		return INVALID_SOCKET;
+	}
+
 	inline int GetUserKeyCount() {return m_KeysList.Count();}
 
 protected:
@@ -78,13 +97,23 @@ protected:
 	bool	_HandlePacket_PlayerLogin(PACKET_COMMAND* pack);
 	bool	_HandlePacket_PlayerCreate(PACKET_COMMAND* pack);
 	bool	_HandlePacket_PlayerCount(PACKET_COMMAND* pack);
+	bool	_HandlePacket_NetAccept(PACKET_COMMAND* pack);
+	bool 	_HandlePacket_NetClose(PACKET_COMMAND* pack);
 	bool	_HandlePacket_GameError(PACKET_COMMAND* pack);
-	bool	_HandlePacket_NetClose(PACKET_COMMAND* pack);
+	bool	_HandlePacket_SWCharge(PACKET_COMMAND* pack);
+	bool	_HandlePacket_UserForbidden(PACKET_COMMAND* pack);
+	bool	_HandlePacket_AuthSuccess(PACKET_COMMAND* pack);
 
 	void	_CreateUserKey(UserID id, int64 key);
 	bool	_CheckUserKey(UserID id, int64 key, SOCKET sock);
-	
+
+	static void httpCheckUserThread(void *pParam);
+	static size_t recvBackData(void *buffer, size_t nsize, size_t nmemb, void *userp);
+
 protected:
+	char	m_paySvr[32];
+	int		m_payPort;
+
 	int		m_KeyTimeout;		//连接密钥超时时间
 	int		m_HeartTimeout;		//心跳超时时间.
 	//int		m_PacketLimit;		//平局每秒的收包限制
@@ -93,7 +122,6 @@ protected:
 	CStlMap<UserID, CUser*>		m_UserList;
 	CStlMap<PersonID, CUser*>	m_PlayerList;
 	ClxHList<UserID, UserKey*>	m_KeysList;
-
 };
 
 #define UserMgr CUserMgr::getSingleton()
