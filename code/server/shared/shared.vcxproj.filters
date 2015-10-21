@@ -135,6 +135,9 @@
     <ClCompile Include="mongoose\mongoose.c">
       <Filter>mongoose</Filter>
     </ClCompile>
+    <ClCompile Include="network\IOEpoll.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="util\base64.h">
@@ -380,6 +383,9 @@
     <ClInclude Include="shared.h" />
     <ClInclude Include="container\selectablequeue.h">
       <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="network\IOEpoll.h">
+      <Filter>network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

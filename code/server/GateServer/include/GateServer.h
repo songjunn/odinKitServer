@@ -15,8 +15,6 @@ public:
     virtual void onShutdown();
     virtual bool onMessage(PACKET_COMMAND* pack);
     virtual void onPrint(char* output);
-
-    CLinker* getLowerGame();
 };
 
 #define GateServer CGateServer::getSingleton()

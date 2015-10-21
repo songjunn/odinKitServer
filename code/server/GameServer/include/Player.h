@@ -25,9 +25,9 @@ public:
 	inline CPlayer* GetPlayer() { return this; }
 	inline	void	OnEvent(CEvent* ev)	{m_EventUnit.OnEvent(ev);}
 
-	inline  void	SendClientMsg(PACKET_COMMAND* pack)	{ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(m_GateSocket, pack); }}
-	inline	void	SendDataMsg(PACKET_COMMAND* pack){ if (pack) { pack->SetTrans(GetID()); GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), pack); }}
-	inline	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player) { if (pack && player) { pack->SetTrans(player->GetID()); GETSERVERNET(&GameServer)->sendMsg(player->m_GateSocket, pack); }}
+	inline  void	SendClientMsg(PACKET_COMMAND* pack)	{ if (pack) { pack->SetTrans(m_UserID); GETSERVERNET(&GameServer)->sendMsg(m_GateSocket, pack); } }
+	inline	void	SendDataMsg(PACKET_COMMAND* pack){ if (pack) { pack->SetTrans(m_UserID); GETSERVERNET(&GameServer)->sendMsg(GameServer.getServerSock(CBaseServer::Linker_Server_Data), pack); } }
+	inline	void	SendObserveMsg(PACKET_COMMAND* pack, CPlayer* player) { if (pack && player) { pack->SetTrans(player->m_UserID); GETSERVERNET(&GameServer)->sendMsg(player->m_GateSocket, pack); } }
 
 	inline	void	SetGateSocket(SOCKET socket){ m_GateSocket = socket; }
 	inline	SOCKET	GetGateSocket()				{ return m_GateSocket; }

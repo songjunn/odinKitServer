@@ -172,6 +172,7 @@
     <ClCompile Include="memory\nedmalloc.c" />
     <ClCompile Include="mongoose\mongoose.c" />
     <ClCompile Include="network\IOCP.cpp" />
+    <ClCompile Include="network\IOEpoll.cpp" />
     <ClCompile Include="network\IOSelect.cpp" />
     <ClCompile Include="network\Net.cpp" />
     <ClCompile Include="network\Packet.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="memory\nedmalloc.h" />
     <ClInclude Include="mongoose\mongoose.h" />
     <ClInclude Include="network\IOCP.h" />
+    <ClInclude Include="network\IOEpoll.h" />
     <ClInclude Include="network\IOSelect.h" />
     <ClInclude Include="network\Net.h" />
     <ClInclude Include="network\NetHeader.h" />
