@@ -380,9 +380,9 @@ size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *us
 	CUser *pUser = (CUser *)userp;
 	char *recvdata = (char *)buffer;
 	if (recvdata && recvdata[0] && recvdata[0] == '0') {
-		CUserMgr.m_UserLock.LOCK();
-		CUserMgr.m_UserList.Insert(pUser->m_id, pUser);
-		CUserMgr.m_UserLock.UNLOCK();
+		UserMgr.m_UserLock.LOCK();
+		UserMgr.m_UserList.Insert(pUser->m_id, pUser);
+		UserMgr.m_UserLock.UNLOCK();
 
 		//验证通过，登入游戏
 		Message::UserLogin message;
@@ -390,7 +390,7 @@ size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *us
 		message.set_world(pUser->m_worldID);
 		message.set_server(pUser->m_svrID);
 		PACKET_COMMAND packet;
-		PROTOBUF_CMD_PACKAGE(packet, message, MSG_USER_lOGIN_REQUEST);
+		PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
 		GETSERVERNET(&GateServer)->sendMsg(pUser->m_GameSock, &packet);
 
 		//同步服务器时间
