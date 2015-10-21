@@ -18,11 +18,9 @@ struct CUser {
     bool m_CanCreate;
     int	m_PackCount;
     TMV	m_PackTime;
-    std::string m_AuthAddress;
     std::string m_AccessToken;
 
     ~CUser() {
-        m_AuthAddress.clear();
         m_AccessToken.clear();
     }
 };

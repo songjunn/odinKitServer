@@ -15,6 +15,13 @@ public:
     virtual void onShutdown();
     virtual bool onMessage(PACKET_COMMAND* pack);
     virtual void onPrint(char* output);
+
+	inline void setAuthAddress(string addr) { m_authAddress = addr; }
+	inline string getAuthAddress() { return m_authAddress; }
+
+private:
+	string m_authAddress;
+
 };
 
 #define GateServer CGateServer::getSingleton()

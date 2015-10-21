@@ -43,6 +43,7 @@ bool CGateServer::onStartup()
     const char* centralip = LuaEngine.GetLuaVariableString("CentralServer_ip", "Sconf");
     int centralid = LuaEngine.GetLuaVariableNumber("CentralServer_id", "Sconf");
     int centralport = LuaEngine.GetLuaVariableNumber("CentralServer_port", "Sconf");
+	const char* loginip = LuaEngine.GetLuaVariableString("LoginServer_ip", "Sconf");
     const char* myip = LuaEngine.GetLuaVariableString("GateServer_ip", "Sconf");
     int myid = LuaEngine.GetLuaVariableNumber("GateServer_id", "Sconf");
     int myport = LuaEngine.GetLuaVariableNumber("GateServer_port", "Sconf");
@@ -63,6 +64,8 @@ bool CGateServer::onStartup()
     int hearttimeout = LuaEngine.GetLuaVariableNumber("user_heart_timeout", "GateServer");
     int keytimeout = LuaEngine.GetLuaVariableNumber("user_key_timeout", "GateServer");
     int packlimit = LuaEngine.GetLuaVariableNumber("user_pack_limit", "GateServer");
+
+	setAuthAddress(loginip);
 
     //≥ı ºªØ
     char mpath[1024] = { 0 };

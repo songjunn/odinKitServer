@@ -378,6 +378,17 @@ CLinker* CBaseServer::getServerById(int id)
 	return p;
 }
 
+CLinker* CBaseServer::getServerByType(int type)
+{
+	FOR_EACH_LL(m_linkerList, index)
+	{
+		CLinker* p = m_linkerList[index];
+		if (p && p->m_type == type)
+			return p;
+	}
+	return NULL;
+}
+
 SOCKET CBaseServer::getServerSock(int type)
 {
 	FOR_EACH_LL(m_linkerList, index)

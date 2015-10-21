@@ -91,18 +91,17 @@ bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 	Message::ClientLogin msg;
 	PROTOBUF_CMD_PARSER(pack, msg);
 
-	CServerObj* server = ServerMgr.GetLowerGame();
+	CLinker* server = GateServer.getServerByType(CBaseServer::Linker_Server_Game);
 	if (!server) {
 		Log.Error("User login failed. Cannot find gameserver: user %lld", msg.uid());
-		SendErrorMsg(pack->GetNetID(), Error_Login_CheckFailed);
-		GateNet.Shutdown(pack->GetNetID());
+		GETCLIENTNET(&GateServer)->shutdown(pack->GetNetID());
 		return false;
 	}
 
 	CUser* user = UserMgr.Create(pack->GetNetID());
 	if (!user) {
 		Log.Error("User login failed. Cannot create user: %lld", msg.uid());
-		GateNet.Shutdown(pack->GetNetID());
+		GETCLIENTNET(&GateServer)->shutdown(pack->GetNetID());
 		return false;
 	}
 
@@ -123,7 +122,6 @@ bool CUserMgr::_HandlePacket_UserLogin(PACKET_COMMAND* pack)
 	user->m_PackCount = 0;
 	user->m_PackTime = t;
 	user->m_AccessToken = msg.accesstoken();
-	user->m_AuthAddress = msg.authaddress();
 
 	ThreadLib::CreateByPool(httpCheckUserThread, user);
 
@@ -347,16 +345,11 @@ void CUserMgr::httpCheckUserThread(void *pParam)
 	}
 
 	CUser *pUser = (CUser *)pParam;
-	Log.Debug("httpCheckUser: userid:%lld, address:%s, token:%s", pUser->m_id, pUser->m_AuthAddress.c_str(), pUser->m_AccessToken.c_str());
-
-	if (pUser->m_AuthAddress == "") {
-		Log.Error("pUser->m_AuthAddress = '', user: %lld", pUser->m_id);
-		return;
-	}
+	Log.Debug("httpCheckUser: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
 
 	char postStr[128] = { 0 };
 	sprintf(postStr, "userid=%lld&accesstoken=%s", pUser->m_id, pUser->m_AccessToken.c_str());
-	string authUrl = pUser->m_AuthAddress + ":1313";
+	string authUrl = GateServer.getAuthAddress() + ":1313";
 
 	curl_easy_setopt(pUrl, CURLOPT_URL, authUrl.c_str());
 	curl_easy_setopt(pUrl, CURLOPT_POSTFIELDS, postStr);
@@ -373,13 +366,13 @@ void CUserMgr::httpCheckUserThread(void *pParam)
 
 	if (res != 0) {
 		UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
-		GateNet.Shutdown(pUser->m_ClientSock);
+		GETCLIENTNET(&GateServer)->shutdown(pUser->m_ClientSock);
 		Log.Error("curl curl_easy_perform error: %s", curl_easy_strerror(res));
-		Log.Error("[CUserMgr]Authentication Failed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, pUser->m_AuthAddress.c_str(), pUser->m_AccessToken.c_str());
+		Log.Error("[CUserMgr]Authentication Failed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
 		return;
 	}
 
-	Log.Debug("[CUserMgr]Authentication Successed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, pUser->m_AuthAddress.c_str(), pUser->m_AccessToken.c_str());
+	Log.Debug("[CUserMgr]Authentication Successed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
 }
 
 size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *userp)
@@ -387,9 +380,9 @@ size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *us
 	CUser *pUser = (CUser *)userp;
 	char *recvdata = (char *)buffer;
 	if (recvdata && recvdata[0] && recvdata[0] == '0') {
-		m_UserLock.LOCK();
-		m_UserList.Insert(pUser->m_id, pUser);
-		m_UserLock.UNLOCK();
+		CUserMgr.m_UserLock.LOCK();
+		CUserMgr.m_UserList.Insert(pUser->m_id, pUser);
+		CUserMgr.m_UserLock.UNLOCK();
 
 		//验证通过，登入游戏
 		Message::UserLogin message;
@@ -397,15 +390,15 @@ size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *us
 		message.set_world(pUser->m_worldID);
 		message.set_server(pUser->m_svrID);
 		PACKET_COMMAND packet;
-		PROTOBUF_CMD_PACKAGE(packet, message, A2D_REQUEST_USER_LOGIN);
-		MainServer.SendMsgToServer(pUser->m_GameSock, &packet);
+		PROTOBUF_CMD_PACKAGE(packet, message, MSG_USER_lOGIN_REQUEST);
+		GETSERVERNET(&GateServer)->sendMsg(pUser->m_GameSock, &packet);
 
 		//同步服务器时间
 		UserMgr.SendHeartResponse(pUser);
 	}
 	else {
 		UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
-		GateNet.Shutdown(pUser->m_ClientSock);
+		GETCLIENTNET(&GateServer)->shutdown(pUser->m_ClientSock);
 		Log.Error("auth user failed: %lld. return content: %s", pUser->m_id, recvdata);
 	}
 

@@ -122,7 +122,7 @@ bool CUserMgr::_HandlePacket_UserCheck(PACKET_COMMAND* pack)
 	CUser* pUser = _AddUser(userid);
 	if (!pUser) {
 		Log.Error("user: "INT64_FMT" create fail, so login failed.", userid);
-		LoginNet.Shutdown(pack->GetNetID());
+		GETCLIENTNET(&LoginServer)->shutdown(pack->GetNetID());
 		return false;
 	}
 	if (pUser->m_id == userid) {
@@ -195,7 +195,7 @@ bool CUserMgr::checkFromThirdPlatform(CUser *pUser)
 		sprintf(tmpbuf, "%d", ntoken);
 		pUser->m_accessToken = tmpbuf;
 		sendSWChecker(pUser);
-		LoginNet.Shutdown(pUser->m_sock);
+		GETCLIENTNET(&LoginServer)->shutdown(pUser->m_sock);
 
 		Log.Debug("[CUserMgr]Authentication Successed To Client by auto: user: %lld, ticket: %s", pUser->m_id, pUser->m_ticket.c_str());
 
@@ -244,7 +244,7 @@ void CUserMgr::httpCheckUserThread(void *pParam)
 		Log.Debug("[CUserMgr]Authentication Successed To Client From AccountServer: user: %lld, ticket: %s", pUser->m_id, pUser->m_ticket.c_str());
 	}
 
-	LoginNet.Shutdown(pUser->m_sock);
+	GETCLIENTNET(&LoginServer)->shutdown(pUser->m_sock);
 }
 
 string CUserMgr::generatePostField(CUser *pUser)

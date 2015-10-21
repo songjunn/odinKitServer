@@ -47,6 +47,7 @@ message ClientLogin {
     optional int64  uid     = 1;    //账号ID
     optional int64  key     = 2;    //密钥
     optional int32  server  = 3;    //选择的区服号
+    optional string accesstoken = 4;//校验字符串
 } 
 
 //账号登出

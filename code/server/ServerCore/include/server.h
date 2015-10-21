@@ -110,6 +110,7 @@ public:
 	CLinker* getLinker(SOCKET s);
 	CLinker* getServer(SOCKET s);
 	CLinker* getServerById(int id);
+	CLinker* getServerByType(int type);
 	SOCKET getServerSock(int type);
 
 	inline int getSelfWorld() { return m_self.m_worldID; }
