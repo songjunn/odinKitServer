@@ -72,7 +72,7 @@ bool CGateServer::onStartup()
     if (!UserMgr.Initialize("user", usercnt))
 		return false;
 
-    UserMgr.InitConfig(keytimeout, hearttimeout, packlimit);
+    UserMgr.InitConfig(hearttimeout, packlimit);
 
     if (!g_PacketPool.Init("Packet", packsize))
 		return false;
