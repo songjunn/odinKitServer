@@ -168,6 +168,7 @@
     <ClCompile Include="config\CSVParser.cpp" />
     <ClCompile Include="container\utlbuffer.cpp" />
     <ClCompile Include="container\utlsymbol.cpp" />
+    <ClCompile Include="httpd\httpd.c" />
     <ClCompile Include="memory\memory.cpp" />
     <ClCompile Include="memory\nedmalloc.c" />
     <ClCompile Include="mongoose\mongoose.c" />
@@ -229,6 +230,7 @@
     <ClInclude Include="container\utlstack.h" />
     <ClInclude Include="container\utlsymbol.h" />
     <ClInclude Include="container\utlvector.h" />
+    <ClInclude Include="httpd\httpd.h" />
     <ClInclude Include="memory\malloc.c.h" />
     <ClInclude Include="memory\memory.h" />
     <ClInclude Include="memory\memorypool.h" />

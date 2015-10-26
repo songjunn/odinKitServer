@@ -184,13 +184,11 @@
     <ClCompile Include="source\DBOperate.cpp" />
     <ClCompile Include="source\LoginServer.cpp" />
     <ClCompile Include="source\UserMgr.cpp" />
-    <ClCompile Include="source\WorldConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DBOperate.h" />
     <ClInclude Include="include\LoginServer.h" />
     <ClInclude Include="include\UserMgr.h" />
-    <ClInclude Include="include\WorldConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.vcxproj">

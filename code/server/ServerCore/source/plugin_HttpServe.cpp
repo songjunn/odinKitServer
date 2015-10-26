@@ -13,7 +13,7 @@ CHttpServe::~CHttpServe()
 
 bool CHttpServe::startup(int port, mg_handler_t handler, int threadnum)
 {
-	char cport[16] = { 0 };
+	/*char cport[16] = { 0 };
 	sprintf(cport, "%d", port);
 
 	for (int i = 0; i < threadnum; ++i) {
@@ -21,7 +21,9 @@ bool CHttpServe::startup(int port, mg_handler_t handler, int threadnum)
 		mg_set_option(server, "listening_port", cport);
 
 		ThreadLib::Create(_httpServeThread, server);
-	}
+	}*/
+
+	ThreadLib::Create(httpd_thread, port);
 	return true;
 }
 

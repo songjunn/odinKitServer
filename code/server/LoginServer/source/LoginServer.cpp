@@ -36,8 +36,8 @@ bool CLoginServer::onStartup()
     char szConfile[256] = { 0 };
     sprintf(szConfile, "%ssconf.lua", g_szExePath);
     if (!LuaEngine.LoadLuaFile(szConfile)) {
-	Log.Error("[CLoginServer] Load sconf.lua Error");
-	return false;
+	    Log.Error("[CLoginServer] Load sconf.lua Error");
+	    return false;
     }
 
     //读取启动参数
@@ -71,49 +71,30 @@ bool CLoginServer::onStartup()
     this->initSelf(worldID, CBaseServer::Linker_Server_Login, myid, myport, myip, 0, NULL, mpath);
 
     if (!UserMgr.Initialize("user", usercnt)) {
-	return false;
+	    return false;
     }
 
     if (!g_PacketPool.Init("Packet", packsize)) {
-	return false;
+	    return false;
     }
 
     if (!g_MongoOperPool.Init("MongoOper", dboperator)) {
-	return false;
+	    return false;
     }
-
-    CNetwork* servernet = (CNetwork *)this->createPlugin(CBaseServer::Plugin_Net4Server);
-    if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
-	Log.Error("[CLoginServer] create Plugin_Net4Server failed");
-	return false;
-    }
-
-    CNetwork* clientnet = (CNetwork *)this->createPlugin(CBaseServer::Plugin_Net4Client);
-    if (!clientnet->startup(CNet::NET_IO_EPOLL, clientport, clientconnmax, clientsendsize, clientrecvsize, clientpacksize)) {
-	Log.Error("[CLoginServer] create Plugin_Net4Client failed");
-	return false;
-    }
-
-    if (!this->createLinker(CBaseServer::Linker_Server_Central, centralid, centralport, centralip, 0, NULL, worldID, true)) {
-	Log.Error("[CLoginServer] create Central Server failed");
-	return false;
-    }
-
+	
     char spath[1024] = { 0 };
     sprintf(spath, "%s//Server_%d.sock", udPath, myid);
     CMonitor* monitor = (CMonitor *)this->createPlugin(CBaseServer::Plugin_Monitor);
     if (!monitor->startup(spath)) {
-	Log.Error("[CLoginServer] create Plugin_Monitor failed");
-	return false;
+	    Log.Error("[CLoginServer] create Plugin_Monitor failed");
+	    return false;
     }
 
     CMongoDB* db = (CMongoDB *)this->createPlugin(CBaseServer::Plugin_Mongodb);
     if (!db->startup(gamedbip, gamedbport, gamedbname)) {
-	return false;
+		Log.Error("[CLoginServer] create Plugin_Mongodb failed");
+	    return false;
     }
-
-    UserMgr.LoadFactId(worldID);
-    UserMgr.SetUserTimeout(hearttimeout);
 
     return true;
 }

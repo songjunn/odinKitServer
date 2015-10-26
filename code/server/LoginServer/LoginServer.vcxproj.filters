@@ -21,9 +21,6 @@
     <ClCompile Include="source\UserMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\WorldConfig.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\LoginServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -36,9 +33,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\UserMgr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\WorldConfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\LoginServer.h">

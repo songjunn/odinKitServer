@@ -43,7 +43,6 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 	switch (pack->Type())
 	{
 	case P2L_REQUEST_USER_CHECK:	_HandlePacket_UserCheck(pack);		break;
-	case S2C_REQUEST_REGISTER_SERVER:_HandlePacket_ConnectSuccess(pack); break;
 	case A2L_REQUEST_AUTH_CHECKER:	_HandlePacket_GateAuth(pack);		break;
 	
 	default:	return false;
@@ -140,16 +139,6 @@ bool CUserMgr::_HandlePacket_UserCheck(PACKET_COMMAND* pack)
 	if (m_UncheckedUserList.Find(userid) == m_UncheckedUserList.InvalidIndex()) {
 		m_UncheckedUserList.AddToTail(userid);
 	}
-
-	return true;
-}
-
-bool CUserMgr::_HandlePacket_ConnectSuccess(PACKET_COMMAND* pack)
-{
-	Message::RegistServer msg;
-	PROTOBUF_CMD_PARSER(pack, msg);
-
-	Log.Notice("Gate connect success. id: %d, world: %d, ip: %s, port: %d", msg.id(), msg.world(), msg.extip(), msg.extport());
 
 	return true;
 }

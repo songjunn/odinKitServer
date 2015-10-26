@@ -75,7 +75,6 @@ public:
 
 protected:
 	bool	_HandlePacket_UserCheck(PACKET_COMMAND* pack);
-	bool	_HandlePacket_ConnectSuccess(PACKET_COMMAND* pack);
 	bool	_HandlePacket_GateAuth(PACKET_COMMAND* pack);
 
 	bool	checkFromThirdPlatform(CUser *pUser);

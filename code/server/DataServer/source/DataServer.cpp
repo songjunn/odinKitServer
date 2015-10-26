@@ -52,20 +52,12 @@ bool CDataServer::onStartup()
 	const char* gamedbip = LuaEngine.GetLuaVariableString("db_game_ip", "Sconf");
 	const char* gamedbname = LuaEngine.GetLuaVariableString("db_game_name", "Sconf");
 	const char* gamedbport = LuaEngine.GetLuaVariableString("db_game_port", "Sconf");
-	const char* eventdbip = LuaEngine.GetLuaVariableString("db_event_ip", "Sconf");
-	const char* eventdbname = LuaEngine.GetLuaVariableString("db_event_name", "Sconf");
-	const char* eventdbport = LuaEngine.GetLuaVariableString("db_event_port", "Sconf");
 	int worldID = LuaEngine.GetLuaVariableNumber("WorldID", "Sconf");
 	int connmax = LuaEngine.GetLuaVariableNumber("connect_count_max", "DataServer");
 	int packsize = LuaEngine.GetLuaVariableNumber("packet_pool_size", "DataServer");
 	int recvsize = LuaEngine.GetLuaVariableNumber("recv_buff_size", "DataServer");
 	int sendsize = LuaEngine.GetLuaVariableNumber("send_buff_size", "DataServer");
-	int usercnt = LuaEngine.GetLuaVariableNumber("user_count_max", "DataServer");
 	int playercnt = LuaEngine.GetLuaVariableNumber("player_count_max", "DataServer");
-	int herocnt = LuaEngine.GetLuaVariableNumber("hero_count_max", "DataServer");
-	int itemcnt = LuaEngine.GetLuaVariableNumber("item_count_max", "DataServer");
-	int saveTime = LuaEngine.GetLuaVariableNumber("save_logic_interval", "DataServer");
-	int orderSaveTime = LuaEngine.GetLuaVariableNumber("save_logic_interval", "DataServer");
 	int dboperator = LuaEngine.GetLuaVariableNumber("db_operator_max", "DataServer");
 	const char* udPath = LuaEngine.GetLuaVariableString("MonitorPath", "Key");
 

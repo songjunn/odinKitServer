@@ -169,7 +169,7 @@ void CMetadata::fromBson(mongo::BSONObj& bson)
 {
 	std::vector<mongo::BSONElement> elements;
 	bson.elems(elements);
-	for (int i = 0; i<elements.size(); ++i) {
+	for (uint i = 0; i<elements.size(); ++i) {
 		this->_fieldBsonToJson(m_members, elements[i].fieldName(), bson);
 	}
 }
@@ -180,7 +180,7 @@ void CMetadata::fromBson(mongo::BSONObj& bson, std::string key)
 
 	std::vector<mongo::BSONElement> elements;
 	bson.elems(elements);
-	for (int i = 0; i<elements.size(); ++i) {
+	for (uint i = 0; i<elements.size(); ++i) {
 		this->_fieldBsonToJson(member, elements[i].fieldName(), bson);
 	}
 }
@@ -262,7 +262,7 @@ void CMetadata::_fieldBsonToJson(rapidjson::Value& json, std::string key, mongo:
 
 void CMetadata::_vecBsonToJson(rapidjson::Value& json, mongo::vector<mongo::BSONElement>& value)
 {
-	for (int i=0; i<value.size(); ++i) {
+	for (uint i=0; i<value.size(); ++i) {
 		rapidjson::Value val;
 		switch(value[i].type())
 		{
@@ -279,7 +279,7 @@ void CMetadata::_objBsonToJson(rapidjson::Value& json, mongo::BSONObj& bson)
 {
 	std::vector<mongo::BSONElement> values;
 	bson.elems(values);
-	for (int i = 0; i<values.size(); ++i) {
+	for (uint i = 0; i<values.size(); ++i) {
 		this->_fieldBsonToJson(json, values[i].fieldName(), bson);
 	}
 }

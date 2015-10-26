@@ -31,6 +31,9 @@
     <Filter Include="mongoose">
       <UniqueIdentifier>{8d85a9b3-824e-40ba-b04f-229312ddc40c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="httpd">
+      <UniqueIdentifier>{105ea191-de90-44df-9549-c78820374586}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="util\base64.cpp">
@@ -137,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="network\IOEpoll.cpp">
       <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="httpd\httpd.c">
+      <Filter>httpd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +392,9 @@
     </ClInclude>
     <ClInclude Include="network\IOEpoll.h">
       <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="httpd\httpd.h">
+      <Filter>httpd</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
