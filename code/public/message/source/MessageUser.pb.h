@@ -762,6 +762,18 @@ class ClientLogin : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 server() const;
   inline void set_server(::google::protobuf::int32 value);
 
+  // optional string accesstoken = 4;
+  inline bool has_accesstoken() const;
+  inline void clear_accesstoken();
+  static const int kAccesstokenFieldNumber = 4;
+  inline const ::std::string& accesstoken() const;
+  inline void set_accesstoken(const ::std::string& value);
+  inline void set_accesstoken(const char* value);
+  inline void set_accesstoken(const char* value, size_t size);
+  inline ::std::string* mutable_accesstoken();
+  inline ::std::string* release_accesstoken();
+  inline void set_allocated_accesstoken(::std::string* accesstoken);
+
   // @@protoc_insertion_point(class_scope:Message.ClientLogin)
  private:
   inline void set_has_uid();
@@ -770,15 +782,18 @@ class ClientLogin : public ::google::protobuf::Message {
   inline void clear_has_key();
   inline void set_has_server();
   inline void clear_has_server();
+  inline void set_has_accesstoken();
+  inline void clear_has_accesstoken();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::int64 uid_;
   ::google::protobuf::int64 key_;
+  ::std::string* accesstoken_;
   ::google::protobuf::int32 server_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
 
   friend void  protobuf_AddDesc_MessageUser_2eproto();
   friend void protobuf_AssignDesc_MessageUser_2eproto();
@@ -1730,6 +1745,76 @@ inline ::google::protobuf::int32 ClientLogin::server() const {
 inline void ClientLogin::set_server(::google::protobuf::int32 value) {
   set_has_server();
   server_ = value;
+}
+
+// optional string accesstoken = 4;
+inline bool ClientLogin::has_accesstoken() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ClientLogin::set_has_accesstoken() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ClientLogin::clear_has_accesstoken() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ClientLogin::clear_accesstoken() {
+  if (accesstoken_ != &::google::protobuf::internal::kEmptyString) {
+    accesstoken_->clear();
+  }
+  clear_has_accesstoken();
+}
+inline const ::std::string& ClientLogin::accesstoken() const {
+  return *accesstoken_;
+}
+inline void ClientLogin::set_accesstoken(const ::std::string& value) {
+  set_has_accesstoken();
+  if (accesstoken_ == &::google::protobuf::internal::kEmptyString) {
+    accesstoken_ = new ::std::string;
+  }
+  accesstoken_->assign(value);
+}
+inline void ClientLogin::set_accesstoken(const char* value) {
+  set_has_accesstoken();
+  if (accesstoken_ == &::google::protobuf::internal::kEmptyString) {
+    accesstoken_ = new ::std::string;
+  }
+  accesstoken_->assign(value);
+}
+inline void ClientLogin::set_accesstoken(const char* value, size_t size) {
+  set_has_accesstoken();
+  if (accesstoken_ == &::google::protobuf::internal::kEmptyString) {
+    accesstoken_ = new ::std::string;
+  }
+  accesstoken_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ClientLogin::mutable_accesstoken() {
+  set_has_accesstoken();
+  if (accesstoken_ == &::google::protobuf::internal::kEmptyString) {
+    accesstoken_ = new ::std::string;
+  }
+  return accesstoken_;
+}
+inline ::std::string* ClientLogin::release_accesstoken() {
+  clear_has_accesstoken();
+  if (accesstoken_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = accesstoken_;
+    accesstoken_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void ClientLogin::set_allocated_accesstoken(::std::string* accesstoken) {
+  if (accesstoken_ != &::google::protobuf::internal::kEmptyString) {
+    delete accesstoken_;
+  }
+  if (accesstoken) {
+    set_has_accesstoken();
+    accesstoken_ = accesstoken;
+  } else {
+    clear_has_accesstoken();
+    accesstoken_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
 // -------------------------------------------------------------------

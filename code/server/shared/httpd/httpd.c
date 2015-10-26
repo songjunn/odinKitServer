@@ -8,13 +8,18 @@
 #include <strings.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <pthread.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include "ThreadLib.h"
+#include "httpd.h"
 
 #define ISspace(x) isspace((int)(x))
 
 #define SERVER_STRING "Server: httpd/0.1.0\r\n"
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 enum http_error {
 	HTTP_ERROR_BAD_REQUEST = 400,
@@ -24,7 +29,7 @@ enum http_error {
 };
 
 int start_net(int port);
-void worker_thread(int client);
+void worker_thread(void* param);
 int get_line(int sock, char *buf, int size);
 void handle_request_cgi(int client, const char *path, const char *method, const char *query_string);
 void handle_request_file(int client, const char *filename);
@@ -32,18 +37,23 @@ void send_file(int client, FILE *resource);
 void send_headers_ok(int client);
 void send_headers_err(int client, int error);
 
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
 /**********************************************************************/
 /* A request has caused a call to accept() on the server port to
  * return.  Process the request appropriately.
  * Parameters: the socket connected to the client */
 /**********************************************************************/
-void worker_thread(int client)
+void worker_thread(void* param)
 {
 	char buf[1024], method[255], url[255], path[512];
     int numchars, cgi = 0;
     size_t i = 0, j = 0;
     struct stat st;
     char *query_string = NULL;
+    int client = *(int *)param;
 
     numchars = get_line(client, buf, sizeof(buf));
     while (!ISspace(buf[j]) && (i < sizeof(method) - 1)) {
@@ -354,13 +364,13 @@ int start_net(int port)
 }
 
 /**********************************************************************/
-void httpd_thread(int port) 
+void httpd_thread(void* param) 
 {
     int server_sock = -1;
     int client_sock = -1;
+    int port = *(int *)param;
     struct sockaddr_in client_name;
-    int client_name_len = sizeof(client_name); 
-    pthread_t workthread;
+    socklen_t client_name_len = sizeof(client_name); 
 
     server_sock = start_net(port);
 	if (server_sock == -1) {
@@ -379,7 +389,8 @@ void httpd_thread(int port)
 			continue;
 		}
 
-		if (pthread_create(&workthread, NULL, worker_thread, client_sock) != 0) {
+		//if (pthread_create(&workthread, NULL, worker_thread, (void*)&client_sock) != 0) {
+                if (ThreadLib::Create(worker_thread, (void*)&client_sock) == 0) {
 			printf("httpd create thread error\n");
 			continue;
 		}

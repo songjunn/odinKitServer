@@ -23,6 +23,6 @@ aux_source_directory(${GATESERVER_SOURCE_DIR}/source SUB_SRC)
 add_executable(gateserver ${MAIN_SRC} ${SUB_SRC})
 
 #LINK LIBRARIES
-target_link_libraries(gateserver servercore rt shared lua dl z crypt
+target_link_libraries(gateserver servercore rt curl shared lua dl z crypt
 	protobuf message mongoclient boost_system boost_filesystem boost_thread)
 

@@ -1,7 +1,8 @@
 #include "plugin_HttpServe.h"
 #include <stdlib.h>
-#include <malloc.h>
+#include "memory.h"
 #include "ThreadLib.h"
+#include "httpd.h"
 
 CHttpServe::CHttpServe()
 {
@@ -23,7 +24,8 @@ bool CHttpServe::startup(int port, mg_handler_t handler, int threadnum)
 		ThreadLib::Create(_httpServeThread, server);
 	}*/
 
-	ThreadLib::Create(httpd_thread, port);
+	//int* param = NEW int(port);
+        ThreadLib::Create(httpd_thread, (int*)&port);
 	return true;
 }
 

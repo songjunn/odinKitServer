@@ -3,7 +3,6 @@
 
 #include "plugin.h"
 #include "mongoose.h"
-#include "httpd.h"
 
 class CHttpServe : public CPlugin
 {

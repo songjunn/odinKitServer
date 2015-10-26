@@ -1,6 +1,10 @@
 #ifndef _HTTPD_H_
 #define _HTTPD_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // This structure contains information about HTTP request.
 struct httpd_request {
 	const char *request_method; // "GET", "POST", etc
@@ -28,6 +32,10 @@ struct httpd_request {
 	void *callback_param;
 };
 
-void httpd_thread(int port);
+void httpd_thread(void* param);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif //_HTTPD_H_

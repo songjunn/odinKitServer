@@ -160,10 +160,11 @@ void protobuf_AssignDesc_MessageUser_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GuestCheck));
   ClientLogin_descriptor_ = file->message_type(6);
-  static const int ClientLogin_offsets_[3] = {
+  static const int ClientLogin_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientLogin, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientLogin, key_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientLogin, server_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClientLogin, accesstoken_),
   };
   ClientLogin_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -277,10 +278,11 @@ void protobuf_AddDesc_MessageUser_2eproto() {
     "ponse\022\r\n\005stime\030\001 \001(\003\"K\n\tUserCheck\022\016\n\006ser"
     "ver\030\001 \001(\005\022\016\n\006userid\030\002 \001(\t\022\016\n\006ticket\030\003 \001("
     "\t\022\016\n\006client\030\004 \001(\005\",\n\nGuestCheck\022\016\n\006devic"
-    "e\030\001 \001(\t\022\016\n\006server\030\002 \001(\005\"7\n\013ClientLogin\022\013"
+    "e\030\001 \001(\t\022\016\n\006server\030\002 \001(\005\"L\n\013ClientLogin\022\013"
     "\n\003uid\030\001 \001(\003\022\013\n\003key\030\002 \001(\003\022\016\n\006server\030\003 \001(\005"
-    "\"\031\n\nUserLogout\022\013\n\003uid\030\001 \001(\003\"\037\n\020UserHeart"
-    "Request\022\013\n\003pid\030\001 \001(\003", 500);
+    "\022\023\n\013accesstoken\030\004 \001(\t\"\031\n\nUserLogout\022\013\n\003u"
+    "id\030\001 \001(\003\"\037\n\020UserHeartRequest\022\013\n\003pid\030\001 \001("
+    "\003", 521);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "MessageUser.proto", &protobuf_RegisterTypes);
   UserLogin::default_instance_ = new UserLogin();
@@ -2147,6 +2149,7 @@ void GuestCheck::Swap(GuestCheck* other) {
 const int ClientLogin::kUidFieldNumber;
 const int ClientLogin::kKeyFieldNumber;
 const int ClientLogin::kServerFieldNumber;
+const int ClientLogin::kAccesstokenFieldNumber;
 #endif  // !_MSC_VER
 
 ClientLogin::ClientLogin()
@@ -2168,6 +2171,7 @@ void ClientLogin::SharedCtor() {
   uid_ = GOOGLE_LONGLONG(0);
   key_ = GOOGLE_LONGLONG(0);
   server_ = 0;
+  accesstoken_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2176,6 +2180,9 @@ ClientLogin::~ClientLogin() {
 }
 
 void ClientLogin::SharedDtor() {
+  if (accesstoken_ != &::google::protobuf::internal::kEmptyString) {
+    delete accesstoken_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2206,6 +2213,11 @@ void ClientLogin::Clear() {
     uid_ = GOOGLE_LONGLONG(0);
     key_ = GOOGLE_LONGLONG(0);
     server_ = 0;
+    if (has_accesstoken()) {
+      if (accesstoken_ != &::google::protobuf::internal::kEmptyString) {
+        accesstoken_->clear();
+      }
+    }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -2260,6 +2272,23 @@ bool ClientLogin::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(34)) goto parse_accesstoken;
+        break;
+      }
+
+      // optional string accesstoken = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_accesstoken:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_accesstoken()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->accesstoken().data(), this->accesstoken().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -2297,6 +2326,15 @@ void ClientLogin::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->server(), output);
   }
 
+  // optional string accesstoken = 4;
+  if (has_accesstoken()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->accesstoken().data(), this->accesstoken().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->accesstoken(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2318,6 +2356,16 @@ void ClientLogin::SerializeWithCachedSizes(
   // optional int32 server = 3;
   if (has_server()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->server(), target);
+  }
+
+  // optional string accesstoken = 4;
+  if (has_accesstoken()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->accesstoken().data(), this->accesstoken().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->accesstoken(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -2350,6 +2398,13 @@ int ClientLogin::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->server());
+    }
+
+    // optional string accesstoken = 4;
+    if (has_accesstoken()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->accesstoken());
     }
 
   }
@@ -2388,6 +2443,9 @@ void ClientLogin::MergeFrom(const ClientLogin& from) {
     if (from.has_server()) {
       set_server(from.server());
     }
+    if (from.has_accesstoken()) {
+      set_accesstoken(from.accesstoken());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2414,6 +2472,7 @@ void ClientLogin::Swap(ClientLogin* other) {
     std::swap(uid_, other->uid_);
     std::swap(key_, other->key_);
     std::swap(server_, other->server_);
+    std::swap(accesstoken_, other->accesstoken_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

@@ -6,7 +6,7 @@
 #include "ObjMgr.h"
 #include "utllinkedlist.h"
 
-#include "HttpServer.h"
+#include "plugin_HttpServe.h"
 
 #define	 AUTH_VAR_LEN			128
 #define  AUTH_USER_ID			"userid"

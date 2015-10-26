@@ -22,6 +22,7 @@ aux_source_directory(${SHARED_SOURCE_DIR}/rapidjson SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/thread SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/util SHARED_SRC)
 aux_source_directory(${SHARED_SOURCE_DIR}/xml SHARED_SRC)
+aux_source_directory(${SHARED_SOURCE_DIR}/httpd SHARED_SRC)
 
 #ADD -l
 add_definitions(-lrt)
