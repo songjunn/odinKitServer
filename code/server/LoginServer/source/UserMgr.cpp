@@ -2,17 +2,14 @@
 #include <cctype>
 #include <algorithm>
 #include "UserMgr.h"
-#include "ServerMgr.h"
 #include "PacketDefine.h"
 #include "random.h"
-#include "DBCache.h"
-#include "MainServer.h"
-#include "LoginNet.h"
+#include "LoginServer.h"
 #include "error.h"
 #include "DBOperate.h"
 #include "gtime.h"
 #include "strtools.h"
-#include "utlMD5.h"
+#include "md5.h"
 #include "curl/curl.h"
 #include "MessageUserCheck.pb.h"
 #include "MessageErrorNo.pb.h"
@@ -170,7 +167,7 @@ bool CUserMgr::_HandlePacket_GateAuth(PACKET_COMMAND* pack)
 
 	PACKET_COMMAND pack2;
 	PROTOBUF_CMD_PACKAGE(pack2, msg2, L2A_RESPONSE_AUTH_CHECKER);
-	LoginNet.SendMsg(pack->GetNetID(), &pack2);
+	GETCLIENTNET(&LoginServer)->sendMsg(pack->GetNetID(), &pack2);
 
 	return true;
 }
@@ -328,7 +325,7 @@ void CUserMgr::sendSWChecker(CUser *pUser)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, L2P_NOTIFY_SW_CHECKER);
-	LoginNet.SendMsg(pUser->m_sock, &pack);
+	GETCLIENTNET(&LoginServer)->sendMsg(pUser->m_sock, &pack);
 }
 
 void CUserMgr::SendErrorMsg(CUser* user, int errid)
@@ -341,7 +338,7 @@ void CUserMgr::SendErrorMsg(CUser* user, int errid)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, S2P_NOTIFY_SYNC_ERROR);
-	LoginNet.SendMsg(user->m_sock, &pack);
+	GETCLIENTNET(&LoginServer)->sendMsg(user->m_sock, &pack);
 }
 
 CUser *CUserMgr::_AddUser(UserID userid)
