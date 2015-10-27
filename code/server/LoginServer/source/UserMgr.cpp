@@ -2,7 +2,6 @@
 #include <cctype>
 #include <algorithm>
 #include "UserMgr.h"
-#include "PacketDefine.h"
 #include "random.h"
 #include "LoginServer.h"
 #include "error.h"
@@ -11,11 +10,7 @@
 #include "strtools.h"
 #include "md5.h"
 #include "curl/curl.h"
-#include "MessageUserCheck.pb.h"
-#include "MessageErrorNo.pb.h"
-#include "MessageNotifySWChecher.pb.h"
-#include "MessageRegistServer.pb.h"
-#include "MessageClientLogin.pb.h"
+#include "MessageTypeDefine.pb.h"
 
 #define  SW_POST_URL			"http://interface.kedou.com/front/interface/verifyLoginStatus.htm"
 #define	 SW_POST_FIELDS_FORMAT	"siteId=%d&time=%s&gameId=%d&memberId=%lld&flagGuid=1&ticket=%s&sign=%s"
@@ -271,7 +266,7 @@ string CUserMgr::generatePostField(CUser *pUser)
 	
 	memset(tmpStr, 0, sizeof(tmpStr));
 	unsigned char digest[16];
-	CUtlMD5 md5Tool;
+	MD5 md5Tool;
 	md5Tool.MDString(signStr, digest);
 	for (int di = 0; di < 16; ++di) {
 		sprintf(tmpStr + di * 2, "%02x", digest[di]);
