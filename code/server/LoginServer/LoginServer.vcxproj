@@ -181,14 +181,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="source\DBOperate.cpp" />
     <ClCompile Include="source\LoginServer.cpp" />
-    <ClCompile Include="source\UserMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\DBOperate.h" />
     <ClInclude Include="include\LoginServer.h" />
-    <ClInclude Include="include\UserMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.vcxproj">

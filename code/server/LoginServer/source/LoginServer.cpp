@@ -1,21 +1,15 @@
 #include "LoginServer.h"
-#include "UserMgr.h"
 #include "LuaEngine.h"
 #include "PathFunc.h"
+#include "Log.h"
 #ifdef __linux__
 #include <unistd.h>
 #include "linux_time.h"
 #endif
-#include "MessageTypeDefine.pb.h"
-#include "MessageServer.pb.h"
 
 createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CLoginServer);
-createFileSingleton(CUserMgr);
-
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
-extern CObjectMemoryPool<OperObj>	g_MongoOperPool;
 
 static int httpserver_ev_handler(struct mg_connection *conn, enum mg_event ev) {	if (ev == MG_REQUEST) {		Log.Debug("[HttpServer]Handle Event:%d ip:%s", ev, conn->remote_ip);		if (true) {			mg_send_data(conn, "0", 1);		} else {			mg_send_data(conn, "1", 1);
 		}		return MG_TRUE;	}	else if (ev == MG_AUTH) {		return MG_TRUE;	}	else {		return MG_FALSE;	}}
@@ -68,22 +62,10 @@ bool CLoginServer::onStartup()
     int dboperator = LuaEngine.GetLuaVariableNumber("db_operator_max", "LoginServer");
     const char* udPath = LuaEngine.GetLuaVariableString("MonitorPath", "Key");
 
-    //初始化
+    /*//初始化
     char mpath[1024] = { 0 };
     sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
-    this->initSelf(worldID, CBaseServer::Linker_Server_Login, myid, myport, myip, 0, NULL, mpath);
-
-    if (!UserMgr.Initialize("user", usercnt)) {
-	    return false;
-    }
-
-    if (!g_PacketPool.Init("Packet", packsize)) {
-	    return false;
-    }
-
-    if (!g_MongoOperPool.Init("MongoOper", dboperator)) {
-	    return false;
-    }
+    this->initSelf(worldID, CBaseServer::Linker_Server_Login, myid, myport, myip, 0, NULL, mpath);*/
 	
     char spath[1024] = { 0 };
     sprintf(spath, "%s//Server_%d.sock", udPath, myid);
@@ -98,12 +80,6 @@ bool CLoginServer::onStartup()
 		Log.Error("[CLoginServer] create Plugin_HttpServe failed");
 		return false;
 	}
-
-    CMongoDB* db = (CMongoDB *)this->createPlugin(CBaseServer::Plugin_Mongodb);
-    if (!db->startup(gamedbip, gamedbport, gamedbname)) {
-		Log.Error("[CLoginServer] create Plugin_Mongodb failed");
-	    return false;
-    }
 
     return true;
 }

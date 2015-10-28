@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\DBOperate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="source\UserMgr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\LoginServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -29,12 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\DBOperate.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\UserMgr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\LoginServer.h">
       <Filter>头文件</Filter>
     </ClInclude>
