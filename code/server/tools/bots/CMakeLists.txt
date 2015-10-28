@@ -9,8 +9,10 @@ include(${BOTS_SOURCE_DIR}/../../odin.cmake)
 ODIN_BUILD_OPTION()
 ODIN_BUILD()
 ODIN_COMMON_INCLUDE(${BOTS_SOURCE_DIR}/../)
-ODIN_INSTALL_PATH(${BOTS_SOURCE_DIR}/../)
+#ODIN_INSTALL_PATH(${BOTS_SOURCE_DIR}/../)
 ODIN_LIBRARY_PATH(${BOTS_SOURCE_DIR}/../)
+
+set(EXECUTABLE_OUTPUT_PATH ${BOTS_SOURCE_DIR}/bin)
 
 #INCLUDE
 include_directories(${BOTS_SOURCE_DIR}/src)
@@ -23,5 +25,5 @@ add_executable(bots ${MAIN_SRC} )
 
 #LINK LIBRARIES
 target_link_libraries(bots rt shared lua dl z crypt
-  protobuf message)
+  protobuf message curl)
 

@@ -59,9 +59,11 @@ bool CRobotNet::sendHttpRequest(CRobotObj *robot)
 	return (res == 0);
 }
 
-void CRobotNet::recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, void *userp)
+size_t CRobotNet::recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, void *userp)
 {
 	CRobotObj *robot = (CRobotObj *)userp;
 	char *recvdata = (char *)buffer;
+
+        return nsize * nmemb;
 }
 

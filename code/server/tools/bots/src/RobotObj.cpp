@@ -136,9 +136,9 @@ void CRobotObj::Heart()
 
 void CRobotObj::CreatePlayer(int64 uid, int server, const char* name, int vocation, int sex, int camp)
 {
-	wchar_t* wname = new wchar_t[32];
-	int nCount = strlen( name ) + 1;
-	MultiByteToWideChar(CP_ACP, 0, name, nCount, wname, nCount );
+	//wchar_t* wname = new wchar_t[32];
+	//int nCount = strlen( name ) + 1;
+	//MultiByteToWideChar(CP_ACP, 0, name, nCount, wname, nCount );
 
 	Message::CreatePlayer msg;
 	msg.set_uid(uid);
@@ -162,7 +162,7 @@ void CRobotObj::ActiveCity(int64 pid, int scene)
 
 void CRobotObj::AddExp(int exp)
 {
-	char id[1024] = {0};
+	/*char id[1024] = {0};
 	_i64toa(m_PlayerID, id, 10);
 
 	Message::DebugRequest msg;
@@ -172,12 +172,12 @@ void CRobotObj::AddExp(int exp)
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_DEBUG);
-	RobotNet.sendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);*/
 }
 
 void CRobotObj::AddItem()
 {
-	char id[1024] = {0};
+	/*char id[1024] = {0};
 	_i64toa(m_PlayerID, id, 10);
 
 	Message::DebugRequest msg;
@@ -188,7 +188,7 @@ void CRobotObj::AddItem()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_DEBUG);
-	RobotNet.sendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);*/
 }
 
 void CRobotObj::SendChat()
@@ -231,7 +231,7 @@ void CRobotObj::UplevelStar()
 
 void CRobotObj::AddHero()
 {
-	char id[1024] = {0};
+	/*char id[1024] = {0};
 	_i64toa(m_PlayerID, id, 10);
 
 	Message::DebugRequest msg;
@@ -242,7 +242,7 @@ void CRobotObj::AddHero()
 
 	PACKET_COMMAND pack;
 	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_DEBUG);
-	RobotNet.sendMsg(m_uid, m_sock, &pack);
+	RobotNet.sendMsg(m_uid, m_sock, &pack);*/
 }
 
 void CRobotObj::DoNetTest()

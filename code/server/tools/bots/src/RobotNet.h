@@ -14,7 +14,7 @@ public:
 	bool shutdown(SOCKET sock);
 	int	 sendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack);
 	bool sendHttpRequest(CRobotObj *robot);
-	void recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, void *userp);
+	static size_t recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, void *userp);
 
 	bool handlePacket(PACKET_COMMAND * pCmd);
 	PACKET_COMMAND*	getHeadPacket();

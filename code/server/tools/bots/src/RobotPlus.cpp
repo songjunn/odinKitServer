@@ -1,7 +1,6 @@
 // RobotPlus.cpp : 定义控制台应用程序的入口点。
 //
 
-#include "stdafx.h"
 #include "LuaEngine.h"
 #include "memorypool.h"
 #include "RobotNet.h"
@@ -22,7 +21,7 @@ CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
  char	g_szServerIp[32];
  int	g_nServerPort;
 
-int _tmain(int argc, _TCHAR* argv[])
+int main()
 {
 	//初始化lua引擎
 	if( !LuaEngine.Init() )
@@ -84,7 +83,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			robot->Check(g_szServerIp, g_nServerPort, g_szServerVersion);
 
-			Sleep(10);
+			sleep(10);
 		}
 
 		FOR_EACH_LL(RobotMgr.m_RobotList, index)
@@ -105,7 +104,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			g_PacketPool.Free( pack );
 		}
 
-		Sleep(1);
+		sleep(1);
 	}
 
 	return 0;
