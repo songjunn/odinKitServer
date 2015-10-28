@@ -13,7 +13,7 @@ public:
 	virtual bool onStartup();
 	virtual void onShutdown();
 	virtual bool onLogic() { return true; }
-	virtual bool onMessage(PACKET_COMMAND* pack) { return ture; }
+	virtual bool onMessage(PACKET_COMMAND* pack) { return true; }
 	virtual void onPrint(char* output) { return; }
 
 };
