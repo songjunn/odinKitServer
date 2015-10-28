@@ -18,11 +18,13 @@ createFileSingleton(CTestUnitMgr);
 
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
  char g_szServerVersion[32];
- char	g_szServerIp[32];
+char	g_szServerIp[32];
  int	g_nServerPort;
 
 int main()
 {
+    RobotNet.sendHttpRequest(new CRobotObj(1,"a","b",2,3));
+    return 0;
 	//≥ı ºªØlua“˝«Ê
 	if( !LuaEngine.Init() )
 	{

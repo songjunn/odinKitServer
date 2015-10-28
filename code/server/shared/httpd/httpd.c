@@ -48,14 +48,15 @@ void send_headers_err(int client, int error);
 /**********************************************************************/
 void worker_thread(void* param)
 {
-	char buf[1024], method[255], url[255], path[512];
+    char buf[1024], method[255], url[255], path[512];
     int numchars, cgi = 0;
     size_t i = 0, j = 0;
     struct stat st;
     char *query_string = NULL;
     int client = *(int *)param;
 
-    numchars = get_line(client, buf, sizeof(buf));
+    //numchars = get_line(client, buf, sizeof(buf));
+    numchars = recv(client, buf, 1024, 0);
     while (!ISspace(buf[j]) && (i < sizeof(method) - 1)) {
         method[i] = buf[j];
         i++; j++;
@@ -63,18 +64,14 @@ void worker_thread(void* param)
     method[i] = '\0';
 
     if (strcasecmp(method, "GET") && strcasecmp(method, "POST")) {
-		send_headers_err(client, HTTP_ERROR_METHOD_NOT_IMPLEMENTED);
+        send_headers_err(client, HTTP_ERROR_METHOD_NOT_IMPLEMENTED);
         return;
     }
 
-	if (strcasecmp(method, "POST") == 0) {
-		cgi = 1;
-	}
-
     i = 0;
-	while (ISspace(buf[j]) && (j < sizeof(buf))) {
-		j++;
-	}
+    while (ISspace(buf[j]) && (j < sizeof(buf))) {
+        j++;
+    }
     while (!ISspace(buf[j]) && (i < sizeof(url) - 1) && (j < sizeof(buf))) {
         url[i] = buf[j];
         i++; j++;
@@ -82,11 +79,11 @@ void worker_thread(void* param)
     url[i] = '\0';
 
     //if (strcasecmp(method, "GET") == 0) 
-	{
+    {
         query_string = url;
-		while ((*query_string != '?') && (*query_string != '\0')) {
-			query_string++;
-		}
+        while ((*query_string != '?') && (*query_string != '\0')) {
+            query_string++;
+        }
         if (*query_string == '?') {
             cgi = 1;
             *query_string = '\0';
@@ -94,8 +91,8 @@ void worker_thread(void* param)
         }
     }
 
-	printf("httpd recv request: %s\n", url);
-	printf("httpd recv query: %s\n", query_string);
+    printf("httpd recv request: %s\n", url);
+    printf("httpd recv query: %s\n", query_string);
 
     /*sprintf(path, "htdocs%s", url);
 	if (path[strlen(path) - 1] == '/') {
