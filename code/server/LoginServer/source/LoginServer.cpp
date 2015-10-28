@@ -17,6 +17,9 @@ createFileSingleton(CUserMgr);
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 extern CObjectMemoryPool<OperObj>	g_MongoOperPool;
 
+static int httpserver_ev_handler(struct mg_connection *conn, enum mg_event ev) {	if (ev == MG_REQUEST) {		Log.Debug("[HttpServer]Handle Event:%d ip:%s", ev, conn->remote_ip);		if (true) {			mg_send_data(conn, "0", 1);		} else {			mg_send_data(conn, "1", 1);
+		}		return MG_TRUE;	}	else if (ev == MG_AUTH) {		return MG_TRUE;	}	else {		return MG_FALSE;	}}
+
 CLoginServer::CLoginServer()
 {
     setType(CBaseServer::Linker_Server_Login);
@@ -90,6 +93,12 @@ bool CLoginServer::onStartup()
 	    return false;
     }
 
+	CHttpServe* httpd = (CHttpServe *)this->createPlugin(CBaseServer::Plugin_HttpServe);
+	if (!httpd->startup(1313, httpserver_ev_handler, 3)) {
+		Log.Error("[CLoginServer] create Plugin_HttpServe failed");
+		return false;
+	}
+
     CMongoDB* db = (CMongoDB *)this->createPlugin(CBaseServer::Plugin_Mongodb);
     if (!db->startup(gamedbip, gamedbport, gamedbname)) {
 		Log.Error("[CLoginServer] create Plugin_Mongodb failed");
@@ -97,90 +106,6 @@ bool CLoginServer::onStartup()
     }
 
     return true;
-}
-
-bool CLoginServer::onMessage(PACKET_COMMAND* pack)
-{
-    VPROF("CLoginServer::onMessage");
-
-    if (!pack) {
-	return false;
-    }
-
-    switch (pack->Type()) {
-    case Message::MSG_REQUEST_USER_CHECK:
-    case Message::MSG_REQUEST_GUEST_CHECK:
-	UserMgr.OnMsg(pack);
-	return true;
-    case Message::MSG_SERVER_NET_ACCEPT:
-    case Message::MSG_SERVER_REGISTER:
-	CBaseServer::onMessage(pack);
-	return true;
-    case Message::MSG_SERVER_NET_CLOSE:
-	UserMgr.OnMsg(pack);
-	CBaseServer::onMessage(pack);
-	return true;
-    default:
-	break;
-    }
-
-    //从服务端发来的消息
-    CLinker* pServer = getServer(pack->GetNetID());
-    if (pServer) {
-	if (Message::MSG_SERVER_BEGIN >= pack->Type() || Message::MSG_SERVER_END <= pack->Type()) {
-	    Log.Error("[CLoginServer] Recv Error Message From Server, type:%d, sock:%d", pack->Type(), pack->GetNetID());
-	    return true;
-	}
-
-	switch (pack->Type()) {
-	case Message::MSG_SERVER_SYNCGATELOAD:
-	case Message::MSG_SERVER_SYNCSERVER:
-	case Message::MSG_SERVER_NET_CONNECT:
-	    CBaseServer::onMessage(pack);
-	    break;
-	default:
-	    break;
-	}
-
-	return true;
-    }
-
-    return false;
-}
-
-bool CLoginServer::onLogic()
-{
-    CBaseServer::onLogic();
-
-    UserMgr.UserHeartLogic();
-
-    return true;
-}
-
-void CLoginServer::onPrint(char* output)
-{
-    char szPackPool[10240] = { 0 };
-    char szMongoPool[10240] = { 0 };
-    char szUserPool[10240] = { 0 };
-    char szServer[10240] = { 0 };
-
-    g_PacketPool.Output(szPackPool, 10240);
-    g_MongoOperPool.Output(szMongoPool, 10240);
-    UserMgr.m_pool.Output(szUserPool, 10240);
-    CBaseServer::onPrint(szServer);
-
-    sprintf(output,
-	    " LoginServer monitor: User:%d\n"
-	    " ======================================================\n"
-	    " memory pool used:\n"
-	    "  %s"
-	    "  %s"
-	    "  %s"
-	    " ======================================================\n"
-	    " %s",
-	    UserMgr.Count(),
-	    szPackPool, szMongoPool, szUserPool,
-	    szServer);
 }
 
 void CLoginServer::onShutdown()

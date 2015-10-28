@@ -11,10 +11,10 @@ public:
 	~CLoginServer();
 
 	virtual bool onStartup();
-	virtual bool onLogic();
 	virtual void onShutdown();
-	virtual bool onMessage(PACKET_COMMAND* pack);
-	virtual void onPrint(char* output);
+	virtual bool onLogic() { return true; }
+	virtual bool onMessage(PACKET_COMMAND* pack) { return ture; }
+	virtual void onPrint(char* output) { return; }
 
 };
 
