@@ -81,7 +81,8 @@ void worker_thread(void* param)
     }
     url[i] = '\0';
 
-    if (strcasecmp(method, "GET") == 0) {
+    //if (strcasecmp(method, "GET") == 0) 
+	{
         query_string = url;
 		while ((*query_string != '?') && (*query_string != '\0')) {
 			query_string++;
@@ -94,6 +95,7 @@ void worker_thread(void* param)
     }
 
 	printf("httpd recv request: %s\n", url);
+	printf("httpd recv query: %s\n", query_string);
 
     /*sprintf(path, "htdocs%s", url);
 	if (path[strlen(path) - 1] == '/') {
