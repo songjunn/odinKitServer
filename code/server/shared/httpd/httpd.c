@@ -26,10 +26,10 @@ extern "C" {
 #endif // __cplusplus
 
 enum httpd_error {
-	HTTPD_ERROR_BAD_REQUEST = 400,
-	HTTPD_ERROR_NOT_FOUND = 404,
-	HTTPD_ERROR_INTERNAL_SERVER_ERROR = 500,
-	HTTPD_ERROR_METHOD_NOT_IMPLEMENTED = 501,
+    HTTPD_ERROR_BAD_REQUEST = 400,
+    HTTPD_ERROR_NOT_FOUND = 404,
+    HTTPD_ERROR_INTERNAL_SERVER_ERROR = 500,
+    HTTPD_ERROR_METHOD_NOT_IMPLEMENTED = 501,
 };
 
 int start_net(int port);
@@ -83,7 +83,7 @@ void worker_thread(void* param)
         printf("header %s: %s\n", message->headers[i].name, message->headers[i].value);
     }
 
-	server->handler(message, HTTP_REQUEST);
+	message->handler(message, HTTP_REQUEST);
 
     delete message;
 
@@ -145,7 +145,7 @@ void worker_thread(void* param)
             handle_request_cgi(client, path, method, query_string);
     }*/
 
-    close(client);
+    close(message->remote_sock);
 }
 
 static void parse_httpd_message(char *buf, size_t len, struct httpd_request *message) 
@@ -301,7 +301,7 @@ int httpd_get_post_var(struct httpd_request *message, const char* name, char* bu
 }
 
 size_t httpd_send_data(struct httpd_request *message, const void *data, int data_len) {
-	return send(message->sock, data, data_len, 0);
+	return send(message->remote_sock, data, data_len, 0);
 }
 
 /**********************************************************************/
@@ -521,11 +521,11 @@ void send_headers_err(int client, int error)
 /**********************************************************************/
 int start_net(int port)
 {
-    int socket = 0;
+    int sock = 0;
     struct sockaddr_in name;
 
-	socket = socket(PF_INET, SOCK_STREAM, 0);
-	if (socket == -1) {
+	sock = socket(PF_INET, SOCK_STREAM, 0);
+	if (sock == -1) {
 		printf("httpd create socket error\n");
 		return -1;
 	}
@@ -535,17 +535,17 @@ int start_net(int port)
     name.sin_port = htons(port);
     name.sin_addr.s_addr = htonl(INADDR_ANY);
     
-	if (bind(socket, (struct sockaddr *)&name, sizeof(name)) < 0) {
+	if (bind(sock, (struct sockaddr *)&name, sizeof(name)) < 0) {
 		printf("httpd bind socket error\n");
 		return -1;
 	}
 
-	if (listen(socket, SOMAXCONN) < 0) {
+	if (listen(sock, SOMAXCONN) < 0) {
 		printf("httpd listen socket error\n");
 		return -1;
 	}
 
-	return socket;
+	return sock;
 }
 
 struct httpd_server* httpd_create_server(unsigned short port, httpd_handler_t handler) {
@@ -560,18 +560,18 @@ void httpd_start(void* param) {
     int server_sock = -1;
     int client_sock = -1;
     struct sockaddr_in client_name;
-	struct httpd_server* server = *(int *)param;
+	struct httpd_server* server = (struct httpd_server *)param;
     socklen_t client_name_len = sizeof(client_name);
 
-	server->socket = start_net(server->port);
-	if (server->socket == -1) {
+	server->sock = start_net(server->port);
+	if (server->sock == -1) {
 		printf("httpd start net failed\n");
 		return;
 	}
 	printf("httpd running on port %d\n", server->port);
 
 	while (1) {
-		client_sock = accept(server->socket,
+		client_sock = accept(server->sock,
 			(struct sockaddr *)&client_name,
 			&client_name_len);
 
@@ -582,6 +582,7 @@ void httpd_start(void* param) {
 
 		struct httpd_request* client = new struct httpd_request;
 		client->remote_sock = client_sock;
+                client->handler = server->handler;
 
         if (ThreadLib::Create(worker_thread, (void*)client) == 0) {
 			printf("httpd create thread error\n");
@@ -589,5 +590,5 @@ void httpd_start(void* param) {
 		}
 	}
 
-	close(server->socket);
+	close(server->sock);
 }
