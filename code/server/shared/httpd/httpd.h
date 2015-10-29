@@ -23,6 +23,8 @@ struct http_request {
 
 	char *body;                 // POST data, or NULL
 	size_t body_len;            // Data length
+
+	int status_code;            // HTTP status code for HTTP error handler
 };
 
 void httpd_thread(void* param);
