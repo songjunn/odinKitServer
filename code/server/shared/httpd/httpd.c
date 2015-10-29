@@ -13,13 +13,7 @@
 #include "ThreadLib.h"
 #include "httpd.h"
 
-#define ISspace(x) isspace((int)(x))
-
 #define SERVER_STRING "Server: httpd/0.1.0\r\n"
-
-#ifndef ARRAY_SIZE
-#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,20 +63,13 @@ void worker_thread(void* param)
     //numchars = get_line(client, buf, sizeof(buf));
 	numchars = recv(message->remote_sock, buf, 1024, 0);
 
+	printf("httpd recv connect: %s\n", message->remote_ip);
     printf("httpd recv message: %s\n", buf);
 
 	// parse http message
 	parse_httpd_message(buf, numchars, message);
 
-    printf("method: %s\n", message->method);
-    printf("uri: %s\n", message->uri);
-    printf("version: %s\n", message->version);
-    printf("query_string: %s\n", message->query_string);
-    printf("body: %s\n", message->body);
-    for (int i=0; i<message->num_headers; i++) {
-        printf("header %s: %s\n", message->headers[i].name, message->headers[i].value);
-    }
-
+	// handle message
 	message->handler(message, HTTP_REQUEST);
 
     delete message;
@@ -170,7 +157,7 @@ static void parse_httpd_message(char *buf, size_t len, struct httpd_request *mes
         (!is_request && memcmp(message->method, "HTTP/", 5) != 0)) {
         len = ~0;
     } else {
-	if (is_request) {
+        if (is_request) {
             message->version += 5;
         } else {
             message->status_code = atoi(message->uri);
@@ -198,7 +185,7 @@ static void parse_httpd_message(char *buf, size_t len, struct httpd_request *mes
 static void parse_httpd_headers(char **buf, struct httpd_request *message) {
     size_t i;
 
-    for (i = 0; i < ARRAY_SIZE(message->headers); i++) {
+	for (i = 0; i < sizeof(message->headers) / sizeof(message->headers[0]); i++) {
         message->headers[i].name = skip(buf, ": ");
         message->headers[i].value = skip(buf, "\r\n");
         if (message->headers[i].name[0] == '\0')
@@ -557,11 +544,10 @@ struct httpd_server* httpd_create_server(unsigned short port, httpd_handler_t ha
 
 /**********************************************************************/
 void httpd_start(void* param) {
-    int server_sock = -1;
     int client_sock = -1;
-    struct sockaddr_in client_name;
+	struct sockaddr_in client_addr;
 	struct httpd_server* server = (struct httpd_server *)param;
-    socklen_t client_name_len = sizeof(client_name);
+	socklen_t client_addr_len = sizeof(client_addr);
 
 	server->sock = start_net(server->port);
 	if (server->sock == -1) {
@@ -572,17 +558,20 @@ void httpd_start(void* param) {
 
 	while (1) {
 		client_sock = accept(server->sock,
-			(struct sockaddr *)&client_name,
-			&client_name_len);
+			(struct sockaddr *)&client_addr,
+			&client_addr_len);
 
 		if (client_sock == -1) {
 			printf("httpd accept socket error\n");
 			continue;
 		}
 
-		struct httpd_request* client = new struct httpd_request;
-		client->remote_sock = client_sock;
-                client->handler = server->handler;
+        struct httpd_request* client = new struct httpd_request;
+        client->remote_sock = client_sock;
+        client->handler = server->handler;
+
+		sockaddr_in * pRemote = (sockaddr_in*)&client_addr;
+		sprintf(client->remote_ip, inet_ntoa(pRemote->sin_addr));
 
         if (ThreadLib::Create(worker_thread, (void*)client) == 0) {
 			printf("httpd create thread error\n");
