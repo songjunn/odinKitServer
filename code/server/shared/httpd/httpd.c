@@ -69,6 +69,8 @@ void worker_thread(void* param)
     //numchars = get_line(client, buf, sizeof(buf));
     numchars = recv(client, buf, 1024, 0);
 
+    printf("httpd recv message: %s\n", buf);
+
 	// parse http message
 	struct http_request* message = new struct http_request;
 	parse_http_message(buf, numchars, message);
@@ -79,14 +81,16 @@ void worker_thread(void* param)
     snprintf(header, split - buf, buf);
     snprintf(body, sizeof(body), split+strlen("\r\n\r\n"));*/
 
-	printf("method: %s\n", message->method);
-	printf("uri: %s\n", message->uri);
-	printf("version: %s\n", message->version);
-	printf("query_string: %s\n", message->query_string);
-	printf("num_headers: %s\n", message->num_headers);
+    printf("method: %s\n", message->method);
+    printf("uri: %s\n", message->uri);
+    printf("version: %s\n", message->version);
+    printf("query_string: %s\n", message->query_string);
     printf("body: %s\n", message->body);
+    for (int i=0; i<message->num_headers; i++) {
+        printf("header %s: %s\n", message->headers[i].name, message->headers[i].value);
+    }
 
-	delete message;
+    delete message;
 
     /*while (!ISspace(buf[j]) && (i < sizeof(method) - 1)) {
         method[i] = buf[j];
@@ -151,7 +155,7 @@ void worker_thread(void* param)
 
 static void parse_http_message(char *buf, size_t len, struct http_request *message) 
 {
-	int is_request, n;
+    int is_request, n;
 
     if (len < 1) return;
 
@@ -160,70 +164,77 @@ static void parse_http_message(char *buf, size_t len, struct http_request *messa
     // RFC says that all initial whitespaces should be ignored
     while (*buf != '\0' && isspace(*(unsigned char *)buf)) {
         buf++;
-	}
+    }
 
-	message->method = skip(&buf, " ");
-	message->uri = skip(&buf, " ");
-	message->version = skip(&buf, "\r\n");
+    message->method = skip(&buf, " ");
+    message->uri = skip(&buf, " ");
+    message->version = skip(&buf, "\r\n");
 
-	// HTTP message could be either HTTP request or HTTP response, e.g.
-	// "GET / HTTP/1.0 ...." or  "HTTP/1.0 200 OK ..."
-	is_request = is_valid_http_method(message->method);
-	if ((is_request && memcmp(message->version, "HTTP/", 5) != 0) ||
-		(!is_request && memcmp(message->method, "HTTP/", 5) != 0)) {
-		len = ~0;
-	}
-	else {
-		if (is_request) {
-			message->version += 5;
-		}
-		else {
-			message->status_code = atoi(message->uri);
-		}
-		parse_http_headers(&buf, message);
+    // HTTP message could be either HTTP request or HTTP response, e.g.
+    // "GET / HTTP/1.0 ...." or  "HTTP/1.0 200 OK ..."
+    is_request = is_valid_http_method(message->method);
+    if ((is_request && memcmp(message->version, "HTTP/", 5) != 0) ||
+        (!is_request && memcmp(message->method, "HTTP/", 5) != 0)) {
+        len = ~0;
+    } else {
+	if (is_request) {
+            message->version += 5;
+        } else {
+            message->status_code = atoi(message->uri);
+        }
+        parse_http_headers(&buf, message);
 
-		if ((message->query_string = strchr(message->uri, '?')) != NULL) {
-			*(char *)message->query_string++ = '\0';
-		}
-		n = (int)strlen(message->uri);
-		url_decode(message->uri, n, (char *)message->uri, n + 1, 0);
-		if (*message->uri == '/' || *message->uri == '.') {
-			remove_double_dots_and_double_slashes((char *)message->uri);
-		}
-	}
+        if ((message->query_string = strchr(message->uri, '?')) != NULL) {
+            *(char *)message->query_string++ = '\0';
+        }
+        n = (int)strlen(message->uri);
+        url_decode(message->uri, n, (char *)message->uri, n + 1, 0);
+        if (*message->uri == '/' || *message->uri == '.') {
+            remove_double_dots_and_double_slashes((char *)message->uri);
+        }
+
+        if (*buf != '\0') {
+            message->body = buf;
+            message->body_len = strlen(buf);
+        }
+    }
 }
 
 // Parse HTTP headers from the given buffer, advance buffer to the point
 // where parsing stopped.
 static void parse_http_headers(char **buf, struct http_request *message) {
-	size_t i;
+    size_t i;
 
-	for (i = 0; i < ARRAY_SIZE(message->headers); i++) {
-		message->headers[i].name = skip(buf, ": ");
-		message->headers[i].value = skip(buf, "\r\n");
-		if (message->headers[i].name[0] == '\0')
-			break;
-		message->num_headers = i + 1;
-	}
+    for (i = 0; i < ARRAY_SIZE(message->headers); i++) {
+        message->headers[i].name = skip(buf, ": ");
+        message->headers[i].value = skip(buf, "\r\n");
+        if (message->headers[i].name[0] == '\0')
+            break;
+        message->num_headers = i + 1;
+    }
 }
 
 // Skip the characters until one of the delimiters characters found.
 // 0-terminate resulting word. Skip the rest of the delimiters if any.
 // Advance pointer to buffer to the next word. Return found 0-terminated word.
 static char *skip(char **buf, const char *delimiters) {
-	char *p, *begin_word, *end_word, *end_delimiters;
+    char *p, *begin_word, *end_word, *end_delimiters;
 
-	begin_word = *buf;
-	end_word = begin_word + strcspn(begin_word, delimiters);
-	end_delimiters = end_word + strspn(end_word, delimiters);
+    begin_word = *buf;
+    end_word = begin_word + strcspn(begin_word, delimiters);
+    end_delimiters = end_word + strspn(end_word, delimiters);
 
-	for (p = end_word; p < end_delimiters; p++) {
-		*p = '\0';
-	}
+    if (end_word == end_delimiters) {
+        return end_word;
+    }
 
-	*buf = end_delimiters;
+    for (p = end_word; p < end_delimiters; p++) {
+        *p = '\0';
+    }
 
-	return begin_word;
+    *buf = end_delimiters;
+
+    return begin_word;
 }
 
 static int is_valid_http_method(const char *s) {
