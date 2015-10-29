@@ -28,6 +28,7 @@ struct http_request {
 };
 
 void httpd_thread(void* param);
+int get_post_var(struct http_request *message, const char* name, char* buf, int buf_len);
 
 #ifdef __cplusplus
 }

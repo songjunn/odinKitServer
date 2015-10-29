@@ -74,12 +74,6 @@ void worker_thread(void* param)
 	// parse http message
 	struct http_request* message = new struct http_request;
 	parse_http_message(buf, numchars, message);
-	
-    /*//get header and body
-    char* split = strstr(buf, "\r\n\r\n");
-    char header[1024], body[1024];
-    snprintf(header, split - buf, buf);
-    snprintf(body, sizeof(body), split+strlen("\r\n\r\n"));*/
 
     printf("method: %s\n", message->method);
     printf("uri: %s\n", message->uri);
@@ -89,6 +83,14 @@ void worker_thread(void* param)
     for (int i=0; i<message->num_headers; i++) {
         printf("header %s: %s\n", message->headers[i].name, message->headers[i].value);
     }
+
+	char action[16], platform[16], username[16];
+	get_post_var(message, "action", action, sizeof(action));
+	get_post_var(message, "action", platform, sizeof(platform));
+	get_post_var(message, "action", username, sizeof(username));
+	printf("get var action: %s", action);
+	printf("get var platform: %s", platform);
+	printf("get var username: %s", username);
 
     delete message;
 
@@ -291,6 +293,18 @@ static void remove_double_dots_and_double_slashes(char *s) {
 		}
 	}
 	*p = '\0';
+}
+
+int get_post_var(struct http_request *message, const char* name, char* buf, int buf_len) {
+    char *begin_word;
+    int value_len;
+
+    begin_word = message->body + strcspn(message->body, name) + strlen(name) + 1; // exclude '='
+    value_len = strcspn(begin_word, '&');
+	if (buf_len > value_len) {
+		snprintf(buf, value_len, begin_word);
+    }
+    return value_len;
 }
 
 /**********************************************************************/
