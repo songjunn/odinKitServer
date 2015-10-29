@@ -25,11 +25,11 @@
 extern "C" {
 #endif // __cplusplus
 
-enum http_error {
-	HTTP_ERROR_BAD_REQUEST = 400,
-	HTTP_ERROR_NOT_FOUND = 404,
-	HTTP_ERROR_INTERNAL_SERVER_ERROR = 500,
-	HTTP_ERROR_METHOD_NOT_IMPLEMENTED = 501,
+enum httpd_error {
+	HTTPD_ERROR_BAD_REQUEST = 400,
+	HTTPD_ERROR_NOT_FOUND = 404,
+	HTTPD_ERROR_INTERNAL_SERVER_ERROR = 500,
+	HTTPD_ERROR_METHOD_NOT_IMPLEMENTED = 501,
 };
 
 int start_net(int port);
@@ -41,10 +41,10 @@ void send_file(int client, FILE *resource);
 void send_headers_ok(int client);
 void send_headers_err(int client, int error);
 
-static void parse_http_message(char *buf, size_t len, struct http_request *message);
-static void parse_http_headers(char **buf, struct http_request *message);
+static void parse_httpd_message(char *buf, size_t len, struct httpd_request *message);
+static void parse_httpd_headers(char **buf, struct httpd_request *message);
 static char *skip(char **buf, const char *delimiters);
-static int is_valid_http_method(const char *s);
+static int is_valid_httpd_method(const char *s);
 static void remove_double_dots_and_double_slashes(char *s);
 int url_decode(const char *src, size_t src_len, char *dst, size_t dst_len, int is_form_url_encoded);
 
@@ -64,16 +64,15 @@ void worker_thread(void* param)
     size_t i = 0, j = 0;
     struct stat st;
     char *query_string = NULL;
-    int client = *(int *)param;
+	struct httpd_request* message = (struct httpd_request*)param;
 
     //numchars = get_line(client, buf, sizeof(buf));
-    numchars = recv(client, buf, 1024, 0);
+	numchars = recv(message->remote_sock, buf, 1024, 0);
 
     printf("httpd recv message: %s\n", buf);
 
 	// parse http message
-	struct http_request* message = new struct http_request;
-	parse_http_message(buf, numchars, message);
+	parse_httpd_message(buf, numchars, message);
 
     printf("method: %s\n", message->method);
     printf("uri: %s\n", message->uri);
@@ -84,13 +83,7 @@ void worker_thread(void* param)
         printf("header %s: %s\n", message->headers[i].name, message->headers[i].value);
     }
 
-	char action[16], platform[16], username[16];
-	get_post_var(message, "action", action, sizeof(action));
-	get_post_var(message, "platform", platform, sizeof(platform));
-	get_post_var(message, "username", username, sizeof(username));
-	printf("get var action: %s\n", action);
-	printf("get var platform: %s\n", platform);
-	printf("get var username: %s\n", username);
+	server->handler(message, HTTP_REQUEST);
 
     delete message;
 
@@ -101,7 +94,7 @@ void worker_thread(void* param)
     method[i] = '\0';
 
     if (strcasecmp(method, "GET") && strcasecmp(method, "POST")) {
-        send_headers_err(client, HTTP_ERROR_METHOD_NOT_IMPLEMENTED);
+        send_headers_err(client, HTTPD_ERROR_METHOD_NOT_IMPLEMENTED);
         return;
     }
 
@@ -138,7 +131,7 @@ void worker_thread(void* param)
     if (stat(path, &st) == -1) {
         while ((numchars > 0) && strcmp("\n", buf))  // read & discard headers
             numchars = get_line(client, buf, sizeof(buf));
-		send_headers_err(client, HTTP_ERROR_NOT_FOUND);
+		send_headers_err(client, HTTPD_ERROR_NOT_FOUND);
     } else {
         if ((st.st_mode & S_IFMT) == S_IFDIR)
             strcat(path, "/index.html");
@@ -155,7 +148,7 @@ void worker_thread(void* param)
     close(client);
 }
 
-static void parse_http_message(char *buf, size_t len, struct http_request *message) 
+static void parse_httpd_message(char *buf, size_t len, struct httpd_request *message) 
 {
     int is_request, n;
 
@@ -172,7 +165,7 @@ static void parse_http_message(char *buf, size_t len, struct http_request *messa
 
     // HTTP message could be either HTTP request or HTTP response, e.g.
     // "GET / HTTP/1.0 ...." or  "HTTP/1.0 200 OK ..."
-    is_request = is_valid_http_method(message->method);
+    is_request = is_valid_httpd_method(message->method);
     if ((is_request && memcmp(message->version, "HTTP/", 5) != 0) ||
         (!is_request && memcmp(message->method, "HTTP/", 5) != 0)) {
         len = ~0;
@@ -182,7 +175,7 @@ static void parse_http_message(char *buf, size_t len, struct http_request *messa
         } else {
             message->status_code = atoi(message->uri);
         }
-        parse_http_headers(&buf, message);
+        parse_httpd_headers(&buf, message);
 
         if ((message->query_string = strchr(message->uri, '?')) != NULL) {
             *(char *)message->query_string++ = '\0';
@@ -202,7 +195,7 @@ static void parse_http_message(char *buf, size_t len, struct http_request *messa
 
 // Parse HTTP headers from the given buffer, advance buffer to the point
 // where parsing stopped.
-static void parse_http_headers(char **buf, struct http_request *message) {
+static void parse_httpd_headers(char **buf, struct httpd_request *message) {
     size_t i;
 
     for (i = 0; i < ARRAY_SIZE(message->headers); i++) {
@@ -237,7 +230,7 @@ static char *skip(char **buf, const char *delimiters) {
     return begin_word;
 }
 
-static int is_valid_http_method(const char *s) {
+static int is_valid_httpd_method(const char *s) {
 	return !strcmp(s, "GET") || !strcmp(s, "POST") || !strcmp(s, "HEAD") ||
 		!strcmp(s, "CONNECT") || !strcmp(s, "PUT") || !strcmp(s, "DELETE") ||
 		!strcmp(s, "OPTIONS") || !strcmp(s, "PROPFIND") || !strcmp(s, "MKCOL") ||
@@ -293,7 +286,7 @@ static void remove_double_dots_and_double_slashes(char *s) {
 	*p = '\0';
 }
 
-int get_post_var(struct http_request *message, const char* name, char* buf, int buf_len) {
+int httpd_get_post_var(struct httpd_request *message, const char* name, char* buf, int buf_len) {
     char *begin_word;
     int value_len;
 
@@ -305,6 +298,10 @@ int get_post_var(struct http_request *message, const char* name, char* buf, int 
         buf[value_len] = '\0';
     }
     return value_len;
+}
+
+size_t httpd_send_data(struct httpd_request *message, const void *data, int data_len) {
+	return send(message->sock, data, data_len, 0);
 }
 
 /**********************************************************************/
@@ -374,7 +371,7 @@ void handle_request_cgi(int client, const char *path,
             numchars = get_line(client, buf, sizeof(buf));
         }
         if (content_length == -1) {
-			send_headers_err(client, HTTP_ERROR_BAD_REQUEST);
+			send_headers_err(client, HTTPD_ERROR_BAD_REQUEST);
             return;
         }
     }
@@ -383,16 +380,16 @@ void handle_request_cgi(int client, const char *path,
     send(client, buf, strlen(buf), 0);
 
     if (pipe(cgi_output) < 0) {
-		send_headers_err(client, HTTP_ERROR_INTERNAL_SERVER_ERROR);
+		send_headers_err(client, HTTPD_ERROR_INTERNAL_SERVER_ERROR);
         return;
     }
     if (pipe(cgi_input) < 0) {
-		send_headers_err(client, HTTP_ERROR_INTERNAL_SERVER_ERROR);
+		send_headers_err(client, HTTPD_ERROR_INTERNAL_SERVER_ERROR);
         return;
     }
 
     if ((pid = fork()) < 0) {
-		send_headers_err(client, HTTP_ERROR_INTERNAL_SERVER_ERROR);
+		send_headers_err(client, HTTPD_ERROR_INTERNAL_SERVER_ERROR);
         return;
     }
     if (pid == 0) { /* child: CGI script */
@@ -453,7 +450,7 @@ void handle_request_file(int client, const char *filename)
 
 	resource = fopen(filename, "r");
 	if (resource == NULL) {
-		send_headers_err(client, HTTP_ERROR_NOT_FOUND);
+		send_headers_err(client, HTTPD_ERROR_NOT_FOUND);
 	} else {
 		send_headers_ok(client);
 		send_file(client, resource);
@@ -524,11 +521,11 @@ void send_headers_err(int client, int error)
 /**********************************************************************/
 int start_net(int port)
 {
-    int httpd = 0;
+    int socket = 0;
     struct sockaddr_in name;
 
-    httpd = socket(PF_INET, SOCK_STREAM, 0);
-	if (httpd == -1) {
+	socket = socket(PF_INET, SOCK_STREAM, 0);
+	if (socket == -1) {
 		printf("httpd create socket error\n");
 		return -1;
 	}
@@ -538,37 +535,43 @@ int start_net(int port)
     name.sin_port = htons(port);
     name.sin_addr.s_addr = htonl(INADDR_ANY);
     
-	if (bind(httpd, (struct sockaddr *)&name, sizeof(name)) < 0) {
+	if (bind(socket, (struct sockaddr *)&name, sizeof(name)) < 0) {
 		printf("httpd bind socket error\n");
 		return -1;
 	}
 
-	if (listen(httpd, SOMAXCONN) < 0) {
+	if (listen(socket, SOMAXCONN) < 0) {
 		printf("httpd listen socket error\n");
 		return -1;
 	}
 
-    return httpd;
+	return socket;
+}
+
+struct httpd_server* httpd_create_server(unsigned short port, httpd_handler_t handler) {
+	struct httpd_server* httpd = new struct httpd_server;
+	httpd->port = port;
+	httpd->handler = handler;
+	return httpd;
 }
 
 /**********************************************************************/
-void httpd_thread(void* param) 
-{
+void httpd_start(void* param) {
     int server_sock = -1;
     int client_sock = -1;
-    int port = *(int *)param;
     struct sockaddr_in client_name;
-    socklen_t client_name_len = sizeof(client_name); 
+	struct httpd_server* server = *(int *)param;
+    socklen_t client_name_len = sizeof(client_name);
 
-    server_sock = start_net(port);
-	if (server_sock == -1) {
+	server->socket = start_net(server->port);
+	if (server->socket == -1) {
 		printf("httpd start net failed\n");
 		return;
 	}
-    printf("httpd running on port %d\n", port);
+	printf("httpd running on port %d\n", server->port);
 
 	while (1) {
-		client_sock = accept(server_sock,
+		client_sock = accept(server->socket,
 			(struct sockaddr *)&client_name,
 			&client_name_len);
 
@@ -577,12 +580,14 @@ void httpd_thread(void* param)
 			continue;
 		}
 
-		//if (pthread_create(&workthread, NULL, worker_thread, (void*)&client_sock) != 0) {
-                if (ThreadLib::Create(worker_thread, (void*)&client_sock) == 0) {
+		struct httpd_request* client = new struct httpd_request;
+		client->remote_sock = client_sock;
+
+        if (ThreadLib::Create(worker_thread, (void*)client) == 0) {
 			printf("httpd create thread error\n");
 			continue;
 		}
 	}
 
-	close(server_sock);
+	close(server->socket);
 }

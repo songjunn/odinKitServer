@@ -24,7 +24,8 @@ bool CHttpServe::startup(int port, mg_handler_t handler, int threadnum)
 		ThreadLib::Create(_httpServeThread, server);
 	}*/
 
-    ThreadLib::Create(httpd_thread, (int*)&port);
+	struct httpd_server* server = httpd_create_server(port, handler);
+	ThreadLib::Create(httpd_thread, server);
 	return true;
 }
 

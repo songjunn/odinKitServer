@@ -6,16 +6,17 @@ extern "C" {
 #endif // __cplusplus
 
 // This structure contains information about HTTP request.
-struct http_request {
+struct httpd_request {
 	const char *method;         // "GET", "POST", etc
 	const char *uri;            // URL-decoded URI
 	const char *version;        // E.g. "1.0", "1.1"
 	const char *query_string;   // URL part after '?', not including '?', or NULL
 
+	int remote_sock;            // Client's socket
 	char remote_ip[48];         // Max IPv6 string length is 45 characters
 	unsigned short remote_port; // Client's port
 
-	struct http_header {
+	struct httpd_header {
 		const char *name;         // HTTP header name
 		const char *value;        // HTTP header value
 	} headers[30];
@@ -27,8 +28,22 @@ struct http_request {
 	int status_code;            // HTTP status code for HTTP error handler
 };
 
-void httpd_thread(void* param);
-int get_post_var(struct http_request *message, const char* name, char* buf, int buf_len);
+enum httpd_event {
+	HTTP_REQUEST = 100,
+};
+
+struct httpd_server {
+	int sock;
+	unsigned short port;
+	httpd_handler_t handler;
+};
+
+typedef int(*httpd_handler_t)(struct httpd_request *, enum httpd_event);
+
+void httpd_start(void* param); //param: struct httpd_server*
+struct httpd_server* httpd_create_server(unsigned short port, httpd_handler_t handler);
+int httpd_get_post_var(struct httpd_request *message, const char* name, char* buf, int buf_len);
+size_t httpd_send_data(struct httpd_request *message, const void *data, int data_len);
 
 #ifdef __cplusplus
 }

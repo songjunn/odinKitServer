@@ -13,8 +13,8 @@ createFileSingleton(CLoginServer);
 
 CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 
-static int httpserver_ev_handler(struct mg_connection *conn, enum mg_event ev) {	if (ev == MG_REQUEST) {		Log.Debug("[HttpServer]Handle Event:%d ip:%s", ev, conn->remote_ip);		if (true) {			mg_send_data(conn, "0", 1);		} else {			mg_send_data(conn, "1", 1);
-		}		return MG_TRUE;	}	else if (ev == MG_AUTH) {		return MG_TRUE;	}	else {		return MG_FALSE;	}}
+static int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev) {	if (ev == HTTP_REQUEST) {		//Log.Debug("[HttpServer]Handle Event:%d ip:%s", ev, conn->remote_ip);		if (true) {			mg_send_data(conn, "0", 1);		} else {			mg_send_data(conn, "1", 1);
+		}		return 0;	}	else {		return 1;	}}
 
 CLoginServer::CLoginServer()
 {
