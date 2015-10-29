@@ -71,7 +71,7 @@ void worker_thread(void* param)
 
 	// parse http message
 	struct http_request* message = new struct http_request;
-	parse_http_message(buf, numchars, message)
+	parse_http_message(buf, numchars, message);
 	
     /*//get header and body
     char* split = strstr(buf, "\r\n\r\n");
