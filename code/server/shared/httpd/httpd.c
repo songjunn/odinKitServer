@@ -580,4 +580,5 @@ void httpd_start(void* param) {
 	}
 
 	close(server->sock);
+	delete server;
 }
