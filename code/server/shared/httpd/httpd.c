@@ -86,11 +86,11 @@ void worker_thread(void* param)
 
 	char action[16], platform[16], username[16];
 	get_post_var(message, "action", action, sizeof(action));
-	get_post_var(message, "action", platform, sizeof(platform));
-	get_post_var(message, "action", username, sizeof(username));
-	printf("get var action: %s", action);
-	printf("get var platform: %s", platform);
-	printf("get var username: %s", username);
+	get_post_var(message, "platform", platform, sizeof(platform));
+	get_post_var(message, "username", username, sizeof(username));
+	printf("get var action: %s\n", action);
+	printf("get var platform: %s\n", platform);
+	printf("get var username: %s\n", username);
 
     delete message;
 
@@ -160,8 +160,6 @@ static void parse_http_message(char *buf, size_t len, struct http_request *messa
     int is_request, n;
 
     if (len < 1) return;
-
-    buf[len - 1] = '\0';
 
     // RFC says that all initial whitespaces should be ignored
     while (*buf != '\0' && isspace(*(unsigned char *)buf)) {
@@ -299,10 +297,12 @@ int get_post_var(struct http_request *message, const char* name, char* buf, int 
     char *begin_word;
     int value_len;
 
-    begin_word = message->body + strcspn(message->body, name) + strlen(name) + 1; // exclude '='
-    value_len = strcspn(begin_word, '&');
-	if (buf_len > value_len) {
-		snprintf(buf, value_len, begin_word);
+    begin_word = strstr(message->body, name) + strlen(name) + 1; // exclude '='
+    value_len = strcspn(begin_word, "&");
+    if (buf_len > value_len) {
+        //snprintf(*buf, value_len, begin_word);
+        strncpy(buf, begin_word, value_len);
+        buf[value_len] = '\0';
     }
     return value_len;
 }
