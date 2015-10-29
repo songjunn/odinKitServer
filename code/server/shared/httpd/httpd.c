@@ -57,7 +57,17 @@ void worker_thread(void* param)
 
     //numchars = get_line(client, buf, sizeof(buf));
     numchars = recv(client, buf, 1024, 0);
-    while (!ISspace(buf[j]) && (i < sizeof(method) - 1)) {
+
+	//get header
+	char* split = strstr(buf, "\r\n\r\n");
+	char header[1024], body[1024];
+	snprintf(header, split - buf, buf);
+	snprintf(body, sizeof(body), split-strlen("\r\n\r\n"));
+
+	printf("header: %s\n", header);
+	printf("body: %s\n", body);
+
+    /*while (!ISspace(buf[j]) && (i < sizeof(method) - 1)) {
         method[i] = buf[j];
         i++; j++;
     }
@@ -92,7 +102,7 @@ void worker_thread(void* param)
     }
 
     printf("httpd recv request: %s\n", url);
-    printf("httpd recv query: %s\n", query_string);
+    printf("httpd recv query: %s\n", query_string);*/
 
     /*sprintf(path, "htdocs%s", url);
 	if (path[strlen(path) - 1] == '/') {
