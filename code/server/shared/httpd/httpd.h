@@ -6,7 +6,7 @@ extern "C" {
 #endif // __cplusplus
 
 // This structure contains information about HTTP request.
-struct httpd_request {
+struct http_request {
 	const char *method;         // "GET", "POST", etc
 	const char *uri;            // URL-decoded URI
 	const char *version;        // E.g. "1.0", "1.1"
@@ -15,14 +15,14 @@ struct httpd_request {
 	char remote_ip[48];         // Max IPv6 string length is 45 characters
 	unsigned short remote_port; // Client's port
 
-	int num_headers;            // Number of HTTP headers
-	struct mg_header {
+	struct http_header {
 		const char *name;         // HTTP header name
 		const char *value;        // HTTP header value
-	} http_headers[30];
+	} headers[30];
+	unsigned short num_headers; // Number of HTTP headers
 
-	char *content;              // POST (or websocket message) data, or NULL
-	size_t content_len;         // Data length
+	char *body;                 // POST data, or NULL
+	size_t body_len;            // Data length
 };
 
 void httpd_thread(void* param);

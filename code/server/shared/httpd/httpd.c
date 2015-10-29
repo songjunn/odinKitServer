@@ -17,6 +17,10 @@
 
 #define SERVER_STRING "Server: httpd/0.1.0\r\n"
 
+#ifndef ARRAY_SIZE
+#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -36,6 +40,13 @@ void handle_request_file(int client, const char *filename);
 void send_file(int client, FILE *resource);
 void send_headers_ok(int client);
 void send_headers_err(int client, int error);
+
+static void parse_http_message(char *buf, size_t len, struct http_request *message);
+static void parse_http_headers(char **buf, struct http_request *message);
+static char *skip(char **buf, const char *delimiters);
+static int is_valid_http_method(const char *s);
+static void remove_double_dots_and_double_slashes(char *s);
+int url_decode(const char *src, size_t src_len, char *dst, size_t dst_len, int is_form_url_encoded);
 
 #ifdef __cplusplus
 }
@@ -58,14 +69,24 @@ void worker_thread(void* param)
     //numchars = get_line(client, buf, sizeof(buf));
     numchars = recv(client, buf, 1024, 0);
 
-    //get header and body
+	// parse http message
+	struct http_request* message = new struct http_request;
+	parse_http_message(buf, numchars, message)
+	
+    /*//get header and body
     char* split = strstr(buf, "\r\n\r\n");
     char header[1024], body[1024];
     snprintf(header, split - buf, buf);
-    snprintf(body, sizeof(body), split+strlen("\r\n\r\n"));
+    snprintf(body, sizeof(body), split+strlen("\r\n\r\n"));*/
 
-    printf("header: %s\n", header);
-    printf("body: %s\n", body);
+	printf("method: %s\n", message->method);
+	printf("uri: %s\n", message->uri);
+	printf("version: %s\n", message->version);
+	printf("query_string: %s\n", message->query_string);
+	printf("num_headers: %s\n", message->num_headers);
+    printf("body: %s\n", message->body);
+
+	delete message;
 
     /*while (!ISspace(buf[j]) && (i < sizeof(method) - 1)) {
         method[i] = buf[j];
@@ -126,6 +147,139 @@ void worker_thread(void* param)
     }*/
 
     close(client);
+}
+
+static void parse_http_message(char *buf, size_t len, struct http_request *message) 
+{
+	int is_request, n;
+
+    if (len < 1) return;
+
+    buf[len - 1] = '\0';
+
+    // RFC says that all initial whitespaces should be ignored
+    while (*buf != '\0' && isspace(*(unsigned char *)buf)) {
+        buf++;
+	}
+
+	message->method = skip(&buf, " ");
+	message->uri = skip(&buf, " ");
+	message->version = skip(&buf, "\r\n");
+
+	// HTTP message could be either HTTP request or HTTP response, e.g.
+	// "GET / HTTP/1.0 ...." or  "HTTP/1.0 200 OK ..."
+	is_request = is_valid_http_method(message->method);
+	if ((is_request && memcmp(message->version, "HTTP/", 5) != 0) ||
+		(!is_request && memcmp(message->method, "HTTP/", 5) != 0)) {
+		len = ~0;
+	}
+	else {
+		if (is_request) {
+			message->version += 5;
+		}
+		else {
+			message->status_code = atoi(message->uri);
+		}
+		parse_http_headers(&buf, message);
+
+		if ((message->query_string = strchr(message->uri, '?')) != NULL) {
+			*(char *)message->query_string++ = '\0';
+		}
+		n = (int)strlen(message->uri);
+		url_decode(message->uri, n, (char *)message->uri, n + 1, 0);
+		if (*message->uri == '/' || *message->uri == '.') {
+			remove_double_dots_and_double_slashes((char *)message->uri);
+		}
+	}
+}
+
+// Parse HTTP headers from the given buffer, advance buffer to the point
+// where parsing stopped.
+static void parse_http_headers(char **buf, struct http_request *message) {
+	size_t i;
+
+	for (i = 0; i < ARRAY_SIZE(message->headers); i++) {
+		message->headers[i].name = skip(buf, ": ");
+		message->headers[i].value = skip(buf, "\r\n");
+		if (message->headers[i].name[0] == '\0')
+			break;
+		message->num_headers = i + 1;
+	}
+}
+
+// Skip the characters until one of the delimiters characters found.
+// 0-terminate resulting word. Skip the rest of the delimiters if any.
+// Advance pointer to buffer to the next word. Return found 0-terminated word.
+static char *skip(char **buf, const char *delimiters) {
+	char *p, *begin_word, *end_word, *end_delimiters;
+
+	begin_word = *buf;
+	end_word = begin_word + strcspn(begin_word, delimiters);
+	end_delimiters = end_word + strspn(end_word, delimiters);
+
+	for (p = end_word; p < end_delimiters; p++) {
+		*p = '\0';
+	}
+
+	*buf = end_delimiters;
+
+	return begin_word;
+}
+
+static int is_valid_http_method(const char *s) {
+	return !strcmp(s, "GET") || !strcmp(s, "POST") || !strcmp(s, "HEAD") ||
+		!strcmp(s, "CONNECT") || !strcmp(s, "PUT") || !strcmp(s, "DELETE") ||
+		!strcmp(s, "OPTIONS") || !strcmp(s, "PROPFIND") || !strcmp(s, "MKCOL") ||
+		!strcmp(s, "PATCH");
+}
+
+int url_decode(const char *src, size_t src_len, char *dst,
+	size_t dst_len, int is_form_url_encoded) {
+	size_t i, j = 0;
+	int a, b;
+#define HEXTOI(x) (isdigit(x) ? (x) - '0' : (x) - 'W')
+
+	for (i = j = 0; i < src_len && j < dst_len - 1; i++, j++) {
+		if (src[i] == '%' && i + 2 < src_len &&
+			isxdigit(*(const unsigned char *)(src + i + 1)) &&
+			isxdigit(*(const unsigned char *)(src + i + 2))) {
+			a = tolower(*(const unsigned char *)(src + i + 1));
+			b = tolower(*(const unsigned char *)(src + i + 2));
+			dst[j] = (char)((HEXTOI(a) << 4) | HEXTOI(b));
+			i += 2;
+		}
+		else if (is_form_url_encoded && src[i] == '+') {
+			dst[j] = ' ';
+		}
+		else {
+			dst[j] = src[i];
+		}
+	}
+
+	dst[j] = '\0'; // Null-terminate the destination
+
+	return i >= src_len ? j : -1;
+}
+
+// Protect against directory disclosure attack by removing '..',
+// excessive '/' and '\' characters
+static void remove_double_dots_and_double_slashes(char *s) {
+	char *p = s;
+
+	while (*s != '\0') {
+		*p++ = *s++;
+		if (s[-1] == '/' || s[-1] == '\\') {
+			// Skip all following slashes, backslashes and double-dots
+			while (s[0] != '\0') {
+				if (s[0] == '/' || s[0] == '\\') { s++; }
+				else if (s[0] == '.' && (s[1] == '/' || s[1] == '\\')) { s += 2; }
+				else if (s[0] == '.' && s[1] == '.' && s[2] == '\0') { s += 2; }
+				else if (s[0] == '.' && s[1] == '.' && (s[2] == '/' || s[2] == '\\')) { s += 3; }
+				else { break; }
+			}
+		}
+	}
+	*p = '\0';
 }
 
 /**********************************************************************/
