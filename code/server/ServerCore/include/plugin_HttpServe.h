@@ -2,19 +2,15 @@
 #define _PLUGIN_HTTPSERVE_H_
 
 #include "plugin.h"
-#include "mongoose.h"
 #include "httpd.h"
 
 class CHttpServe : public CPlugin
 {
 public:
-	CHttpServe();
-	~CHttpServe();
+    CHttpServe();
+    ~CHttpServe();
 
-	bool startup(int port, httpd_handler_t handler, int threadnum = 1);
-
-protected:
-	static void _httpServeThread(void * server);
+    bool startup(int port, httpd_handler_t handler);
 
 };
 

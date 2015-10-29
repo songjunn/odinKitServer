@@ -5,6 +5,8 @@
 extern "C" {
 #endif // __cplusplus
 
+#include <stdlib.h>
+
 enum httpd_event {
     HTTP_REQUEST = 100,
 };

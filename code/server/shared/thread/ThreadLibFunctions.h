@@ -91,7 +91,8 @@ namespace ThreadLib
                 g_handlemap[t] = h;
             }
         #else           // create a linux thread
-            pthread_create( &t, 0, DummyRun, data );
+            pthread_create( &t, NULL, DummyRun, data );
+            pthread_detach(t);
         #endif
 
         if( t == 0 )
