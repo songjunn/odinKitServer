@@ -15,8 +15,6 @@ createFileSingleton(CDataServer);
 createFileSingleton(CDataModule);
 createFileSingleton(CLoadModule);
 
-extern CObjectMemoryPool<OperObj>	g_MongoOperPool;
-
 CDataServer::CDataServer()
 {
 	setType(CBaseServer::Linker_Server_Data);
@@ -62,9 +60,6 @@ bool CDataServer::onStartup()
 
 	DataModule.Initialize("DataObj", playercnt);
 
-	if (!g_MongoOperPool.Init("MongoOper", dboperator))
-		return false;
-
 	//³õÊ¼»¯
 	char mpath[1024] = { 0 };
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
@@ -82,16 +77,16 @@ bool CDataServer::onStartup()
 		return false;
 	}
 
-	if (!this->createLinker(CBaseServer::Linker_Server_Central, centralid, centralport, centralip, 0, NULL, worldID, true)) {
-		Log.Error("[CDataServer] create Central Server failed");
-		return false;
-	}
-
 	char spath[1024] = { 0 };
 	sprintf(spath, "%s//Server_%d.sock", udPath, myid);
 	CMonitor* monitor = (CMonitor *)this->createPlugin(CBaseServer::Plugin_Monitor);
 	if (!monitor->startup(spath)) {
 		Log.Error("[CDataServer] create Plugin_Monitor failed");
+		return false;
+	}
+
+	if (!this->createLinker(CBaseServer::Linker_Server_Central, centralid, centralport, centralip, 0, NULL, worldID, true)) {
+		Log.Error("[CDataServer] create Central Server failed");
 		return false;
 	}
 
@@ -135,20 +130,13 @@ bool CDataServer::onLogic()
 
 void CDataServer::onPrint(char* output)
 {
-	char szMongoPool[10240] = { 0 };
 	char szServer[10240] = { 0 };
 
-	g_MongoOperPool.Output(szMongoPool, 10240);
 	CBaseServer::onPrint(szServer);
-
 	sprintf(output,
 		" DataServer monitor: \n"
 		" ======================================================\n"
-		" memory pool used:\n"
-		"  %s"
-		" ======================================================\n"
 		" %s",
-		szMongoPool,
 		szServer);
 }
 

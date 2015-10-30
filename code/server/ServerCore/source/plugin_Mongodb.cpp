@@ -2,8 +2,6 @@
 #include "memorypool.h"
 #include "Log.h"
 
-CObjectMemoryPool<OperObj>	g_MongoOperPool;
-
 CMongoDB::CMongoDB() : m_working(false), m_connect(false)
 {
 	bool auto_connect = true;
@@ -52,7 +50,7 @@ bool CMongoDB::exit()
 void CMongoDB::execute(int opr_type, std::string opr_collection, mongo::Query opr_condition, mongo::BSONObj opr_bson)
 {
 	//OperObj* oper = NEW OperObj;
-	OperObj* oper = g_MongoOperPool.Alloc();
+	OperObj* oper = new OperObj;
 	if (!oper) {
 		return;
 	}
@@ -257,8 +255,7 @@ void CMongoDB::_execOperation(void* param)
 			{
 				pThis->_executeOpr(opr);
 
-				//SAFE_DELETE(opr);
-				g_MongoOperPool.Free(opr);
+				SAFE_DELETE(opr);
 			}
 		}
 	}

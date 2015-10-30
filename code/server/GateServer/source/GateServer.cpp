@@ -84,11 +84,6 @@ bool CGateServer::onStartup()
 		return false;
     }
 
-    if (!this->createLinker(CBaseServer::Linker_Server_Central, centralid, centralport, centralip, 0, NULL, worldID, true)) {
-		Log.Error("[CGateServer] create Central Server failed");
-		return false;
-    }
-
     char spath[1024] = { 0 };
     sprintf(spath, "%s//Server_%d.sock", udPath, myid);
     CMonitor* monitor = (CMonitor *)this->createPlugin(CBaseServer::Plugin_Monitor);
@@ -96,6 +91,11 @@ bool CGateServer::onStartup()
 		Log.Error("[CGateServer] create Plugin_Monitor failed");
 		return false;
     }
+
+	if (!this->createLinker(CBaseServer::Linker_Server_Central, centralid, centralport, centralip, 0, NULL, worldID, true)) {
+		Log.Error("[CGateServer] create Central Server failed");
+		return false;
+	}
 
     return true;
 }
