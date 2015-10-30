@@ -70,7 +70,7 @@ bool CBaseServer::run(int frame)
 #ifdef _WIN32
 		Sleep(sleeptime);
 #else
-#if defined(__linux__) && defined(DEBUG)
+#if defined(__linux__)
 		usleep(sleeptime*1000);
 #endif
 #endif

@@ -13,8 +13,6 @@ createFileSingleton(CLuaEngine);
 createFileSingleton(CGateServer);
 createFileSingleton(CUserMgr);
 
-static TMV g_StatusLogicTime = 0;
-
 CGateServer::CGateServer()
 {
     setType(CBaseServer::Linker_Server_GateWay);
@@ -58,10 +56,8 @@ bool CGateServer::onStartup()
     int iocprecvsize = LuaEngine.GetLuaVariableNumber("gateway_recv_size", "GateServer");
     int iocpsendsize = LuaEngine.GetLuaVariableNumber("gateway_send_size", "GateServer");
     int usercnt = LuaEngine.GetLuaVariableNumber("user_count_max", "GateServer");
-    int playercnt = LuaEngine.GetLuaVariableNumber("player_count_max", "GateServer");
     const char* udPath = LuaEngine.GetLuaVariableString("MonitorPath", "Key");
     int hearttimeout = LuaEngine.GetLuaVariableNumber("user_heart_timeout", "GateServer");
-    int keytimeout = LuaEngine.GetLuaVariableNumber("user_key_timeout", "GateServer");
     int packlimit = LuaEngine.GetLuaVariableNumber("user_pack_limit", "GateServer");
 
 	setAuthAddress(loginip);

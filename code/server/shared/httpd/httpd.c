@@ -59,13 +59,15 @@ void worker_thread(void* param) {
     printf("httpd recv connect: %s\n", message->remote_ip);
     printf("httpd recv message: %s\n", buf);
 
-    // parse http message
-    parse_httpd_message(buf, numchars, message);
+    if (numchars > 0) {
+        // parse http message
+        parse_httpd_message(buf, numchars, message);
 
-    if (!strcasecmp(message->method, "POST")) {
-        message->handler(message, HTTP_REQUEST);
-    } else if (!strcasecmp(message->method, "GET")) {
-        handle_request_file(message->remote_sock, message->uri);
+        if (!strcasecmp(message->method, "POST")) {
+            message->handler(message, HTTP_REQUEST);
+        } else if (!strcasecmp(message->method, "GET")) {
+            handle_request_file(message->remote_sock, message->uri);
+        }
     }
 
     close(message->remote_sock);
@@ -246,7 +248,7 @@ int httpd_get_post_var(struct httpd_request *message, const char* name, char* bu
 /**********************************************************************/
 /* Send response to the request.
  * Parameters: httpd request
- *             send data and length * /
+ *             send data and length */
 /**********************************************************************/
 size_t httpd_send_data(struct httpd_request *message, const void *data, int data_len) {
 	return send(message->remote_sock, data, data_len, 0);
