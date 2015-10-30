@@ -52,26 +52,25 @@ int url_decode(const char *src, size_t src_len, char *dst, size_t dst_len, int i
  * Parameters: the socket connected to the client */
 /**********************************************************************/
 void worker_thread(void* param) {
-    char buf[1024], method[255], url[255], path[512];
-	struct httpd_request* message = (struct httpd_request*)param;
-	struct stat st;
-	int numchars = 0;
+    char buf[1024];
+    struct httpd_request* message = (struct httpd_request*)param;
+    int numchars = 0;
 
-	numchars = recv(message->remote_sock, buf, sizeof(buf), 0);
+    numchars = recv(message->remote_sock, buf, sizeof(buf), 0);
 
-	printf("httpd recv connect: %s\n", message->remote_ip);
+    printf("httpd recv connect: %s\n", message->remote_ip);
     printf("httpd recv message: %s\n", buf);
 
-	// parse http message
-	parse_httpd_message(buf, numchars, message);
+    // parse http message
+    parse_httpd_message(buf, numchars, message);
 
-	if (!strcasecmp(method, "POST")) {
-		message->handler(message, HTTP_REQUEST);
-	} else if (!strcasecmp(method, "GET") {
-		handle_request_file(message->remote_sock, message->uri);
-	}
+    if (!strcasecmp(message->method, "POST")) {
+        message->handler(message, HTTP_REQUEST);
+    } else if (!strcasecmp(message->method, "GET")) {
+        handle_request_file(message->remote_sock, message->uri);
+    }
 
-	close(message->remote_sock);
+    close(message->remote_sock);
     delete message;
 }
 
@@ -428,7 +427,7 @@ void send_headers_ok(int client) {
 
 /**********************************************************************/
 /* Return the error HTTP headers. */
-/* Parameters: the socket to print the headers on 
+/* Parameters: the socket to print the headers on */ 
 /*             the error number */
 /**********************************************************************/
 void send_headers_err(int client, int error) {
