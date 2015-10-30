@@ -30,7 +30,7 @@ int start_net(int port);
 void worker_thread(void* param);
 int get_line(int sock, char *buf, int size);
 void handle_request_cgi(int client, const char *path, const char *method, const char *query_string);
-void handle_request_file(int client, const char *filename);
+void handle_request_file(int client, const char *url);
 void send_file(int client, FILE *resource);
 void send_headers_ok(int client);
 void send_headers_err(int client, int error);
@@ -51,17 +51,13 @@ int url_decode(const char *src, size_t src_len, char *dst, size_t dst_len, int i
  * return.  Process the request appropriately.
  * Parameters: the socket connected to the client */
 /**********************************************************************/
-void worker_thread(void* param)
-{
+void worker_thread(void* param) {
     char buf[1024], method[255], url[255], path[512];
-    int numchars, cgi = 0;
-    size_t i = 0, j = 0;
-    struct stat st;
-    char *query_string = NULL;
 	struct httpd_request* message = (struct httpd_request*)param;
+	struct stat st;
+	int numchars = 0;
 
-    //numchars = get_line(client, buf, sizeof(buf));
-	numchars = recv(message->remote_sock, buf, 1024, 0);
+	numchars = recv(message->remote_sock, buf, sizeof(buf), 0);
 
 	printf("httpd recv connect: %s\n", message->remote_ip);
     printf("httpd recv message: %s\n", buf);
@@ -69,74 +65,17 @@ void worker_thread(void* param)
 	// parse http message
 	parse_httpd_message(buf, numchars, message);
 
-	// handle message
-	message->handler(message, HTTP_REQUEST);
-
-    delete message;
-
-    /*while (!ISspace(buf[j]) && (i < sizeof(method) - 1)) {
-        method[i] = buf[j];
-        i++; j++;
-    }
-    method[i] = '\0';
-
-    if (strcasecmp(method, "GET") && strcasecmp(method, "POST")) {
-        send_headers_err(client, HTTPD_ERROR_METHOD_NOT_IMPLEMENTED);
-        return;
-    }
-
-    i = 0;
-    while (ISspace(buf[j]) && (j < sizeof(buf))) {
-        j++;
-    }
-    while (!ISspace(buf[j]) && (i < sizeof(url) - 1) && (j < sizeof(buf))) {
-        url[i] = buf[j];
-        i++; j++;
-    }
-    url[i] = '\0';
-
-    //if (strcasecmp(method, "GET") == 0) 
-    {
-        query_string = url;
-        while ((*query_string != '?') && (*query_string != '\0')) {
-            query_string++;
-        }
-        if (*query_string == '?') {
-            cgi = 1;
-            *query_string = '\0';
-            query_string++;
-        }
-    }
-
-    printf("httpd recv request: %s\n", url);
-    printf("httpd recv query: %s\n", query_string);*/
-
-    /*sprintf(path, "htdocs%s", url);
-	if (path[strlen(path) - 1] == '/') {
-		strcat(path, "index.html");
+	if (!strcasecmp(method, "POST")) {
+		message->handler(message, HTTP_REQUEST);
+	} else if (!strcasecmp(method, "GET") {
+		handle_request_file(message->remote_sock, message->uri);
 	}
-    if (stat(path, &st) == -1) {
-        while ((numchars > 0) && strcmp("\n", buf))  // read & discard headers
-            numchars = get_line(client, buf, sizeof(buf));
-		send_headers_err(client, HTTPD_ERROR_NOT_FOUND);
-    } else {
-        if ((st.st_mode & S_IFMT) == S_IFDIR)
-            strcat(path, "/index.html");
-        if ((st.st_mode & S_IXUSR) ||
-            (st.st_mode & S_IXGRP) ||
-            (st.st_mode & S_IXOTH))
-            cgi = 1;
-        if (!cgi)
-            handle_request_file(client, path);
-        else
-            handle_request_cgi(client, path, method, query_string);
-    }*/
 
-    close(message->remote_sock);
+	close(message->remote_sock);
+    delete message;
 }
 
-static void parse_httpd_message(char *buf, size_t len, struct httpd_request *message) 
-{
+static void parse_httpd_message(char *buf, size_t len, struct httpd_request *message) {
     int is_request, n;
 
     if (len < 1) return;
@@ -304,8 +243,7 @@ size_t httpd_send_data(struct httpd_request *message, const void *data, int data
 *             the size of the buffer
 * Returns: the number of bytes stored (excluding null) */
 /**********************************************************************/
-int get_line(int sock, char *buf, int size)
-{
+int get_line(int sock, char *buf, int size) {
 	int n, i = 0;
 	char c = '\0';
 
@@ -338,8 +276,7 @@ int get_line(int sock, char *buf, int size)
  *             path to the CGI script */
 /**********************************************************************/
 void handle_request_cgi(int client, const char *path,
-                 const char *method, const char *query_string)
-{
+                 const char *method, const char *query_string) {
     char c, buf[1024];
 	int cgi_input[2], cgi_output[2];
 	int i, status, numchars = 1, content_length = -1;
@@ -425,24 +362,34 @@ void handle_request_cgi(int client, const char *path,
 *              file descriptor
 *             the name of the file to serve */
 /**********************************************************************/
-void handle_request_file(int client, const char *filename)
-{
+void handle_request_file(int client, const char *url) {
 	FILE *resource = NULL;
-	int numchars = 1;
-	char buf[1024];
+	struct stat st;
+	char path[1024];
 
-	buf[0] = 'A'; buf[1] = '\0';
-	while ((numchars > 0) && strcmp("\n", buf))  /* read & discard headers */
-		numchars = get_line(client, buf, sizeof(buf));
-
-	resource = fopen(filename, "r");
-	if (resource == NULL) {
+	sprintf(path, "htdocs%s", url);
+	if (path[strlen(path) - 1] == '/') {
+		strcat(path, "index.html");
+	}
+	if (stat(path, &st) == -1) {
 		send_headers_err(client, HTTPD_ERROR_NOT_FOUND);
 	} else {
-		send_headers_ok(client);
-		send_file(client, resource);
+		if ((st.st_mode & S_IFMT) == S_IFDIR)
+			strcat(path, "/index.html");
+
+		/*if ((st.st_mode & S_IXUSR) ||
+			(st.st_mode & S_IXGRP) ||
+			(st.st_mode & S_IXOTH))*/
+
+		resource = fopen(path, "r");
+		if (resource == NULL) {
+			send_headers_err(client, HTTPD_ERROR_NOT_FOUND);
+		} else {
+			send_headers_ok(client);
+			send_file(client, resource);
+			fclose(resource);
+		}
 	}
-	fclose(resource);
 }
 
 /**********************************************************************/
@@ -452,8 +399,7 @@ void handle_request_file(int client, const char *filename)
 * Parameters: the client socket descriptor
 *             FILE pointer for the file to cat */
 /**********************************************************************/
-void send_file(int client, FILE *resource)
-{
+void send_file(int client, FILE *resource) {
 	char buf[1024];
 
 	fgets(buf, sizeof(buf), resource);
@@ -467,9 +413,9 @@ void send_file(int client, FILE *resource)
 /* Return the informational HTTP headers. */
 /* Parameters: the socket to print the headers on */
 /**********************************************************************/
-void send_headers_ok(int client)
-{
+void send_headers_ok(int client) {
     char buf[1024];
+
     sprintf(buf, "HTTP/1.0 200 OK\r\n");
     send(client, buf, strlen(buf), 0);
 	sprintf(buf, SERVER_STRING);
@@ -485,9 +431,9 @@ void send_headers_ok(int client)
 /* Parameters: the socket to print the headers on 
 /*             the error number */
 /**********************************************************************/
-void send_headers_err(int client, int error)
-{
+void send_headers_err(int client, int error) {
     char buf[1024];
+
     sprintf(buf, "HTTP/1.0 %d\r\n", error);
     send(client, buf, strlen(buf), 0);
     sprintf(buf, SERVER_STRING);
@@ -506,8 +452,7 @@ void send_headers_err(int client, int error)
  * Parameters: pointer to variable containing the port to connect on
  * Returns: the socket */
 /**********************************************************************/
-int start_net(int port)
-{
+int start_net(int port) {
     int sock = 0;
     struct sockaddr_in name;
 
