@@ -41,8 +41,6 @@ createFileSingleton(CTimerModule);
 createFileSingleton(CNoticeModule);
 createFileSingleton(CDataModule);
 
-
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 char g_szExePath[512];
 
 CGameServer::CGameServer()
@@ -108,9 +106,6 @@ bool CGameServer::onStartup()
 	//DataModule.onLoadConfig("xml//hero.xml");
 
 	//DataModule.Initialize("objproxy", 100);
-
-	if (!g_PacketPool.Init("Packet", packsize))
-		return false;
 
 	attrs::init_all_attrs();
 
@@ -198,12 +193,10 @@ bool CGameServer::onLogic()
 
 void CGameServer::onPrint(char* output)
 {
-	char szPackPool[10240] = { 0 };
 	char szUserPool[10240] = { 0 };
 	char szPlayerPool[10240] = { 0 };
 	char szServer[10240] = { 0 };
 
-	g_PacketPool.Output(szPackPool, 10240);
 	UserMgr.m_pool.Output(szUserPool, 10240);
 	PlayerMgr.m_pool.Output(szPlayerPool, 10240);
 	CBaseServer::onPrint(szServer);
@@ -214,11 +207,10 @@ void CGameServer::onPrint(char* output)
 		" memory pool used:\n"
 		"  %s"
 		"  %s"
-		"  %s"
 		" ======================================================\n"
 		" %s",
 		UserMgr.Count(), PlayerMgr.Count(),
-		szPackPool, szUserPool, szPlayerPool,
+		szUserPool, szPlayerPool,
 		szServer);
 }
 

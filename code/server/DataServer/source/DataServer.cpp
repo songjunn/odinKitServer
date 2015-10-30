@@ -15,7 +15,6 @@ createFileSingleton(CDataServer);
 createFileSingleton(CDataModule);
 createFileSingleton(CLoadModule);
 
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 extern CObjectMemoryPool<OperObj>	g_MongoOperPool;
 
 CDataServer::CDataServer()
@@ -62,9 +61,6 @@ bool CDataServer::onStartup()
 	const char* udPath = LuaEngine.GetLuaVariableString("MonitorPath", "Key");
 
 	DataModule.Initialize("DataObj", playercnt);
-
-	if (!g_PacketPool.Init("Packet", packsize))
-		return false;
 
 	if (!g_MongoOperPool.Init("MongoOper", dboperator))
 		return false;
@@ -139,11 +135,9 @@ bool CDataServer::onLogic()
 
 void CDataServer::onPrint(char* output)
 {
-	char szPackPool[10240] = { 0 };
 	char szMongoPool[10240] = { 0 };
 	char szServer[10240] = { 0 };
 
-	g_PacketPool.Output(szPackPool, 10240);
 	g_MongoOperPool.Output(szMongoPool, 10240);
 	CBaseServer::onPrint(szServer);
 
@@ -152,10 +146,9 @@ void CDataServer::onPrint(char* output)
 		" ======================================================\n"
 		" memory pool used:\n"
 		"  %s"
-		"  %s"
 		" ======================================================\n"
 		" %s",
-		szPackPool, szMongoPool,
+		szMongoPool,
 		szServer);
 }
 

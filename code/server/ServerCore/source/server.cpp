@@ -10,8 +10,6 @@
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"
 
-extern CObjectMemoryPool<PACKET_COMMAND> g_PacketPool;
-
 static const char* svrname[CBaseServer::Linker_Server_End] = { "Null", "CentralServer", "DataServer", "WorldServer", "LoginServer", "GameServer", "GateServer", "BIServer", "PaymentServer" };
 
 CBaseServer::CBaseServer()
@@ -411,7 +409,7 @@ bool CBaseServer::loop_message()
 	{
 		onMessage(pack);
 
-		g_PacketPool.Free(pack);
+		SAFE_DELETE(pack);
 	}
 
 	return true;

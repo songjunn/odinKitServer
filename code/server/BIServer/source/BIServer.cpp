@@ -12,7 +12,6 @@ createFileSingleton(CLuaEngine);
 createFileSingleton(CBIServer);
 createFileSingleton(CAnalysisModule);
 
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 extern CObjectMemoryPool<OperObj>	g_MongoOperPool;
 
 CBIServer::CBIServer()
@@ -56,9 +55,6 @@ bool CBIServer::onStartup()
 	int sendsize = LuaEngine.GetLuaVariableNumber("send_buff_size", "BIServer");
 	int dboperator = LuaEngine.GetLuaVariableNumber("db_operator_max", "BIServer");
 	const char* udPath = LuaEngine.GetLuaVariableString("MonitorPath", "Key");
-
-	if (!g_PacketPool.Init("Packet", packsize))
-		return false;
 
 	if (!g_MongoOperPool.Init("MongoOper", dboperator))
 		return false;
@@ -124,11 +120,9 @@ bool CBIServer::onLogic()
 
 void CBIServer::onPrint(char* output)
 {
-	char szPackPool[10240] = { 0 };
 	char szMongoPool[10240] = { 0 };
 	char szServer[10240] = { 0 };
 
-	g_PacketPool.Output(szPackPool, 10240);
 	g_MongoOperPool.Output(szMongoPool, 10240);
 	CBaseServer::onPrint(szServer);
 
@@ -137,11 +131,10 @@ void CBIServer::onPrint(char* output)
 		" ======================================================\n"
 		" memory pool used:\n"
 		"  %s"
-		"  %s"
 		" ======================================================\n"
 		" %s",
 		AnalysisModule.GetOnlinePlayer(),
-		szPackPool, szMongoPool,
+		szMongoPool,
 		szServer);
 }
 

@@ -4,8 +4,6 @@
 #include "MessageTypeDefine.pb.h"
 #include "MessageServer.pb.h"
 
-extern CObjectMemoryPool<PACKET_COMMAND> g_PacketPool;
-
 CNetwork::CNetwork()
 {
 }
@@ -30,7 +28,7 @@ bool CNetwork::handlePacket(PACKET_COMMAND * pCmd)
 
 void CNetwork::_closeReturn(SOCKET sock)
 {
-	PACKET_COMMAND *pCmd = g_PacketPool.Alloc();
+	PACKET_COMMAND *pCmd = new PACKET_COMMAND;
 	if (pCmd) {
 		Message::NetControl tMsg;
 		tMsg.set_sock(sock);
@@ -41,7 +39,7 @@ void CNetwork::_closeReturn(SOCKET sock)
 
 void CNetwork::_acceptReturn(SOCKET sock)
 {
-	PACKET_COMMAND *pCmd = g_PacketPool.Alloc();
+	PACKET_COMMAND *pCmd = new PACKET_COMMAND;
 	if (pCmd) {
 		Message::NetControl tMsg;
 		tMsg.set_sock(sock);
@@ -52,7 +50,7 @@ void CNetwork::_acceptReturn(SOCKET sock)
 
 void CNetwork::_connectReturn(SOCKET sock, int error)
 {
-	PACKET_COMMAND *pCmd = g_PacketPool.Alloc();
+	PACKET_COMMAND *pCmd = new PACKET_COMMAND;
 	if (pCmd) {
 		Message::NetControl tMsg;
 		tMsg.set_sock(sock);

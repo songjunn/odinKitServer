@@ -11,8 +11,6 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CLoginServer);
 
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
-
 static int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev) {
     if (ev == HTTP_REQUEST) {
         //Log.Debug("[HttpServer]Handle Event:%d ip:%s", ev, conn->remote_ip);

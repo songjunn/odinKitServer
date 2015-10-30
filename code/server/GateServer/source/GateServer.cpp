@@ -14,7 +14,6 @@ createFileSingleton(CGateServer);
 createFileSingleton(CUserMgr);
 
 static TMV g_StatusLogicTime = 0;
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
 
 CGateServer::CGateServer()
 {
@@ -76,9 +75,6 @@ bool CGateServer::onStartup()
 		return false;
 
     UserMgr.InitConfig(hearttimeout, packlimit);
-
-    if (!g_PacketPool.Init("Packet", packsize))
-		return false;
 
     CNetwork* servernet = (CNetwork *)this->createPlugin(CBaseServer::Plugin_Net4Server);
     if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
@@ -213,11 +209,9 @@ bool CGateServer::onLogic()
 
 void CGateServer::onPrint(char* output)
 {
-    char szPackPool[10240] = { 0 };
     char szUserPool[10240] = { 0 };
     char szServer[10240] = { 0 };
 
-    g_PacketPool.Output(szPackPool, 10240);
     UserMgr.m_pool.Output(szUserPool, 10240);
     CBaseServer::onPrint(szServer);
 
@@ -226,11 +220,10 @@ void CGateServer::onPrint(char* output)
 	    " ======================================================\n"
 	    " memory pool used:\n"
 	    "  %s"
-	    "  %s"
 	    " ======================================================\n"
 	    " %s",
 	    UserMgr.Count(),
-	    szPackPool, szUserPool,
+	    szUserPool,
 	    szServer);
 }
 

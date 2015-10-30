@@ -11,8 +11,6 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CCentralServer);
 
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
-
 CCentralServer::CCentralServer()
 {
 	setType(CBaseServer::Linker_Server_Central);
@@ -47,9 +45,6 @@ bool CCentralServer::onStartup()
 	int recvsize = LuaEngine.GetLuaVariableNumber("recv_buff_size", "CentralServer");
 	int sendsize = LuaEngine.GetLuaVariableNumber("send_buff_size", "CentralServer");
 	const char* udPath = LuaEngine.GetLuaVariableString("MonitorPath", "Key");
-
-	if (!g_PacketPool.Init("Packet", packsize))
-		return false;
 
 	//≥ı ºªØ
 	char mpath[1024] = { 0 };
@@ -98,20 +93,15 @@ bool CCentralServer::onLogic()
 
 void CCentralServer::onPrint(char* output)
 {
-	char szPackPool[10240] = { 0 };
 	char szServer[10240] = { 0 };
 
-	g_PacketPool.Output(szPackPool, 10240);
 	CBaseServer::onPrint(szServer);
 
 	sprintf(output,
 		" CentralServer monitor: \n"
 		" ======================================================\n"
-		" memory pool used:\n"
-		"  %s"
-		" ======================================================\n"
 		" %s",
-		szPackPool, szServer);
+		szServer);
 }
 
 void CCentralServer::onShutdown()

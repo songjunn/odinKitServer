@@ -17,9 +17,6 @@ createFileSingleton(CServerMgr);
 createFileSingleton(CPaymentVerifyModule);
 createFileSingleton(CGameWorldMgr);
 
-
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
-
 static int httpserver_ev_handler(struct mg_connection *conn, enum mg_event ev) {
 	if (ev == MG_REQUEST) {
 		//mg_send_header(conn, "Content-Type", "text/plain");
@@ -83,9 +80,6 @@ bool Begin()
 	sprintf(mpath, "%s//FPS_%d.sock", udPath, myid);
 	MainServer.Init(0, CServerMgr::Svr_Payment, myid, myport, myip, 0, NULL, mpath);
 
-	if( !g_PacketPool.Init("Packet", packsize) )
-		return false;
-
 	CNetwork* servernet = (CNetwork *)MainServer.createPlugin(CMainServer::Plugin_Net4Server);
 	if (!servernet->startup(CNet::NET_IO_SELECT, myport, connmax, sendsize, recvsize, packsize)) {
 		Log.Error("[CMainServer] create Plugin_Net4Server failed");
@@ -133,7 +127,7 @@ void MsgLogic()
 	{
 		OnMsg(pack);
 
-		g_PacketPool.Free( pack );
+		SAFE_DELETE(pack);
 	}
 }
 

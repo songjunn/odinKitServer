@@ -9,10 +9,6 @@
 #include "limits.h"
 #endif
 
-
-extern CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
-
-
 CNet::CNet()
 {
 }
@@ -97,10 +93,10 @@ bool CNet::recv(SOCKET sock, char * data, int size)
 		if( !pCmd )
 		{
 			//开始构建一个新的数据包
-			pCmd = g_PacketPool.Alloc();
+			pCmd = new PACKET_COMMAND;
 			if( !pCmd )
 			{
-				Log.Error("[CNet] Error:%s:%d, g_PacketPool.Alloc() failed", __FILE__, __LINE__);
+				Log.Error("[CNet] Error:%s:%d, new PACKET_COMMAN failed", __FILE__, __LINE__);
 				return false;
 			}
 
@@ -170,9 +166,7 @@ bool CNet::recv(SOCKET sock, char * data, int size)
 void CNet::close(SOCKET sock)
 {
 	PACKET_COMMAND * pCmd = removePacketBuff(sock);
-	if( pCmd )
-		g_PacketPool.Free( pCmd );
-
+	SAFE_DELETE(pCmd);
 	_closeReturn(sock);
 }
 
