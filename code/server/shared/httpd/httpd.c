@@ -28,18 +28,16 @@ enum httpd_error {
 
 int start_net(int port);
 void worker_thread(void* param);
-int get_line(int sock, char *buf, int size);
-void handle_request_cgi(int client, const char *path, const char *method, const char *query_string);
 void handle_request_file(int client, const char *url);
 void send_file(int client, FILE *resource);
 void send_headers_ok(int client);
 void send_headers_err(int client, int error);
 
-static void parse_httpd_message(char *buf, size_t len, struct httpd_request *message);
-static void parse_httpd_headers(char **buf, struct httpd_request *message);
-static char *skip(char **buf, const char *delimiters);
-static int is_valid_httpd_method(const char *s);
-static void remove_double_dots_and_double_slashes(char *s);
+void parse_httpd_message(char *buf, size_t len, struct httpd_request *message);
+void parse_httpd_headers(char **buf, struct httpd_request *message);
+char *skip(char **buf, const char *delimiters);
+int is_valid_httpd_method(const char *s);
+void remove_double_dots_and_double_slashes(char *s);
 int url_decode(const char *src, size_t src_len, char *dst, size_t dst_len, int is_form_url_encoded);
 
 #ifdef __cplusplus
@@ -48,8 +46,8 @@ int url_decode(const char *src, size_t src_len, char *dst, size_t dst_len, int i
 
 /**********************************************************************/
 /* A request has caused a call to accept() on the server port to
- * return.  Process the request appropriately.
- * Parameters: the socket connected to the client */
+ * return.  Process the request on the worker's thread.
+ * Parameters: the struct httpd_request instance of the client */
 /**********************************************************************/
 void worker_thread(void* param) {
     char buf[1024];
@@ -74,7 +72,12 @@ void worker_thread(void* param) {
     delete message;
 }
 
-static void parse_httpd_message(char *buf, size_t len, struct httpd_request *message) {
+/**********************************************************************/
+/* Parse http message to struct httpd_request.
+ * Parameters: http message buffer and length
+ *             struct httpd_request for save parsing result */
+/**********************************************************************/
+void parse_httpd_message(char *buf, size_t len, struct httpd_request *message) {
     int is_request, n;
 
     if (len < 1) return;
@@ -118,9 +121,11 @@ static void parse_httpd_message(char *buf, size_t len, struct httpd_request *mes
     }
 }
 
-// Parse HTTP headers from the given buffer, advance buffer to the point
-// where parsing stopped.
-static void parse_httpd_headers(char **buf, struct httpd_request *message) {
+/**********************************************************************/
+/* Parse HTTP headers from the given buffer, advance buffer to the point
+ * where parsing stopped. */
+/**********************************************************************/
+void parse_httpd_headers(char **buf, struct httpd_request *message) {
     size_t i;
 
 	for (i = 0; i < sizeof(message->headers) / sizeof(message->headers[0]); i++) {
@@ -132,10 +137,12 @@ static void parse_httpd_headers(char **buf, struct httpd_request *message) {
     }
 }
 
-// Skip the characters until one of the delimiters characters found.
-// 0-terminate resulting word. Skip the rest of the delimiters if any.
-// Advance pointer to buffer to the next word. Return found 0-terminated word.
-static char *skip(char **buf, const char *delimiters) {
+/**********************************************************************/
+/* Skip the characters until one of the delimiters characters found.
+ * 0-terminate resulting word. Skip the rest of the delimiters if any.
+ * Advance pointer to buffer to the next word. Return found 0-terminated word. */
+/**********************************************************************/
+char *skip(char **buf, const char *delimiters) {
     char *p, *begin_word, *end_word, *end_delimiters;
 
     begin_word = *buf;
@@ -155,13 +162,19 @@ static char *skip(char **buf, const char *delimiters) {
     return begin_word;
 }
 
-static int is_valid_httpd_method(const char *s) {
+/**********************************************************************/
+/* Check if the method is a valid htttpd method. */
+/**********************************************************************/
+int is_valid_httpd_method(const char *s) {
 	return !strcmp(s, "GET") || !strcmp(s, "POST") || !strcmp(s, "HEAD") ||
 		!strcmp(s, "CONNECT") || !strcmp(s, "PUT") || !strcmp(s, "DELETE") ||
 		!strcmp(s, "OPTIONS") || !strcmp(s, "PROPFIND") || !strcmp(s, "MKCOL") ||
 		!strcmp(s, "PATCH");
 }
 
+/**********************************************************************/
+/* Url decode. */
+/**********************************************************************/
 int url_decode(const char *src, size_t src_len, char *dst,
 	size_t dst_len, int is_form_url_encoded) {
 	size_t i, j = 0;
@@ -190,9 +203,11 @@ int url_decode(const char *src, size_t src_len, char *dst,
 	return i >= src_len ? j : -1;
 }
 
-// Protect against directory disclosure attack by removing '..',
-// excessive '/' and '\' characters
-static void remove_double_dots_and_double_slashes(char *s) {
+/**********************************************************************/
+/* Protect against directory disclosure attack by removing '..',
+ * excessive '/' and '\' characters */
+/**********************************************************************/
+void remove_double_dots_and_double_slashes(char *s) {
 	char *p = s;
 
 	while (*s != '\0') {
@@ -211,6 +226,9 @@ static void remove_double_dots_and_double_slashes(char *s) {
 	*p = '\0';
 }
 
+/**********************************************************************/
+/* Get post param for httpd request. */
+/**********************************************************************/
 int httpd_get_post_var(struct httpd_request *message, const char* name, char* buf, int buf_len) {
     char *begin_word;
     int value_len;
@@ -225,141 +243,20 @@ int httpd_get_post_var(struct httpd_request *message, const char* name, char* bu
     return value_len;
 }
 
+/**********************************************************************/
+/* Send response to the request.
+ * Parameters: httpd request
+ *             send data and length * /
+/**********************************************************************/
 size_t httpd_send_data(struct httpd_request *message, const void *data, int data_len) {
 	return send(message->remote_sock, data, data_len, 0);
 }
 
 /**********************************************************************/
-/* Get a line from a socket, whether the line ends in a newline,
-* carriage return, or a CRLF combination.  Terminates the string read
-* with a null character.  If no newline indicator is found before the
-* end of the buffer, the string is terminated with a null.  If any of
-* the above three line terminators is read, the last character of the
-* string will be a linefeed and the string will be terminated with a
-* null character.
-* Parameters: the socket descriptor
-*             the buffer to save the data in
-*             the size of the buffer
-* Returns: the number of bytes stored (excluding null) */
-/**********************************************************************/
-int get_line(int sock, char *buf, int size) {
-	int n, i = 0;
-	char c = '\0';
-
-	while ((i < size - 1) && (c != '\n')) {
-		n = recv(sock, &c, 1, 0);
-		if (n > 0) {
-			if (c == '\r') {
-				n = recv(sock, &c, 1, MSG_PEEK);
-				if ((n > 0) && (c == '\n'))
-					recv(sock, &c, 1, 0);
-				else
-					c = '\n';
-			}
-			buf[i] = c;
-			i++;
-		}
-		else {
-			c = '\n';
-		}
-	}
-	buf[i] = '\0';
-
-	return i;
-}
-
-/**********************************************************************/
-/* Execute a CGI script.  Will need to set environment variables as
- * appropriate.
- * Parameters: client socket descriptor
- *             path to the CGI script */
-/**********************************************************************/
-void handle_request_cgi(int client, const char *path,
-                 const char *method, const char *query_string) {
-    char c, buf[1024];
-	int cgi_input[2], cgi_output[2];
-	int i, status, numchars = 1, content_length = -1;
-	pid_t pid;
-
-    buf[0] = 'A'; buf[1] = '\0';
-	if (strcasecmp(method, "GET") == 0) {
-		while ((numchars > 0) && strcmp("\n", buf))  /* read & discard headers */
-			numchars = get_line(client, buf, sizeof(buf));
-	} else {   /* POST */
-        numchars = get_line(client, buf, sizeof(buf));
-        while ((numchars > 0) && strcmp("\n", buf)) {
-            buf[15] = '\0';
-            if (strcasecmp(buf, "Content-Length:") == 0)
-                content_length = atoi(&(buf[16]));
-            numchars = get_line(client, buf, sizeof(buf));
-        }
-        if (content_length == -1) {
-			send_headers_err(client, HTTPD_ERROR_BAD_REQUEST);
-            return;
-        }
-    }
-
-    sprintf(buf, "HTTP/1.0 200 OK\r\n");
-    send(client, buf, strlen(buf), 0);
-
-    if (pipe(cgi_output) < 0) {
-		send_headers_err(client, HTTPD_ERROR_INTERNAL_SERVER_ERROR);
-        return;
-    }
-    if (pipe(cgi_input) < 0) {
-		send_headers_err(client, HTTPD_ERROR_INTERNAL_SERVER_ERROR);
-        return;
-    }
-
-    if ((pid = fork()) < 0) {
-		send_headers_err(client, HTTPD_ERROR_INTERNAL_SERVER_ERROR);
-        return;
-    }
-    if (pid == 0) { /* child: CGI script */
-        char meth_env[255];
-        char query_env[255];
-        char length_env[255];
-
-        dup2(cgi_output[1], 1);
-        dup2(cgi_input[0], 0);
-        close(cgi_output[0]);
-        close(cgi_input[1]);
-        sprintf(meth_env, "REQUEST_METHOD=%s", method);
-        putenv(meth_env);
-		if (strcasecmp(method, "GET") == 0) {
-			sprintf(query_env, "QUERY_STRING=%s", query_string);
-			putenv(query_env);
-		} else {   /* POST */
-            sprintf(length_env, "CONTENT_LENGTH=%d", content_length);
-            putenv(length_env);
-        }
-        execl(path, path, NULL);
-        exit(0);
-    } else {    /* parent */
-        close(cgi_output[1]);
-        close(cgi_input[0]);
-	    if (strcasecmp(method, "POST") == 0) {
-		    for (i = 0; i < content_length; i++) {
-		 	    recv(client, &c, 1, 0);
-			    write(cgi_input[1], &c, 1);
-		    }
-	    }
-	    while (read(cgi_output[0], &c, 1) > 0) {
-		    send(client, &c, 1, 0);
-	    }
-
-        close(cgi_output[0]);
-        close(cgi_input[1]);
-        waitpid(pid, &status, 0);
-    }
-}
-
-/**********************************************************************/
-/* Send a regular file to the client.  Use headers, and report
-* errors to client if they occur.
-* Parameters: a pointer to a file structure produced from the socket
-*              file descriptor
-*             the name of the file to serve */
+/* Send a regular file to the client. 
+ * Use headers, and report errors to client if they occur.
+ * Parameters: client's socket
+ *             request url */
 /**********************************************************************/
 void handle_request_file(int client, const char *url) {
 	FILE *resource = NULL;
@@ -393,10 +290,10 @@ void handle_request_file(int client, const char *url) {
 
 /**********************************************************************/
 /* Put the entire contents of a file out on a socket.  This function
-* is named after the UNIX "cat" command, because it might have been
-* easier just to do something like pipe, fork, and exec("cat").
-* Parameters: the client socket descriptor
-*             FILE pointer for the file to cat */
+ * is named after the UNIX "cat" command, because it might have been
+ * easier just to do something like pipe, fork, and exec("cat").
+ * Parameters: the client socket descriptor
+ *             FILE pointer for the file to cat */
 /**********************************************************************/
 void send_file(int client, FILE *resource) {
 	char buf[1024];
@@ -409,8 +306,8 @@ void send_file(int client, FILE *resource) {
 }
 
 /**********************************************************************/
-/* Return the informational HTTP headers. */
-/* Parameters: the socket to print the headers on */
+/* Return the informational HTTP headers.
+ * Parameters: the socket to print the headers on */
 /**********************************************************************/
 void send_headers_ok(int client) {
     char buf[1024];
@@ -426,9 +323,9 @@ void send_headers_ok(int client) {
 }
 
 /**********************************************************************/
-/* Return the error HTTP headers. */
-/* Parameters: the socket to print the headers on */ 
-/*             the error number */
+/* Return the error HTTP headers.
+ * Parameters: the socket to print the headers on 
+ *             the error number */
 /**********************************************************************/
 void send_headers_err(int client, int error) {
     char buf[1024];
@@ -445,9 +342,7 @@ void send_headers_err(int client, int error) {
 
 /**********************************************************************/
 /* This function starts the process of listening for web connections
- * on a specified port.  If the port is 0, then dynamically allocate a
- * port and modify the original port variable to reflect the actual
- * port.
+ * on a specified port.
  * Parameters: pointer to variable containing the port to connect on
  * Returns: the socket */
 /**********************************************************************/
@@ -479,6 +374,11 @@ int start_net(int port) {
 	return sock;
 }
 
+/**********************************************************************/
+/* Create struct httpd_server instance.
+ * Parameters: the port to listen on
+ *             http message handler function */
+/**********************************************************************/
 struct httpd_server* httpd_create_server(unsigned short port, httpd_handler_t handler) {
 	struct httpd_server* httpd = new struct httpd_server;
 	httpd->port = port;
@@ -486,6 +386,9 @@ struct httpd_server* httpd_create_server(unsigned short port, httpd_handler_t ha
 	return httpd;
 }
 
+/**********************************************************************/
+/* Httpd main thread.
+ * Parameters: struct httpd_server instance */
 /**********************************************************************/
 void httpd_start(void* param) {
     int client_sock = -1;
