@@ -2,14 +2,15 @@
 #include "LuaEngine.h"
 #include "PathFunc.h"
 #include "Log.h"
-#ifdef __linux__
 #include <unistd.h>
 #include "linux_time.h"
-#endif
+#include "http_message_handler.h"
 
 createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CLoginServer);
+
+//extern  int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev);
 
 CLoginServer::CLoginServer()
 {

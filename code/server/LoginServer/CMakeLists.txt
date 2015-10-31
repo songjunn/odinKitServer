@@ -24,4 +24,5 @@ add_executable(loginserver ${MAIN_SRC} ${SUB_SRC})
 
 #LINK LIBRARIES
 target_link_libraries(loginserver servercore rt shared lua dl z crypt
-  protobuf message mongoclient boost_system boost_filesystem boost_thread curl)
+  protobuf message mongoclient boost_system boost_filesystem boost_thread curl
+  sqlite3)

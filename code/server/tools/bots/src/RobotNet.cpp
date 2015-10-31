@@ -39,8 +39,8 @@ PACKET_COMMAND*	 CRobotNet::getHeadPacket()
 
 bool CRobotNet::sendHttpRequest(CRobotObj *robot)
 {
-	string postStr = "action=1&platform=0&username=test1";
-	string authUrl = "119.29.22.222:1313/auth.html";
+	string postStr = "action=1&platform=0&guest=test1";
+	string authUrl = "119.29.22.222:1313";
 
 	CURL *pUrl = curl_easy_init();
 	curl_easy_setopt(pUrl, CURLOPT_URL, authUrl.c_str());
