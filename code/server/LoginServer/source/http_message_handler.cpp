@@ -26,8 +26,8 @@ int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev)
             httpd_get_post_var(conn, "accesstoken", accesstoken, sizeof(accesstoken));
             int ret = auth_verify_from_mydb_by_gate(atoll(uid), accesstoken);
 
-            char response[1024];
-            snprintf(response, sizeof(response), "result=%d", ret);
+            char response[32];
+            snprintf(response, sizeof(response), "%d", ret);
             httpd_send_data(conn, response, strlen(response));
         }
 
