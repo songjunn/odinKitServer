@@ -2,6 +2,8 @@
 #include "Packet.h"
 #include "RobotObj.h"
 #include "curl.h"
+#include "MessageTypeDefine.pb.h"
+#include "MessageUser.pb.h"
 
 bool CRobotNet::shutdown(SOCKET sock)
 {
@@ -38,12 +40,13 @@ PACKET_COMMAND*	 CRobotNet::getHeadPacket()
 
 bool CRobotNet::sendHttpRequest(CRobotObj *robot)
 {
-    string postStr = "action=1&platform=0&guest="+robot->GetUserName();
-    string authUrl = "119.29.22.222:1313";
+	char postStr[128], authUrl[128];
+	snprintf(postStr, sizeof(postStr), "action=1&platform=0&guest=%s", robot->GetUserName());
+	snprintf(authUrl, sizeof(authUrl), "119.29.22.222:1313");
 
     CURL *pUrl = curl_easy_init();
-    curl_easy_setopt(pUrl, CURLOPT_URL, authUrl.c_str());
-    curl_easy_setopt(pUrl, CURLOPT_POSTFIELDS, postStr.c_str());
+    curl_easy_setopt(pUrl, CURLOPT_URL, authUrl);
+    curl_easy_setopt(pUrl, CURLOPT_POSTFIELDS, postStr);
     curl_easy_setopt(pUrl, CURLOPT_WRITEFUNCTION, recvHttpResponse);
     curl_easy_setopt(pUrl, CURLOPT_WRITEDATA, robot);
     curl_easy_setopt(pUrl, CURLOPT_POST, 1);
