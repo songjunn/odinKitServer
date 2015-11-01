@@ -48,9 +48,6 @@ int main()
 	int actionTime = LuaEngine.GetLuaVariableNumber( "actiontime", "robot" );
 	int actionType = LuaEngine.GetLuaVariableNumber( "actiontype", "robot");
 
-	if( !g_PacketPool.Init("", 10000) )
-		return FALSE;
-
 	if (!RobotNet.startup(CNet::NET_IO_SELECT, 20001, nRobotNum * 2 + 1, 10240, 10240, 10000))
 	{
 		printf("Æô¶¯ÍøÂçÊ§°Ü£¡\n");
@@ -101,7 +98,7 @@ int main()
 		{
 			PacketParser( pack );
 
-			g_PacketPool.Free( pack );
+			SAFE_DELETE( pack );
 		}
 
 		sleep(1);
