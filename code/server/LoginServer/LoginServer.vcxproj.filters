@@ -21,9 +21,15 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="source\http_message_handler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\LoginServer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\http_message_handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

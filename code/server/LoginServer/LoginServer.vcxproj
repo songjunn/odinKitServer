@@ -181,9 +181,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\http_message_handler.cpp" />
     <ClCompile Include="source\LoginServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\http_message_handler.h" />
     <ClInclude Include="include\LoginServer.h" />
   </ItemGroup>
   <ItemGroup>

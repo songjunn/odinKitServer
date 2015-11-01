@@ -62,7 +62,36 @@ size_t CRobotNet::recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, voi
 {
     CRobotObj *robot = (CRobotObj *)userp;
     char *recvdata = (char *)buffer;
+	
+	char uid[128], accesstoken[128];
+	getHttpVar(recvdata, "uid", uid, sizeof(uid));
+	getHttpVar(recvdata, "accesstoken", accesstoken, sizeof(accesstoken));
+
+	robot->m_uid = atoll(uid);
+
+	Message::ClientLogin msg;
+	msg.set_uid(robot->m_uid);
+	msg.set_accesstoken(accesstoken);
+
+	PACKET_COMMAND pack;
+	PROTOBUF_CMD_PACKAGE(pack, msg, Message::MSG_REQUEST_USER_LOGIN);
+	RobotNet.sendMsg(robot->m_uid, robot->m_sock, &pack);
 
     return nsize * nmemb;
 }
+
+int CRobotNet::getHttpVar(char* recvdata, const char* name, char* buf, int buf_len) 
+{
+	char *begin_word;
+	int value_len;
+
+	begin_word = strstr(recvdata, name) + strlen(name) + 1; // exclude '='
+	value_len = strcspn(begin_word, "&");
+	if (buf_len > value_len) {
+		strncpy(buf, begin_word, value_len);
+		buf[value_len] = '\0';
+	}
+	return value_len;
+}
+
 

@@ -23,8 +23,6 @@ char	g_szServerIp[32];
 
 int main()
 {
-    RobotNet.sendHttpRequest(new CRobotObj(1,"a","b",2,3));
-    return 0;
 	//³õÊ¼»¯luaÒýÇæ
 	if( !LuaEngine.Init() )
 	{
@@ -83,7 +81,8 @@ int main()
 
 			RobotMgr.m_RobotList.AddToTail( robot );
 
-			robot->Check(g_szServerIp, g_nServerPort, g_szServerVersion);
+			RobotNet.sendHttpRequest(robot);
+			//robot->Check(g_szServerIp, g_nServerPort, g_szServerVersion);
 
 			sleep(10);
 		}
