@@ -16,10 +16,9 @@ createFileSingleton(CRobotNet);
 createFileSingleton(CRobotMgr);
 createFileSingleton(CTestUnitMgr);
 
-CObjectMemoryPool<PACKET_COMMAND>	g_PacketPool;
- char g_szServerVersion[32];
-char	g_szServerIp[32];
- int	g_nServerPort;
+char g_szServerVersion[32];
+char g_szServerIp[32];
+int g_nServerPort;
 
 int main()
 {

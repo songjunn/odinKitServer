@@ -5,6 +5,9 @@
 #include "MessageTypeDefine.pb.h"
 #include "MessageUser.pb.h"
 
+extern char	g_szServerIp[32];
+extern int g_nServerPort;
+
 bool CRobotNet::shutdown(SOCKET sock)
 {
     return CNet::shutdown(sock);
@@ -71,6 +74,7 @@ size_t CRobotNet::recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, voi
 	getHttpVar(recvdata, "accesstoken", accesstoken, sizeof(accesstoken));
 
 	robot->m_uid = atoll(uid);
+	robot->m_sock = connect(g_szServerIp, g_nServerPort);
 
 	Message::ClientLogin msg;
 	msg.set_uid(robot->m_uid);
