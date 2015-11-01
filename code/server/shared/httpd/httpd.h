@@ -46,10 +46,14 @@ struct httpd_server {
     httpd_handler_t handler;
 };
 
+//httd functions
 void httpd_start(void* param); //param: struct httpd_server*
 struct httpd_server* httpd_create_server(unsigned short port, httpd_handler_t handler);
 int httpd_get_post_var(struct httpd_request *message, const char* name, char* buf, int buf_len);
 size_t httpd_send_data(struct httpd_request *message, const void *data, int data_len);
+
+//util functions
+int httpd_get_param(const char* content, const char* name, char* buf, int buf_len);
 
 #ifdef __cplusplus
 }

@@ -16,9 +16,7 @@ AllSrv="${pwdpath}/centralserver
 	  	  ${pwdpath}/gameserver
 	    	${pwdpath}/gateserver
 	    	${pwdpath}/dataserver
-	    	${pwdpath}/biserver
-	  	  ${pwdpath}/loginserver
-                  ${pwdpath}/paymentserver"
+	  	  ${pwdpath}/loginserver"
 
 rm -f nohup.out
 flag=0

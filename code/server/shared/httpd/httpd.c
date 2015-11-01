@@ -50,7 +50,7 @@ int url_decode(const char *src, size_t src_len, char *dst, size_t dst_len, int i
  * Parameters: the struct httpd_request instance of the client */
 /**********************************************************************/
 void worker_thread(void* param) {
-    char buf[1024];
+    char buf[1024] = {0};
     struct httpd_request* message = (struct httpd_request*)param;
     int numchars = 0;
 
@@ -229,20 +229,27 @@ void remove_double_dots_and_double_slashes(char *s) {
 }
 
 /**********************************************************************/
-/* Get post param for httpd request. */
+/* Parse parameter from format string.
+ * like "action=1&platform=0&guest=test" */
 /**********************************************************************/
-int httpd_get_post_var(struct httpd_request *message, const char* name, char* buf, int buf_len) {
-    char *begin_word;
+int httpd_get_param(const char* content, const char* name, char* buf, int buf_len) {
+    const char *begin_word;
     int value_len;
 
-    begin_word = strstr(message->body, name) + strlen(name) + 1; // exclude '='
+    begin_word = strstr(content, name) + strlen(name) + 1; // exclude '='
     value_len = strcspn(begin_word, "&");
     if (buf_len > value_len) {
-        //snprintf(*buf, value_len, begin_word);
         strncpy(buf, begin_word, value_len);
         buf[value_len] = '\0';
     }
     return value_len;
+}
+
+/**********************************************************************/
+/* Get post param for httpd request. */
+/**********************************************************************/
+int httpd_get_post_var(struct httpd_request *message, const char* name, char* buf, int buf_len) {
+    return httpd_get_param(message->body, name, buf, buf_len);
 }
 
 /**********************************************************************/

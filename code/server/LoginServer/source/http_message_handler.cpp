@@ -6,7 +6,7 @@
 int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev) 
 {
     if (ev == HTTP_REQUEST) {
-        //Log.Debug("[HttpServer]Handle Event:%d ip:%s", ev, conn->remote_ip);
+        Log.Debug("[HttpServer]Recv Request:%s content:%s", conn->remote_ip, conn->body);
 
         char action[8] = {0}, platform[8] = {0};
         httpd_get_post_var(conn, "action", action, sizeof(action));
@@ -20,6 +20,7 @@ int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev)
             char response[1024];
             snprintf(response, sizeof(response), "uid=%lld&accesstoken=%s", uid, accesstoken);
             httpd_send_data(conn, response, strlen(response));
+            Log.Debug("[HttpServer]Send Response:%s %s", conn->remote_ip, response);
         } else if (!strcmp(action, "2") && !strcmp(platform, "0")) {
             char uid[64], accesstoken[64];
             httpd_get_post_var(conn, "userid", uid, sizeof(uid));
@@ -27,8 +28,9 @@ int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev)
             int ret = auth_verify_from_mydb_by_gate(atoll(uid), accesstoken);
 
             char response[32];
-            snprintf(response, sizeof(response), "%d", ret);
+            snprintf(response, sizeof(response), "result=%d", ret);
             httpd_send_data(conn, response, strlen(response));
+            Log.Debug("[HttpServer]Send Response:%s %s", conn->remote_ip, response);
         }
 
         /*if (true) {

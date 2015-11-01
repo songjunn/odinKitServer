@@ -348,7 +348,7 @@ void CUserMgr::httpCheckUserThread(void *pParam)
 	Log.Debug("httpCheckUser: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
 
 	char postStr[128] = { 0 };
-	sprintf(postStr, "userid=%lld&accesstoken=%s", pUser->m_id, pUser->m_AccessToken.c_str());
+	sprintf(postStr, "action=2&platform=0&userid=%lld&accesstoken=%s", pUser->m_id, pUser->m_AccessToken.c_str());
 	string authUrl = GateServer.getAuthAddress() + ":1313";
 
 	curl_easy_setopt(pUrl, CURLOPT_URL, authUrl.c_str());
@@ -377,31 +377,39 @@ void CUserMgr::httpCheckUserThread(void *pParam)
 
 size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *userp)
 {
-	CUser *pUser = (CUser *)userp;
-	char *recvdata = (char *)buffer;
-	if (recvdata && recvdata[0] && recvdata[0] == '1') {
-		UserMgr.m_UserLock.LOCK();
-		UserMgr.m_UserList.Insert(pUser->m_id, pUser);
-		UserMgr.m_UserLock.UNLOCK();
+    if (buffer == NULL) {
+        return nsize * nmemb;
+    }
 
-		//验证通过，登入游戏
-		Message::UserLogin message;
-		message.set_uid(pUser->m_id);
-		message.set_world(pUser->m_worldID);
-		message.set_server(pUser->m_svrID);
-		PACKET_COMMAND packet;
-		PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
-		GETSERVERNET(&GateServer)->sendMsg(pUser->m_GameSock, &packet);
+    CUser *pUser = (CUser *)userp;
+    char *recvdata = (char *)buffer;
 
-		//同步服务器时间
-		UserMgr.SendHeartResponse(pUser);
-	}
-	else {
-		UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
-		GETCLIENTNET(&GateServer)->shutdown(pUser->m_ClientSock);
-		Log.Error("auth user failed: %lld. return content: %s", pUser->m_id, recvdata);
-	}
+    //get result
+    char result[16] = {0};
+    httpd_get_param(recvdata, "result", result, sizeof(result));
 
-	return nsize * nmemb;
+    if (!strcmp(result, "1")) {
+        UserMgr.m_UserLock.LOCK();
+        UserMgr.m_UserList.Insert(pUser->m_id, pUser);
+        UserMgr.m_UserLock.UNLOCK();
+
+        //验证通过，登入游戏
+        Message::UserLogin message;
+        message.set_uid(pUser->m_id);
+        message.set_world(pUser->m_worldID);
+        message.set_server(pUser->m_svrID);
+        PACKET_COMMAND packet;
+        PROTOBUF_CMD_PACKAGE(packet, message, Message::MSG_USER_lOGIN_REQUEST);
+        GETSERVERNET(&GateServer)->sendMsg(pUser->m_GameSock, &packet);
+
+        //同步服务器时间
+        UserMgr.SendHeartResponse(pUser);
+    } else {
+        UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
+        GETCLIENTNET(&GateServer)->shutdown(pUser->m_ClientSock);
+        Log.Error("auth user failed: %lld. return content: %s", pUser->m_id, recvdata);
+    }
+
+    return nsize * nmemb;
 }
 
