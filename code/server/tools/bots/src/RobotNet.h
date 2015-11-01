@@ -8,21 +8,22 @@ class CRobotObj;
 class CRobotNet : public CNet, public Singleton< CRobotNet >
 {
 public:
-	CRobotNet()		{};
-	~CRobotNet()	{};
+    CRobotNet()	{};
+    ~CRobotNet() {};
 
-	bool shutdown(SOCKET sock);
-	int	 sendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack);
-	bool sendHttpRequest(CRobotObj *robot);
-	static size_t recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, void *userp);
+    bool shutdown(SOCKET sock);
+    int sendMsg(int64 uid, SOCKET s, PACKET_COMMAND* pack);
+    bool sendHttpRequest(CRobotObj *robot);
+    static size_t recvHttpResponse(void *buffer, size_t nsize, size_t nmemb, void *userp);
 
-	bool handlePacket(PACKET_COMMAND * pCmd);
-	PACKET_COMMAND*	getHeadPacket();
+    bool handlePacket(PACKET_COMMAND * pCmd);
+    PACKET_COMMAND* getHeadPacket();
 
 private:
-	Mutex						m_PackLock;
-	CStlList<PACKET_COMMAND*>	m_PacketList;
+    Mutex m_PackLock;
+    CStlList<PACKET_COMMAND*> m_PacketList;
 
 };
 
 #define RobotNet CRobotNet::getSingleton()
+

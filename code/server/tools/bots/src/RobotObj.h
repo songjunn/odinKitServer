@@ -3,28 +3,28 @@
 #include "Net.h"
 
 enum ERobotStat {
-	ESTAT_NONE	= 0,
-	ESTAT_LOGINGATE = 100,
+    ESTAT_NONE	= 0,
+    ESTAT_LOGINGATE = 100,
 };
 
 class CRobotObj
 {
 public:
-	CRobotObj(int index, const char* name, const char* pwd, int actionTime, int world);
-	~CRobotObj();
+    CRobotObj(int index, const char* name, const char* pwd, int actionTime, int world);
+    ~CRobotObj();
 
-	inline char* GetUserName()	{return m_szName;}
-	inline char* GetUserPwd()	{return m_szPwd;}
-	inline SOCKET GetSocket()	{return m_sock;}
+    inline char* GetUserName() {return m_szName;}
+    inline char* GetUserPwd() {return m_szPwd;}
+    inline SOCKET GetSocket() {return m_sock;}
 
-	inline void	SetUid(int64 id){m_uid = id;}
-	inline void	SetKey(int64 key){m_key = key;}
+    inline void SetUid(int64 id){m_uid = id;}
+    inline void SetKey(int64 key){m_key = key;}
 
-	void setStat(ERobotStat stat) { m_Stat = stat;}
-	ERobotStat getStat(){ return m_Stat;}
+    void setStat(ERobotStat stat) {m_Stat = stat;}
+    ERobotStat getStat() {return m_Stat;}
 	
-	//player
-	inline int64 GetPlayerID()	{return m_PlayerID;}
+    //player
+    inline int64 GetPlayerID() {return m_PlayerID;}
 	
 	bool	OnMsg( PACKET_COMMAND* pPacket );
 	bool	Logic();
