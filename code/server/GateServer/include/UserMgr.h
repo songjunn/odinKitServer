@@ -46,10 +46,10 @@ public:
 
     inline CUser* GetUserByUID(UserID uid) 
     {
-		m_UserLock.LOCK();
-		CUser* user = m_UserList.Find(uid);
-		m_UserLock.UNLOCK();
-		return user;
+	m_UserLock.LOCK();
+	CUser* user = m_UserList.Find(uid);
+	m_UserLock.UNLOCK();
+	return user;
     }
 
 protected:

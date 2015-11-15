@@ -10,8 +10,6 @@ createFileSingleton(CLog);
 createFileSingleton(CLuaEngine);
 createFileSingleton(CLoginServer);
 
-//extern  int httpserver_ev_handler(struct httpd_request *conn, enum httpd_event ev);
-
 CLoginServer::CLoginServer()
 {
     setType(CBaseServer::Linker_Server_Login);

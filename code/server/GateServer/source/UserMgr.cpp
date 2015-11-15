@@ -47,27 +47,27 @@ void CUserMgr::_UserHeartLogic()
         sock = m_list.Next(sock);
 
         if( m_HeartTimeout > 0 && t - user->m_HeartTime > m_HeartTimeout ) {
-			Log.Notice("[Heart] Heart Timeout, User:"INT64_FMT, user->m_id);
-			Exit( user );
-		}
+	    Log.Notice("[Heart] Heart Timeout, User:"INT64_FMT, user->m_id);
+	    Exit( user );
+	}
     }
 }
 
 bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 {
-    if( !pack )
-		return false;
+    if (!pack)
+	return false;
 
     switch(pack->Type()) {
         case Message::MSG_REQUEST_USER_HEART:	_HandlePacket_UserHeart(pack);    break;
-		case Message::MSG_REQUEST_USER_LOGIN:	_HandlePacket_UserLogin(pack);    break;
-		case Message::MSG_REQUEST_USER_LOGOUT:	_HandlePacket_UserLogout(pack);   break;
+	case Message::MSG_REQUEST_USER_LOGIN:	_HandlePacket_UserLogin(pack);    break;
+	case Message::MSG_REQUEST_USER_LOGOUT:	_HandlePacket_UserLogout(pack);   break;
         case Message::MSG_REQUEST_PLAYER_CREATE:_HandlePacket_PlayerCreate(pack); break;
         case Message::MSG_PLAYER_LOGIN_REQUEST:	_HandlePacket_PlayerLogin(pack);  break;
-		case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);  break;
+	case Message::MSG_PLAYER_LOAD_COUNT:	_HandlePacket_PlayerCount(pack);  break;
         case Message::MSG_SERVER_NET_CLOSE:     _HandlePacket_NetClose(pack);     break;
-		case Message::MSG_USER_DISPLACE:		_HandlePacket_UserDisplace(pack); break;
-		default: return false;
+        case Message::MSG_USER_DISPLACE:        _HandlePacket_UserDisplace(pack); break;
+	default: return false;
     }
 
     return true;
@@ -75,8 +75,8 @@ bool CUserMgr::OnMsg(PACKET_COMMAND* pack)
 
 bool CUserMgr::_HandlePacket_UserHeart(PACKET_COMMAND* pack)
 {
-    if( !pack )
-		return false;
+    if (!pack)
+	return false;
 
     /*Message::UserHeartRequest msg;
       PROTOBUF_CMD_PARSER( pack, msg );*/
@@ -310,69 +310,65 @@ void CUserMgr::RemoveUser(CUser* user, bool sync)
 
 bool CUserMgr::UserPacketLimit(CUser* user)
 {
-	if( !user )
-		return false;
+    if (!user)
+	return false;
 
-	if( g_PacketLimitCount <= 0 )
-		return true;
-
-	TMV curtime = time(NULL);
-	if( curtime - user->m_PackTime < g_PacketLimitTime )
-	{
-		user->m_PackCount++;
-		if( user->m_PackCount >= g_PacketLimitCount )
-		{
-			Log.Error("[CUserMgr] Receive packet too much:%d Time:%d User:"INT64_FMT" Sock:%d", user->m_PackCount, curtime - user->m_PackTime, user->m_id, user->m_ClientSock);
-			Exit(user);
-			return false;
-		}
-	}
-	else
-	{
-		user->m_PackCount = 0;
-		user->m_PackTime = curtime;
-	}
-
+    if (g_PacketLimitCount <= 0)
 	return true;
+
+    TMV curtime = time(NULL);
+    if (curtime - user->m_PackTime < g_PacketLimitTime) {
+	user->m_PackCount++;
+	if (user->m_PackCount >= g_PacketLimitCount) {
+	    Log.Error("[CUserMgr] Receive packet too much:%d Time:%d User:"INT64_FMT" Sock:%d", user->m_PackCount, curtime - user->m_PackTime, user->m_id, user->m_ClientSock);
+	    Exit(user);
+	    return false;
+	}
+    } else {
+	user->m_PackCount = 0;
+	user->m_PackTime = curtime;
+    }
+
+    return true;
 }
 
 void CUserMgr::httpCheckUserThread(void *pParam)
 {
-	CURL *pUrl = curl_easy_init();
-	if (!pUrl) {
-		Log.Error("!pUrl. Unknow Error.");
-		return;
-	}
+    CURL *pUrl = curl_easy_init();
+    if (!pUrl) {
+	Log.Error("!pUrl. Unknow Error.");
+	return;
+    }
 
-	CUser *pUser = (CUser *)pParam;
-	Log.Debug("httpCheckUser: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
+    CUser *pUser = (CUser *)pParam;
+    Log.Debug("httpCheckUser: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
 
-	char postStr[128] = { 0 };
-	sprintf(postStr, "action=2&platform=0&userid=%lld&accesstoken=%s", pUser->m_id, pUser->m_AccessToken.c_str());
-	string authUrl = GateServer.getAuthAddress() + ":1313";
+    char postStr[128] = { 0 };
+    sprintf(postStr, "action=2&platform=0&userid=%lld&accesstoken=%s", pUser->m_id, pUser->m_AccessToken.c_str());
+    string authUrl = GateServer.getAuthAddress() + ":1313";
 
-	curl_easy_setopt(pUrl, CURLOPT_URL, authUrl.c_str());
-	curl_easy_setopt(pUrl, CURLOPT_POSTFIELDS, postStr);
-	curl_easy_setopt(pUrl, CURLOPT_WRITEFUNCTION, recvBackData);
-	curl_easy_setopt(pUrl, CURLOPT_WRITEDATA, pUser);
-	curl_easy_setopt(pUrl, CURLOPT_POST, 1);
-	curl_easy_setopt(pUrl, CURLOPT_NOSIGNAL, 1);
-	//curl_easy_setopt(pUrl, CURLOPT_VERBOSE, 1);
-	//curl_easy_setopt(pUrl, CURLOPT_HEADER, 1);
-	//curl_easy_setopt(pUrl, CURLOPT_FOLLOWLOCATION, 1);
-	curl_easy_setopt(pUrl, CURLOPT_COOKIEFILE, "curlauth.cookie");
-	CURLcode res = curl_easy_perform(pUrl);
-	curl_easy_cleanup(pUrl);
+    curl_easy_setopt(pUrl, CURLOPT_URL, authUrl.c_str());
+    curl_easy_setopt(pUrl, CURLOPT_POSTFIELDS, postStr);
+    curl_easy_setopt(pUrl, CURLOPT_WRITEFUNCTION, recvBackData);
+    curl_easy_setopt(pUrl, CURLOPT_WRITEDATA, pUser);
+    curl_easy_setopt(pUrl, CURLOPT_POST, 1);
+    curl_easy_setopt(pUrl, CURLOPT_NOSIGNAL, 1);
+    //curl_easy_setopt(pUrl, CURLOPT_VERBOSE, 1);
+    //curl_easy_setopt(pUrl, CURLOPT_HEADER, 1);
+    //curl_easy_setopt(pUrl, CURLOPT_FOLLOWLOCATION, 1);
+    curl_easy_setopt(pUrl, CURLOPT_COOKIEFILE, "curlauth.cookie");
+    CURLcode res = curl_easy_perform(pUrl);
+    curl_easy_cleanup(pUrl);
 
-	if (res != 0) {
-		UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
-		GETCLIENTNET(&GateServer)->shutdown(pUser->m_ClientSock);
-		Log.Error("curl curl_easy_perform error: %s", curl_easy_strerror(res));
-		Log.Error("[CUserMgr]Authentication Failed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
-		return;
-	}
+    if (res != 0) {
+	UserMgr.SendErrorMsg(pUser->m_ClientSock, Error_Login_CheckFailed);
+	GETCLIENTNET(&GateServer)->shutdown(pUser->m_ClientSock);
+	Log.Error("curl curl_easy_perform error: %s", curl_easy_strerror(res));
+	Log.Error("[CUserMgr]Authentication Failed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
+	return;
+    }
 
-	Log.Debug("[CUserMgr]Authentication Successed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
+    Log.Debug("[CUserMgr]Authentication Successed From LoginServer: userid:%lld, address:%s, token:%s", pUser->m_id, GateServer.getAuthAddress().c_str(), pUser->m_AccessToken.c_str());
 }
 
 size_t CUserMgr::recvBackData(void *buffer, size_t nsize, size_t nmemb, void *userp)
